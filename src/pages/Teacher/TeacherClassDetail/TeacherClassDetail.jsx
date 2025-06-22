@@ -3,7 +3,7 @@
 import { Typography, Table, Button, Tag, Card } from "antd"
 import { LeftOutlined, ArrowRightOutlined } from "@ant-design/icons"
 import { useNavigate } from "react-router-dom"
-import "./TeacherCLassDetail.css"
+import "./TeacherClassDetail.css"
 
 const { Title, Text } = Typography
 
