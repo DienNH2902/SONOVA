@@ -1,0 +1,108 @@
+.header {
+  background: #1e3a5f;
+  padding: 0;
+  height: 64px;
+  line-height: 64px;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 auto;
+  padding: 0 90px;
+  height: 100%;
+}
+
+.sidebar-toggle {
+  color: white;
+  display: block; /* Always show the button */
+  font-size: 18px;
+  margin-right: 16px;
+}
+
+.header-menu {
+  background: transparent;
+  border-bottom: none;
+  flex: 1;
+  justify-content: flex-start;
+  margin-left: 0px;
+}
+
+.header-menu .ant-menu-item {
+  color: white;
+  border-bottom: 2px solid transparent;
+}
+
+/* Make submenu title text white like other items */
+.header-menu .ant-menu-submenu-title {
+  color: white;
+}
+
+/* Add hover effect like other items */
+.header-menu .ant-menu-submenu-title:hover {
+  color: black;
+}
+
+.header-menu .ant-menu-item:hover {
+  color: #ffa940;
+  border-bottom-color: #ffa940;
+}
+
+.header-menu .ant-menu-item-selected {
+  color: #ffa940;
+  border-bottom-color: #ffa940;
+  background: transparent;
+}
+
+.header-logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.logo-text {
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.header-user .ant-avatar {
+  background: #ffa940;
+  cursor: pointer;
+}
+
+/* Submenu container styling */
+.header-menu .ant-menu-submenu .ant-menu {
+  background-color: #1e3a5f;
+  padding: 0;
+  border: none;
+  box-shadow: none;
+  min-width: 180px;
+}
+
+/* Submenu items */
+.header-menu .ant-menu-submenu .ant-menu-item {
+  color: white;
+  padding: 10px 20px;
+  font-size: 14px;
+  line-height: 1.5;
+  height: auto;
+}
+
+/* Hover style for submenu items */
+.header-menu .ant-menu-submenu .ant-menu-item:hover {
+  background-color: #ffa940;
+  color: #1e3a5f;
+}
+
+/* Remove spacing around submenu */
+.header-menu .ant-menu-submenu-popup {
+  margin-top: 0px;
+}
+
+/* Keep border radius clean (optional) */
+.header-menu .ant-menu-submenu .ant-menu-item {
+  border-radius: 0;
+}

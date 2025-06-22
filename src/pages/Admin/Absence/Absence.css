@@ -1,0 +1,207 @@
+.absence-page {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding: 40px 20px;
+}
+
+.absence-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-title {
+  color: #1e3a5f !important;
+  font-size: 36px !important;
+  font-weight: 600 !important;
+  margin-bottom: 30px !important;
+}
+
+.table-container {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 30px;
+}
+
+.absence-table {
+  border-radius: 12px;
+}
+
+.absence-table .ant-table-thead > tr > th {
+  background: #1e3a5f;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  border: none;
+  padding: 16px 12px;
+  text-align: center;
+}
+
+.absence-table .ant-table-thead > tr > th:first-child {
+  border-top-left-radius: 12px;
+}
+
+.absence-table .ant-table-thead > tr > th:last-child {
+  border-top-right-radius: 12px;
+}
+
+.absence-table .ant-table-tbody > tr > td {
+  padding: 16px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 14px;
+  color: #333;
+  text-align: center;
+}
+
+.absence-table .ant-table-tbody > tr:nth-child(even) {
+  background: #fafafa;
+}
+
+.absence-table .ant-table-tbody > tr:hover {
+  background: #f0f8ff !important;
+}
+
+.absence-table .ant-table-tbody > tr > td:nth-child(2),
+.absence-table .ant-table-tbody > tr > td:nth-child(4) {
+  text-align: left;
+}
+
+.contact-checkbox {
+  transform: scale(1.2);
+}
+
+.contact-checkbox .ant-checkbox-inner {
+  border-color: #d9d9d9;
+  border-radius: 4px;
+}
+
+.contact-checkbox.ant-checkbox-wrapper-checked .ant-checkbox-inner {
+  background-color: #1e3a5f;
+  border-color: #1e3a5f;
+}
+
+.contact-checkbox:hover .ant-checkbox-inner {
+  border-color: #1e3a5f;
+}
+
+.confirm-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.confirm-button {
+  background: #1e3a5f;
+  border-color: #1e3a5f;
+  border-radius: 8px;
+  height: 48px;
+  padding: 0 40px;
+  font-size: 16px;
+  font-weight: 500;
+  min-width: 150px;
+}
+
+.confirm-button:hover {
+  background: #2c5282;
+  border-color: #2c5282;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(30, 58, 95, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .absence-table .ant-table-thead > tr > th,
+  .absence-table .ant-table-tbody > tr > td {
+    padding: 14px 10px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 768px) {
+  .absence-page {
+    padding: 20px 16px;
+  }
+
+  .page-title {
+    font-size: 28px !important;
+    margin-bottom: 20px !important;
+  }
+
+  .absence-table .ant-table-thead > tr > th,
+  .absence-table .ant-table-tbody > tr > td {
+    padding: 12px 8px;
+    font-size: 12px;
+  }
+
+  .confirm-button {
+    height: 44px;
+    font-size: 15px;
+    padding: 0 30px;
+  }
+}
+
+@media (max-width: 576px) {
+  .absence-page {
+    padding: 16px 12px;
+  }
+
+  .page-title {
+    font-size: 24px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .table-container {
+    overflow-x: auto;
+  }
+
+  .absence-table {
+    min-width: 700px;
+  }
+
+  .absence-table .ant-table-thead > tr > th,
+  .absence-table .ant-table-tbody > tr > td {
+    padding: 10px 6px;
+    font-size: 11px;
+  }
+
+  .contact-checkbox {
+    transform: scale(1.1);
+  }
+
+  .confirm-button {
+    height: 40px;
+    font-size: 14px;
+    padding: 0 24px;
+    min-width: 120px;
+  }
+
+  .confirm-container {
+    padding: 16px 0;
+  }
+}
+
+/* Print styles */
+@media print {
+  .absence-page {
+    background: white;
+    padding: 20px;
+  }
+
+  .confirm-container {
+    display: none;
+  }
+
+  .absence-table .ant-table-thead > tr > th {
+    background: #1e3a5f !important;
+    color: white !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .absence-table .ant-table-tbody > tr:nth-child(even) {
+    background: #f5f5f5 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

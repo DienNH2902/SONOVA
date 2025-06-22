@@ -1,0 +1,40 @@
+.layout-admin {
+  min-height: 100vh;
+  margin: 0px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.layout-admin-content {
+  display: flex;
+  flex: 1;
+  position: relative;
+}
+
+/* Sidebar is 200px wide */
+.sidebar {
+  width: 200px;
+  /* background: #001529; */
+  transition: all 0.3s ease;
+  height: 500px;
+}
+
+/* Hidden sidebar */
+.sidebar.hidden {
+  width: 0;
+  overflow: hidden;
+}
+
+/* Main content shifts right when sidebar is visible */
+.main-admin-content {
+  flex: 1;
+  background: #f5f5f5;
+  transition: margin-left 0.3s ease;
+  margin-left: 200px;
+}
+
+/* When sidebar is hidden */
+.main-admin-content.full-width {
+  margin-left: 0;
+}

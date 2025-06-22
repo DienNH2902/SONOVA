@@ -1,0 +1,135 @@
+/* Ensure the Drawer itself is visible and has a high z-index */
+.sidebar-drawer {
+  z-index: 2000; /* Ensure it’s above other elements */
+  position: absolute; /* Use static positioning to avoid conflicts */
+  height: 500px; /* Set a fixed height for the Drawer */
+}
+
+/* Style the Drawer body */
+.sidebar-drawer .ant-drawer-body {
+  /* background: #1e3a5f; */
+  padding: 0;
+  margin: 0;
+  height: 500px; /* Ensure the body takes the full height of the Drawer */
+}
+
+/* Hide the Drawer header */
+.sidebar-drawer .ant-drawer-header {
+  display: none;
+}
+
+/* Style the sidebar content */
+.sidebar-content {
+  height: 600px; /* Use 100% instead of 100vh to fit within the Drawer */
+  display: flex;
+  flex-direction: column;
+  background: #1e3a5f;
+}
+
+/* Main menu section */
+.sidebar-main {
+  flex: 1;
+  padding-top: 20px;
+}
+
+/* Style the main menu */
+.sidebar-menu {
+  background: transparent;
+  border: none;
+}
+
+.sidebar-menu .ant-menu-item {
+  color: white;
+  margin: 0;
+  padding: 15px 20px;
+  height: auto;
+  line-height: 1.5;
+  border-radius: 0;
+  text-align: left;
+  font-size: 12px;
+}
+
+.sidebar-menu .ant-menu-item:hover {
+  background: #1e3a5f ;
+  color: #ffa940 !important; 
+}
+
+.sidebar-menu .ant-menu-item-selected {
+  background: #ffa940 ;
+  color: #1e3a5f;
+  font-weight: bold;
+}
+
+/* .sidebar-item-yellow {
+  background: #ffa940 !important;
+  color: #1e3a5f !important;
+  font-weight: bold;
+} */
+
+
+
+
+.sidebar-menu .ant-menu-submenu-title {
+  color: white;
+}
+
+
+.sidebar-menu .ant-menu-submenu-title {
+  padding-right: 83px;
+}
+
+
+
+
+
+/* Bottom menu section */
+.sidebar-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 20px 0;
+}
+
+/* Style the bottom menu */
+.sidebar-bottom-menu {
+  background: transparent;
+  border: none;
+}
+
+.sidebar-bottom-menu .ant-menu-item {
+  color: white;
+  margin: 0;
+  padding: 10px 20px;
+  height: auto;
+  line-height: 1.5;
+}
+
+.sidebar-bottom-menu .ant-menu-item:hover {
+  background: rgba(255, 169, 64, 0.1);
+  color: #ffa940;
+}
+
+/* Style the icons in both menus */
+.sidebar-menu .ant-menu-item .anticon,
+.sidebar-menu .ant-menu-submenu-title .anticon,
+.sidebar-bottom-menu .ant-menu-item .anticon {
+  margin-right: 12px;
+  font-size: 16px;
+  margin-left: 0px;
+}
+
+
+
+
+
+
+/* Disable any blur on drawer backdrop */
+.sidebar-drawer.no-blur .ant-drawer-mask {
+  backdrop-filter: none !important;
+  background: transparent !important;
+}
+
+
+
+
+
+
+

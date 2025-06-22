@@ -1,0 +1,245 @@
+.student-info-list-page {
+  min-height: 100vh;
+  background: #f5f5f0;
+  padding: 40px 20px;
+}
+
+.student-info-list-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.student-info-page-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.student-info-back-button {
+  color: #1e3a5f !important;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 8px 12px;
+  height: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  margin-bottom: 100px;
+}
+
+.student-info-back-button:hover {
+  background: rgba(30, 58, 95, 0.1);
+  color: #1e3a5f !important;
+}
+
+.student-info-page-title {
+  color: #1e3a5f !important;
+  font-size: 48px !important;
+  font-weight: 700 !important;
+  margin-bottom: 0 !important;
+  letter-spacing: 1px;
+}
+
+.student-info-table-section {
+  background: white;
+  border-radius: 12px;
+  padding: 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.student-info-table {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.student-info-table .ant-table-thead > tr > th {
+  background: #1e3a5f;
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  border: none;
+  padding: 16px 12px;
+  text-align: center;
+}
+
+.student-info-table .ant-table-tbody > tr > td {
+  padding: 16px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 14px;
+  font-weight: 500;
+  vertical-align: middle;
+}
+
+.student-info-table .ant-table-tbody > tr:nth-child(even) {
+  background: #f8f9fa;
+}
+
+.student-info-table .ant-table-tbody > tr:hover > td {
+  background: #e3f2fd !important;
+}
+
+.student-info-table .ant-table-tbody > tr:last-child > td {
+  border-bottom: none;
+}
+
+/* Column specific styles */
+.student-info-stt-column {
+  text-align: center;
+  color: #1e3a5f;
+  font-weight: 600;
+}
+
+.student-info-name-column {
+  color: #333;
+  font-weight: 600;
+}
+
+.student-info-birth-column {
+  color: #666;
+  text-align: center;
+}
+
+.student-info-phone-column {
+  color: #666;
+  text-align: center;
+  font-family: monospace;
+}
+
+.student-info-email-column {
+  color: #1e3a5f;
+  font-family: monospace;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .student-info-table .ant-table-thead > tr > th {
+    font-size: 14px;
+    padding: 14px 10px;
+  }
+
+  .student-info-table .ant-table-tbody > tr > td {
+    padding: 14px 10px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 768px) {
+  .student-info-list-page {
+    padding: 20px 15px;
+  }
+
+  .student-info-page-title {
+    font-size: 32px !important;
+  }
+
+  .student-info-table-section {
+    overflow-x: auto;
+  }
+
+  .student-info-table {
+    min-width: 800px;
+  }
+
+  .student-info-table .ant-table-thead > tr > th {
+    font-size: 12px;
+    padding: 12px 8px;
+    white-space: nowrap;
+  }
+
+  .student-info-table .ant-table-tbody > tr > td {
+    padding: 12px 8px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 576px) {
+  .student-info-page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .student-info-page-title {
+    font-size: 24px !important;
+  }
+
+  .student-info-table .ant-table-thead > tr > th {
+    font-size: 11px;
+    padding: 10px 6px;
+  }
+
+  .student-info-table .ant-table-tbody > tr > td {
+    padding: 10px 6px;
+    font-size: 11px;
+  }
+
+  .student-info-table {
+    min-width: 700px;
+  }
+}
+
+/* Animation */
+.student-info-table {
+  animation: student-info-fadeIn 0.6s ease-out;
+}
+
+@keyframes student-info-fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Print styles */
+@media print {
+  .student-info-list-page {
+    background: white;
+    padding: 20px;
+  }
+
+  .student-info-back-button {
+    display: none;
+  }
+
+  .student-info-table .ant-table-thead > tr > th {
+    background: #f5f5f5 !important;
+    color: black !important;
+  }
+
+  .student-info-table .ant-table-tbody > tr:nth-child(even) {
+    background: #f9f9f9 !important;
+  }
+}
+
+/* Focus states for accessibility */
+.student-info-table .ant-table-tbody > tr:focus-within {
+  outline: 2px solid rgba(30, 58, 95, 0.5);
+  outline-offset: -2px;
+}
+
+/* Loading state */
+.student-info-table.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.student-info-table.loading::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

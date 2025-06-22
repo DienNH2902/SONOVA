@@ -1,0 +1,243 @@
+"use client"
+
+import { Typography, Button } from "antd"
+import { LeftOutlined, RightOutlined } from "@ant-design/icons"
+import { useState } from "react"
+import "./Schedule.css"
+
+const { Title, Text } = Typography
+
+const Schedule = () => {
+  const [currentMonth, setCurrentMonth] = useState("12/2025")
+
+  // Sample schedule data for 4 weeks
+  const scheduleData = {
+    week1: {
+      "8:00-9:30": {
+        monday: "K01-PI-CB-01",
+        tuesday: "",
+        wednesday: "K01-PI-CB-01",
+        thursday: "",
+        friday: "K01-PI-CB-01",
+        saturday: "",
+        sunday: "",
+      },
+      "10:00-11:30": {
+        monday: "",
+        tuesday: "K01-GU-CB-02",
+        wednesday: "",
+        thursday: "K01-GU-CB-02",
+        friday: "",
+        saturday: "K01-GU-CB-02",
+        sunday: "",
+      },
+      "14:00-17:30": {
+        monday: "",
+        tuesday: "",
+        wednesday: "K01-PI-NC",
+        thursday: "",
+        friday: "",
+        saturday: "K01-GU-NC",
+        sunday: "",
+      },
+    },
+    week2: {
+      "8:00-9:30": {
+        monday: "K01-PI-CB-01",
+        tuesday: "",
+        wednesday: "K01-PI-CB-01",
+        thursday: "",
+        friday: "K01-PI-CB-01",
+        saturday: "",
+        sunday: "",
+      },
+      "10:00-11:30": {
+        monday: "",
+        tuesday: "K01-GU-CB-02",
+        wednesday: "",
+        thursday: "K01-GU-CB-02",
+        friday: "K01-GU-CB-02",
+        saturday: "K01-GU-CB-02",
+        sunday: "",
+      },
+      "14:00-17:30": {
+        monday: "",
+        tuesday: "",
+        wednesday: "K01-PI-NC",
+        thursday: "",
+        friday: "",
+        saturday: "K01-GU-NC",
+        sunday: "",
+      },
+    },
+    week3: {
+      "8:00-9:30": {
+        monday: "K01-PI-CB-01",
+        tuesday: "",
+        wednesday: "K01-PI-CB-01",
+        thursday: "",
+        friday: "K01-PI-CB-01",
+        saturday: "",
+        sunday: "",
+      },
+      "10:00-11:30": {
+        monday: "",
+        tuesday: "K01-GU-CB-02",
+        wednesday: "",
+        thursday: "K01-GU-CB-02",
+        friday: "",
+        saturday: "K01-GU-CB-02",
+        sunday: "",
+      },
+      "14:00-17:30": {
+        monday: "",
+        tuesday: "",
+        wednesday: "K01-PI-NC",
+        thursday: "",
+        friday: "",
+        saturday: "K01-GU-NC",
+        sunday: "",
+      },
+    },
+    week4: {
+      "8:00-9:30": {
+        monday: "K01-PI-CB-01",
+        tuesday: "",
+        wednesday: "K01-PI-CB-01",
+        thursday: "",
+        friday: "K01-PI-CB-01",
+        saturday: "",
+        sunday: "",
+      },
+      "10:00-11:30": {
+        monday: "",
+        tuesday: "K01-GU-CB-02",
+        wednesday: "",
+        thursday: "K01-GU-CB-02",
+        friday: "",
+        saturday: "K01-GU-CB-02",
+        sunday: "",
+      },
+      "14:00-17:30": {
+        monday: "",
+        tuesday: "",
+        wednesday: "K01-PI-NC",
+        thursday: "",
+        friday: "",
+        saturday: "K01-GU-NC",
+        sunday: "",
+      },
+    },
+  }
+
+  const timeSlots = ["8:00-9:30", "10:00-11:30", "14:00-17:30"]
+  const daysOfWeek = [
+    { key: "monday", label: "Thứ 2", time: "02/12" },
+    { key: "tuesday", label: "Thứ 3", time: "03/12" },
+    { key: "wednesday", label: "Thứ 4", time: "04/12" },
+    { key: "thursday", label: "Thứ 5", time: "05/12" },
+    { key: "friday", label: "Thứ 6", time: "06/12" },
+    { key: "saturday", label: "Thứ 7", time: "07/12" },
+    { key: "sunday", label: "Chủ nhật", time: "08/12" },
+  ]
+
+  const handlePrevMonth = () => {
+    // Handle previous month logic
+    console.log("Previous month")
+  }
+
+  const handleNextMonth = () => {
+    // Handle next month logic
+    console.log("Next month")
+  }
+
+  const isToday = (weekKey, timeSlot, dayKey) => {
+    // Logic to determine if this is today's slot
+    // For demo purposes, highlighting some specific slots
+    return (
+      //   (weekKey === "week2" && timeSlot === "10:00-11:30" && dayKey === "friday") ||
+      weekKey === "week1" && timeSlot === "14:00-17:30" && dayKey === "wednesday"
+    )
+  }
+
+  const renderWeekSchedule = (weekKey, weekTitle) => {
+    const weekData = scheduleData[weekKey]
+
+    return (
+      <div key={weekKey} className="schedule-week-section">
+        <Title level={3} className="schedule-week-title">
+          {weekTitle}
+        </Title>
+
+        <div className="schedule-table-wrapper">
+          {/* Header Row */}
+          <div className="schedule-table-header">
+            <div className="schedule-time-header">Thời gian</div>
+            {daysOfWeek.map((day) => (
+              <div key={day.key} className="schedule-day-header">
+                <div className="schedule-day-name">{day.label}</div>
+                <div className="schedule-day-date">{day.time}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Time Slot Rows */}
+          {timeSlots.map((timeSlot) => (
+            <div key={timeSlot} className="schedule-table-row">
+              <div className="schedule-time-cell">{timeSlot}</div>
+              {daysOfWeek.map((day) => {
+                const classCode = weekData[timeSlot][day.key]
+                const isTodaySlot = isToday(weekKey, timeSlot, day.key)
+
+                return (
+                  <div
+                    key={day.key}
+                    className={`schedule-class-cell ${classCode ? "schedule-has-class" : ""} ${isTodaySlot ? "schedule-today-highlight" : ""}`}
+                  >
+                    {classCode && <span className="schedule-class-code">{classCode}</span>}
+                  </div>
+                )
+              })}
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="schedule-main-page">
+      <div className="schedule-main-container">
+        <Title level={1} className="schedule-page-title">
+          Thời khóa biểu
+        </Title>
+
+        {/* Month Navigation */}
+        <div className="schedule-month-navigation">
+          <Button type="primary" icon={<LeftOutlined />} onClick={handlePrevMonth} className="schedule-nav-button" />
+          <div className="schedule-current-month">Tháng {currentMonth}</div>
+          <Button type="primary" icon={<RightOutlined />} onClick={handleNextMonth} className="schedule-nav-button" />
+        </div>
+
+        {/* Legend */}
+        <div className="schedule-legend">
+          <Text className="schedule-legend-title">Chú thích</Text>
+          <div className="schedule-legend-item">
+            <div className="schedule-legend-color schedule-today-color"></div>
+            <Text className="schedule-legend-text">Hôm nay</Text>
+          </div>
+        </div>
+
+        {/* Weekly Schedules */}
+        <div className="schedule-weeks-container">
+          {renderWeekSchedule("week1", "Tuần 1")}
+          {renderWeekSchedule("week2", "Tuần 2")}
+          {renderWeekSchedule("week3", "Tuần 3")}
+          {renderWeekSchedule("week4", "Tuần 4")}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default Schedule

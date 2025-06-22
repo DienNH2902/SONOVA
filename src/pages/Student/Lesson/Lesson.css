@@ -1,0 +1,325 @@
+.lesson-dashboard-page {
+  min-height: 100vh;
+  background: #f5f5f0;
+  padding: 40px 20px;
+}
+
+.lesson-dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Attendance Section */
+.lesson-attendance-section {
+  margin-bottom: 60px;
+}
+
+.lesson-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.lesson-section-title {
+  color: #333 !important;
+  font-size: 32px !important;
+  font-weight: 400 !important;
+  margin-bottom: 0 !important;
+  font-style: italic;
+}
+
+.lesson-nav-arrow {
+  color: #666;
+  font-size: 18px;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.lesson-nav-arrow:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #333;
+}
+
+.lesson-week-header {
+  margin-bottom: 30px;
+}
+
+.lesson-week-text {
+  color: #333 !important;
+  font-size: 18px !important;
+  font-weight: 500;
+}
+
+.lesson-attendance-grid {
+  margin-bottom: 0;
+}
+
+.lesson-attendance-card {
+  border-radius: 12px;
+  border: 1px solid #e8e8e8;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.lesson-attendance-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.lesson-attendance-card .ant-card-body {
+  padding: 20px;
+}
+
+.lesson-attendance-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.lesson-attendance-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lesson-session-text {
+  color: #333 !important;
+  font-size: 16px !important;
+  font-weight: 600;
+}
+
+.lesson-date-text {
+  color: #666 !important;
+  font-size: 14px !important;
+}
+
+.lesson-teacher-text {
+  color: #666 !important;
+  font-size: 14px !important;
+}
+
+.lesson-attend-btn {
+  background: #87ceeb;
+  border: none;
+  color: #333;
+  border-radius: 6px;
+  padding: 6px 16px;
+  height: auto;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.lesson-attend-btn:hover {
+  background: #7bb8d1;
+  color: #333;
+  transform: translateY(-1px);
+}
+
+/* Materials Section */
+.lesson-materials-section {
+  margin-top: 60px;
+}
+
+.lesson-materials-grid {
+  margin-top: 30px;
+}
+
+.lesson-material-card {
+  border-radius: 12px;
+  border: 1px solid #e8e8e8;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+.lesson-material-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.lesson-material-card .ant-card-body {
+  padding: 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.lesson-material-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.lesson-material-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.lesson-material-session {
+  color: #333 !important;
+  font-size: 16px !important;
+  font-weight: 600;
+}
+
+.lesson-status-btn {
+  border-radius: 6px;
+  padding: 4px 12px;
+  height: auto;
+  font-size: 12px;
+  font-weight: 500;
+  border: none;
+  cursor: default;
+}
+
+.lesson-done-btn {
+  background: #90ee90;
+  color: #333;
+}
+
+.lesson-today-btn {
+  background: #ffd700;
+  color: #333;
+}
+
+.lesson-not-yet-btn {
+  background: #ddd;
+  color: #666;
+}
+
+.lesson-material-title {
+  color: #333 !important;
+  font-size: 14px !important;
+  line-height: 1.4;
+  flex: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .lesson-dashboard-page {
+    padding: 20px 16px;
+  }
+
+  .lesson-section-title {
+    font-size: 28px !important;
+  }
+
+  .lesson-attendance-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .lesson-attend-btn {
+    align-self: flex-end;
+  }
+
+  .lesson-material-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .lesson-status-btn {
+    align-self: flex-end;
+  }
+}
+
+@media (max-width: 576px) {
+  .lesson-dashboard-page {
+    padding: 16px 12px;
+  }
+
+  .lesson-section-title {
+    font-size: 24px !important;
+  }
+
+  .lesson-attendance-card .ant-card-body,
+  .lesson-material-card .ant-card-body {
+    padding: 16px;
+  }
+
+  .lesson-material-title {
+    font-size: 13px !important;
+  }
+}
+
+/* Animation */
+.lesson-attendance-card,
+.lesson-material-card {
+  animation: lesson-fadeInUp 0.6s ease-out both;
+}
+
+@keyframes lesson-fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Staggered animation delays */
+.lesson-attendance-grid .ant-col:nth-child(1) .lesson-attendance-card {
+  animation-delay: 0.1s;
+}
+
+.lesson-attendance-grid .ant-col:nth-child(2) .lesson-attendance-card {
+  animation-delay: 0.2s;
+}
+
+.lesson-materials-grid .ant-col:nth-child(1) .lesson-material-card {
+  animation-delay: 0.1s;
+}
+
+.lesson-materials-grid .ant-col:nth-child(2) .lesson-material-card {
+  animation-delay: 0.2s;
+}
+
+.lesson-materials-grid .ant-col:nth-child(3) .lesson-material-card {
+  animation-delay: 0.3s;
+}
+
+.lesson-materials-grid .ant-col:nth-child(4) .lesson-material-card {
+  animation-delay: 0.4s;
+}
+
+.lesson-materials-grid .ant-col:nth-child(5) .lesson-material-card {
+  animation-delay: 0.5s;
+}
+
+.lesson-materials-grid .ant-col:nth-child(6) .lesson-material-card {
+  animation-delay: 0.6s;
+}
+
+/* Focus states for accessibility */
+.lesson-attend-btn:focus,
+.lesson-nav-arrow:focus {
+  outline: 2px solid rgba(135, 206, 235, 0.5);
+  outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+  .lesson-dashboard-page {
+    background: white;
+    padding: 20px;
+  }
+
+  .lesson-attendance-card,
+  .lesson-material-card {
+    box-shadow: none;
+    border: 1px solid #ddd;
+    break-inside: avoid;
+  }
+
+  .lesson-nav-arrow {
+    display: none;
+  }
+}

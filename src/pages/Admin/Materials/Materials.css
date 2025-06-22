@@ -1,0 +1,224 @@
+.materials-page {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding: 40px 20px;
+}
+
+.materials-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-title {
+  color: #1e3a5f !important;
+  font-size: 36px !important;
+  font-weight: 600 !important;
+  margin-bottom: 40px !important;
+}
+
+.materials-section {
+  margin-bottom: 50px;
+}
+
+.section-title {
+  font-size: 24px !important;
+  font-weight: 600 !important;
+  letter-spacing: 1px;
+  margin-bottom: 20px !important;
+  text-transform: uppercase;
+}
+
+.piano-title,
+.guitar-title {
+  color: #ffa940 !important;
+}
+
+.table-container {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
+}
+
+.materials-table {
+  border-radius: 12px;
+}
+
+.materials-table .ant-table-thead > tr > th {
+  background: #1e3a5f;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  border: none;
+  padding: 16px 12px;
+}
+
+.materials-table .ant-table-thead > tr > th:first-child {
+  border-top-left-radius: 12px;
+}
+
+.materials-table .ant-table-thead > tr > th:last-child {
+  border-top-right-radius: 12px;
+}
+
+.materials-table .ant-table-tbody > tr > td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 14px;
+  color: #333;
+}
+
+.materials-table .ant-table-tbody > tr.even-row {
+  background: #fafafa;
+}
+
+.materials-table .ant-table-tbody > tr.odd-row {
+  background: white;
+}
+
+.materials-table .ant-table-tbody > tr:hover {
+  background: #f0f8ff !important;
+}
+
+.session-column {
+  font-weight: 600;
+  color: #1e3a5f;
+}
+
+.title-column {
+  font-weight: 500;
+}
+
+.material-link {
+  color: #1890ff;
+  text-decoration: none;
+  transition: color 0.3s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  max-width: 300px;
+}
+
+.material-link:hover {
+  color: #40a9ff;
+  text-decoration: underline;
+}
+
+.edit-button {
+  border-radius: 6px;
+  font-size: 12px;
+  padding: 0 8px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-color: #d9d9d9;
+  color: #666;
+}
+
+.edit-button:hover {
+  color: #1e3a5f;
+  border-color: #1e3a5f;
+}
+
+.add-material-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.add-material-button {
+  background: #1e3a5f;
+  border-color: #1e3a5f;
+  border-radius: 6px;
+  height: 36px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.add-material-button:hover {
+  background: #2c5282;
+  border-color: #2c5282;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .material-link {
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .materials-page {
+    padding: 20px 16px;
+  }
+
+  .page-title {
+    font-size: 28px !important;
+    margin-bottom: 30px !important;
+  }
+
+  .section-title {
+    font-size: 20px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .materials-table .ant-table-thead > tr > th,
+  .materials-table .ant-table-tbody > tr > td {
+    padding: 12px 8px;
+    font-size: 13px;
+  }
+
+  .material-link {
+    max-width: 150px;
+  }
+
+  .edit-button {
+    font-size: 11px;
+    padding: 0 6px;
+    height: 26px;
+  }
+}
+
+@media (max-width: 576px) {
+  .materials-page {
+    padding: 16px 12px;
+  }
+
+  .page-title {
+    font-size: 24px !important;
+    margin-bottom: 24px !important;
+  }
+
+  .section-title {
+    font-size: 18px !important;
+  }
+
+  .table-container {
+    overflow-x: auto;
+  }
+
+  .materials-table {
+    min-width: 600px;
+  }
+
+  .materials-table .ant-table-thead > tr > th,
+  .materials-table .ant-table-tbody > tr > td {
+    padding: 10px 6px;
+    font-size: 12px;
+  }
+
+  .material-link {
+    max-width: 120px;
+  }
+
+  .edit-button {
+    font-size: 10px;
+    padding: 0 4px;
+    height: 24px;
+  }
+}

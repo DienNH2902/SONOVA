@@ -1,0 +1,303 @@
+.create-account-page {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding: 40px 20px;
+}
+
+.create-account-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-title {
+  color: #1e3a5f !important;
+  font-size: 36px !important;
+  font-weight: 600 !important;
+  margin-bottom: 40px !important;
+  text-align: center;
+}
+
+.form-container {
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  height: fit-content;
+}
+
+.create-account-form .ant-form-item-label > label {
+  color: #1e3a5f;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.form-input {
+  height: 48px;
+  border-radius: 8px;
+  border: 1px solid #d9d9d9;
+  font-size: 16px;
+}
+
+.form-input:focus,
+.form-input:hover {
+  border-color: #1e3a5f;
+  box-shadow: 0 0 0 2px rgba(30, 58, 95, 0.1);
+}
+
+.date-picker {
+  width: 100%;
+}
+
+.radio-group {
+  display: flex;
+  gap: 24px;
+}
+
+.radio-group .ant-radio-wrapper {
+  color: #333;
+  font-size: 16px;
+}
+
+.radio-group .ant-radio-checked .ant-radio-inner {
+  border-color: #1e3a5f;
+  background-color: #1e3a5f;
+}
+
+.radio-group .ant-radio-wrapper:hover .ant-radio-inner {
+  border-color: #1e3a5f;
+}
+
+.textarea-container {
+  position: relative;
+}
+
+.form-textarea {
+  border-radius: 8px;
+  border: 1px solid #d9d9d9;
+  font-size: 16px;
+  resize: vertical;
+}
+
+.form-textarea:focus,
+.form-textarea:hover {
+  border-color: #1e3a5f;
+  box-shadow: 0 0 0 2px rgba(30, 58, 95, 0.1);
+}
+
+.clear-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #ff4d4f;
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  min-width: 24px;
+}
+
+.clear-button:hover {
+  background: #ff7875;
+  color: white;
+}
+
+.clear-button .anticon {
+  font-size: 12px;
+}
+
+.add-course-section {
+  margin: 24px 0;
+}
+
+.add-course-btn {
+  background: #ffa940;
+  border-color: #ffa940;
+  color: white;
+  border-radius: 8px;
+  height: 40px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.add-course-btn:hover {
+  background: #ff8c00;
+  border-color: #ff8c00;
+  color: white;
+}
+
+.submit-section {
+  margin-top: 32px;
+  margin-bottom: 0;
+}
+
+.submit-btn {
+  width: 100%;
+  height: 48px;
+  background: #1e3a5f;
+  border-color: #1e3a5f;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.submit-btn:hover {
+  background: #2c5282;
+  border-color: #2c5282;
+}
+
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-left: 20px;
+  width: 100%;
+  height: 100%;
+}
+
+.side-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  pointer-events: none; /* Prevent any hover effect */
+  user-select: none; /* Prevent selection or drag */
+  transition: none !important; /* Disable any hover transitions */
+}
+
+.create-account-container .ant-row {
+  display: flex;
+  align-items: stretch;
+}
+
+.form-container,
+.image-container {
+  height: 90%;
+}
+
+
+
+
+
+
+
+/* Form validation styles */
+.create-account-form .ant-form-item-has-error .ant-input,
+.create-account-form .ant-form-item-has-error .ant-picker {
+  border-color: #ff4d4f;
+}
+
+.create-account-form .ant-form-item-has-error .ant-input:focus,
+.create-account-form .ant-form-item-has-error .ant-picker:focus {
+  border-color: #ff4d4f;
+  box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.1);
+}
+
+.create-account-form .ant-form-item-explain-error {
+  color: #ff4d4f;
+  font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .image-container {
+    padding-left: 0;
+    margin-top: 40px;
+  }
+
+  .side-image {
+    max-height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .create-account-page {
+    padding: 20px 16px;
+  }
+
+  .page-title {
+    font-size: 28px !important;
+    margin-bottom: 30px !important;
+  }
+
+  .form-container {
+    padding: 24px;
+  }
+
+  .radio-group {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .form-input,
+  .submit-btn {
+    height: 44px;
+  }
+
+  .image-container {
+    margin-top: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-container {
+    padding: 20px;
+  }
+
+  .page-title {
+    font-size: 24px !important;
+  }
+
+  .create-account-form .ant-form-item-label > label {
+    font-size: 14px;
+  }
+
+  .form-input,
+  .form-textarea {
+    font-size: 14px;
+  }
+}
+
+
+
+
+
+
+
+.registration-success-modal .ant-modal-content {
+  padding: 32px;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.success-content h2 {
+  color: #112e42;
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.check-icon {
+  font-size: 40px;
+  color: #0b3d91;
+  margin-bottom: 16px;
+}
+
+.info-box {
+  padding: 16px;
+  border-radius: 10px;
+  margin: 16px 0;
+  text-align: center;
+  font-size: 16px;
+}
+
+.success-content button {
+  background-color: #0b3d91;
+  border: none;
+}

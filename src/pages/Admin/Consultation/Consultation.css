@@ -1,0 +1,221 @@
+.consultation-page {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding: 40px 20px;
+}
+
+.consultation-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.page-title {
+  color: #1e3a5f !important;
+  font-size: 36px !important;
+  font-weight: 600 !important;
+  margin-bottom: 30px !important;
+}
+
+.table-container {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.consultation-table {
+  border-radius: 12px;
+}
+
+.consultation-table .ant-table-thead > tr > th {
+  background: #1e3a5f;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  border: none;
+  padding: 16px 12px;
+  text-align: center;
+}
+
+.consultation-table .ant-table-thead > tr > th:first-child {
+  border-top-left-radius: 12px;
+}
+
+.consultation-table .ant-table-thead > tr > th:last-child {
+  border-top-right-radius: 12px;
+}
+
+.consultation-table .ant-table-tbody > tr > td {
+  padding: 16px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 14px;
+  color: #333;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.consultation-table .ant-table-tbody > tr:nth-child(even) {
+  background: #fafafa;
+}
+
+.consultation-table .ant-table-tbody > tr:hover {
+  background: #f0f8ff !important;
+}
+
+.consultation-table .ant-table-tbody > tr > td:nth-child(2),
+.consultation-table .ant-table-tbody > tr > td:nth-child(4) {
+  text-align: left;
+}
+
+.consultation-tag {
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.consultation-tag.guitar-advanced {
+  background: rgba(255, 77, 79, 0.1);
+  color: #ff4d4f;
+  border: 1px solid rgba(255, 77, 79, 0.3);
+}
+
+.consultation-tag.guitar-basic {
+  background: rgba(82, 196, 26, 0.1);
+  color: #52c41a;
+  border: 1px solid rgba(82, 196, 26, 0.3);
+}
+
+.consultation-tag.piano-advanced {
+  background: rgba(24, 144, 255, 0.1);
+  color: #1890ff;
+  border: 1px solid rgba(24, 144, 255, 0.3);
+}
+
+.consultation-tag.piano-basic {
+  background: rgba(255, 169, 64, 0.1);
+  color: #fa8c16;
+  border: 1px solid rgba(255, 169, 64, 0.3);
+}
+
+.consultation-tag.default {
+  background: rgba(0, 0, 0, 0.05);
+  color: #666;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.contact-checkbox {
+  transform: scale(1.2);
+}
+
+.contact-checkbox .ant-checkbox-inner {
+  border-color: #d9d9d9;
+  border-radius: 4px;
+}
+
+.contact-checkbox.ant-checkbox-wrapper-checked .ant-checkbox-inner {
+  background-color: #1e3a5f;
+  border-color: #1e3a5f;
+}
+
+.contact-checkbox:hover .ant-checkbox-inner {
+  border-color: #1e3a5f;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .consultation-table .ant-table-thead > tr > th,
+  .consultation-table .ant-table-tbody > tr > td {
+    padding: 14px 10px;
+    font-size: 13px;
+  }
+
+  .consultation-tag {
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  .consultation-page {
+    padding: 20px 16px;
+  }
+
+  .page-title {
+    font-size: 28px !important;
+    margin-bottom: 20px !important;
+  }
+
+  .consultation-table .ant-table-thead > tr > th,
+  .consultation-table .ant-table-tbody > tr > td {
+    padding: 12px 8px;
+    font-size: 12px;
+  }
+
+  .consultation-tag {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+}
+
+@media (max-width: 576px) {
+  .consultation-page {
+    padding: 16px 12px;
+  }
+
+  .page-title {
+    font-size: 24px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .table-container {
+    overflow-x: auto;
+  }
+
+  .consultation-table {
+    min-width: 900px;
+  }
+
+  .consultation-table .ant-table-thead > tr > th,
+  .consultation-table .ant-table-tbody > tr > td {
+    padding: 10px 6px;
+    font-size: 11px;
+  }
+
+  .consultation-tag {
+    font-size: 9px;
+    padding: 2px 4px;
+  }
+
+  .contact-checkbox {
+    transform: scale(1.1);
+  }
+}
+
+/* Print styles */
+@media print {
+  .consultation-page {
+    background: white;
+    padding: 20px;
+  }
+
+  .consultation-table .ant-table-thead > tr > th {
+    background: #1e3a5f !important;
+    color: white !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .consultation-table .ant-table-tbody > tr:nth-child(even) {
+    background: #f5f5f5 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .consultation-tag {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

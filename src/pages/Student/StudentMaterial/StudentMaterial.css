@@ -1,0 +1,240 @@
+.piano-materials-page {
+  min-height: 100vh;
+  background: #f5f5f0;
+  padding: 40px 20px;
+}
+
+.piano-materials-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Back Button */
+.piano-materials-back-section {
+  margin-bottom: 30px;
+}
+
+.piano-materials-back-button {
+  color: #1e3a5f !important;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 8px 12px;
+  height: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.piano-materials-back-button:hover {
+  background: rgba(30, 58, 95, 0.1);
+  color: #1e3a5f !important;
+}
+
+.piano-materials-back-button:focus {
+  outline: 2px solid rgba(30, 58, 95, 0.5);
+  outline-offset: 2px;
+}
+
+/* Header */
+.piano-materials-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.piano-materials-title {
+  color: #333 !important;
+  font-size: 32px !important;
+  font-weight: 400 !important;
+  margin-bottom: 0 !important;
+  font-style: italic;
+  line-height: 1.3;
+}
+
+/* Materials Section */
+.piano-materials-section {
+  margin-bottom: 40px;
+}
+
+.piano-materials-section-title {
+  color: #333 !important;
+  font-size: 20px !important;
+  font-weight: 500 !important;
+  margin-bottom: 20px !important;
+}
+
+/* Collapse Component */
+.piano-materials-collapse {
+  background: transparent;
+  border: none;
+}
+
+.piano-materials-collapse .ant-collapse-item {
+  border: none;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.piano-materials-collapse .ant-collapse-header {
+  background: #ffa940 !important;
+  color: #333 !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  padding: 16px 20px !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease;
+}
+
+.piano-materials-collapse .ant-collapse-header:hover {
+  background: #ff9500 !important;
+}
+
+.piano-materials-collapse .ant-collapse-content {
+  background: white;
+  border-top: none;
+}
+
+.piano-materials-collapse .ant-collapse-content-box {
+  padding: 24px 20px;
+}
+
+.piano-materials-expand-icon {
+  color: #333 !important;
+  font-size: 14px;
+  transition: transform 0.3s ease;
+}
+
+/* Content Styles */
+.piano-materials-content {
+  color: #333;
+  line-height: 1.6;
+}
+
+.piano-materials-content p {
+  margin-bottom: 16px;
+  font-size: 15px;
+}
+
+.piano-materials-content h4 {
+  color: #1e3a5f;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 20px 0 12px 0;
+}
+
+.piano-materials-content ul {
+  margin: 12px 0;
+  padding-left: 20px;
+}
+
+.piano-materials-content li {
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+
+.piano-materials-content strong {
+  color: #1e3a5f;
+  font-weight: 600;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .piano-materials-page {
+    padding: 20px 16px;
+  }
+
+  .piano-materials-title {
+    font-size: 28px !important;
+  }
+
+  .piano-materials-collapse .ant-collapse-header {
+    font-size: 15px !important;
+    padding: 14px 16px !important;
+  }
+
+  .piano-materials-collapse .ant-collapse-content-box {
+    padding: 20px 16px;
+  }
+
+  .piano-materials-content p,
+  .piano-materials-content li {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 576px) {
+  .piano-materials-page {
+    padding: 16px 12px;
+  }
+
+  .piano-materials-title {
+    font-size: 24px !important;
+  }
+
+  .piano-materials-collapse .ant-collapse-header {
+    font-size: 14px !important;
+    padding: 12px 14px !important;
+  }
+
+  .piano-materials-collapse .ant-collapse-content-box {
+    padding: 16px 14px;
+  }
+}
+
+/* Animation */
+.piano-materials-collapse .ant-collapse-item {
+  animation: piano-materials-fadeInUp 0.6s ease-out both;
+}
+
+.piano-materials-collapse .ant-collapse-item:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.piano-materials-collapse .ant-collapse-item:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+@keyframes piano-materials-fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Focus states for accessibility */
+.piano-materials-collapse .ant-collapse-header:focus {
+  outline: 2px solid rgba(255, 169, 64, 0.5);
+  outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+  .piano-materials-page {
+    background: white;
+    padding: 20px;
+  }
+
+  .piano-materials-back-button {
+    display: none;
+  }
+
+  .piano-materials-collapse .ant-collapse-header {
+    background: #f5f5f5 !important;
+    color: black !important;
+  }
+
+  .piano-materials-expand-icon {
+    display: none;
+  }
+
+  .piano-materials-collapse .ant-collapse-content {
+    display: block !important;
+  }
+}
