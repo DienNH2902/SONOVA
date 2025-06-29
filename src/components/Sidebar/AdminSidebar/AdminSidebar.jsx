@@ -37,6 +37,8 @@ const AdminSidebar = ({ visible }) => {
         return ["absence"];
       case "/admin/profile":
         return ["profile"];
+      case "/admin/teacher-attendance":
+        return ["teacher-attendance"];
 
       default:
         return []; // No default selection if no match
@@ -108,6 +110,12 @@ const AdminSidebar = ({ visible }) => {
       icon: <PhoneOutlined />, // Changed icon for better representation
       label: "Liên hệ tư vấn", // Updated label based on image
       onClick: () => navigate("/admin/consultation"),
+    },
+    {
+      key: "teacher-attendance",
+      icon: <PhoneOutlined />, // Changed icon for better representation
+      label: "Điểm danh giáo viên", // Updated label based on image
+      onClick: () => navigate("/admin/teacher-attendance"),
     },
   ];
 

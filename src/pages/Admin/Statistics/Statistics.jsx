@@ -16,14 +16,24 @@ const Statistics = () => {
     { month: "Jun", value: 25 },
   ]
 
-  // Data for the second chart - Revenue analysis
-  const revenueTrendData = [
-    { month: "Jan", value: 35000000 },
-    { month: "Feb", value: 37000000 },
-    { month: "Mar", value: 40000000 },
-    { month: "Apr", value: 42000000 },
-    { month: "May", value: 45000000 },
-    { month: "Jun", value: 48000000 },
+  // Data for Piano revenue analysis
+  const pianoRevenueData = [
+    { month: "Jan", value: 20000000 },
+    { month: "Feb", value: 22000000 },
+    { month: "Mar", value: 24000000 },
+    { month: "Apr", value: 25000000 },
+    { month: "May", value: 27000000 },
+    { month: "Jun", value: 28000000 },
+  ]
+
+  // Data for Guitar revenue analysis
+  const guitarRevenueData = [
+    { month: "Jan", value: 15000000 },
+    { month: "Feb", value: 15000000 },
+    { month: "Mar", value: 16000000 },
+    { month: "Apr", value: 17000000 },
+    { month: "May", value: 18000000 },
+    { month: "Jun", value: 20000000 },
   ]
 
   // Configuration for the first chart
@@ -86,9 +96,9 @@ const Statistics = () => {
     ],
   }
 
-  // Configuration for the second chart
-  const revenueConfig = {
-    data: revenueTrendData,
+  // Configuration for Piano revenue chart
+  const pianoRevenueConfig = {
+    data: pianoRevenueData,
     height: 200,
     xField: "month",
     yField: "value",
@@ -96,13 +106,13 @@ const Statistics = () => {
       size: 5,
       shape: "circle",
       style: {
-        fill: "#FFD700",
-        stroke: "#FFD700",
+        fill: "#1890ff",
+        stroke: "#1890ff",
       },
     },
     line: {
       style: {
-        stroke: "#FFD700",
+        stroke: "#1890ff",
         lineWidth: 3,
       },
     },
@@ -142,8 +152,8 @@ const Statistics = () => {
       active: {
         style: {
           shadowBlur: 4,
-          stroke: "#FFD700",
-          fill: "#FFD700",
+          stroke: "#1890ff",
+          fill: "#1890ff",
         },
       },
     },
@@ -154,7 +164,80 @@ const Statistics = () => {
     ],
     area: {
       style: {
-        fill: "l(270) 0:#FFD70033 1:#FFD70011",
+        fill: "l(270) 0:#1890ff33 1:#1890ff11",
+      },
+    },
+  }
+
+  // Configuration for Guitar revenue chart
+  const guitarRevenueConfig = {
+    data: guitarRevenueData,
+    height: 200,
+    xField: "month",
+    yField: "value",
+    point: {
+      size: 5,
+      shape: "circle",
+      style: {
+        fill: "#52c41a",
+        stroke: "#52c41a",
+      },
+    },
+    line: {
+      style: {
+        stroke: "#52c41a",
+        lineWidth: 3,
+      },
+    },
+    smooth: true,
+    yAxis: {
+      min: 0,
+      grid: {
+        line: {
+          style: {
+            stroke: "#eee",
+            lineDash: [4, 4],
+          },
+        },
+      },
+      label: {
+        formatter: (v) => {
+          return `${v / 1000}k`
+        },
+      },
+    },
+    xAxis: {
+      grid: {
+        line: {
+          style: {
+            stroke: "transparent",
+          },
+        },
+      },
+    },
+    tooltip: {
+      showMarkers: false,
+      formatter: (datum) => {
+        return { name: datum.month, value: formatCurrency(datum.value) }
+      },
+    },
+    state: {
+      active: {
+        style: {
+          shadowBlur: 4,
+          stroke: "#52c41a",
+          fill: "#52c41a",
+        },
+      },
+    },
+    interactions: [
+      {
+        type: "marker-active",
+      },
+    ],
+    area: {
+      style: {
+        fill: "l(270) 0:#52c41a33 1:#52c41a11",
       },
     },
   }
@@ -243,11 +326,11 @@ const Statistics = () => {
                 <div className="stat-content">
                   <Text className="stat-label">Doanh thu tháng</Text>
                   <Title level={3} className="stat-value">
-                    30.000.000 VND
+                    48.000.000 VND
                   </Title>
                   <div className="stat-change positive">
                     <ArrowUpOutlined />
-                    <Text>+5% so với tháng trước</Text>
+                    <Text>+6.7% so với tháng trước</Text>
                   </div>
                 </div>
               </Card>
@@ -364,10 +447,10 @@ const Statistics = () => {
           </Row>
         </div>
 
-        {/* Revenue Analysis Section */}
+        {/* Piano Revenue Analysis Section */}
         <div className="section chart-section">
           <div className="section-header">
-            <Text className="section-title">Phân tích doanh thu</Text>
+            <Text className="section-title">Phân tích doanh thu Piano</Text>
             <div className="month-selector">
               <Button type="primary" icon={<ArrowLeftOutlined />} className="month-nav-btn" />
               <Text className="current-month">Tháng 12/2023</Text>
@@ -376,20 +459,55 @@ const Statistics = () => {
           </div>
 
           <div className="chart-container">
-            <Line {...revenueConfig} />
+            <Line {...pianoRevenueConfig} />
           </div>
 
           <Row gutter={[24, 24]} className="chart-summary">
             <Col xs={24} sm={12}>
               <Card className="summary-card">
-                <Statistic title="Tổng doanh thu" value="30.000.000 VND" />
+                <Statistic title="Doanh thu Piano" value="28.000.000 VND" />
               </Card>
             </Col>
             <Col xs={24} sm={12}>
               <Card className="summary-card">
                 <Statistic
                   title="Tăng"
-                  value="5%"
+                  value="3.7%"
+                  valueStyle={{ color: "#3f8600" }}
+                  prefix={<ArrowUpOutlined />}
+                  suffix="so với tháng trước"
+                />
+              </Card>
+            </Col>
+          </Row>
+        </div>
+
+        {/* Guitar Revenue Analysis Section */}
+        <div className="section chart-section">
+          <div className="section-header">
+            <Text className="section-title">Phân tích doanh thu Guitar</Text>
+            <div className="month-selector">
+              <Button type="primary" icon={<ArrowLeftOutlined />} className="month-nav-btn" />
+              <Text className="current-month">Tháng 12/2023</Text>
+              <Button type="primary" icon={<ArrowRightOutlined />} className="month-nav-btn" />
+            </div>
+          </div>
+
+          <div className="chart-container">
+            <Line {...guitarRevenueConfig} />
+          </div>
+
+          <Row gutter={[24, 24]} className="chart-summary">
+            <Col xs={24} sm={12}>
+              <Card className="summary-card">
+                <Statistic title="Doanh thu Guitar" value="20.000.000 VND" />
+              </Card>
+            </Col>
+            <Col xs={24} sm={12}>
+              <Card className="summary-card">
+                <Statistic
+                  title="Tăng"
+                  value="11.1%"
                   valueStyle={{ color: "#3f8600" }}
                   prefix={<ArrowUpOutlined />}
                   suffix="so với tháng trước"

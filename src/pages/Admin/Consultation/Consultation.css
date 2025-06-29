@@ -5,7 +5,7 @@
 }
 
 .consultation-container {
-  max-width: 1400px;
+  max-width: 1600px;
   margin: 0 auto;
 }
 
@@ -13,7 +13,32 @@
   color: #1e3a5f !important;
   font-size: 36px !important;
   font-weight: 600 !important;
-  margin-bottom: 30px !important;
+  margin-bottom: 20px !important;
+}
+
+.admin-info {
+  background: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-label {
+  color: #666;
+  font-size: 14px;
+}
+
+.admin-name {
+  color: #1e3a5f;
+  font-weight: 600;
+  font-size: 14px;
+  background: rgba(30, 58, 95, 0.1);
+  padding: 4px 12px;
+  border-radius: 4px;
 }
 
 .table-container {
@@ -124,7 +149,37 @@
   border-color: #1e3a5f;
 }
 
+.confirmed-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.confirmed-by {
+  font-weight: 600;
+  color: #1e3a5f;
+  font-size: 13px;
+}
+
+.confirmed-time {
+  font-size: 11px;
+  color: #666;
+  opacity: 0.8;
+}
+
+.not-confirmed {
+  color: #ccc;
+  font-style: italic;
+}
+
 /* Responsive Design */
+@media (max-width: 1400px) {
+  .consultation-container {
+    max-width: 1200px;
+  }
+}
+
 @media (max-width: 1200px) {
   .consultation-table .ant-table-thead > tr > th,
   .consultation-table .ant-table-tbody > tr > td {
@@ -136,6 +191,14 @@
     font-size: 11px;
     padding: 3px 8px;
   }
+
+  .confirmed-by {
+    font-size: 12px;
+  }
+
+  .confirmed-time {
+    font-size: 10px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -145,7 +208,17 @@
 
   .page-title {
     font-size: 28px !important;
-    margin-bottom: 20px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .admin-info {
+    padding: 10px 16px;
+    margin-bottom: 16px;
+  }
+
+  .admin-label,
+  .admin-name {
+    font-size: 13px;
   }
 
   .consultation-table .ant-table-thead > tr > th,
@@ -157,6 +230,14 @@
   .consultation-tag {
     font-size: 10px;
     padding: 2px 6px;
+  }
+
+  .confirmed-by {
+    font-size: 11px;
+  }
+
+  .confirmed-time {
+    font-size: 9px;
   }
 }
 
@@ -170,12 +251,19 @@
     margin-bottom: 16px !important;
   }
 
+  .admin-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px 16px;
+  }
+
   .table-container {
     overflow-x: auto;
   }
 
   .consultation-table {
-    min-width: 900px;
+    min-width: 1100px;
   }
 
   .consultation-table .ant-table-thead > tr > th,
@@ -191,6 +279,14 @@
 
   .contact-checkbox {
     transform: scale(1.1);
+  }
+
+  .confirmed-by {
+    font-size: 10px;
+  }
+
+  .confirmed-time {
+    font-size: 8px;
   }
 }
 
@@ -215,6 +311,11 @@
   }
 
   .consultation-tag {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .admin-info {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }

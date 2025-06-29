@@ -1,16 +1,18 @@
 "use client"
 
-import { Typography, Table, Button, Tag, Form, App, Modal, Input, DatePicker } from "antd"
-import { PlusOutlined } from "@ant-design/icons"
+import { Typography, Table, Button, Tag, Form, App, Modal, Input, DatePicker, Select, Space } from "antd"
+import { PlusOutlined, FilterOutlined } from "@ant-design/icons"
 import "./CourseSchedule.css"
 import { useState } from "react"
 
 const { Title } = Typography
+const { Option } = Select
 
 const CourseSchedule = () => {
-
-const [basicModalVisible, setBasicModalVisible] = useState(false)
+  const [basicModalVisible, setBasicModalVisible] = useState(false)
   const [advancedModalVisible, setAdvancedModalVisible] = useState(false)
+  const [subjectFilter, setSubjectFilter] = useState("")
+  const [teacherFilter, setTeacherFilter] = useState("")
   const { message } = App.useApp()
   const [form] = Form.useForm()
 
@@ -33,12 +35,18 @@ const [basicModalVisible, setBasicModalVisible] = useState(false)
     setAdvancedModalVisible(false)
   }
 
+  const clearFilters = () => {
+    setSubjectFilter("")
+    setTeacherFilter("")
+  }
+
   // Basic Classes Data
   const basicClassesData = [
     {
       key: "1",
       stt: 1,
       subject: "Piano",
+      teacher: "Nguyễn Văn A",
       classCode: "K01-PI-CB-01",
       startDate: "01/04/2025",
       endDate: "30/06/2025",
@@ -49,6 +57,7 @@ const [basicModalVisible, setBasicModalVisible] = useState(false)
       key: "2",
       stt: 2,
       subject: "Guitar",
+      teacher: "Trần Thị B",
       classCode: "K01-GU-CB-02",
       startDate: "15/04/2025",
       endDate: "15/07/2025",
@@ -59,6 +68,7 @@ const [basicModalVisible, setBasicModalVisible] = useState(false)
       key: "3",
       stt: 3,
       subject: "Piano",
+      teacher: "Lê Văn C",
       classCode: "K01-PI-CB-03",
       startDate: "01/06/2025",
       endDate: "01/09/2025",
@@ -69,6 +79,7 @@ const [basicModalVisible, setBasicModalVisible] = useState(false)
       key: "4",
       stt: 4,
       subject: "Guitar",
+      teacher: "Trần Thị B",
       classCode: "K01-GU-CB-04",
       startDate: "15/06/2025",
       endDate: "15/09/2025",
@@ -79,6 +90,7 @@ const [basicModalVisible, setBasicModalVisible] = useState(false)
       key: "5",
       stt: 5,
       subject: "Piano",
+      teacher: "Nguyễn Văn A",
       classCode: "K01-PI-CB-05",
       startDate: "01/08/2025",
       endDate: "01/11/2025",
@@ -89,6 +101,7 @@ const [basicModalVisible, setBasicModalVisible] = useState(false)
       key: "6",
       stt: 6,
       subject: "Guitar",
+      teacher: "Phạm Văn D",
       classCode: "K01-GU-CB-06",
       startDate: "15/08/2025",
       endDate: "15/11/2025",
@@ -103,7 +116,8 @@ const [basicModalVisible, setBasicModalVisible] = useState(false)
       key: "1",
       stt: 1,
       subject: "Piano",
-      classCode: "K01-PI-CB-01",
+      teacher: "Nguyễn Văn A",
+      classCode: "K01-PI-NC-01",
       startDate: "01/04/2025",
       endDate: "30/06/2025",
       schedule: "Thứ 2, 6 (18:00 - 19:30)",
@@ -113,13 +127,28 @@ const [basicModalVisible, setBasicModalVisible] = useState(false)
       key: "2",
       stt: 2,
       subject: "Guitar",
-      classCode: "K01-GU-CB-02",
+      teacher: "Trần Thị B",
+      classCode: "K01-GU-NC-02",
       startDate: "15/04/2025",
       endDate: "15/07/2025",
       schedule: "Thứ 3, 7 (19:00 - 20:30)",
       capacity: "9/10",
     },
   ]
+
+  // Filter data function
+  const filterData = (data) => {
+    return data.filter((item) => {
+      const matchSubject = !subjectFilter || item.subject === subjectFilter
+      const matchTeacher = !teacherFilter || item.teacher === teacherFilter
+      return matchSubject && matchTeacher
+    })
+  }
+
+  // Get unique subjects and teachers for filter options
+  const allData = [...basicClassesData, ...advancedClassesData]
+  const subjects = [...new Set(allData.map((item) => item.subject))]
+  const teachers = [...new Set(allData.map((item) => item.teacher))]
 
   // Table columns configuration
   const columns = [
@@ -143,22 +172,26 @@ const [basicModalVisible, setBasicModalVisible] = useState(false)
       ),
     },
     {
+      title: "Giảng viên",
+      dataIndex: "teacher",
+      key: "teacher",
+      width: 140,
+    },
+    {
       title: "Mã lớp",
       dataIndex: "classCode",
       key: "classCode",
       width: 140,
     },
     {
-      title: "Khai giảng",
-      dataIndex: "startDate",
-      key: "startDate",
-      width: 120,
-    },
-    {
-      title: "Kết thúc",
-      dataIndex: "endDate",
-      key: "endDate",
-      width: 120,
+      title: "Thời gian",
+      key: "duration",
+      width: 180,
+      render: (_, record) => (
+        <span className="duration-text">
+          {record.startDate} - {record.endDate}
+        </span>
+      ),
     },
     {
       title: "Lịch học",
@@ -178,7 +211,6 @@ const [basicModalVisible, setBasicModalVisible] = useState(false)
         let color = "green"
         if (percentage >= 80) color = "red"
         else if (percentage >= 60) color = "orange"
-
         return <span className={`capacity-text capacity-${color}`}>{text}</span>
       },
     },
@@ -190,6 +222,47 @@ const [basicModalVisible, setBasicModalVisible] = useState(false)
         <Title level={1} className="page-title">
           Lịch khai giảng
         </Title>
+
+        {/* Filter Section */}
+        <div className="filter-section">
+          <Space size="middle" wrap>
+            <div className="filter-item">
+              <label>Môn học:</label>
+              <Select
+                placeholder="Chọn môn học"
+                style={{ width: 150 }}
+                value={subjectFilter}
+                onChange={setSubjectFilter}
+                allowClear
+              >
+                {subjects.map((subject) => (
+                  <Option key={subject} value={subject}>
+                    {subject}
+                  </Option>
+                ))}
+              </Select>
+            </div>
+            <div className="filter-item">
+              <label>Giảng viên:</label>
+              <Select
+                placeholder="Chọn giảng viên"
+                style={{ width: 180 }}
+                value={teacherFilter}
+                onChange={setTeacherFilter}
+                allowClear
+              >
+                {teachers.map((teacher) => (
+                  <Option key={teacher} value={teacher}>
+                    {teacher}
+                  </Option>
+                ))}
+              </Select>
+            </div>
+            <Button icon={<FilterOutlined />} onClick={clearFilters} className="clear-filter-btn">
+              Xóa bộ lọc
+            </Button>
+          </Space>
+        </div>
 
         {/* Basic Classes Section */}
         <div className="schedule-section">
@@ -206,11 +279,10 @@ const [basicModalVisible, setBasicModalVisible] = useState(false)
               Thêm
             </Button>
           </div>
-
           <div className="table-container">
             <Table
               columns={columns}
-              dataSource={basicClassesData}
+              dataSource={filterData(basicClassesData)}
               pagination={false}
               className="schedule-table"
               size="middle"
@@ -233,26 +305,23 @@ const [basicModalVisible, setBasicModalVisible] = useState(false)
               Thêm
             </Button>
           </div>
-
           <div className="table-container">
             <Table
               columns={columns}
-              dataSource={advancedClassesData}
+              dataSource={filterData(advancedClassesData)}
               pagination={false}
               className="schedule-table"
               size="middle"
             />
           </div>
-          {/* Modal Form Shared for Both Types */}
+        </div>
+
+        {/* Modal Form Shared for Both Types */}
         <Modal
           open={basicModalVisible || advancedModalVisible}
           onCancel={handleModalCancel}
           onOk={() => form.submit()}
-          title={
-            basicModalVisible
-              ? "THÊM LỚP HỌC CƠ BẢN"
-              : "THÊM LỚP HỌC NÂNG CAO"
-          }
+          title={basicModalVisible ? "THÊM LỚP HỌC CƠ BẢN" : "THÊM LỚP HỌC NÂNG CAO"}
           okText="Xác nhận"
           cancelText="Hủy"
         >
@@ -261,25 +330,33 @@ const [basicModalVisible, setBasicModalVisible] = useState(false)
               <Input />
             </Form.Item>
             <Form.Item name="subject" label="Môn học" rules={[{ required: true }]}>
-              <Input />
+              <Select placeholder="Chọn môn học">
+                <Option value="Piano">Piano</Option>
+                <Option value="Guitar">Guitar</Option>
+              </Select>
             </Form.Item>
-            <Form.Item name="startDate" label="Khai giảng">
+            <Form.Item name="teacher" label="Giảng viên" rules={[{ required: true }]}>
+              <Select placeholder="Chọn giảng viên">
+                <Option value="Nguyễn Văn A">Nguyễn Văn A</Option>
+                <Option value="Trần Thị B">Trần Thị B</Option>
+                <Option value="Lê Văn C">Lê Văn C</Option>
+                <Option value="Phạm Văn D">Phạm Văn D</Option>
+              </Select>
+            </Form.Item>
+            <Form.Item name="startDate" label="Khai giảng" rules={[{ required: true }]}>
               <DatePicker format="DD/MM/YYYY" style={{ width: "100%" }} />
             </Form.Item>
-            {basicModalVisible && (
-              <Form.Item name="endDate" label="Kết thúc">
-                <DatePicker format="DD/MM/YYYY" style={{ width: "100%" }} />
-              </Form.Item>
-            )}
-            <Form.Item name="schedule" label="Lịch học">
-              <Input />
+            <Form.Item name="endDate" label="Kết thúc" rules={[{ required: true }]}>
+              <DatePicker format="DD/MM/YYYY" style={{ width: "100%" }} />
             </Form.Item>
-            <Form.Item name="time" label="Giờ học">
-              <Input />
+            <Form.Item name="schedule" label="Lịch học" rules={[{ required: true }]}>
+              <Input placeholder="VD: Thứ 2, 6 (18:00 - 19:30)" />
+            </Form.Item>
+            <Form.Item name="capacity" label="Sức chứa" rules={[{ required: true }]}>
+              <Input placeholder="VD: 10" />
             </Form.Item>
           </Form>
         </Modal>
-        </div>
       </div>
     </div>
   )

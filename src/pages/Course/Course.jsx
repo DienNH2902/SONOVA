@@ -1,6 +1,10 @@
 import { Typography, Row, Col, Card, Carousel, Space, Button } from "antd";
 import "./Course.css";
-import chohoang from "../../assets/chohoang.png";
+import guitarcb from "../../assets/guitarcb.png";
+import guitarcb1 from "../../assets/guitarcb1.png";
+import guitarcb2 from "../../assets/guitarcb2.png";
+import gvhd from "../../assets/gvhd.png";
+import cholienhetuvan from "../../assets/cholienhetuvan.png";
 import { useNavigate } from "react-router-dom";
 
 const { Title, Paragraph } = Typography;
@@ -13,11 +17,11 @@ const Course = () => {
       <section className="course-hero">
         <div class="half-circle-container">
           <div class="half-circle">
-            <img src={chohoang} alt="Piano Player" />
-            <div class="text-overlay">
+            <img src={guitarcb} alt="Piano Player" />
+            {/* <div class="text-overlay">
               <h2>Sonova</h2>
               <p>Hành trình mang đến giá trị</p>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
@@ -37,7 +41,7 @@ const Course = () => {
             <div className="course-card">
               <div className="course-image-container">
                 <img
-                  src="/api/placeholder/500/300"
+                  src={guitarcb1}
                   alt="Piano hands close-up"
                   className="course-image"
                 />
@@ -86,7 +90,7 @@ const Course = () => {
             <div className="course-card">
               <div className="course-image-container">
                 <img
-                  src="/api/placeholder/500/300"
+                  src={guitarcb2}
                   alt="Child playing piano"
                   className="course-image"
                 />
@@ -247,7 +251,7 @@ const Course = () => {
           <div class="instructor-content">
             <div class="instructor-image">
               <img
-                src="https://kidville.com/montclair/wp-content/uploads/sites/52/2019/04/rr-band-concert-full-width-min-1024x416.jpg"
+                src={gvhd}
                 alt="Giảng viên và học sinh"
               />
             </div>
@@ -429,7 +433,7 @@ const Course = () => {
             </div>
             <div class="contact-illustration">
               <img
-                src="https://static.independent.co.uk/2024/05/08/08/newFile-3.jpg"
+                src={cholienhetuvan}
                 alt="Consultation illustration"
                 class="illustration-img"
               />

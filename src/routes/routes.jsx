@@ -32,6 +32,10 @@ import StudentLayout from "../Layout/StudentLayout/StudentLayout.jsx";
 import StudentMaterials from "../pages/Student/StudentMaterial/StudentMaterial.jsx";
 import Login from "../pages/Login/Login.jsx";
 import Register from "../pages/Register/Register.jsx";
+import CourseGuitarAdvanced from "../pages/CourseGuitarAdvanced/CourseGuitarAdvanced.jsx";
+import CoursePianoAdvanced from "../pages/CoursePianoAdvanced/CoursePianoAdvanced.jsx";
+import CoursePiano from "../pages/CoursePianoBasic/CoursePianoBasic.jsx";
+import AdminTeacherAttendance from "../pages/Admin/TeacherAttendance/AdminTeacherAttendance.jsx";
 
 
 const getUser = () => {
@@ -60,10 +64,10 @@ const AppRoutes = () => {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="about" element={<AboutUs />} />
-          <Route path="course/piano-basic" element={<Course />} />
-          <Route path="course/piano-advanced" element={<Course />} />
+          <Route path="course/piano-basic" element={<CoursePiano />} />
+          <Route path="course/piano-advanced" element={<CoursePianoAdvanced />} />
           <Route path="course/guitar-basic" element={<Course />} />
-          <Route path="course/guitar-advanced" element={<Course />} />
+          <Route path="course/guitar-advanced" element={<CourseGuitarAdvanced />} />
           <Route path="contact" element={<Contact />} />
 
           <Route path="*" element={<Navigate to="/" replace />} />
@@ -85,6 +89,7 @@ const AppRoutes = () => {
           <Route path="course/guitar-basic" element={<Course />} />
           <Route path="course/guitar-advanced" element={<Course />} />
           <Route path="contact" element={<Contact />} />
+          <Route path="/admin/teacher-attendance" element={<AdminTeacherAttendance />} />
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>

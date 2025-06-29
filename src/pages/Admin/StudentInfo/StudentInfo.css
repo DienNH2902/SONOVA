@@ -20,7 +20,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   padding: 20px;
   background: white;
   border-radius: 12px;
@@ -38,12 +38,18 @@
   color: #1e3a5f;
 }
 
-.select-all-text {
+.clear-filters-btn {
   color: #666;
+  padding: 0;
+  height: auto;
+}
+
+.clear-filters-btn:hover {
+  color: #1e3a5f;
 }
 
 .search-input {
-  width: 250px;
+  width: 300px;
   border-radius: 6px;
 }
 
@@ -76,7 +82,7 @@
 }
 
 .filter-select {
-  width: 120px;
+  width: 140px;
 }
 
 .filter-select .ant-select-selector {
@@ -88,6 +94,13 @@
 .filter-select.ant-select-focused .ant-select-selector {
   border-color: #1e3a5f;
   box-shadow: 0 0 0 2px rgba(30, 58, 95, 0.1);
+}
+
+.results-info {
+  margin-bottom: 12px;
+  color: #666;
+  font-size: 14px;
+  padding: 0 4px;
 }
 
 .table-container {
@@ -138,6 +151,15 @@
 
 .student-table .ant-table-tbody > tr.ant-table-row-selected:hover {
   background: #bae7ff !important;
+}
+
+.student-code {
+  font-weight: 600;
+  color: #1e3a5f;
+  background: rgba(30, 58, 95, 0.1);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 13px;
 }
 
 .action-btn {
@@ -195,8 +217,8 @@
 }
 
 .custom-pagination .ant-pagination-item-active {
-  background: #ffa940;
-  border-color: #ffa940;
+  background: #1e3a5f;
+  border-color: #1e3a5f;
 }
 
 .custom-pagination .ant-pagination-item-active a {
@@ -204,11 +226,11 @@
 }
 
 .custom-pagination .ant-pagination-item:hover {
-  border-color: #ffa940;
+  border-color: #1e3a5f;
 }
 
 .custom-pagination .ant-pagination-item:hover a {
-  color: #ffa940;
+  color: #1e3a5f;
 }
 
 .custom-pagination .ant-pagination-prev,
@@ -218,8 +240,8 @@
 
 .custom-pagination .ant-pagination-prev:hover,
 .custom-pagination .ant-pagination-next:hover {
-  border-color: #ffa940;
-  color: #ffa940;
+  border-color: #1e3a5f;
+  color: #1e3a5f;
 }
 
 /* Status Tags */
@@ -244,7 +266,7 @@
   }
 
   .search-input {
-    width: 200px;
+    width: 250px;
   }
 }
 
@@ -278,7 +300,7 @@
   }
 
   .filter-select {
-    width: 100px;
+    width: 120px;
   }
 
   .student-table .ant-table-thead > tr > th,
@@ -290,6 +312,11 @@
   .action-btn {
     width: 24px;
     height: 24px;
+  }
+
+  .student-code {
+    font-size: 12px;
+    padding: 3px 6px;
   }
 }
 
@@ -307,7 +334,7 @@
   }
 
   .student-table {
-    min-width: 800px;
+    min-width: 900px;
   }
 
   .student-table .ant-table-thead > tr > th,
@@ -331,5 +358,10 @@
 
   .filter-select {
     width: 120px;
+  }
+
+  .student-code {
+    font-size: 11px;
+    padding: 2px 4px;
   }
 }

@@ -3,7 +3,13 @@
   padding: 0;
   height: 64px;
   line-height: 64px;
+  position: fixed;
+  background-color: #1e3a5f;
+  width: 100%;
+  z-index: 3000;
+  
 }
+
 
 .header-content {
   display: flex;
@@ -41,17 +47,17 @@
 
 /* Add hover effect like other items */
 .header-menu .ant-menu-submenu-title:hover {
-  color: black;
+  color: #ffa940 !important;
 }
 
 .header-menu .ant-menu-item:hover {
-  color: #ffa940;
-  border-bottom-color: #ffa940;
+  color: #ffa940 !important;
+  /* border-bottom-color: #ffa940; */
 }
 
 .header-menu .ant-menu-item-selected {
-  color: #ffa940;
-  border-bottom-color: #ffa940;
+  color: #ffa940 !important;
+  /* border-bottom-color: #ffa940; */
   background: transparent;
 }
 
@@ -106,3 +112,5 @@
 .header-menu .ant-menu-submenu .ant-menu-item {
   border-radius: 0;
 }
+
+

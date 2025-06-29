@@ -1,13 +1,28 @@
 "use client"
 
 import { Typography, Table, Checkbox } from "antd"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import "./Consultation.css"
 
 const { Title } = Typography
 
 const Consultation = () => {
-  const [contactedRequests, setContactedRequests] = useState([])
+  const [contactedRequests, setContactedRequests] = useState({})
+  const [currentAdmin, setCurrentAdmin] = useState("")
+
+  // Get admin username from localStorage on component mount
+  // useEffect(() => {
+  //   const adminName = localStorage.getItem("username") || "Admin"
+  //   setCurrentAdmin(adminName)
+  // }, [])
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user")
+    if (storedUser) {
+      const user = JSON.parse(storedUser)
+      setCurrentAdmin(user.username)
+    }
+    setCurrentAdmin
+  }, [])
 
   // Sample consultation requests data
   const consultationData = [
@@ -123,9 +138,20 @@ const Consultation = () => {
 
   const handleContactedChange = (requestKey, checked) => {
     if (checked) {
-      setContactedRequests([...contactedRequests, requestKey])
+      // Store both the contacted status and the admin who confirmed
+      setContactedRequests({
+        ...contactedRequests,
+        [requestKey]: {
+          contacted: true,
+          confirmedBy: currentAdmin,
+          confirmedAt: new Date().toLocaleString("vi-VN"),
+        },
+      })
     } else {
-      setContactedRequests(contactedRequests.filter((key) => key !== requestKey))
+      // Remove the request from contacted list
+      const updatedRequests = { ...contactedRequests }
+      delete updatedRequests[requestKey]
+      setContactedRequests(updatedRequests)
     }
   }
 
@@ -188,11 +214,29 @@ const Consultation = () => {
       align: "center",
       render: (_, record) => (
         <Checkbox
-          checked={contactedRequests.includes(record.key)}
+          checked={contactedRequests[record.key]?.contacted || false}
           onChange={(e) => handleContactedChange(record.key, e.target.checked)}
           className="contact-checkbox"
         />
       ),
+    },
+    {
+      title: "Người xác nhận",
+      key: "confirmedBy",
+      width: 160,
+      align: "center",
+      render: (_, record) => {
+        const contactInfo = contactedRequests[record.key]
+        if (contactInfo?.contacted) {
+          return (
+            <div className="confirmed-info">
+              <div className="confirmed-by">{contactInfo.confirmedBy}</div>
+              <div className="confirmed-time">{contactInfo.confirmedAt}</div>
+            </div>
+          )
+        }
+        return <span className="not-confirmed">-</span>
+      },
     },
   ]
 
@@ -202,6 +246,12 @@ const Consultation = () => {
         <Title level={1} className="page-title">
           Liên hệ tư vấn
         </Title>
+
+        {/* Current Admin Info */}
+        <div className="admin-info">
+          <span className="admin-label">Đang đăng nhập:</span>
+          <span className="admin-name">{currentAdmin}</span>
+        </div>
 
         {/* Table Section */}
         <div className="table-container">

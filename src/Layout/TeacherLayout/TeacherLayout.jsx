@@ -13,7 +13,7 @@ const TeacherLayout = () => {
       <Header/>
       <AntLayout className="layout-admin-content">
         <TeacherSidebar visible style={{ height: "500px" }} />
-        <Content className="main-admin-content">
+        <Content className="main-admin-content" style={{ paddingTop: "63px" }}>
           <Outlet />
         </Content>
       </AntLayout>

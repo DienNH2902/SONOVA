@@ -1,7 +1,6 @@
 import { Typography, Row, Col, Card, Carousel, Space, Button } from "antd";
 import { HomeOutlined, PhoneOutlined, MailOutlined, FacebookOutlined } from '@ant-design/icons'
 import "./Contact.css";
-import chohoang from "../../assets/chohoang.png";
 import maps from "../../assets/maps.png";
 
 const { Title, Paragraph } = Typography;
@@ -13,11 +12,11 @@ const Contact = () => {
       <section className="contact-hero">
         <div className="half-circle-container">
           <div className="half-circle">
-            <img src={chohoang} alt="Piano Player" />
-            <div class="text-overlay">
+            <img src="https://www.ooberpad.com/cdn/shop/files/Ooberpad_contact-us-cover-img.jpg?v=1692861613&width=1100" alt="Piano Player" />
+            {/* <div class="text-overlay">
               <h2>Sonova</h2>
               <p>Hành trình mang đến giá trị</p>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
@@ -27,23 +26,14 @@ const Contact = () => {
 <section className="contact-info-section">
       <div className="contact-info-container">
         <div className="contact-cards">
-          <div className="contact-card">
-            <div className="contact-icon">
-              <HomeOutlined />
-            </div>
-            <h3 className="contact-title">ĐỊA CHỈ</h3>
-            <p className="contact-details">
-              22A, D.379, P. Tăng<br />
-              Nhơn Phú, TP. Thủ Đức
-            </p>
-          </div>
+          
 
           <div className="contact-card">
             <div className="contact-icon">
               <PhoneOutlined />
             </div>
             <h3 className="contact-title">SỐ ĐIỆN THOẠI</h3>
-            <p className="contact-details">0908051111</p>
+            <p className="contact-details" style={{ fontWeight: "bold", fontSize: "20px" }}>0908051111</p>
           </div>
 
           <div className="contact-card">
@@ -61,7 +51,18 @@ const Contact = () => {
             <h3 className="contact-title">FACEBOOK</h3> 
             <p className="contact-details">nentangsonova</p>
           </div>
+          <div className="contact-card">
+            <div className="contact-icon">
+              <HomeOutlined />
+            </div>
+            <h3 className="contact-title">ĐỊA CHỈ</h3>
+            <p className="contact-details">
+              22A, D.379, P. Tăng<br />
+              Nhơn Phú, TP. Thủ Đức
+            </p>
+          </div>
         </div>
+        
 
         <div className="map-container">
           <div className="map-wrapper">
@@ -187,7 +188,7 @@ const Contact = () => {
           <div class="process-step">
             <div class="step-content">
               <div class="step-image">
-                <img src={chohoang} alt="Complete" />
+                <img src="https://t3.ftcdn.net/jpg/02/01/30/82/360_F_201308263_ylhTkL69sCEDKWXlXu2S4rumX4JZqb4f.jpg" alt="Complete" />
               </div>
               <div class="step-info">
                 <div class="step-header">

@@ -1,7 +1,11 @@
 import { Typography, Row, Col, Card, Carousel, Space, Button } from "antd";
 import "./AboutUs.css";
 import chohoang from "../../assets/chohoang.png";
-
+import firstAbout from "../../assets/firstAbout.png";
+import thayAn from "../../assets/thayAn.png";
+import gtcl1 from "../../assets/gtcl1.png";
+import gtcl2 from "../../assets/gtcl2.png";
+import gtcl3 from "../../assets/gtcl3.png";
 const { Title, Paragraph } = Typography;
 
 const AboutUs = () => {
@@ -11,11 +15,11 @@ const AboutUs = () => {
       <section className="about-hero">
         <div class="half-circle-container">
           <div class="half-circle">
-            <img src={chohoang} alt="Piano Player" />
-            <div class="text-overlay">
+            <img src={firstAbout} alt="Piano Player" />
+            {/* <div class="text-overlay">
               <h2>Sonova</h2>
               <p>Hành trình mang đến giá trị</p>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
@@ -119,7 +123,7 @@ const AboutUs = () => {
     <div className="core-values-grid">
       <div className="value-card">
         <img 
-          src={chohoang}
+          src={gtcl1}
           alt="Tận tâm - Dedication in music teaching" 
           className="value-image"
         />
@@ -127,7 +131,7 @@ const AboutUs = () => {
       
       <div className="value-card">
         <img 
-          src={chohoang}
+          src={gtcl2}
           alt="Đổi mới - Innovation in music education" 
           className="value-image"
         />
@@ -135,7 +139,7 @@ const AboutUs = () => {
       
       <div className="value-card">
         <img 
-          src={chohoang}
+          src={gtcl3}
           alt="Chất lượng - Quality music instruction" 
           className="value-image"
         />
@@ -152,7 +156,7 @@ const AboutUs = () => {
         {/* Top section: Image and basic info */}
         <div className="teacher-top">
           <div className="teacher-image">
-            <img src={chohoang} alt="Trần Văn An - Piano Teacher" />
+            <img src={thayAn} alt="Trần Văn An - Piano Teacher" />
           </div>
 
           <div className="teacher-basic-info">

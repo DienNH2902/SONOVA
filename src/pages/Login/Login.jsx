@@ -11,13 +11,19 @@ const Login = () => {
   const users = {
     "guest@gmail.com": { role: "guest", username: "Guest User", password: "123" },
     "student@gmail.com": { role: "student", username: "Student" , password: "123"},
-    "admin@gmail.com": { role: "admin", username: "Admin" , password: "123"},
+    "admin1@gmail.com": { role: "admin", username: "Admin 1" , password: "123"},
+    "admin2@gmail.com": { role: "admin", username: "Admin 2" , password: "123"},
     "teacher@gmail.com": { role: "teacher", username: "Teacher" , password: "123" },
   };
 
   const handleLogin = () => {
     if (users[email]) {
-      localStorage.setItem("user", JSON.stringify({ email, role: users[email].role }));
+      localStorage.setItem("user", JSON.stringify({
+  email,
+  username: users[email].username,
+  role: users[email].role,
+}));
+
       switch (users[email].role) {
         case "admin":
           navigate("/admin");

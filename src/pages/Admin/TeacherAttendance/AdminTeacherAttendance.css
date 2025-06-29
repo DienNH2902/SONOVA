@@ -1,0 +1,366 @@
+.student-attendance-page {
+  min-height: 100vh;
+  background: #f5f5f0;
+  padding: 40px 20px;
+}
+
+.student-attendance-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.back-button {
+  color: #1e3a5f !important;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 8px 12px;
+  height: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.back-button:hover {
+  background: rgba(30, 58, 95, 0.1);
+  color: #1e3a5f !important;
+}
+
+.page-title {
+  color: #1e3a5f !important;
+  font-size: 48px !important;
+  font-weight: 700 !important;
+  margin-bottom: 0 !important;
+  letter-spacing: 2px;
+}
+
+.content-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 30px;
+  align-items: start;
+}
+
+.table-section {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.attendance-table {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.attendance-table .ant-table-thead > tr > th {
+  background: #1e3a5f;
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  border: none;
+  padding: 16px 12px;
+}
+
+.attendance-table .ant-table-tbody > tr > td {
+  padding: 16px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.attendance-table .ant-table-tbody > tr:hover > td {
+  background: #f8f9fa;
+}
+
+.stt-column {
+  text-align: center;
+  color: #1e3a5f;
+  font-weight: 600;
+}
+
+.name-column {
+  color: #333;
+  font-weight: 500;
+}
+
+.status-select .ant-select-selector {
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.status-select .ant-select-selection-placeholder {
+  color: #999;
+}
+
+.sidebar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: sticky;
+  top: 20px;
+}
+
+.class-info-card {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  border: none;
+  background: white;
+}
+
+.class-info-card .ant-card-body {
+  padding: 0;
+}
+
+.class-header {
+  background: linear-gradient(135deg, #ffa940 0%, #ff8c00 100%);
+  padding: 24px 20px;
+  text-align: center;
+}
+
+.class-code {
+  color: white !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.class-details {
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.class-detail-item {
+  text-align: center;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: rgba(30, 58, 95, 0.05);
+  transition: all 0.3s ease;
+}
+
+.class-detail-item:hover {
+  background: rgba(255, 169, 64, 0.1);
+}
+
+.detail-text {
+  color: #1e3a5f !important;
+  font-size: 15px !important;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.confirm-button {
+  background: #1e3a5f;
+  border-color: #1e3a5f;
+  height: 50px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.confirm-button:hover {
+  background: #2c5282;
+  border-color: #2c5282;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(30, 58, 95, 0.3);
+}
+
+/* Success Modal Styles */
+.success-modal .ant-modal-content {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  align-items: center;
+    justify-content: center;
+}
+
+.success-modal .ant-modal-body {
+  padding: 40px 24px 24px 24px;
+}
+
+.success-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.success-icon {
+  width: 80px;
+  height: 80px;
+  background: #1e3a5f;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.success-icon .anticon {
+  color: white;
+  font-size: 36px;
+}
+
+.success-title {
+  color: #1e3a5f !important;
+  font-size: 24px !important;
+  font-weight: 600 !important;
+  margin-bottom: 0 !important;
+  letter-spacing: 1px;
+}
+
+.modal-confirm-btn {
+  background: #1e3a5f;
+  border-color: #1e3a5f;
+  height: 40px;
+  font-weight: 600;
+  border-radius: 6px;
+  min-width: 100px;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-confirm-btn:hover {
+  background: #2c5282;
+  border-color: #2c5282;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .content-layout {
+    grid-template-columns: 1fr 280px;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 968px) {
+  .content-layout {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .sidebar-section {
+    position: static;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .class-info-card {
+    flex: 1;
+  }
+
+  .confirm-button {
+    min-width: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .student-attendance-page {
+    padding: 20px 15px;
+  }
+
+  .page-title {
+    font-size: 36px !important;
+  }
+
+  .table-section {
+    padding: 16px;
+    overflow-x: auto;
+  }
+
+  .attendance-table .ant-table-thead > tr > th {
+    font-size: 14px;
+    padding: 12px 8px;
+  }
+
+  .attendance-table .ant-table-tbody > tr > td {
+    padding: 12px 8px;
+    font-size: 13px;
+  }
+
+  .sidebar-section {
+    flex-direction: column;
+  }
+
+  .confirm-button {
+    min-width: auto;
+  }
+}
+
+@media (max-width: 576px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .page-title {
+    font-size: 28px !important;
+  }
+
+  .success-modal .ant-modal-body {
+    padding: 30px 20px 20px 20px;
+  }
+
+  .success-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .success-icon .anticon {
+    font-size: 28px;
+  }
+
+  .success-title {
+    font-size: 20px !important;
+  }
+}
+
+/* Animation */
+.attendance-table {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.class-info-card {
+  animation: slideInRight 0.6s ease-out;
+}
+
+.confirm-button {
+  animation: slideInRight 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

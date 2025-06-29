@@ -137,10 +137,16 @@
   flex-direction: column;
   justify-content: center;
   min-height: 60px;
+  transition: background-color 0.3s ease;
 }
 
 .schedule-day-header:last-child {
   border-right: none;
+}
+
+.schedule-day-header.schedule-today-column {
+  background: #ffa940 !important;
+  color: white;
 }
 
 .schedule-day-name {
@@ -152,6 +158,10 @@
 .schedule-day-date {
   font-size: 11px;
   opacity: 0.8;
+}
+
+.schedule-today-column .schedule-day-date {
+  opacity: 1;
 }
 
 .schedule-table-row {
@@ -199,8 +209,12 @@
   background: #f0f8ff;
 }
 
-.schedule-class-cell.schedule-today-highlight {
-  background: #ffa940 !important;
+.schedule-class-cell.schedule-today-column {
+  background: rgba(255, 169, 64, 0.2) !important;
+}
+
+.schedule-class-cell.schedule-today-column.schedule-has-class {
+  background: rgba(255, 169, 64, 0.3) !important;
 }
 
 .schedule-class-code {
@@ -215,9 +229,10 @@
   white-space: nowrap;
 }
 
-.schedule-today-highlight .schedule-class-code {
+.schedule-today-column .schedule-class-code {
   background: rgba(255, 255, 255, 0.9);
   color: #1e3a5f;
+  font-weight: 600;
 }
 
 /* Responsive Design */

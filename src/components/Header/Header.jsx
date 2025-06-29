@@ -114,7 +114,7 @@ const Header = () => {
               style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: 8 }}
             >
               <Avatar icon={<UserOutlined />} />
-              <span style={{ color: "#fff" }}>{user.email}</span>
+              <span style={{ color: "#fff" }}>{user.username}</span>
             </div>
           ) : (
             <>

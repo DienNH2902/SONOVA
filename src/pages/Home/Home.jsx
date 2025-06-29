@@ -1,5 +1,8 @@
 import { Button, Typography, Row, Col, Card, Carousel, Space } from "antd";
 import chohoang from "../../assets/chohoang.png";
+import thayAn from "../../assets/thayAn.png";
+import firstHome from "../../assets/firstHome.png";
+
 import "./Home.css";
 
 const { Title, Paragraph } = Typography;
@@ -8,9 +11,19 @@ const Home = () => {
   return (
     <div className="home-page">
       {/* Hero Section */}
+    <section className="course-hero">
+            <div className="half-circle-container">
+              <div className="half-circle">
+                <img src={firstHome} alt="Piano Player" />
+                {/* <div class="text-overlay">
+                  <h2>Sonova</h2>
+                  <p>Hành trình mang đến giá trị</p>
+                </div> */}
+              </div>
+            </div>
+          </section>
 
-
-      <section className="hero-section">
+      {/* <section className="hero-section">
   <div className="hero-half hero-left">
     <div className="hero-image-container">
       <img
@@ -39,7 +52,7 @@ const Home = () => {
       </div>
     </div>
   </div>
-</section>
+</section> */}
 
 
       {/* <section className="hero-section">
@@ -140,8 +153,8 @@ const Home = () => {
           <Row gutter={[24, 24]} className="courses-grid">
             <Col xs={24} sm={12} lg={6}>
               <Card className="course-card">
-                <div className="course-image">
-                  <img src={chohoang} alt="Piano basic course" />
+                <div className="course-image" style={{ height: "200px" }}>
+                  <img src="https://www.acustica.nl/wp-content/uploads/2017/08/Een-zelfspelende-piano.jpg" alt="Piano basic course" />
                 </div>
                 <div className="course-content">
                   <Title level={4} className="course-name">
@@ -176,8 +189,8 @@ const Home = () => {
 
             <Col xs={24} sm={12} lg={6}>
               <Card className="course-card">
-                <div className="course-image">
-                  <img src={chohoang} alt="Piano advanced course" />
+                <div className="course-image" style={{ height: "200px" }}>
+                  <img src="https://www.acustica.nl/wp-content/uploads/2017/08/Een-zelfspelende-piano.jpg" alt="Piano advanced course" />
                 </div>
                 <div className="course-content">
                   <Title level={4} className="course-name">
@@ -212,8 +225,8 @@ const Home = () => {
 
             <Col xs={24} sm={12} lg={6}>
               <Card className="course-card">
-                <div className="course-image">
-                  <img src={chohoang} alt="Guitar basic course" />
+                <div className="course-image" style={{ height: "200px" }}>
+                  <img src="https://img.freepik.com/free-photo/acoustic-guitar-close-up-beautiful-colored-background_169016-3530.jpg" alt="Guitar basic course" />
                 </div>
                 <div className="course-content">
                   <Title level={4} className="course-name">
@@ -248,8 +261,8 @@ const Home = () => {
 
             <Col xs={24} sm={12} lg={6}>
               <Card className="course-card">
-                <div className="course-image">
-                  <img src={chohoang} alt="Guitar advanced course" />
+                <div className="course-image" style={{ height: "200px" }}>
+                  <img src="https://img.freepik.com/free-photo/acoustic-guitar-close-up-beautiful-colored-background_169016-3530.jpg" alt="Guitar advanced course" />
                 </div>
                 <div className="course-content">
                   <Title level={4} className="course-name">
@@ -291,7 +304,7 @@ const Home = () => {
         {/* Top section: Image and basic info */}
         <div className="teacher-top">
           <div className="teacher-image">
-            <img src={chohoang} alt="Trần Văn An - Piano Teacher" />
+            <img src={thayAn} alt="Trần Văn An - Piano Teacher" />
           </div>
 
           <div className="teacher-basic-info">
