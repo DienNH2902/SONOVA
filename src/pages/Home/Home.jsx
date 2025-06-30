@@ -308,8 +308,9 @@ const Home = () => {
           </div>
 
           <div className="teacher-basic-info">
-            <h3 className="teacher-name">TRẦN VĂN AN</h3>
-            <p className="teacher-title">Thạc sĩ Thanh nhạc</p>
+          <p className="teacher-title">Thạc sĩ Thanh nhạc</p>
+            <h3 className="teacher-name">TRẦN CÔNG THÙY</h3>
+            
 
             <p className="teacher-description">
               Với hơn 10 năm kinh nghiệm trong nghề, giảng viên không chỉ sở hữu

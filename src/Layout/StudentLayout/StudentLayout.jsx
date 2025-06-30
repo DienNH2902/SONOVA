@@ -1,7 +1,6 @@
 import { Layout as AntLayout } from "antd";
 import { Outlet } from "react-router-dom";
 import Header from "../../components/Header/Header.jsx";
-import Footer from "../../components/Footer/Footer.jsx";
 import "../AdminLayout.css";
 import StudentSidebar from "../../components/Sidebar/StudentSidebar/StudentSidebar.jsx";
 
@@ -18,7 +17,6 @@ const StudentLayout = () => {
           <Outlet />
         </Content>
       </AntLayout>
-      <Footer />
     </AntLayout>
   );
 };
