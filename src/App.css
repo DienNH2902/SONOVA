@@ -1,7 +1,11 @@
+@import "./assets/font.css";
+
+
 body{
   padding: 0px;
   margin: 0px;
   text-align: center;
+  font-family: 'Gilroy', sans-serif;
 }
 
 .logo {

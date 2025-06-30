@@ -6,6 +6,7 @@ import thayAn from "../../assets/thayAn.png";
 import gtcl1 from "../../assets/gtcl1.png";
 import gtcl2 from "../../assets/gtcl2.png";
 import gtcl3 from "../../assets/gtcl3.png";
+import snnv from "../../assets/sonynova.png";
 const { Title, Paragraph } = Typography;
 
 const AboutUs = () => {
@@ -31,7 +32,7 @@ const AboutUs = () => {
             <Col xs={24} md={12}>
               <div className="about-image-section">
                 <img
-                  src="https://usa.yamaha.com/files/YMES-Class-singing-at-piano_0319659f41094489bb16fe362698d7fb.jpg"
+                  src={snnv}
                   alt="Music room"
                   className="about-content-image"
                 />
@@ -39,7 +40,7 @@ const AboutUs = () => {
             </Col>
             <Col xs={24} md={12}>
               <div className="about-text-section">
-                <Title level={2} className="section-title">
+                <Title level={2} className="section-title-about">
                   Chúng mình là...
                 </Title>
                 <Paragraph className="about-description">
@@ -160,8 +161,9 @@ const AboutUs = () => {
           </div>
 
           <div className="teacher-basic-info">
-            <h3 className="teacher-name">TRẦN VĂN AN</h3>
-            <p className="teacher-title">Thạc sĩ Thanh nhạc</p>
+           <p className="teacher-title-home">Thạc sĩ Thanh nhạc</p>
+            <h3 className="teacher-name-home">TRẦN CÔNG THÙY</h3>
+            
 
             <p className="teacher-description">
               Với hơn 10 năm kinh nghiệm trong nghề, giảng viên không chỉ sở hữu
@@ -174,7 +176,7 @@ const AboutUs = () => {
 
         {/* Bottom section: Detailed description */}
         <div className="teacher-bottom">
-          <p className="teacher-details">
+          <p className="teacher-details-home">
             Giảng viên của chúng tôi là người giàu kinh nghiệm trong việc giảng
             dạy và biểu diễn piano, guitar. Bạn sẽ được dẫn dắt qua từng giai
             đoạn, từ cách đọc hợp âm đến việc chơi các kỹ thuật phức tạp, mang
@@ -226,8 +228,8 @@ const AboutUs = () => {
     
     <div className="learning-space-container">
   <div className="learning-space-header">
-    <h2 className="main-title">Không gian học</h2>
-    <h4 className="subtitle">trông như nào nhỉ?</h4>
+    <h2 className="main-title-home">Không gian học</h2>
+    <h4 className="subtitle-home">trông như nào nhỉ?</h4>
   </div>
       <h1>Không gian học trong lành không nhỉ?</h1>
       <Carousel autoplay effect="fade">
@@ -259,13 +261,12 @@ const AboutUs = () => {
             />
             <div style={{ position: "relative", zIndex: 1 }}>
               <Title style={{ color: "white", marginBottom: 20 }}>
-                Explore The World On Two Wheels
+                Hòa Âm Cuộc Sống, Khơi Nguồn Đam Mê.
               </Title>
               <Paragraph
                 style={{ color: "white", fontSize: 18, marginBottom: 30 }}
               >
-                Join our community of passionate riders and discover new
-                adventures
+                Gợi cảm hứng, nhấn mạnh âm nhạc là một phần của cuộc sống và khơi dậy đam mê
               </Paragraph>
               <Space>
                 <Button
@@ -273,9 +274,9 @@ const AboutUs = () => {
                   size="large"
                   
                 >
-                  Join Now
+                  Đăng Ký Ngay
                 </Button>
-                <Button size="large">Learn More</Button>
+                <Button size="large">Tìm Hiểu Thêm</Button>
               </Space>
             </div>
           </div>
@@ -308,16 +309,15 @@ const AboutUs = () => {
             />
             <div style={{ position: "relative", zIndex: 1 }}>
               <Title style={{ color: "white", marginBottom: 20 }}>
-                Plan Your Next Adventure
+                Chất Lượng Thăng Hoa, Tài Năng Tỏa Sáng.
               </Title>
               <Paragraph
                 style={{ color: "white", fontSize: 18, marginBottom: 30 }}
               >
-                Create detailed trip plans and share them with your riding
-                buddies
+                Nhấn mạnh chất lượng đào tạo và kết quả là sự phát triển của tài năng học viên
               </Paragraph>
               <Button type="primary" size="large">
-                Start Planning
+                Bắt Đầu Lập Kế Hoạch
               </Button>
             </div>
           </div>
@@ -351,16 +351,16 @@ const AboutUs = () => {
             />
             <div style={{ position: "relative", zIndex: 1 }}>
               <Title style={{ color: "white", marginBottom: 20 }}>
-                Travel with your new friends
+                Nơi Giai Điệu Bắt Đầu, Giấc Mơ Cất Cánh.
               </Title>
               <Paragraph
                 style={{ color: "white", fontSize: 18, marginBottom: 30 }}
               >
-                Your journeys start here, your stories start here
+                Mang tính thơ mộng, thể hiện nơi đây là điểm khởi đầu cho hành trình âm nhạc và hiện thực hóa ước mơ
               </Paragraph>
               <Space>
                 <Button type="primary" size="large">
-                  Join Us
+                  Tham Gia Ngay
                 </Button>
               </Space>
             </div>
@@ -369,7 +369,7 @@ const AboutUs = () => {
       </Carousel>
       <div className="registration-section">
     <button className="register-button">
-      Đăng ký tư vấn miễn phí
+      Đăng ký học ngay
     </button>
     <p className="register-text">
       Để bắt đầu hành trình âm nhạc của bạn <strong>NGAY HÔM NAY!</strong>

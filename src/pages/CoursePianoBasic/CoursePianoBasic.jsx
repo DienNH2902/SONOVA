@@ -54,25 +54,25 @@ const CoursePiano= () => {
               <div className="course-details">
                 <div className="detail-item">
                   <span className="detail-icon">📅</span>
-                  <span className="detail-text">Học từ 04/03 đến 31/05</span>
+                  <span className="detail-text-class">Học từ 04/03 đến 31/05</span>
                 </div>
 
                 <div className="detail-item">
                   <span className="detail-icon">🕔</span>
                   <div className="detail-text-group">
-                    <span className="detail-text">Tối thứ 3: 18h - 19h30</span>
-                    <span className="detail-text">Tối thứ 6: 18h - 19h30</span>
+                    <span className="detail-text-class">Tối thứ 3: 18h - 19h30</span>
+                    <span className="detail-text-class">Tối thứ 6: 18h - 19h30</span>
                   </div>
                 </div>
 
                 <div className="detail-item">
                   <span className="detail-icon">📚</span>
-                  <span className="detail-text">14 buổi học</span>
+                  <span className="detail-text-class">14 buổi học</span>
                 </div>
 
                 <div className="detail-item">
                   <span className="detail-icon">📍</span>
-                  <span className="detail-text">
+                  <span className="detail-text-class">
                     Địa điểm: 55-299, đường 379, phường Tăng Nhơn Phú A, thành
                     phố Thủ Đức, TP.HCM
                   </span>
@@ -80,7 +80,7 @@ const CoursePiano= () => {
 
                 <div className="detail-item">
                   <span className="detail-icon">💰</span>
-                  <span className="detail-text">Học phí: 2.500.000 VND</span>
+                  <span className="detail-text-class">Học phí: 2.500.000 VND</span>
                 </div>
               </div>
 
@@ -103,14 +103,14 @@ const CoursePiano= () => {
               <div className="course-details">
                 <div className="detail-item">
                   <span className="detail-icon">📅</span>
-                  <span className="detail-text">Học từ 13/04 đến 08/06</span>
+                  <span className="detail-text-class">Học từ 13/04 đến 08/06</span>
                 </div>
 
                 <div className="detail-item">
                   <span className="detail-icon">🕔</span>
                   <div className="detail-text-group">
-                    <span className="detail-text">Tối thứ 4: 18h - 19h30</span>
-                    <span className="detail-text">
+                    <span className="detail-text-class">Tối thứ 4: 18h - 19h30</span>
+                    <span className="detail-text-class">
                       Chiều thứ 7: 15h - 17h30
                     </span>
                   </div>
@@ -118,12 +118,12 @@ const CoursePiano= () => {
 
                 <div className="detail-item">
                   <span className="detail-icon">📚</span>
-                  <span className="detail-text">14 buổi học</span>
+                  <span className="detail-text-class">14 buổi học</span>
                 </div>
 
                 <div className="detail-item">
                   <span className="detail-icon">📍</span>
-                  <span className="detail-text">
+                  <span className="detail-text-class">
                     Địa điểm: 55-299, đường 379, phường Tăng Nhơn Phú A, thành
                     phố Thủ Đức, TP.HCM
                   </span>
@@ -131,7 +131,7 @@ const CoursePiano= () => {
 
                 <div className="detail-item">
                   <span className="detail-icon">💰</span>
-                  <span className="detail-text">Học phí: 2.500.000 VND</span>
+                  <span className="detail-text-class">Học phí: 2.500.000 VND</span>
                 </div>
               </div>
 
@@ -416,7 +416,7 @@ const CoursePiano= () => {
         <div class="contact-container">
           <div class="contact-content">
             <div class="contact-text">
-              <h2 class="contact-title">Liên hệ tư vấn</h2>
+              <h2 class="contact-title-course">Đăng ký học ngay</h2>
               <p class="contact-description">
                 Để hiểu rõ hơn về khóa học và đảm bảo đây là quyết định của của
                 mình, bạn hãy dành ít phút điền form tư vấn. Đội ngũ tư vấn sẽ
@@ -429,7 +429,7 @@ const CoursePiano= () => {
                   <strong>0375044354</strong>
                 </p>
               </div>
-              <button class="consultation-btn" onClick={() => navigate("/contact")}>Đăng ký tư vấn</button>
+              <button class="consultation-btn" onClick={() => navigate("/contact")}>Đăng ký học ngay</button>
             </div>
             <div class="contact-illustration">
               <img

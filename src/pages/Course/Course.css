@@ -28,8 +28,9 @@
 
 .schedule-title {
   color: #1e3a5f;
-  font-size: 42px;
-  font-weight: bold;
+  font-size: 64px;
+  font-weight: 700;
+  font-family: 'UTM Americana', serif;
   margin: 0;
   max-width: 40%;
 }
@@ -37,9 +38,12 @@
 .schedule-note {
   color: #666;
   font-size: 16px;
+  font-weight: 400;
+  font-family: 'Gilroy', sans-serif;
   line-height: 1.6;
   max-width: 50%;
   margin: 0;
+  margin-top: 35px;
 }
 
 .course-cards {
@@ -83,14 +87,17 @@
 }
 
 .course-name {
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 24px;
+  font-weight: 700;
+  font-family: 'UTM Americana EB', serif;
   margin: 0 0 5px 0;
 }
 
 .course-date {
-  font-size: 16px;
   margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  font-family: 'UTM Americana EB', serif;
 }
 
 .course-details {
@@ -114,12 +121,16 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
+  
 }
 
-.detail-text {
+.detail-text-class {
   color: #333;
-  font-size: 14px;
   line-height: 1.5;
+  font-size: 16px;
+  font-weight: 400;
+  font-family: 'Gilroy', sans-serif;
+  text-align: left;
 }
 
 .course-button {
@@ -195,8 +206,9 @@
 
 .curriculum-title {
   color: #1e3a5f;
-  font-size: 36px;
-  font-weight: bold;
+  font-size: 64px;
+  font-weight: 700;
+  font-family: 'UTM Americana', serif;
   text-align: center;
   margin-bottom: 40px;
 }
@@ -212,6 +224,7 @@
   border-collapse: collapse;
   background-color: white;
   font-size: 14px;
+  text-align: left;
 }
 
 .curriculum-table th {
@@ -219,13 +232,18 @@
   color: white;
   text-align: left;
   padding: 15px 20px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 400;
+  font-family: 'Gilroy', sans-serif;
 }
 
 .curriculum-table td {
   padding: 15px 20px;
   border-bottom: 1px solid #eee;
   vertical-align: top;
+  font-size: 16px;
+  font-weight: 400;
+  font-family: 'Gilroy', sans-serif;
 }
 
 .curriculum-table tr:last-child td {
@@ -307,18 +325,21 @@
 }
 
 .instructor-title {
-  font-size: 36px;
+  font-size: 64px;
   color: #1e3a5f;
   text-align: center;
   margin-bottom: 50px;
-  font-weight: bold;
+  font-weight: 700;
+  font-family: 'UTM Americana', serif;
 }
 
 .instructor-subtitle {
   color: #ffa940;
-  font-size: 24px;
-  font-weight: normal;
+  font-size: 34px;
+  font-weight: 400;
   margin-left: 10px;
+  font-family: 'UTM Americana', serif;
+  font-style: italic;
 }
 
 .instructor-content {
@@ -361,6 +382,8 @@
   font-size: 16px;
   line-height: 1.8;
   color: #666;
+  font-family: 'Gilroy', sans-serif;
+  font-weight: 400;
 }
 
 .instructor-description p {
@@ -374,6 +397,7 @@
   color: #1e3a5f;
   font-weight: 500;
   font-style: italic;
+  font-family: 'Gilroy', sans-serif;
 }
 
 .target-audience-section {
@@ -388,17 +412,20 @@
 }
 
 .target-title {
-  font-size: 36px;
+  font-size: 64px;
   color: #1e3a5f;
   text-align: center;
   margin-bottom: 30px;
-  font-weight: bold;
+  font-weight: 700;
+  font-family: 'UTM Americana', serif;
 }
 
 .target-intro {
-  font-size: 18px;
+  font-size: 16px;
+  font-family: 'Gilroy', sans-serif;
+  font-weight: 400;
   color: #666;
-  text-align: center;
+  text-align: left;
   margin-bottom: 40px;
   line-height: 1.6;
   max-width: 800px;
@@ -410,16 +437,21 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  max-width: 900px;
+  max-width: 80%;
   margin: 0 auto;
+  margin-bottom: 20px;
+  /* align-items: center;
+  text-align: left; */
 }
 
 .target-item {
   display: flex;
-  align-items: flex-start;
+  align-items: flex-start; 
   gap: 15px;
   font-size: 16px;
-  line-height: 1.6;
+  font-family: 'Gilroy', sans-serif;
+  font-weight: 400;
+  line-height: 0;
   color: #666;
 }
 
@@ -474,11 +506,12 @@
 }
 
 .faq-title {
-  font-size: 36px;
+  font-size: 64px;
+  font-family: 'UTM Americana', serif;
   color: #1e3a5f;
   text-align: center;
   margin-bottom: 50px;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .faq-list {
@@ -501,8 +534,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  text-align: left;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
+  font-family: 'Gilroy', sans-serif;
   color: #1e3a5f;
   background: white;
   transition: background-color 0.3s ease;
@@ -564,15 +599,18 @@
   flex: 2;
 }
 
-.contact-title {
-  font-size: 36px;
+.contact-title-course {
+  font-size: 64px;
+  font-family: 'UTM Americana', serif;
   color: #1e3a5f;
   margin-bottom: 25px;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .contact-description {
   font-size: 16px;
+  font-family: 'Gilroy', sans-serif;
+  font-weight: 400;
   color: #666;
   line-height: 1.7;
   margin-bottom: 25px;

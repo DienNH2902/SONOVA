@@ -106,10 +106,10 @@ const Home = () => {
       <section className="main-content-section">
         <div className="content-container">
           <div className="content-header">
-            <Title level={1} className="main-title">
+            <Title className="main-title-sonova">
               Sonova
             </Title>
-            <Title level={3} className="subtitle">
+            <Title className="subtitle-sonova">
               Hành trình mang đến gia trị
             </Title>
           </div>
@@ -161,7 +161,7 @@ const Home = () => {
                     PIANO CĂN BẢN
                   </Title>
                   <Paragraph className="course-desc">
-                    Lớp học dành cho những người mới bắt đầu, từ những gam đơn
+                    Lớp học dành cho những người mới bắt đầu, cơ bản từ những gam đơn
                     đơn đến lên?
                   </Paragraph>
 
@@ -197,7 +197,7 @@ const Home = () => {
                     PIANO NÂNG CAO
                   </Title>
                   <Paragraph className="course-desc">
-                    Lớp học dành cho những người đã có kiến thức, từ những gam
+                    Lớp học dành cho những người đã có kiến thức, cơ bảntừ những gam
                     đơn đơn đến lên?
                   </Paragraph>
 
@@ -233,7 +233,7 @@ const Home = () => {
                     GUITAR CĂN BẢN
                   </Title>
                   <Paragraph className="course-desc">
-                    Lớp học dành cho những người mới bắt đầu, từ những gam đơn
+                    Lớp học dành cho những người mới bắt đầu, cơ bản từ những gam đơn
                     đơn đến lên?
                   </Paragraph>
 
@@ -269,7 +269,7 @@ const Home = () => {
                     GUITAR NÂNG CAO
                   </Title>
                   <Paragraph className="course-desc">
-                    Lớp học dành cho những người đã có kiến thức, từ những gam
+                    Lớp học dành cho những người đã có kiến thức, cơ bảntừ những gam
                     đơn đơn đến lên?
                   </Paragraph>
 
@@ -308,8 +308,8 @@ const Home = () => {
           </div>
 
           <div className="teacher-basic-info">
-          <p className="teacher-title">Thạc sĩ Thanh nhạc</p>
-            <h3 className="teacher-name">TRẦN CÔNG THÙY</h3>
+          <p className="teacher-title-home">Thạc sĩ Thanh nhạc</p>
+            <h3 className="teacher-name-home">TRẦN CÔNG THÙY</h3>
             
 
             <p className="teacher-description">
@@ -323,7 +323,7 @@ const Home = () => {
 
         {/* Bottom section: Detailed description */}
         <div className="teacher-bottom">
-          <p className="teacher-details">
+          <p className="teacher-details-home">
             Giảng viên của chúng tôi là người giàu kinh nghiệm trong việc giảng
             dạy và biểu diễn piano, guitar. Bạn sẽ được dẫn dắt qua từng giai
             đoạn, từ cách đọc hợp âm đến việc chơi các kỹ thuật phức tạp, mang
@@ -375,8 +375,8 @@ const Home = () => {
     
     <div className="learning-space-container">
   <div className="learning-space-header">
-    <h2 className="main-title">Không gian học</h2>
-    <h4 className="subtitle">trông như nào nhỉ?</h4>
+    <h2 className="main-title-home">Không gian học</h2>
+    <h4 className="subtitle-home">trông như nào nhỉ?</h4>
   </div>
       <h1>Không gian học trong lành không nhỉ?</h1>
       <Carousel autoplay effect="fade">
@@ -408,13 +408,12 @@ const Home = () => {
             />
             <div style={{ position: "relative", zIndex: 1 }}>
               <Title style={{ color: "white", marginBottom: 20 }}>
-                Explore The World On Two Wheels
+                Hòa Âm Cuộc Sống, Khơi Nguồn Đam Mê.
               </Title>
               <Paragraph
                 style={{ color: "white", fontSize: 18, marginBottom: 30 }}
               >
-                Join our community of passionate riders and discover new
-                adventures
+                Gợi cảm hứng, nhấn mạnh âm nhạc là một phần của cuộc sống và khơi dậy đam mê
               </Paragraph>
               <Space>
                 <Button
@@ -422,9 +421,9 @@ const Home = () => {
                   size="large"
                   
                 >
-                  Join Now
+                  Đăng Ký Ngay
                 </Button>
-                <Button size="large">Learn More</Button>
+                <Button size="large">Tìm Hiểu Thêm</Button>
               </Space>
             </div>
           </div>
@@ -457,16 +456,15 @@ const Home = () => {
             />
             <div style={{ position: "relative", zIndex: 1 }}>
               <Title style={{ color: "white", marginBottom: 20 }}>
-                Plan Your Next Adventure
+                Chất Lượng Thăng Hoa, Tài Năng Tỏa Sáng.
               </Title>
               <Paragraph
                 style={{ color: "white", fontSize: 18, marginBottom: 30 }}
               >
-                Create detailed trip plans and share them with your riding
-                buddies
+                Nhấn mạnh chất lượng đào tạo và kết quả là sự phát triển của tài năng học viên
               </Paragraph>
               <Button type="primary" size="large">
-                Start Planning
+                Bắt Đầu Lập Kế Hoạch
               </Button>
             </div>
           </div>
@@ -500,16 +498,16 @@ const Home = () => {
             />
             <div style={{ position: "relative", zIndex: 1 }}>
               <Title style={{ color: "white", marginBottom: 20 }}>
-                Travel with your new friends
+                Nơi Giai Điệu Bắt Đầu, Giấc Mơ Cất Cánh.
               </Title>
               <Paragraph
                 style={{ color: "white", fontSize: 18, marginBottom: 30 }}
               >
-                Your journeys start here, your stories start here
+                Mang tính thơ mộng, thể hiện nơi đây là điểm khởi đầu cho hành trình âm nhạc và hiện thực hóa ước mơ
               </Paragraph>
               <Space>
                 <Button type="primary" size="large">
-                  Join Us
+                  Tham Gia Ngay
                 </Button>
               </Space>
             </div>
@@ -518,7 +516,7 @@ const Home = () => {
       </Carousel>
       <div className="registration-section">
     <button className="register-button">
-      Đăng ký tư vấn miễn phí
+      Đăng ký học ngay
     </button>
     <p className="register-text">
       Để bắt đầu hành trình âm nhạc của bạn <strong>NGAY HÔM NAY!</strong>

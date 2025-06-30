@@ -1,0 +1,176 @@
+/* assets/fonts.css */
+
+/* --- Font Gilroy VH Full --- */
+/* (Các file .otf) */
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('./Font Gilroy VH Full/_SVN-Gilroy Black Italic.otf') format('opentype');
+  font-weight: 900; /* Black */
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('./Font Gilroy VH Full/_SVN-Gilroy Black.otf') format('opentype');
+  font-weight: 900; /* Black */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('./Font Gilroy VH Full/_SVN-Gilroy Bold Italic.otf') format('opentype');
+  font-weight: 700; /* Bold */
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('./Font Gilroy VH Full/_SVN-Gilroy Bold.otf') format('opentype');
+  font-weight: 700; /* Bold */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('./Font Gilroy VH Full/_SVN-Gilroy Heavy Italic.otf') format('opentype');
+  font-weight: 900; /* Heavy */
+  font-style: italic; /* Có thể coi là extra bold/black italic */
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('./Font Gilroy VH Full/_SVN-Gilroy Heavy.otf') format('opentype');
+  font-weight: 900; /* Heavy */
+  font-style: normal; /* Có thể coi là extra bold/black */
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('./Font Gilroy VH Full/_SVN-Gilroy Italic.otf') format('opentype');
+  font-weight: 400; /* Regular */
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('./Font Gilroy VH Full/_SVN-Gilroy Light Italic.otf') format('opentype');
+  font-weight: 300; /* Light */
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('./Font Gilroy VH Full/_SVN-Gilroy Light.otf') format('opentype');
+  font-weight: 300; /* Light */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('./Font Gilroy VH Full/_SVN-Gilroy Medium Italic.otf') format('opentype');
+  font-weight: 500; /* Medium */
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('./Font Gilroy VH Full/_SVN-Gilroy Medium.otf') format('opentype');
+  font-weight: 500; /* Medium */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('./Font Gilroy VH Full/_SVN-Gilroy Regular.otf') format('opentype');
+  font-weight: 400; /* Regular */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('./Font Gilroy VH Full/_SVN-Gilroy SemiBold Italic.otf') format('opentype');
+  font-weight: 600; /* SemiBold */
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('./Font Gilroy VH Full/_SVN-Gilroy SemiBold.otf') format('opentype');
+  font-weight: 600; /* SemiBold */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('./Font Gilroy VH Full/_SVN-Gilroy Thin Italic.otf') format('opentype');
+  font-weight: 100; /* Thin */
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('./Font Gilroy VH Full/_SVN-Gilroy Thin.otf') format('opentype');
+  font-weight: 100; /* Thin */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('./Font Gilroy VH Full/_SVN-Gilroy XBold Italic.otf') format('opentype');
+  font-weight: 800; /* ExtraBold */
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('./Font Gilroy VH Full/_SVN-Gilroy XBold.otf') format('opentype');
+  font-weight: 800; /* ExtraBold */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('./Font Gilroy VH Full/_SVN-Gilroy Xlight Italic.otf') format('opentype');
+  font-weight: 200; /* ExtraLight */
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('./Font Gilroy VH Full/_SVN-Gilroy Xlight.otf') format('opentype');
+  font-weight: 200; /* ExtraLight */
+  font-style: normal;
+}
+
+
+/* --- Font UTM Americana --- */
+/* (Các file .ttf) */
+
+@font-face {
+  font-family: 'UTM Americana';
+  src: url('./UTM Americana/UTM Americana.ttf') format('truetype');
+  font-weight: 400; /* Regular */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'UTM Americana';
+  src: url('./UTM Americana/UTM AmericanaB.ttf') format('truetype');
+  font-weight: 700; /* Bold */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'UTM Americana';
+  src: url('./UTM Americana/UTM AmericanaBEx.ttf') format('truetype');
+  font-weight: 800; /* ExtraBold */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'UTM Americana';
+  src: url('./UTM Americana/UTMAmericanaltalic.ttf') format('truetype');
+  font-weight: 400; /* Regular */
+  font-style: italic;
+}
