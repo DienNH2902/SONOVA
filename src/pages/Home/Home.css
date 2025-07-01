@@ -530,10 +530,13 @@
 }
 
 .testimonials-header {
-  margin-bottom: 50px;
-  flex-direction: column;
+  margin-bottom: 32px;
+  display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 80px;
+  padding-left: 80px;
+  padding-right: 80px;
 }
 
 .testimonials-title {
@@ -543,6 +546,7 @@
   font-weight: 700;
   font-weight: bold;
   margin-bottom: 15px;
+  margin-top: 0px;
 }
 
 .testimonials-subtitle {
@@ -552,6 +556,7 @@
   font-family: 'Gilroy', sans-serif;
   line-height: 1.6;
   max-width: 600px;
+  text-align: left;
 }
 
 .testimonials-grid {
@@ -623,12 +628,12 @@
 
 
 
-.learning-space-container {
+/* .learning-space-container {
   padding: 40px 20px;
   width: 100%;
   max-width: 100%;
-  margin: 0 auto;
-}
+  margin-left: 80px;
+} */
 
 .learning-space-header {
   text-align: right;

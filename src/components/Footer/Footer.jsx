@@ -19,13 +19,13 @@ const Footer = () => {
           </Col>
 
           <Col>
-            <div className="footer-section">
+            <div className="footer-section-first">
               <Title level={5} className="footer-title">
                 Thông tin liên hệ
               </Title>
               <div className="footer-info">
                 <Text className="footer-text">
-                  <strong>Địa chỉ:</strong> 55-299 Quang Trung phường Tăng Nhơn Phú A, Thành phố Thủ Đức, TP.HCM
+                  <strong>Địa chỉ:</strong> 299 Đường 379 phường Tăng Nhơn Phú A, Thành phố Thủ Đức, TP.HCM
                 </Text>
                 <br />
                 <Text className="footer-text">

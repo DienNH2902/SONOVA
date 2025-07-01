@@ -4,12 +4,15 @@
   height: 64px;
   line-height: 64px;
   position: fixed;
-  background-color: #1e3a5f;
   width: 100%;
   z-index: 3000;
-  
+  top: 0;
+  transition: top 0.3s ease;
 }
 
+.header-hidden {
+  top: -64px;
+}
 
 .header-content {
   display: flex;
@@ -18,13 +21,6 @@
   margin: 0 auto;
   padding: 0 90px;
   height: 100%;
-}
-
-.sidebar-toggle {
-  color: white;
-  display: block; /* Always show the button */
-  font-size: 18px;
-  margin-right: 16px;
 }
 
 .header-menu {
@@ -39,29 +35,18 @@
   font-weight: 400;
 }
 
-.header-menu .ant-menu-item {
-  color: white;
-  border-bottom: 2px solid transparent;
-}
-
-/* Make submenu title text white like other items */
+.header-menu .ant-menu-item,
 .header-menu .ant-menu-submenu-title {
   color: white;
 }
 
-/* Add hover effect like other items */
+.header-menu .ant-menu-item:hover,
 .header-menu .ant-menu-submenu-title:hover {
   color: #ffa940 !important;
 }
 
-.header-menu .ant-menu-item:hover {
-  color: #ffa940 !important;
-  /* border-bottom-color: #ffa940; */
-}
-
 .header-menu .ant-menu-item-selected {
   color: #ffa940 !important;
-  /* border-bottom-color: #ffa940; */
   background: transparent;
 }
 
@@ -84,7 +69,7 @@
   cursor: pointer;
 }
 
-/* Submenu container styling */
+/* Submenu Styles */
 .header-menu .ant-menu-submenu .ant-menu {
   background-color: #1e3a5f;
   padding: 0;
@@ -93,29 +78,18 @@
   min-width: 180px;
 }
 
-/* Submenu items */
 .header-menu .ant-menu-submenu .ant-menu-item {
   color: white;
   padding: 10px 20px;
   font-size: 14px;
-  line-height: 1.5;
   height: auto;
 }
 
-/* Hover style for submenu items */
 .header-menu .ant-menu-submenu .ant-menu-item:hover {
   background-color: #ffa940;
   color: #1e3a5f;
 }
 
-/* Remove spacing around submenu */
 .header-menu .ant-menu-submenu-popup {
   margin-top: 0px;
 }
-
-/* Keep border radius clean (optional) */
-.header-menu .ant-menu-submenu .ant-menu-item {
-  border-radius: 0;
-}
-
-

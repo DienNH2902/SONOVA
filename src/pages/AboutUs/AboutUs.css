@@ -157,7 +157,7 @@
 
 .half-circle-container {
   width: 100%;
-  height: 700px;
+  height: 100%;
   overflow: hidden;
   background-color: #f7f5ed; /* light background color */
   display: flex;
@@ -168,7 +168,7 @@
 .half-circle {
   position: relative;
   width: 100%;
-  height: 700px;
+  height: 100%;
   overflow: hidden;
 }
 
@@ -176,6 +176,7 @@
   width: 100%;
   height: 100%;
   object-fit: fill;
+
 }
 
 .text-overlay {
@@ -534,10 +535,13 @@
 
 
 .learning-space-container {
-  padding: 40px 20px;
+  padding: 40px 80px;
+  /* padding-left: 80px;
+  padding-right: 80px; */
   width: 100%;
   max-width: 100%;
-  margin: 0 auto;
+  /* margin-left: 80px;
+  margin-right: 80px; */
 }
 
 .learning-space-header {
