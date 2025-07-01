@@ -1,6 +1,5 @@
 import { Typography, Row, Col, Card, Carousel, Space, Button } from "antd";
 import "./AboutUs.css";
-import chohoang from "../../assets/chohoang.png";
 import firstAbout from "../../assets/firstAbout.png";
 import thayAn from "../../assets/thayAn.png";
 import gtcl1 from "../../assets/gtcl1.png";
