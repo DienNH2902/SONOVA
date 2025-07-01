@@ -118,10 +118,10 @@ const Header = () => {
             </div>
           ) : (
             <>
-              <Button type="text" onClick={handleLogin} style={{ color: "#fff" }}>
+              <Button type="text" onClick={handleLogin} style={{ color: "#fff",  fontFamily: "Gilroy, sans-serif", fontSize: 16, lineHeight: "24px", fontWeight: 400 }}>
                 Đăng nhập
               </Button>
-              <Button type="text" onClick={handleRegister} style={{ color: "#fff" }}>
+              <Button type="text" onClick={handleRegister} style={{ color: "#fff",  fontFamily: "Gilroy, sans-serif", fontSize: 16, lineHeight: "24px", fontWeight: 400 }}>
                 Đăng ký
               </Button>
             </>
