@@ -111,7 +111,7 @@ const Header = () => {
             <div
               className="user-info"
               onClick={handleAvatarClick}
-              style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: 8 }}
+              style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: 8, fontFamily: "Gilroy, sans-serif", fontSize: 16, lineHeight: "24px", fontWeight: 400 }}
             >
               <Avatar icon={<UserOutlined />} />
               <span style={{ color: "#fff" }}>{user.username}</span>

@@ -1,6 +1,6 @@
 .course-page {
   min-height: 100vh;
-  background: white;
+  background: #f7f5ed; /* light background color */
 }
 
 .course-hero {
@@ -10,7 +10,7 @@
 
   .course-schedule-section {
   padding: 80px 0;
-  background-color: #f5f5f5;
+  background-color: #f7f5ed; /* light background color */
 }
 
 .course-schedule-container {
@@ -195,7 +195,7 @@
 
 .curriculum-section {
   padding: 80px 0;
-  background-color: #f5f5f5;
+  background-color: #f7f5ed; /* light background color */
 }
 
 .curriculum-container {
@@ -222,7 +222,7 @@
 .curriculum-table {
   width: 100%;
   border-collapse: collapse;
-  background-color: white;
+  background-color: #f7f5ed;
   font-size: 14px;
   text-align: left;
 }
@@ -315,7 +315,7 @@
 
 .instructor-section {
   padding: 80px 0;
-  background: #f8f8f8;
+  background: #f7f5ed; /* light background color */
 }
 
 .instructor-container {
@@ -402,7 +402,7 @@
 
 .target-audience-section {
   padding: 80px 0;
-  background: white;
+  background: #f7f5ed; /* light background color */
 }
 
 .target-container {
@@ -496,7 +496,7 @@
 
 .faq-section {
   padding: 80px 0;
-  background: #f8f8f8;
+  background: #f7f5ed; /* light background color */
 }
 
 .faq-container {
@@ -580,7 +580,7 @@
 
 .contact-consultation-section {
   padding: 80px 0;
-  background: white;
+  background: #f7f5ed; /* light background color */
 }
 
 .contact-container {

@@ -2,6 +2,7 @@ import { Typography, Row, Col, Card, Carousel, Space, Button } from "antd";
 import { HomeOutlined, PhoneOutlined, MailOutlined, FacebookOutlined } from '@ant-design/icons'
 import "./Contact.css";
 import maps from "../../assets/maps.png";
+import "../../assets/font.css"
 
 const { Title, Paragraph } = Typography;
 
@@ -32,31 +33,31 @@ const Contact = () => {
             <div className="contact-icon">
               <PhoneOutlined />
             </div>
-            <h3 className="contact-title">SỐ ĐIỆN THOẠI</h3>
-            <p className="contact-details" style={{ fontWeight: "bold", fontSize: "20px" }}>0908051111</p>
+            <h3 className="contact-title" style={{ fontWeight: "bold", fontSize: "20px", fontFamily: "UTM Americana" }}>SỐ ĐIỆN THOẠI</h3>
+            <p className="contact-details" style={{ fontWeight: "400", fontSize: "18px", fontFamily: "Gilroy" }}>0908051111</p>
           </div>
 
           <div className="contact-card">
             <div className="contact-icon">
               <MailOutlined />
             </div>
-            <h3 className="contact-title">GMAIL</h3>
-            <p className="contact-details">musican@sonova.vn</p>
+            <h3 className="contact-title" style={{ fontWeight: "bold", fontSize: "20px", fontFamily: "UTM Americana" }}>GMAIL</h3>
+            <p className="contact-details" style={{ fontWeight: "400", fontSize: "18px", fontFamily: "Gilroy" }}>musican@sonova.vn</p>
           </div>
 
           <div className="contact-card" onClick={() => window.open("https://www.facebook.com/nentangsonova", "_blank")}>
             <div className="contact-icon">
               <FacebookOutlined />
             </div>
-            <h3 className="contact-title">FACEBOOK</h3> 
-            <p className="contact-details">nentangsonova</p>
+            <h3 className="contact-title" style={{ fontWeight: "bold", fontSize: "20px", fontFamily: "UTM Americana" }}>FACEBOOK</h3>
+            <p className="contact-details" style={{ fontWeight: "400", fontSize: "18px", fontFamily: "Gilroy" }}>nentangsonova</p>
           </div>
           <div className="contact-card">
             <div className="contact-icon">
               <HomeOutlined />
             </div>
-            <h3 className="contact-title">ĐỊA CHỈ</h3>
-            <p className="contact-details">
+            <h3 className="contact-title" style={{ fontWeight: "bold", fontSize: "20px", fontFamily: "UTM Americana" }}>ĐỊA CHỈ</h3>
+            <p className="contact-details" style={{ fontWeight: "400", fontSize: "18px", fontFamily: "Gilroy" }}>
               22A, D.379, P. Tăng<br />
               Nhơn Phú, TP. Thủ Đức
             </p>
@@ -90,27 +91,27 @@ const Contact = () => {
   <div class="consultation-container">
     <div class="consultation-content">
       <div class="consultation-form-wrapper">
-        <h2 class="form-title">Bạn cần tư vấn?</h2>
-        
+        <h2 className="h2a" style={{color: "#1e3a5f"}} >Bạn cần tư vấn?</h2>
+
         <form class="consultation-form">
           <div class="form-row">
             <div class="form-group">
-              <label for="fullname">Họ tên:</label>
+              <label for="fullname" className="h5g">Họ tên:</label>
               <input type="text" id="fullname" name="fullname" placeholder="Nhập tên của bạn" required/>
             </div>
             <div class="form-group">
-              <label for="phone">Số điện thoại:</label>
+              <label for="phone" className="h5g">Số điện thoại:</label>
               <input type="tel" id="phone" name="phone" placeholder="+84" required/>
             </div>
           </div>
           
           <div class="form-group">
-            <label for="email">Email:</label>
+            <label for="email" className="h5g">Email:</label>
             <input type="email" id="email" name="email" placeholder="Nhập email của bạn" required/>
           </div>
           
           <div class="form-group">
-            <label for="consultation-type">Nhu cầu tư vấn:</label>
+            <label for="consultation-type" className="h5g">Nhu cầu tư vấn:</label>
             <select id="consultation-type" name="consultation-type" required>
               <option value="">Chọn một danh mục</option>
               <option value="piano-basic">Piano cơ bản</option>
@@ -124,7 +125,7 @@ const Contact = () => {
           </div>
           
           <div class="form-group">
-            <label for="notes">Ghi chú (nếu có):</label>
+            <label for="notes" className="h5g">Ghi chú (nếu có):</label>
             <textarea id="notes" name="notes" rows="6" placeholder="Nhập thêm thông tin bạn muốn chúng tôi biết để quá trình tư vấn hiệu quả hơn"></textarea>
           </div>
           

@@ -76,7 +76,7 @@ const Layout = () => {
   const phoneNumber = "0123-456-789" // Replace with your actual phone number
 
   return (
-    <AntLayout className="layout">
+    <AntLayout className="layout" >
       <Header className="header-layout" />
       <AntLayout className="layout-content">
         <Sidebar />

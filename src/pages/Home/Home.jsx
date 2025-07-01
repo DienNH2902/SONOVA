@@ -1,5 +1,4 @@
 import { Button, Typography, Row, Col, Card, Carousel, Space } from "antd";
-import chohoang from "../../assets/chohoang.png";
 import thayAn from "../../assets/thayAn.png";
 import firstHome from "../../assets/firstHome.png";
 
@@ -332,7 +331,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="testimonials-section">
+      <div className="testimonials-section-home">
         <div className="testimonials-header">
           <h2 className="testimonials-title">Học viên nói gì?</h2>
           <p className="testimonials-subtitle">
@@ -341,7 +340,7 @@ const Home = () => {
           </p>
         </div>
 
-        <div className="testimonials-grid">
+        {/* <div className="testimonials-grid">
           <div className="testimonial-post">
             <img src={chohoang} alt="Student testimonial 1" />
           </div>
@@ -365,11 +364,15 @@ const Home = () => {
           <div className="testimonial-post">
             <img src={chohoang} alt="Student testimonial 6" />
           </div>
+        </div> */}
+        <div className="testimonials-carousel">
+          {/* <img src={fb} alt="Student feedback" className="testimonial-image" /> */}
+        <button className="view-more-btn">Tìm hiểu thêm</button>
         </div>
 
-        <div className="testimonials-footer">
+        {/* <div className="testimonials-footer">
           <button className="view-more-btn">Tìm hiểu thêm</button>
-        </div>
+        </div> */}
       </div>
 
     

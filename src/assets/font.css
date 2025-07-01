@@ -174,3 +174,65 @@
   font-weight: 400; /* Regular */
   font-style: italic;
 }
+
+
+
+/* Font family từ các @font-face bạn đã import */
+.h2 {
+  font-family: "Gilroy", sans-serif;
+  font-size: 64px;
+  line-height: 64px;
+  font-weight: bold;
+}
+
+.h2a {
+  font-family: "UTM Americana", serif;
+  font-size: 64px;
+  line-height: 64px;
+  font-weight: bold;
+}
+
+.p {
+  font-family: "Gilroy", sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 21px;
+}
+
+.h6 {
+  font-family: "Gilroy", sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+}
+
+.h5 {
+  font-size: 24px;
+  line-height: 32px;
+}
+
+.h5g {
+  font-family: "Gilroy", sans-serif;
+  font-size: 24px;
+  line-height: normal;
+  font-weight: 400;
+}
+
+.button-text {
+  font-size: 16px;
+  line-height: 24px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.h3 {
+  font-size: 32px;
+  line-height: 40px;
+}
+
+.h4 {
+  font-size: 32px;
+  line-height: 40px;
+}
+

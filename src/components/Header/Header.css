@@ -33,6 +33,10 @@
   flex: 1;
   justify-content: flex-start;
   margin-left: 0px;
+  font-family: "Gilroy", sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
 }
 
 .header-menu .ant-menu-item {
@@ -69,8 +73,9 @@
 
 .logo-text {
   color: white;
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: "UTM Americana EB", serif;
   letter-spacing: 2px;
 }
 
