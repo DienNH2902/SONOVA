@@ -148,6 +148,7 @@ const TeacherSidebar = ({ visible }) => {
       label: "Đăng xuất",
       onClick: () => {
         localStorage.removeItem("user");
+        localStorage.removeItem("token");
         window.location.href = "/";
       },
     },
