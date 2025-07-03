@@ -228,7 +228,7 @@ const Header = () => {
         />
 
         <div className="header-logo">
-          <span className="logo-text">SONOVA</span>
+          <span className="logo-text" onClick={() => navigate("/")}>SONOVA</span>
         </div>
 
         <div className="header-user">

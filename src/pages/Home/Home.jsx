@@ -381,7 +381,7 @@ const Home = () => {
     <h2 className="main-title-home">Không gian học</h2>
     <h4 className="subtitle-home">trông như nào nhỉ?</h4>
   </div>
-      <h1>Không gian học trong lành không nhỉ?</h1>
+      
       <Carousel autoplay effect="fade">
         <div>
           <div

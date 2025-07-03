@@ -12,7 +12,7 @@ const Footer = () => {
         <Row className="row">
           <Col className="col">
             <div className="footer-logo">
-              <Title level={3} className="footer-logo-text">
+              <Title className="footer-logo-text">
                 SONOVA
               </Title>
             </div>

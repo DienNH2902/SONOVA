@@ -1,6 +1,9 @@
 import { Typography, Row, Col, Card, Carousel, Space, Button } from "antd";
 import { HomeOutlined, PhoneOutlined, MailOutlined, FacebookOutlined } from '@ant-design/icons'
 import "./Contact.css";
+import qttv from "../../assets/quytrinhtuvan.png";
+import contact from "../../assets/contact.jpg";
+
 import maps from "../../assets/maps.png";
 import "../../assets/font.css"
 
@@ -13,7 +16,7 @@ const Contact = () => {
       <section className="contact-hero">
         <div className="half-circle-container">
           <div className="half-circle">
-            <img src="https://www.ooberpad.com/cdn/shop/files/Ooberpad_contact-us-cover-img.jpg?v=1692861613&width=1100" alt="Piano Player" />
+            <img src={contact} alt="Nhan vien tu van" />
             {/* <div class="text-overlay">
               <h2>Sonova</h2>
               <p>Hành trình mang đến giá trị</p>
@@ -135,7 +138,7 @@ const Contact = () => {
 
 
       <div class="process-flow-wrapper">
-        <h2 class="process-title">QUY TRÌNH NHẬN TƯ VẤN</h2>
+        {/* <h2 class="process-title">QUY TRÌNH NHẬN TƯ VẤN</h2>
         
         <div class="process-steps">
           <div class="process-step">
@@ -201,7 +204,11 @@ const Contact = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
+
+        
+          <img src={qttv} alt="Quy trình tư vấn" className="process-image" />
+        
       </div>
     </div>
   </div>

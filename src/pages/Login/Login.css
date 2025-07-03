@@ -3,8 +3,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f5f7fa;
 }
 
 .login-card {
@@ -14,8 +14,7 @@
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: fadeInScale 0.5s ease forwards;
 }
 
 .login-title {
@@ -27,47 +26,58 @@
   letter-spacing: -0.5px;
 }
 
-.form-group {
+/* Ant Design input styling override */
+.login-form .ant-form-item {
   margin-bottom: 1.5rem;
+  animation: slideUp 0.6s ease forwards;
+  opacity: 0;
+  transform: translateY(20px);
+  text-align: left;
 }
 
-.form-input {
-  width: 100%;
-  padding: 0.875rem 1rem;
-  border: 2px solid #e1e5e9;
+.login-form .ant-form-item:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.login-form .ant-form-item:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.login-form .ant-form-item:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+/* Input styles */
+.login-form .ant-input,
+.login-form .ant-input-password {
+  /* padding: 0.875rem 1rem; */
   border-radius: 8px;
   font-size: 1rem;
-  transition: all 0.3s ease;
   background-color: #f8f9fa;
-  box-sizing: border-box;
+  border: 2px solid #e1e5e9;
+  transition: all 0.3s ease;
+  
 }
 
-.form-input:focus {
-  outline: none;
+.login-form .ant-input:focus,
+.login-form .ant-input-password:focus {
   border-color: #667eea;
   background-color: white;
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-  transform: translateY(-1px);
 }
 
-.form-input::placeholder {
-  color: #6c757d;
-  font-weight: 400;
-}
-
+/* Button styles */
 .login-button {
-  width: 100%;
-  padding: 0.875rem;
-  background: #667eea;
-  color: white;
+  background: #667eea !important;
+  color: white !important;
   border: none;
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
   text-transform: uppercase;
+  padding: 0.875rem;
   letter-spacing: 0.5px;
+  width: 100%;
+  transition: all 0.3s ease;
+  margin-top: 15px;
 }
 
 .login-button:hover {
@@ -79,94 +89,30 @@
   transform: translateY(0);
 }
 
-.error-message {
+/* Error message override if needed */
+.ant-form-item-explain-error {
   color: #dc3545;
+  font-size: 0.875rem;
+}
+
+/* Message spacing */
+.auth-switch {
   text-align: center;
   margin-top: 1rem;
-  padding: 0.75rem;
-  background-color: #f8d7da;
-  border: 1px solid #f5c6cb;
-  border-radius: 6px;
   font-size: 0.875rem;
 }
 
-.demo-accounts {
-  margin-top: 2rem;
-  padding: 1.5rem;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  /* border-left: 4px solid #667eea; */
-}
-
-.demo-accounts h4 {
-  margin: 0 0 1rem 0;
-  color: #333;
-  font-size: 0.875rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.demo-account {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid #e9ecef;
-  font-size: 0.875rem;
-}
-
-.demo-account:last-child {
-  border-bottom: none;
-}
-
-.demo-email {
+.auth-switch a {
   color: #667eea;
   font-weight: 500;
 }
 
-.demo-role {
-  background-color: #667eea;
-  color: white;
-  padding: 0.25rem 0.5rem;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  text-transform: capitalize;
-}
-
-/* Responsive design */
-@media (max-width: 480px) {
-  .login-card {
-    margin: 1rem;
-    padding: 2rem;
-  }
-  
-  .login-title {
-    font-size: 1.75rem;
-  }
-}
-
-/* Animation for form elements */
-.form-group {
-  animation: slideUp 0.6s ease forwards;
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-.form-group:nth-child(1) { animation-delay: 0.1s; }
-.form-group:nth-child(2) { animation-delay: 0.2s; }
-.form-group:nth-child(3) { animation-delay: 0.3s; }
-
+/* Animations */
 @keyframes slideUp {
   to {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-.login-card {
-  animation: fadeInScale 0.5s ease forwards;
 }
 
 @keyframes fadeInScale {
@@ -178,4 +124,41 @@
     opacity: 1;
     transform: scale(1);
   }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .login-card {
+    margin: 1rem;
+    padding: 2rem;
+  }
+
+  .login-title {
+    font-size: 1.75rem;
+  }
+}
+
+
+
+
+
+.back-home-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: #667eea;
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 1.25rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  background-color: #e1e8fb;
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+
+.back-home-button:hover {
+  color: #475ac7;
 }

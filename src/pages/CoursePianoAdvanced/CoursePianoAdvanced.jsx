@@ -46,7 +46,7 @@ const CoursePianoAdvanced = () => {
                   className="course-image"
                 />
                 <div className="course-overlay">
-                  <h3 className="course-name">KHÓA PIANO CĂN BẢN</h3>
+                  <h3 className="course-name-class">KHÓA PIANO NÂNG CAO</h3>
                   <p className="course-date">THÁNG 03/2025</p>
                 </div>
               </div>
@@ -95,7 +95,7 @@ const CoursePianoAdvanced = () => {
                   className="course-image"
                 />
                 <div className="course-overlay">
-                  <h3 className="course-name">KHÓA PIANO CĂN BẢN</h3>
+                  <h3 className="course-name-class">KHÓA PIANO NÂNG CAO</h3>
                   <p className="course-date">THÁNG 04/2025</p>
                 </div>
               </div>

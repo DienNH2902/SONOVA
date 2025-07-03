@@ -62,6 +62,7 @@
   font-weight: 700;
   font-family: "UTM Americana EB", serif;
   letter-spacing: 2px;
+  cursor: pointer;
 }
 
 .header-user .ant-avatar {
