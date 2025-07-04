@@ -231,6 +231,24 @@ const Header = () => {
           <span className="logo-text" onClick={() => navigate("/")}>SONOVA</span>
         </div>
 
+
+        {/* add logout button */}
+        {/* <div>
+          <Button
+            type="text"
+            onClick={() => {
+              localStorage.removeItem("user");
+              localStorage.removeItem("token");
+              window.location.href = "/";
+            }}
+          >
+            Logout
+          </Button>
+        </div> */}
+
+
+
+
         <div className="header-user">
           {user ? (
             <div
@@ -248,7 +266,7 @@ const Header = () => {
               }}
             >
               <Avatar icon={<UserOutlined />} />
-              <span style={{ color: "#fff" }}>{user.username}</span>
+              <span style={{ color: "#fff" }}>{user.displayName}</span>
             </div>
           ) : (
             <>

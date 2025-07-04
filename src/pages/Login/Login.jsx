@@ -111,6 +111,7 @@
 
 import { useNavigate } from "react-router-dom";
 import { Form, Input, Button, message } from "antd";
+import { jwtDecode } from "jwt-decode";
 import "./Login.css";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 
@@ -118,48 +119,68 @@ const Login = () => {
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
-    try {
-      const formData = new FormData();
-      formData.append("userName", values.email);
-      formData.append("password", values.password);
-
-      const response = await fetch(
-        "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/User/Login",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            userName: values.email,
-            password: values.password,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Login failed");
+  try {
+    const response = await fetch(
+      "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/User/Login",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          userName: values.email,
+          password: values.password,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
+    );
 
-      const data = await response.json();
-
-      localStorage.setItem("token", data.token);
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          email: values.email,
-          username: values.email.split("@")[0],
-          role: "guest", // adjust this based on response
-        })
-      );
-
-      message.success("Login successful!");
-      navigate("/");
-    } catch (err) {
-      console.error(err);
-      message.error("Invalid username or password");
+    if (!response.ok) {
+      throw new Error("Login failed");
     }
-  };
+
+    const data = await response.json();
+    const token = data.token;
+
+    // ✅ Decode JWT to get role
+    const decoded = jwtDecode(token);
+
+    const roleMap = {
+  1: "admin",
+  2: "teacher",
+  3: "student",
+};
+
+
+    
+   const role = roleMap[decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]] || "user";
+   const displayName = decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"] || "Name Not Found";
+
+    localStorage.setItem("token", token);
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        email: values.email,
+        displayName: displayName,
+        username: values.email.split("@")[0],
+        role,
+      })
+    );
+    const routeMap = {
+  admin: "/admin",
+  teacher: "/teacher",
+  student: "/student",
+};
+
+navigate(routeMap[role] || "/contact");
+
+
+    message.success("Login successful!");
+    // navigate("/");
+  } catch (err) {
+    console.error(err);
+    message.error("Invalid username or password");
+  }
+};
 
   return (
     <div className="login-container">
@@ -203,7 +224,7 @@ const Login = () => {
 
 
         <p className="auth-switch">
-          Don't have an account? <a href="/register">Register</a>
+          Don't have an account? <a href="/contact">Đăng ký để nhận tư vấn miễn phí!</a>
         </p>
       </div>
     </div>
