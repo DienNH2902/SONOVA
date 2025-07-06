@@ -1566,8 +1566,10 @@ export default function CourseSchedulePage() {
     "Advanced Piano": "Nguyễn Văn A",
     "Basic Guitar": "Trần Thị B",
     "Advanced Guitar": "Trần Thị B",
-    Piano: "Lê Văn C",
-    Guitar: "Phạm Văn D",
+    // "Basic Piano": "Lê Văn C",
+    // "Advanced Piano": "Lê Văn C",
+    // "Basic Guitar": "Phạm Văn D",
+    // "Advanced Guitar": "Phạm Văn D",
   };
 
   const fetchSchedules = async () => {
