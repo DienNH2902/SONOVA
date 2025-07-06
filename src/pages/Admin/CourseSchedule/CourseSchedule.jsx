@@ -1530,107 +1530,870 @@
 
 
 
-import { useState, useEffect, useRef } from "react";
-import {
-  Button,
-  Input,
-  Select,
-  Table,
-  Modal,
-  Tag,
-  Card,
-  Space,
-  Form,
-  DatePicker,
-  message,
-  Spin,
-} from "antd";
-import { PlusOutlined, FilterOutlined } from "@ant-design/icons";
-import dayjs from 'dayjs'; // Import dayjs
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'; // Import plugin isSameOrBefore
-dayjs.extend(isSameOrBefore); // Extend dayjs with the plugin
+// import { useState, useEffect, useRef } from "react";
+// import {
+//   Button,
+//   Input,
+//   Select,
+//   Table,
+//   Modal,
+//   Tag,
+//   Card,
+//   Space,
+//   Form,
+//   DatePicker,
+//   message,
+//   Spin,
+// } from "antd";
+// import { PlusOutlined, FilterOutlined } from "@ant-design/icons";
+// import dayjs from 'dayjs'; // Import dayjs
+// import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'; // Import plugin isSameOrBefore
+// dayjs.extend(isSameOrBefore); // Extend dayjs with the plugin
 
+// const { Option } = Select;
+
+// export default function CourseSchedulePage() {
+//   const [schedules, setSchedules] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const [subjectFilter, setSubjectFilter] = useState("");
+//   const [teacherFilter, setTeacherFilter] = useState("");
+//   const [isModalOpen, setIsModalOpen] = useState(false);
+//   const [isAdvancedClassToAdd, setIsAdvancedClassToAdd] = useState(false);
+//   const [form] = Form.useForm();
+
+//   const teacherMapping = {
+//     "Basic Piano": "Nguyễn Văn A",
+//     "Advanced Piano": "Nguyễn Văn A",
+//     "Basic Guitar": "Trần Thị B",
+//     "Advanced Guitar": "Trần Thị B",
+//     // "Basic Piano": "Lê Văn C",
+//     // "Advanced Piano": "Lê Văn C",
+//     // "Basic Guitar": "Phạm Văn D",
+//     // "Advanced Guitar": "Phạm Văn D",
+//   };
+
+//   const fetchSchedules = async () => {
+//     try {
+//       setLoading(true);
+//       const response = await fetch(
+//         "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/OpeningSchedule"
+//       );
+//       const data = await response.json();
+//       setSchedules(data.$values || []);
+//     } catch (error) {
+//       console.error("Error fetching schedules:", error);
+//       message.error("Không thể tải dữ liệu lịch khai giảng");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   const hasFetched = useRef(false);
+
+//   useEffect(() => {
+//     if (hasFetched.current) return;
+//     hasFetched.current = true;
+//     fetchSchedules();
+//   }, []);
+
+//   const transformScheduleData = (schedules) => {
+//     return schedules.map((schedule, index) => ({
+//       key: schedule.openingScheduleId.toString(),
+//       stt: index + 1,
+//       subject: schedule.subject.replace("Basic ", "").replace("Advanced ", ""),
+//       teacher: teacherMapping[schedule.subject] || "Chưa phân công",
+//       classCode: schedule.classCode,
+//       startDate: new Date(schedule.openingDay).toLocaleDateString("vi-VN"),
+//       endDate: new Date(schedule.endDate).toLocaleDateString("vi-VN"),
+//       schedule: schedule.schedule,
+//       capacity: `${Math.floor(schedule.studentQuantity * 0.7)}/${
+//         schedule.studentQuantity
+//       }`,
+//       isAdvanced: schedule.isAdvancedClass,
+//     }));
+//   };
+
+//   const filterData = (data) => {
+//     return data.filter((item) => {
+//       const matchSubject = !subjectFilter || item.subject === subjectFilter;
+//       const matchTeacher = !teacherFilter || item.teacher === teacherFilter;
+//       return matchSubject && matchTeacher;
+//     });
+//   };
+
+//   const transformedData = transformScheduleData(schedules);
+//   const basicClasses = transformedData.filter((item) => !item.isAdvanced);
+//   const advancedClasses = transformedData.filter((item) => item.isAdvanced);
+
+//   const subjects = [...new Set(transformedData.map((item) => item.subject))];
+//   const teachers = [...new Set(transformedData.map((item) => item.teacher))];
+
+//   const clearFilters = () => {
+//     setSubjectFilter("");
+//     setTeacherFilter("");
+//   };
+
+//   const getCapacityColor = (capacity) => {
+//     const [current, total] = capacity.split("/").map(Number);
+//     const percentage = (current / total) * 100;
+//     if (percentage >= 80) return "red";
+//     if (percentage >= 60) return "orange";
+//     return "green";
+//   };
+
+//   const getSubjectColor = (subject) => {
+//     return subject === "Piano" ? "blue" : "green";
+//   };
+
+//   const handleAddClass = (type) => {
+//     form.resetFields();
+//     setIsAdvancedClassToAdd(type === "advanced");
+//     setIsModalOpen(true);
+//     // Không cần reset selectedWeekDays nữa vì nó không còn được sử dụng tự động
+//   };
+
+//   const handleModalCancel = () => {
+//     form.resetFields();
+//     setIsModalOpen(false);
+//     // Không cần reset selectedWeekDays nữa
+//   };
+
+//   // Hàm này không còn dùng để xác định lịch học gửi lên API nữa, nhưng có thể hữu ích ở đâu đó khác
+//   const getWeekdaysBetweenDates = (start, end) => {
+//     if (!start || !end) return [];
+//     const weekdays = new Set();
+//     let current = dayjs(start);
+//     while (current.isSameOrBefore(end, 'day')) {
+//       weekdays.add(current.day()); // 0: Chủ Nhật, 1: Thứ 2, ..., 6: Thứ 7
+//       current = current.add(1, 'day');
+//     }
+//     const sortedWeekdays = Array.from(weekdays).sort((a, b) => {
+//       // Sắp xếp Thứ 2 đến CN (CN là 0, nên đưa về cuối)
+//       if (a === 0 && b !== 0) return 1;
+//       if (b === 0 && a !== 0) return -1;
+//       return a - b;
+//     });
+
+//     const dayMapToShortCode = {
+//       1: "Mon",
+//       2: "Tue",
+//       3: "Wed",
+//       4: "Thu",
+//       5: "Fri",
+//       6: "Sat",
+//       0: "Sun",
+//     };
+
+//     return sortedWeekdays.map(day => dayMapToShortCode[day]);
+//   };
+
+//   // Loại bỏ useEffect này vì không còn tự động tính toán selectedWeekDays
+//   // const [selectedWeekDays, setSelectedWeekDays] = useState([]);
+//   // useEffect(() => {
+//   //   const startDate = form.getFieldValue('startDate');
+//   //   const endDate = form.getFieldValue('endDate');
+//   //   if (startDate && endDate) {
+//   //     const days = getWeekdaysBetweenDates(startDate, endDate);
+//   //     setSelectedWeekDays(days);
+//   //   } else {
+//   //     setSelectedWeekDays([]);
+//   //   }
+//   // }, [form, form.getFieldValue('startDate'), form.getFieldValue('endDate')]);
+
+//   const handleModalSubmit = async (values) => {
+//     console.log("handleModalSubmit called with values:", values); // Debug log
+
+//     const subjectPrefix = isAdvancedClassToAdd ? "Advanced " : "Basic ";
+//     const fullSubjectName = subjectPrefix + values.subject;
+
+//     // Lấy scheduleDays (mảng các ngày đã chọn) và scheduleTime từ form
+//     const scheduleDaysPart = values.scheduleDays; // Đây là mảng các chuỗi 'Mon', 'Tue', v.v.
+//     const scheduleTimePart = values.scheduleTime;
+
+//     // Validate if scheduleDays is empty
+//     if (!scheduleDaysPart || scheduleDaysPart.length === 0) {
+//       message.error("Vui lòng chọn các ngày học trong tuần.");
+//       return;
+//     }
+
+//     // Kiểm tra định dạng thời gian nhập vào
+//     const timeRegex = /^\d{2}:\d{2} to \d{2}:\d{2}$/;
+//     if (!timeRegex.test(scheduleTimePart)) {
+//       message.error("Vui lòng nhập thời gian học theo định dạng HH:MM to HH:MM (VD: 18:00 to 19:30)");
+//       return;
+//     }
+
+//     // Tạo chuỗi finalSchedule theo định dạng "Mon/Thu 18:00 to 19:30"
+//     const finalSchedule = `${scheduleDaysPart.join('/')} ${scheduleTimePart}`;
+
+//     const payload = {
+//       subject: fullSubjectName,
+//       classCode: values.classCode,
+//       openingDay: values.startDate.format("YYYY-MM-DD"),
+//       endDate: values.endDate.format("YYYY-MM-DD"),
+//       schedule: finalSchedule, // Sử dụng finalSchedule mới
+//       studentQuantity: parseInt(values.capacity, 10),
+//       isAdvancedClass: isAdvancedClassToAdd,
+//     };
+
+//     console.log("Payload to send:", payload);
+
+//     try {
+//       const response = await fetch(
+//         "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/OpeningSchedule",
+//         {
+//           method: "POST",
+//           headers: {
+//             "Content-Type": "application/json",
+//           },
+//           body: JSON.stringify(payload),
+//         }
+//       );
+
+//       if (response.ok) {
+//         message.success("Đã thêm lớp học thành công!");
+//         setIsModalOpen(false);
+//         fetchSchedules();
+//       } else {
+//         const errorData = await response.json();
+//         console.error("Error response from API:", errorData);
+//         message.error(
+//           `Thêm lớp học thất bại: ${errorData.message || response.statusText}`
+//         );
+//       }
+//     } catch (error) {
+//       console.error("Error creating schedule:", error);
+//       message.error("Có lỗi xảy ra khi thêm lớp học.");
+//     }
+//   };
+
+//   const columns = [
+//     {
+//       title: "Môn học",
+//       dataIndex: "subject",
+//       key: "subject",
+//       width: 100,
+//       align: "center",
+//       render: (text) => (
+//         <Tag color={getSubjectColor(text)} style={{ fontWeight: 500 }}>
+//           {text}
+//         </Tag>
+//       ),
+//     },
+//     {
+//       title: "Giảng viên",
+//       dataIndex: "teacher",
+//       key: "teacher",
+//       width: 140,
+//       align: "center",
+//     },
+//     {
+//       title: "Mã lớp",
+//       dataIndex: "classCode",
+//       key: "classCode",
+//       width: 140,
+//       align: "center",
+//       render: (text) => <span style={{ fontFamily: "monospace" }}>{text}</span>,
+//     },
+//     {
+//       title: "Thời gian",
+//       key: "duration",
+//       width: 180,
+//       align: "center",
+//       render: (_, record) => (
+//         <span
+//           style={{
+//             background: "rgba(30, 58, 95, 0.05)",
+//             padding: "4px 8px",
+//             borderRadius: "4px",
+//             fontSize: "13px",
+//             fontWeight: 500,
+//             color: "#1e3a5f",
+//           }}
+//         >
+//           {record.startDate} - {record.endDate}
+//         </span>
+//       ),
+//     },
+//     {
+//       title: "Lịch học",
+//       dataIndex: "schedule",
+//       key: "schedule",
+//       width: 180,
+//       align: "center",
+//       render: (text) => {
+//         if (!text) return "";
+
+//         const dayMap = {
+//           Mon: "Thứ 2",
+//           Tue: "Thứ 3",
+//           Wed: "Thứ 4",
+//           Thu: "Thứ 5",
+//           Fri: "Thứ 6",
+//           Sat: "Thứ 7",
+//           Sun: "Chủ nhật",
+//         };
+
+//         const parts = text.split(" ");
+//         const daysPart = parts[0]; 
+//         const timePart = parts.slice(1).join(" "); // Gộp lại phần thời gian nếu có khoảng trắng
+
+//         let startTime = '';
+//         let endTime = '';
+
+//         const timeRegex = /(\d{2}:\d{2}) to (\d{2}:\d{2})/;
+//         const matchTime = timePart.match(timeRegex);
+//         if (matchTime) {
+//           startTime = matchTime[1];
+//           endTime = matchTime[2];
+//         }
+
+//         // Chuyển đổi các mã ngày (Mon, Tue) sang tiếng Việt (Thứ 2, Thứ 3)
+//         const convertedDays = daysPart
+//           .split("/")
+//           .map((day) => dayMap[day] || day)
+//           .join(" / ");
+
+//         return `${convertedDays} (${startTime} - ${endTime})`;
+//       },
+//     },
+//     {
+//       title: "Số lượng",
+//       dataIndex: "capacity",
+//       key: "capacity",
+//       width: 100,
+//       align: "center",
+//       render: (text) => (
+//         <Tag color={getCapacityColor(text)} style={{ fontWeight: 600 }}>
+//           {text}
+//         </Tag>
+//       ),
+//     },
+//   ];
+
+//   if (loading) {
+//     return (
+//       <div
+//         style={{
+//           minHeight: "100vh",
+//           background: "#f5f5f5",
+//           display: "flex",
+//           alignItems: "center",
+//           justifyContent: "center",
+//         }}
+//       >
+//         <div style={{ textAlign: "center" }}>
+//           <Spin size="large" />
+//           <p style={{ marginTop: 16, color: "#666" }}>Đang tải dữ liệu...</p>
+//         </div>
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <div
+//       style={{
+//         minHeight: "100vh",
+//         background: "#f5f5f5",
+//         padding: "32px 16px",
+//       }}
+//     >
+//       <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
+//         <h1
+//           style={{
+//             fontSize: "36px",
+//             fontWeight: 600,
+//             color: "#1e3a5f",
+//             marginBottom: "32px",
+//             textAlign: "center",
+//           }}
+//         >
+//           Lịch khai giảng
+//         </h1>
+
+//         {/* Filter Section */}
+//         <Card style={{ marginBottom: "32px" }}>
+//           <Space size="middle" wrap>
+//             <div>
+//               <label
+//                 style={{
+//                   fontWeight: 500,
+//                   color: "#1e3a5f",
+//                   marginRight: "8px",
+//                 }}
+//               >
+//                 Môn học:
+//               </label>
+//               <Select
+//                 placeholder="Chọn môn học"
+//                 style={{ width: 150 }}
+//                 value={subjectFilter}
+//                 onChange={setSubjectFilter}
+//                 allowClear
+//               >
+//                 {subjects.map((subject) => (
+//                   <Option key={subject} value={subject}>
+//                     {subject}
+//                   </Option>
+//                 ))}
+//               </Select>
+//             </div>
+//             <div>
+//               <label
+//                 style={{
+//                   fontWeight: 500,
+//                   color: "#1e3a5f",
+//                   marginRight: "8px",
+//                 }}
+//               >
+//                 Giảng viên:
+//               </label>
+//               <Select
+//                 placeholder="Chọn giảng viên"
+//                 style={{ width: 180 }}
+//                 value={teacherFilter}
+//                 onChange={setTeacherFilter}
+//                 allowClear
+//               >
+//                 {teachers.map((teacher) => (
+//                   <Option key={teacher} value={teacher}>
+//                     {teacher}
+//                   </Option>
+//                 ))}
+//               </Select>
+//             </div>
+//             <Button
+//               icon={<FilterOutlined />}
+//               onClick={clearFilters}
+//               style={{
+//                 background: "#f5f5f5",
+//                 borderColor: "#d9d9d9",
+//                 color: "#666",
+//               }}
+//             >
+//               Xóa bộ lọc
+//             </Button>
+//           </Space>
+//         </Card>
+
+//         {/* Basic Classes Section */}
+//         <Card style={{ marginBottom: "32px" }}>
+//           <div
+//             style={{
+//               display: "flex",
+//               justifyContent: "space-between",
+//               alignItems: "center",
+//               marginBottom: "20px",
+//             }}
+//           >
+//             <h2
+//               style={{
+//                 fontSize: "24px",
+//                 fontWeight: 600,
+//                 color: "#ffa940",
+//                 margin: 0,
+//                 letterSpacing: "1px",
+//               }}
+//             >
+//               LỚP CƠ BẢN
+//             </h2>
+//             <Button
+//               type="primary"
+//               icon={<PlusOutlined />}
+//               onClick={() => handleAddClass("basic")}
+//               style={{
+//                 background: "#1e3a5f",
+//                 borderColor: "#1e3a5f",
+//                 display: "flex",
+//                 alignItems: "center",
+//                 gap: "6px",
+//               }}
+//             >
+//               Thêm
+//             </Button>
+//           </div>
+//           <Table
+//             columns={columns}
+//             dataSource={filterData(basicClasses)}
+//             pagination={false}
+//             size="middle"
+//             style={{
+//               background: "white",
+//               borderRadius: "12px",
+//               overflow: "hidden",
+//               boxShadow: "0 2px 12px rgba(0, 0, 0, 0.08)",
+//             }}
+//           />
+//         </Card>
+
+//         {/* Advanced Classes Section */}
+//         <Card>
+//           <div
+//             style={{
+//               display: "flex",
+//               justifyContent: "space-between",
+//               alignItems: "center",
+//               marginBottom: "20px",
+//             }}
+//           >
+//             <h2
+//               style={{
+//                 fontSize: "24px",
+//                 fontWeight: 600,
+//                 color: "#ffa940",
+//                 margin: 0,
+//                 letterSpacing: "1px",
+//               }}
+//             >
+//               LỚP NÂNG CAO
+//             </h2>
+//             <Button
+//               type="primary"
+//               icon={<PlusOutlined />}
+//               onClick={() => handleAddClass("advanced")}
+//               style={{
+//                 background: "#1e3a5f",
+//                 borderColor: "#1e3a5f",
+//                 display: "flex",
+//                 alignItems: "center",
+//                 gap: "6px",
+//               }}
+//             >
+//               Thêm
+//             </Button>
+//           </div>
+//           <Table
+//             columns={columns}
+//             dataSource={filterData(advancedClasses)}
+//             pagination={false}
+//             size="middle"
+//             style={{
+//               background: "white",
+//               borderRadius: "12px",
+//               overflow: "hidden",
+//               boxShadow: "0 2px 12px rgba(0, 0, 0, 0.08)",
+//             }}
+//           />
+//         </Card>
+
+//         {/* Modal Form */}
+//         <Modal
+//           open={isModalOpen}
+//           onCancel={handleModalCancel}
+//           onOk={() => form.submit()}
+//           title={
+//             isAdvancedClassToAdd ? "THÊM LỚP HỌC NÂNG CAO" : "THÊM LỚP HỌC CƠ BẢN"
+//           }
+//           okText="Xác nhận"
+//           cancelText="Hủy"
+//           width={600}
+//         >
+//           <Form
+//             form={form}
+//             layout="vertical"
+//             onFinish={handleModalSubmit}
+//             onFinishFailed={(errorInfo) => { // Added for better debugging
+//               console.error("Form submission failed:", errorInfo);
+//               message.error("Vui lòng kiểm tra lại các trường bị lỗi trong form.");
+//             }}
+//             style={{ marginTop: "20px" }}
+//           >
+//             <Form.Item
+//               name="classCode"
+//               label="Mã lớp"
+//               rules={[{ required: true, message: "Vui lòng nhập mã lớp" }]}
+//             >
+//               <Input placeholder="Nhập mã lớp" />
+//             </Form.Item>
+
+//             <Form.Item
+//               name="subject"
+//               label="Môn học"
+//               rules={[{ required: true, message: "Vui lòng chọn môn học" }]}
+//             >
+//               <Select placeholder="Chọn môn học">
+//                 <Option value="Piano">Piano</Option>
+//                 <Option value="Guitar">Guitar</Option>
+//               </Select>
+//             </Form.Item>
+
+//             <Form.Item
+//               name="teacher"
+//               label="Giảng viên"
+//               rules={[{ required: true, message: "Vui lòng chọn giảng viên" }]}
+//             >
+//               <Select placeholder="Chọn giảng viên">
+//                 <Option value="Nguyễn Văn A">Nguyễn Văn A</Option>
+//                 <Option value="Trần Thị B">Trần Thị B</Option>
+//                 <Option value="Lê Văn C">Lê Văn C</Option>
+//                 <Option value="Phạm Văn D">Phạm Văn D</Option>
+//               </Select>
+//             </Form.Item>
+
+//             <div
+//               style={{
+//                 display: "grid",
+//                 gridTemplateColumns: "1fr 1fr",
+//                 gap: "16px",
+//               }}
+//             >
+//               <Form.Item
+//                 name="startDate"
+//                 label="Ngày khai giảng"
+//                 rules={[
+//                   { required: true, message: "Vui lòng chọn ngày khai giảng" },
+//                 ]}
+//               >
+//                 <DatePicker format="DD/MM/YYYY" style={{ width: "100%" }} />
+//               </Form.Item>
+
+//               <Form.Item
+//                 name="endDate"
+//                 label="Ngày kết thúc"
+//                 rules={[
+//                   { required: true, message: "Vui lòng chọn ngày kết thúc" },
+//                 ]}
+//               >
+//                 <DatePicker format="DD/MM/YYYY" style={{ width: "100%" }} />
+//               </Form.Item>
+//             </div>
+
+//             {/* NEW: Field to manually select weekdays */}
+//             <Form.Item
+//               name="scheduleDays"
+//               label="Các ngày học trong tuần"
+//               rules={[{ required: true, message: "Vui lòng chọn các ngày học trong tuần" }]}
+//             >
+//               <Select
+//                 mode="multiple" // Allows multiple selections
+//                 placeholder="Chọn các ngày học (VD: Thứ 2, Thứ 4)"
+//               >
+//                 <Option value="Mon">Thứ 2</Option>
+//                 <Option value="Tue">Thứ 3</Option>
+//                 <Option value="Wed">Thứ 4</Option>
+//                 <Option value="Thu">Thứ 5</Option>
+//                 <Option value="Fri">Thứ 6</Option>
+//                 <Option value="Sat">Thứ 7</Option>
+//                 <Option value="Sun">Chủ nhật</Option>
+//               </Select>
+//             </Form.Item>
+
+//             <Form.Item
+//               name="scheduleTime"
+//               label="Thời gian học"
+//               rules={[
+//                 { required: true, message: "Vui lòng nhập thời gian học (VD: 18:00 to 19:30)" },
+//                 {
+//                   pattern: /^\d{2}:\d{2} to \d{2}:\d{2}$/,
+//                   message: "Định dạng phải là HH:MM to HH:MM",
+//                 },
+//               ]}
+//             >
+//               <Input placeholder="VD: 18:00 to 19:30" />
+//             </Form.Item>
+
+//             <Form.Item
+//               name="capacity"
+//               label="Sức chứa"
+//               rules={[{ required: true, message: "Vui lòng nhập sức chứa" }]}
+//             >
+//               <Input placeholder="VD: 10" type="number" min={1} />
+//             </Form.Item>
+//           </Form>
+//         </Modal>
+//       </div>
+//     </div>
+//   );
+// }
+
+
+
+
+
+
+
+
+
+
+"use client";
+
+import { Typography, Table, Spin, Button, Space, Card, Select, App, Modal, Form, Input, DatePicker, InputNumber, Checkbox, Tag, Tooltip } from "antd"; // Import Tooltip
+import { FilterOutlined, EditOutlined, SaveOutlined, CloseOutlined, PlusOutlined, DeleteOutlined } from "@ant-design/icons"; // Import DeleteOutlined
+import { useState, useEffect, useRef, useMemo } from "react";
+import dayjs from 'dayjs';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+dayjs.extend(isSameOrBefore);
+import "./CourseSchedule.css"; // Đảm bảo đường dẫn đúng
+
+const { Title } = Typography;
 const { Option } = Select;
 
-export default function CourseSchedulePage() {
-  const [schedules, setSchedules] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [subjectFilter, setSubjectFilter] = useState("");
-  const [teacherFilter, setTeacherFilter] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isAdvancedClassToAdd, setIsAdvancedClassToAdd] = useState(false);
-  const [form] = Form.useForm();
+// Mapping for weekdays (short code to Vietnamese name)
+const dayMapToVietnamese = {
+  Mon: "Thứ 2",
+  Tue: "Thứ 3",
+  Wed: "Thứ 4",
+  Thu: "Thứ 5",
+  Fri: "Thứ 6",
+  Sat: "Thứ 7",
+  Sun: "Chủ nhật",
+};
 
+// Mapping for weekdays (Ant Design Select value to Vietnamese name)
+const weekdayOptions = [
+  { label: "Thứ 2", value: "Mon" },
+  { label: "Thứ 3", value: "Tue" },
+  { label: "Thứ 4", value: "Wed" },
+  { label: "Thứ 5", value: "Thu" },
+  { label: "Thứ 6", value: "Fri" },
+  { label: "Thứ 7", value: "Sat" },
+  { label: "Chủ nhật", value: "Sun" },
+];
+
+const CourseSchedule = () => {
+  const [openingSchedules, setOpeningSchedules] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [subjectFilter, setSubjectFilter] = useState(null);
+  const [teacherFilter, setTeacherFilter] = useState(null);
+  const [subjects, setSubjects] = useState([]);
+  const [teachers, setTeachers] = useState([]);
+
+  // States cho modal CẬP NHẬT
+  const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
+  const [currentRecord, setCurrentRecord] = useState(null);
+  const [updateForm] = Form.useForm(); // Form instance cho modal cập nhật
+
+  // States cho modal THÊM MỚI
+  const [isAddModalVisible, setIsAddModalVisible] = useState(false);
+  const [isAdvancedClassToAdd, setIsAdvancedClassToAdd] = useState(false); // Để xác định lớp cơ bản/nâng cao khi thêm
+  const [addForm] = Form.useForm(); // Form instance cho modal thêm mới
+
+  const { message: antdMessage, modal: antdModal } = App.useApp(); // Lấy thêm modal từ App
+
+  const hasFetchedSchedules = useRef(false);
+
+  // Teacher mapping as provided in your original code (may not be used if API provides teacherName directly)
   const teacherMapping = {
     "Basic Piano": "Nguyễn Văn A",
     "Advanced Piano": "Nguyễn Văn A",
     "Basic Guitar": "Trần Thị B",
     "Advanced Guitar": "Trần Thị B",
-    // "Basic Piano": "Lê Văn C",
-    // "Advanced Piano": "Lê Văn C",
-    // "Basic Guitar": "Phạm Văn D",
-    // "Advanced Guitar": "Phạm Văn D",
   };
 
-  const fetchSchedules = async () => {
+  // Function to fetch opening schedules
+  const fetchOpeningSchedules = async () => {
     try {
       setLoading(true);
       const response = await fetch(
         "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/OpeningSchedule"
       );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       const data = await response.json();
-      setSchedules(data.$values || []);
+      if (data.$values) {
+        setOpeningSchedules(data.$values);
+
+        // Extract unique subjects and teachers from fetched data
+        const uniqueSubjects = [...new Set(data.$values.map(item => item.subject.replace("Basic ", "").replace("Advanced ", "")))];
+        // Collect all teacher names, then map them to the teacherMapping if needed for consistency, otherwise use directly
+        const allTeacherNamesFromApi = data.$values.map(item => item.teacherName).filter(Boolean);
+        const uniqueTeachers = [...new Set(allTeacherNamesFromApi)]; // Use directly from API if present
+        setSubjects(uniqueSubjects);
+        setTeachers(uniqueTeachers);
+      } else {
+        setOpeningSchedules([]);
+        setSubjects([]);
+        setTeachers([]);
+      }
     } catch (error) {
-      console.error("Error fetching schedules:", error);
-      message.error("Không thể tải dữ liệu lịch khai giảng");
+      console.error("Error fetching opening schedules:", error);
+      antdMessage.error("Không thể tải dữ liệu lịch học.");
     } finally {
       setLoading(false);
     }
   };
 
-  const hasFetched = useRef(false);
-
   useEffect(() => {
-    if (hasFetched.current) return;
-    hasFetched.current = true;
-    fetchSchedules();
-  }, []);
+    if (hasFetchedSchedules.current) return;
+    hasFetchedSchedules.current = true;
+    fetchOpeningSchedules();
+  }, [antdMessage]);
 
+  // Transform schedule data to match your table's display
   const transformScheduleData = (schedules) => {
-    return schedules.map((schedule, index) => ({
-      key: schedule.openingScheduleId.toString(),
-      stt: index + 1,
-      subject: schedule.subject.replace("Basic ", "").replace("Advanced ", ""),
-      teacher: teacherMapping[schedule.subject] || "Chưa phân công",
-      classCode: schedule.classCode,
-      startDate: new Date(schedule.openingDay).toLocaleDateString("vi-VN"),
-      endDate: new Date(schedule.endDate).toLocaleDateString("vi-VN"),
-      schedule: schedule.schedule,
-      capacity: `${Math.floor(schedule.studentQuantity * 0.7)}/${
-        schedule.studentQuantity
-      }`,
-      isAdvanced: schedule.isAdvancedClass,
-    }));
-  };
+    return schedules.map((schedule, index) => {
+      const { openingDay, endDate, schedule: rawSchedule, studentQuantity } = schedule;
 
-  const filterData = (data) => {
-    return data.filter((item) => {
-      const matchSubject = !subjectFilter || item.subject === subjectFilter;
-      const matchTeacher = !teacherFilter || item.teacher === teacherFilter;
-      return matchSubject && matchTeacher;
+      let transformedSchedule = {
+        key: schedule.openingScheduleId.toString(),
+        stt: index + 1,
+        openingScheduleId: schedule.openingScheduleId, // Keep original ID for update
+        subject: schedule.subject.replace("Basic ", "").replace("Advanced ", ""), // Remove prefix for display
+        teacherName: schedule.teacherName, // Use teacherName from API directly
+        classCode: schedule.classCode,
+        openingDay: openingDay,
+        endDate: endDate,
+        isAdvancedClass: schedule.isAdvancedClass,
+        studentQuantity: studentQuantity, // Keep original for update form
+
+        // Parse schedule string back to parts for forms
+        scheduleDays: [],
+        scheduleTime: "",
+      };
+
+      if (rawSchedule) {
+        const parts = rawSchedule.split(" ");
+        const dayCodes = parts[0].split('/');
+        transformedSchedule.scheduleDays = dayCodes; // Store as array of Mon, Tue, etc.
+        transformedSchedule.scheduleTime = parts.slice(1).join(" "); // Store "HH:MM to HH:MM"
+
+        // For display in table
+        const timeRegex = /(\d{2}:\d{2}) to (\d{2}:\d{2})/;
+        const matchTime = transformedSchedule.scheduleTime.match(timeRegex);
+        let displayTime = '';
+        if (matchTime) {
+            displayTime = `(${matchTime[1]} - ${matchTime[2]})`;
+        }
+        const convertedDaysForDisplay = dayCodes
+            .map((day) => dayMapToVietnamese[day] || day)
+            .join(" / ");
+        transformedSchedule.displaySchedule = `${convertedDaysForDisplay} ${displayTime}`;
+      }
+
+      transformedSchedule.displayCapacity = `${Math.floor(studentQuantity * 0.7)}/${studentQuantity}`;
+
+      return transformedSchedule;
     });
   };
 
-  const transformedData = transformScheduleData(schedules);
-  const basicClasses = transformedData.filter((item) => !item.isAdvanced);
-  const advancedClasses = transformedData.filter((item) => item.isAdvanced);
+  const transformedData = useMemo(() => transformScheduleData(openingSchedules), [openingSchedules]);
 
-  const subjects = [...new Set(transformedData.map((item) => item.subject))];
-  const teachers = [...new Set(transformedData.map((item) => item.teacher))];
+  // Memoized filtered data
+  const filteredSchedules = useMemo(() => {
+    let filtered = transformedData;
+
+    if (subjectFilter) {
+      filtered = filtered.filter(schedule => schedule.subject === subjectFilter);
+    }
+    if (teacherFilter) {
+      filtered = filtered.filter(schedule => schedule.teacherName === teacherFilter);
+    }
+    return filtered;
+  }, [transformedData, subjectFilter, teacherFilter]);
+
+  // Phân chia lịch học cơ bản và nâng cao
+  const basicSchedules = useMemo(() => {
+    return filteredSchedules.filter(schedule => !schedule.isAdvancedClass);
+  }, [filteredSchedules]);
+
+  const advancedSchedules = useMemo(() => {
+    return filteredSchedules.filter(schedule => schedule.isAdvancedClass);
+  }, [filteredSchedules]);
 
   const clearFilters = () => {
-    setSubjectFilter("");
-    setTeacherFilter("");
+    setSubjectFilter(null);
+    setTeacherFilter(null);
   };
 
   const getCapacityColor = (capacity) => {
@@ -1642,103 +2405,186 @@ export default function CourseSchedulePage() {
   };
 
   const getSubjectColor = (subject) => {
-    return subject === "Piano" ? "blue" : "green";
+    const lowerSubject = subject ? subject.toLowerCase() : '';
+    if (lowerSubject.includes("guitar")) return "blue"; // Your original code used blue for Guitar, green for Piano
+    if (lowerSubject.includes("piano")) return "green";
+    return "default"; // Fallback color
   };
 
-  const handleAddClass = (type) => {
-    form.resetFields();
-    setIsAdvancedClassToAdd(type === "advanced");
-    setIsModalOpen(true);
-    // Không cần reset selectedWeekDays nữa vì nó không còn được sử dụng tự động
-  };
-
-  const handleModalCancel = () => {
-    form.resetFields();
-    setIsModalOpen(false);
-    // Không cần reset selectedWeekDays nữa
-  };
-
-  // Hàm này không còn dùng để xác định lịch học gửi lên API nữa, nhưng có thể hữu ích ở đâu đó khác
-  const getWeekdaysBetweenDates = (start, end) => {
-    if (!start || !end) return [];
-    const weekdays = new Set();
-    let current = dayjs(start);
-    while (current.isSameOrBefore(end, 'day')) {
-      weekdays.add(current.day()); // 0: Chủ Nhật, 1: Thứ 2, ..., 6: Thứ 7
-      current = current.add(1, 'day');
-    }
-    const sortedWeekdays = Array.from(weekdays).sort((a, b) => {
-      // Sắp xếp Thứ 2 đến CN (CN là 0, nên đưa về cuối)
-      if (a === 0 && b !== 0) return 1;
-      if (b === 0 && a !== 0) return -1;
-      return a - b;
+  // --- Update Modal Functions ---
+  const handleEdit = (record) => {
+    setCurrentRecord(record);
+    updateForm.setFieldsValue({
+      ...record,
+      openingDay: record.openingDay ? dayjs(record.openingDay) : null,
+      endDate: record.endDate ? dayjs(record.endDate) : null,
+      // scheduleDays and scheduleTime are already parsed in transformScheduleData
     });
-
-    const dayMapToShortCode = {
-      1: "Mon",
-      2: "Tue",
-      3: "Wed",
-      4: "Thu",
-      5: "Fri",
-      6: "Sat",
-      0: "Sun",
-    };
-
-    return sortedWeekdays.map(day => dayMapToShortCode[day]);
+    setIsUpdateModalVisible(true);
   };
 
-  // Loại bỏ useEffect này vì không còn tự động tính toán selectedWeekDays
-  // const [selectedWeekDays, setSelectedWeekDays] = useState([]);
-  // useEffect(() => {
-  //   const startDate = form.getFieldValue('startDate');
-  //   const endDate = form.getFieldValue('endDate');
-  //   if (startDate && endDate) {
-  //     const days = getWeekdaysBetweenDates(startDate, endDate);
-  //     setSelectedWeekDays(days);
-  //   } else {
-  //     setSelectedWeekDays([]);
-  //   }
-  // }, [form, form.getFieldValue('startDate'), form.getFieldValue('endDate')]);
+  const handleUpdateModalCancel = () => {
+    setIsUpdateModalVisible(false);
+    setCurrentRecord(null);
+    updateForm.resetFields();
+  };
 
-  const handleModalSubmit = async (values) => {
-    console.log("handleModalSubmit called with values:", values); // Debug log
-
-    const subjectPrefix = isAdvancedClassToAdd ? "Advanced " : "Basic ";
-    const fullSubjectName = subjectPrefix + values.subject;
-
-    // Lấy scheduleDays (mảng các ngày đã chọn) và scheduleTime từ form
-    const scheduleDaysPart = values.scheduleDays; // Đây là mảng các chuỗi 'Mon', 'Tue', v.v.
-    const scheduleTimePart = values.scheduleTime;
-
-    // Validate if scheduleDays is empty
-    if (!scheduleDaysPart || scheduleDaysPart.length === 0) {
-      message.error("Vui lòng chọn các ngày học trong tuần.");
-      return;
-    }
-
-    // Kiểm tra định dạng thời gian nhập vào
-    const timeRegex = /^\d{2}:\d{2} to \d{2}:\d{2}$/;
-    if (!timeRegex.test(scheduleTimePart)) {
-      message.error("Vui lòng nhập thời gian học theo định dạng HH:MM to HH:MM (VD: 18:00 to 19:30)");
-      return;
-    }
-
-    // Tạo chuỗi finalSchedule theo định dạng "Mon/Thu 18:00 to 19:30"
-    const finalSchedule = `${scheduleDaysPart.join('/')} ${scheduleTimePart}`;
-
-    const payload = {
-      subject: fullSubjectName,
-      classCode: values.classCode,
-      openingDay: values.startDate.format("YYYY-MM-DD"),
-      endDate: values.endDate.format("YYYY-MM-DD"),
-      schedule: finalSchedule, // Sử dụng finalSchedule mới
-      studentQuantity: parseInt(values.capacity, 10),
-      isAdvancedClass: isAdvancedClassToAdd,
-    };
-
-    console.log("Payload to send:", payload);
-
+  const handleUpdateModalOk = async () => {
     try {
+      const values = await updateForm.validateFields();
+      const subjectPrefix = values.isAdvancedClass ? "Advanced " : "Basic ";
+      const fullSubjectName = subjectPrefix + values.subject;
+
+      // Combine scheduleDays and scheduleTime into one string
+      const scheduleDaysPart = values.scheduleDays;
+      const scheduleTimePart = values.scheduleTime;
+
+      if (!scheduleDaysPart || scheduleDaysPart.length === 0) {
+        antdMessage.error("Vui lòng chọn các ngày học trong tuần.");
+        return;
+      }
+      const timeRegex = /^\d{2}:\d{2} to \d{2}:\d{2}$/;
+      if (!timeRegex.test(scheduleTimePart)) {
+        antdMessage.error("Vui lòng nhập thời gian học theo định dạng HH:MM to HH:MM (VD: 18:00 to 19:30)");
+        return;
+      }
+      const finalSchedule = `${scheduleDaysPart.join('/')} ${scheduleTimePart}`;
+
+      const scheduleIdToUpdate = currentRecord.openingScheduleId;
+      if (!scheduleIdToUpdate) {
+        throw new Error("Không tìm thấy ID lịch học để cập nhật.");
+      }
+
+      const updatedData = {
+        openingScheduleId: scheduleIdToUpdate, // <--- DÒNG NÀY ĐÃ ĐƯỢC THÊM VÀO!
+        subject: fullSubjectName,
+        classCode: values.classCode,
+        openingDay: values.openingDay ? values.openingDay.format('YYYY-MM-DD') : null,
+        endDate: values.endDate ? values.endDate.format('YYYY-MM-DD') : null,
+        schedule: finalSchedule, // Use the combined schedule string
+        studentQuantity: values.studentQuantity,
+        isAdvancedClass: values.isAdvancedClass || false,
+        teacherName: values.teacherName, // Use teacherName from form
+      };
+
+
+      const response = await fetch(
+        `https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/OpeningSchedule/${scheduleIdToUpdate}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedData),
+        }
+      );
+
+      if (response.ok) {
+        antdMessage.success("Cập nhật lịch học thành công!");
+        setIsUpdateModalVisible(false);
+        setCurrentRecord(null);
+        updateForm.resetFields();
+        fetchOpeningSchedules();
+      } else {
+        const errorData = await response.json();
+        console.error("Error updating schedule:", errorData);
+        // Kiểm tra lỗi trùng lặp mã lớp
+        if (errorData.errors && errorData.errors.ClassCode && errorData.errors.ClassCode.length > 0) {
+          antdMessage.error(`Cập nhật lịch học thất bại: ${errorData.errors.ClassCode[0]}`);
+        } else {
+          antdMessage.error(`Cập nhật lịch học thất bại: ${errorData.message || response.statusText || "Lỗi không xác định"}`);
+        }
+      }
+    } catch (error) {
+      console.error("Validation failed or network error:", error);
+      if (error.errorFields) {
+        antdMessage.error("Vui lòng điền đầy đủ và đúng định dạng các trường.");
+      } else {
+        antdMessage.error(`Có lỗi xảy ra: ${error.message || "Lỗi không xác định"}`);
+      }
+    }
+  };
+
+  // --- Delete Function ---
+  const handleDelete = (record) => {
+    antdModal.confirm({
+      title: 'Xác nhận xóa lịch học',
+      content: `Bạn có chắc chắn muốn xóa lịch học mã lớp "${record.classCode}" của môn "${record.subject}"?`,
+      okText: 'Xóa',
+      okType: 'danger',
+      cancelText: 'Hủy',
+      onOk: async () => {
+        try {
+          const response = await fetch(
+            `https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/OpeningSchedule/${record.openingScheduleId}`,
+            {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          if (response.ok) {
+            antdMessage.success("Xóa lịch học thành công!");
+            fetchOpeningSchedules(); // Refresh data after successful deletion
+          } else {
+            const errorData = await response.json();
+            console.error("Error deleting schedule:", errorData);
+            antdMessage.error(`Xóa lịch học thất bại: ${errorData.message || response.statusText || "Lỗi không xác định"}`);
+          }
+        } catch (error) {
+          console.error("Network error during deletion:", error);
+          antdMessage.error(`Có lỗi xảy ra khi xóa: ${error.message || "Lỗi không xác định"}`);
+        }
+      },
+    });
+  };
+
+
+  // --- Add New Schedule Modal Functions ---
+  const handleAddClass = (type) => {
+    addForm.resetFields();
+    setIsAdvancedClassToAdd(type === "advanced");
+    setIsAddModalVisible(true);
+  };
+
+  const handleAddModalCancel = () => {
+    setIsAddModalVisible(false);
+    addForm.resetFields();
+  };
+
+  const handleAddModalOk = async () => {
+    try {
+      const values = await addForm.validateFields();
+      const subjectPrefix = isAdvancedClassToAdd ? "Advanced " : "Basic ";
+      const fullSubjectName = subjectPrefix + values.subject;
+
+      const scheduleDaysPart = values.scheduleDays;
+      const scheduleTimePart = values.scheduleTime;
+
+      if (!scheduleDaysPart || scheduleDaysPart.length === 0) {
+        antdMessage.error("Vui lòng chọn các ngày học trong tuần.");
+        return;
+      }
+      const timeRegex = /^\d{2}:\d{2} to \d{2}:\d{2}$/;
+      if (!timeRegex.test(scheduleTimePart)) {
+        antdMessage.error("Vui lòng nhập thời gian học theo định dạng HH:MM to HH:MM (VD: 18:00 to 19:30)");
+        return;
+      }
+      const finalSchedule = `${scheduleDaysPart.join('/')} ${scheduleTimePart}`;
+
+      const newSchedule = {
+        subject: fullSubjectName,
+        classCode: values.classCode,
+        teacherName: values.teacherName, // Use teacherName from form
+        openingDay: values.openingDay ? values.openingDay.format('YYYY-MM-DD') : null,
+        endDate: values.endDate ? values.endDate.format('YYYY-MM-DD') : null,
+        schedule: finalSchedule,
+        studentQuantity: parseInt(values.studentQuantity, 10),
+        isAdvancedClass: isAdvancedClassToAdd,
+      };
+
       const response = await fetch(
         "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/OpeningSchedule",
         {
@@ -1746,34 +2592,50 @@ export default function CourseSchedulePage() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(payload),
+          body: JSON.stringify(newSchedule),
         }
       );
 
       if (response.ok) {
-        message.success("Đã thêm lớp học thành công!");
-        setIsModalOpen(false);
-        fetchSchedules();
+        antdMessage.success("Thêm lịch khai giảng mới thành công!");
+        setIsAddModalVisible(false);
+        addForm.resetFields();
+        fetchOpeningSchedules();
       } else {
         const errorData = await response.json();
-        console.error("Error response from API:", errorData);
-        message.error(
-          `Thêm lớp học thất bại: ${errorData.message || response.statusText}`
-        );
+        console.error("Error adding new schedule:", errorData);
+        // Kiểm tra lỗi trùng lặp mã lớp
+        if (errorData.errors && errorData.errors.ClassCode && errorData.errors.ClassCode.length > 0) {
+          antdMessage.error(`Thêm lịch khai giảng thất bại: ${errorData.errors.ClassCode[0]}`);
+        } else {
+          antdMessage.error(`Thêm lịch khai giảng thất bại: ${errorData.message || response.statusText || "Lỗi không xác định"}`);
+        }
       }
     } catch (error) {
-      console.error("Error creating schedule:", error);
-      message.error("Có lỗi xảy ra khi thêm lớp học.");
+      console.error("Validation failed or network error:", error);
+      if (error.errorFields) {
+        antdMessage.error("Vui lòng điền đầy đủ và đúng định dạng các trường.");
+      } else {
+        antdMessage.error(`Có lỗi xảy ra: ${error.message || "Lỗi không xác định"}`);
+      }
     }
   };
 
+
   const columns = [
+    {
+      title: "STT",
+      dataIndex: "stt",
+      key: "stt",
+      width: 80,
+      align: "center",
+      render: (text, record, index) => <span className="stt-column">{index + 1}</span>,
+    },
     {
       title: "Môn học",
       dataIndex: "subject",
       key: "subject",
-      width: 100,
-      align: "center",
+      width: 150,
       render: (text) => (
         <Tag color={getSubjectColor(text)} style={{ fontWeight: 500 }}>
           {text}
@@ -1781,26 +2643,38 @@ export default function CourseSchedulePage() {
       ),
     },
     {
-      title: "Giảng viên",
-      dataIndex: "teacher",
-      key: "teacher",
-      width: 140,
-      align: "center",
-    },
-    {
       title: "Mã lớp",
       dataIndex: "classCode",
       key: "classCode",
-      width: 140,
-      align: "center",
-      render: (text) => <span style={{ fontFamily: "monospace" }}>{text}</span>,
+      width: 120,
     },
     {
-      title: "Thời gian",
-      key: "duration",
+      title: "Giảng viên",
+      dataIndex: "teacherName", // Changed from 'teacher' to 'teacherName' as per API
+      key: "teacherName",
+      width: 150,
+    },
+    {
+      title: "Ngày khai giảng",
+      dataIndex: "openingDay",
+      key: "openingDay",
+      width: 150,
+      render: (date) => (date ? dayjs(date).format("DD/MM/YYYY") : "-"),
+    },
+    {
+      title: "Ngày kết thúc",
+      dataIndex: "endDate",
+      key: "endDate",
+      width: 150,
+      render: (date) => (date ? dayjs(date).format("DD/MM/YYYY") : "-"),
+    },
+    {
+      title: "Lịch học",
+      dataIndex: "displaySchedule", // Display the parsed schedule
+      key: "displaySchedule",
       width: 180,
       align: "center",
-      render: (_, record) => (
+      render: (text) => (
         <span
           style={{
             background: "rgba(30, 58, 95, 0.05)",
@@ -1811,62 +2685,49 @@ export default function CourseSchedulePage() {
             color: "#1e3a5f",
           }}
         >
-          {record.startDate} - {record.endDate}
+          {text}
         </span>
       ),
     },
     {
-      title: "Lịch học",
-      dataIndex: "schedule",
-      key: "schedule",
-      width: 180,
-      align: "center",
-      render: (text) => {
-        if (!text) return "";
-
-        const dayMap = {
-          Mon: "Thứ 2",
-          Tue: "Thứ 3",
-          Wed: "Thứ 4",
-          Thu: "Thứ 5",
-          Fri: "Thứ 6",
-          Sat: "Thứ 7",
-          Sun: "Chủ nhật",
-        };
-
-        const parts = text.split(" ");
-        const daysPart = parts[0]; 
-        const timePart = parts.slice(1).join(" "); // Gộp lại phần thời gian nếu có khoảng trắng
-
-        let startTime = '';
-        let endTime = '';
-
-        const timeRegex = /(\d{2}:\d{2}) to (\d{2}:\d{2})/;
-        const matchTime = timePart.match(timeRegex);
-        if (matchTime) {
-          startTime = matchTime[1];
-          endTime = matchTime[2];
-        }
-
-        // Chuyển đổi các mã ngày (Mon, Tue) sang tiếng Việt (Thứ 2, Thứ 3)
-        const convertedDays = daysPart
-          .split("/")
-          .map((day) => dayMap[day] || day)
-          .join(" / ");
-
-        return `${convertedDays} (${startTime} - ${endTime})`;
-      },
-    },
-    {
-      title: "Số lượng",
-      dataIndex: "capacity",
-      key: "capacity",
-      width: 100,
+      title: "Sĩ số tối đa",
+      dataIndex: "displayCapacity", // Display the parsed capacity
+      key: "displayCapacity",
+      width: 120,
       align: "center",
       render: (text) => (
         <Tag color={getCapacityColor(text)} style={{ fontWeight: 600 }}>
           {text}
         </Tag>
+      ),
+    },
+    {
+      title: "Hành động",
+      key: "action",
+      width: 100,
+      align: "center",
+      render: (_, record) => (
+        <Space size="small">
+          <Tooltip title="Sửa lịch học">
+            <Button
+              type="primary"
+              icon={<EditOutlined />}
+              onClick={() => handleEdit(record)}
+              className="edit-button" // Class from your CSS
+              aria-label="Sửa lịch học" // Thêm aria-label cho accessibility
+            />
+          </Tooltip>
+          <Tooltip title="Xóa lịch học">
+            <Button
+              type="primary"
+              danger // Màu đỏ cho nút xóa
+              icon={<DeleteOutlined />}
+              onClick={() => handleDelete(record)}
+              className="delete-button" // Thêm class nếu cần CSS riêng
+              aria-label="Xóa lịch học" // Thêm aria-label cho accessibility
+            />
+          </Tooltip>
+        </Space>
       ),
     },
   ];
@@ -1875,55 +2736,29 @@ export default function CourseSchedulePage() {
     return (
       <div
         style={{
-          minHeight: "100vh",
-          background: "#f5f5f5",
           display: "flex",
-          alignItems: "center",
           justifyContent: "center",
+          alignItems: "center",
+          minHeight: "80vh",
         }}
       >
-        <div style={{ textAlign: "center" }}>
-          <Spin size="large" />
-          <p style={{ marginTop: 16, color: "#666" }}>Đang tải dữ liệu...</p>
-        </div>
+        <Spin size="large" tip="Đang tải dữ liệu lịch học..." />
       </div>
     );
   }
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background: "#f5f5f5",
-        padding: "32px 16px",
-      }}
-    >
-      <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
-        <h1
-          style={{
-            fontSize: "36px",
-            fontWeight: 600,
-            color: "#1e3a5f",
-            marginBottom: "32px",
-            textAlign: "center",
-          }}
-        >
-          Lịch khai giảng
-        </h1>
+    <div className="course-schedule-page">
+      <div className="course-schedule-container">
+        <Title level={1} className="page-title">
+          Quản lý Lịch Khai Giảng
+        </Title>
 
         {/* Filter Section */}
-        <Card style={{ marginBottom: "32px" }}>
+        <Card className="filter-section" bordered={false}>
           <Space size="middle" wrap>
-            <div>
-              <label
-                style={{
-                  fontWeight: 500,
-                  color: "#1e3a5f",
-                  marginRight: "8px",
-                }}
-              >
-                Môn học:
-              </label>
+            <div className="filter-item">
+              <label>Môn học:</label>
               <Select
                 placeholder="Chọn môn học"
                 style={{ width: 150 }}
@@ -1938,16 +2773,8 @@ export default function CourseSchedulePage() {
                 ))}
               </Select>
             </div>
-            <div>
-              <label
-                style={{
-                  fontWeight: 500,
-                  color: "#1e3a5f",
-                  marginRight: "8px",
-                }}
-              >
-                Giảng viên:
-              </label>
+            <div className="filter-item">
+              <label>Giảng viên:</label>
               <Select
                 placeholder="Chọn giảng viên"
                 style={{ width: 180 }}
@@ -1965,243 +2792,315 @@ export default function CourseSchedulePage() {
             <Button
               icon={<FilterOutlined />}
               onClick={clearFilters}
-              style={{
-                background: "#f5f5f5",
-                borderColor: "#d9d9d9",
-                color: "#666",
-              }}
+              className="clear-filter-btn"
             >
               Xóa bộ lọc
             </Button>
           </Space>
         </Card>
 
-        {/* Basic Classes Section */}
-        <Card style={{ marginBottom: "32px" }}>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: "20px",
-            }}
-          >
-            <h2
-              style={{
-                fontSize: "24px",
-                fontWeight: 600,
-                color: "#ffa940",
-                margin: 0,
-                letterSpacing: "1px",
-              }}
-            >
-              LỚP CƠ BẢN
-            </h2>
+        {/* Basic Course Schedule Section */}
+        <div className="schedule-section">
+          <div className="section-header">
+            <Title level={3} className="section-title basic-title">
+              Lịch học cơ bản
+            </Title>
             <Button
               type="primary"
               icon={<PlusOutlined />}
+              className="add-button"
               onClick={() => handleAddClass("basic")}
-              style={{
-                background: "#1e3a5f",
-                borderColor: "#1e3a5f",
-                display: "flex",
-                alignItems: "center",
-                gap: "6px",
-              }}
             >
-              Thêm
+              Thêm lịch khai giảng
             </Button>
           </div>
-          <Table
-            columns={columns}
-            dataSource={filterData(basicClasses)}
-            pagination={false}
-            size="middle"
-            style={{
-              background: "white",
-              borderRadius: "12px",
-              overflow: "hidden",
-              boxShadow: "0 2px 12px rgba(0, 0, 0, 0.08)",
-            }}
-          />
-        </Card>
 
-        {/* Advanced Classes Section */}
-        <Card>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: "20px",
-            }}
-          >
-            <h2
-              style={{
-                fontSize: "24px",
-                fontWeight: 600,
-                color: "#ffa940",
-                margin: 0,
-                letterSpacing: "1px",
-              }}
-            >
-              LỚP NÂNG CAO
-            </h2>
+          <div className="table-container">
+            <Table
+              columns={columns}
+              dataSource={basicSchedules}
+              pagination={{ pageSize: 10 }}
+              className="schedule-table"
+              size="middle"
+            />
+            {basicSchedules.length === 0 && !loading && (
+              <div className="no-data-message">
+                Không có lịch học cơ bản nào để hiển thị.
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Advanced Course Schedule Section */}
+        <div className="schedule-section">
+          <div className="section-header">
+            <Title level={3} className="section-title advanced-title">
+              Lịch học nâng cao
+            </Title>
             <Button
               type="primary"
               icon={<PlusOutlined />}
+              className="add-button"
               onClick={() => handleAddClass("advanced")}
-              style={{
-                background: "#1e3a5f",
-                borderColor: "#1e3a5f",
-                display: "flex",
-                alignItems: "center",
-                gap: "6px",
-              }}
             >
-              Thêm
+              Thêm lịch khai giảng
             </Button>
           </div>
-          <Table
-            columns={columns}
-            dataSource={filterData(advancedClasses)}
-            pagination={false}
-            size="middle"
-            style={{
-              background: "white",
-              borderRadius: "12px",
-              overflow: "hidden",
-              boxShadow: "0 2px 12px rgba(0, 0, 0, 0.08)",
-            }}
-          />
-        </Card>
 
-        {/* Modal Form */}
-        <Modal
-          open={isModalOpen}
-          onCancel={handleModalCancel}
-          onOk={() => form.submit()}
-          title={
-            isAdvancedClassToAdd ? "THÊM LỚP HỌC NÂNG CAO" : "THÊM LỚP HỌC CƠ BẢN"
-          }
-          okText="Xác nhận"
-          cancelText="Hủy"
-          width={600}
+          <div className="table-container">
+            <Table
+              columns={columns}
+              dataSource={advancedSchedules}
+              pagination={{ pageSize: 10 }}
+              className="schedule-table"
+              size="middle"
+            />
+            {advancedSchedules.length === 0 && !loading && (
+              <div className="no-data-message">
+                Không có lịch học nâng cao nào để hiển thị.
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Add New Opening Schedule Modal */}
+      <Modal
+        title={isAdvancedClassToAdd ? "THÊM LỚP HỌC NÂNG CAO" : "THÊM LỚP HỌC CƠ BẢN"}
+        open={isAddModalVisible}
+        onOk={handleAddModalOk}
+        onCancel={handleAddModalCancel}
+        footer={[
+          <Button key="back" onClick={handleAddModalCancel} icon={<CloseOutlined />}>
+            Hủy
+          </Button>,
+          <Button key="submit" type="primary" onClick={handleAddModalOk} icon={<PlusOutlined />}>
+            Thêm mới
+          </Button>,
+        ]}
+        width={600}
+      >
+        <Form
+          form={addForm}
+          layout="vertical"
+          name="add_schedule_form"
         >
-          <Form
-            form={form}
-            layout="vertical"
-            onFinish={handleModalSubmit}
-            onFinishFailed={(errorInfo) => { // Added for better debugging
-              console.error("Form submission failed:", errorInfo);
-              message.error("Vui lòng kiểm tra lại các trường bị lỗi trong form.");
+          <Form.Item
+            name="classCode"
+            label="Mã lớp"
+            rules={[{ required: true, message: "Vui lòng nhập mã lớp" }]}
+          >
+            <Input placeholder="Nhập mã lớp" />
+          </Form.Item>
+
+          <Form.Item
+            name="subject"
+            label="Môn học"
+            rules={[{ required: true, message: "Vui lòng chọn môn học" }]}
+          >
+            <Select placeholder="Chọn môn học">
+              <Option value="Piano">Piano</Option>
+              <Option value="Guitar">Guitar</Option>
+            </Select>
+          </Form.Item>
+
+          <Form.Item
+            name="teacherName" // Changed from 'teacher' to 'teacherName'
+            label="Giảng viên"
+            rules={[{ required: true, message: "Vui lòng chọn giảng viên" }]}
+          >
+            <Select placeholder="Chọn giảng viên">
+              <Option value="Nguyễn Văn A">Nguyễn Văn A</Option>
+              <Option value="Trần Thị B">Trần Thị B</Option>
+              <Option value="Lê Văn C">Lê Văn C</Option>
+              <Option value="Phạm Văn D">Phạm Văn D</Option>
+            </Select>
+          </Form.Item>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "16px",
             }}
-            style={{ marginTop: "20px" }}
           >
             <Form.Item
-              name="classCode"
-              label="Mã lớp"
-              rules={[{ required: true, message: "Vui lòng nhập mã lớp" }]}
-            >
-              <Input placeholder="Nhập mã lớp" />
-            </Form.Item>
-
-            <Form.Item
-              name="subject"
-              label="Môn học"
-              rules={[{ required: true, message: "Vui lòng chọn môn học" }]}
-            >
-              <Select placeholder="Chọn môn học">
-                <Option value="Piano">Piano</Option>
-                <Option value="Guitar">Guitar</Option>
-              </Select>
-            </Form.Item>
-
-            <Form.Item
-              name="teacher"
-              label="Giảng viên"
-              rules={[{ required: true, message: "Vui lòng chọn giảng viên" }]}
-            >
-              <Select placeholder="Chọn giảng viên">
-                <Option value="Nguyễn Văn A">Nguyễn Văn A</Option>
-                <Option value="Trần Thị B">Trần Thị B</Option>
-                <Option value="Lê Văn C">Lê Văn C</Option>
-                <Option value="Phạm Văn D">Phạm Văn D</Option>
-              </Select>
-            </Form.Item>
-
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "16px",
-              }}
-            >
-              <Form.Item
-                name="startDate"
-                label="Ngày khai giảng"
-                rules={[
-                  { required: true, message: "Vui lòng chọn ngày khai giảng" },
-                ]}
-              >
-                <DatePicker format="DD/MM/YYYY" style={{ width: "100%" }} />
-              </Form.Item>
-
-              <Form.Item
-                name="endDate"
-                label="Ngày kết thúc"
-                rules={[
-                  { required: true, message: "Vui lòng chọn ngày kết thúc" },
-                ]}
-              >
-                <DatePicker format="DD/MM/YYYY" style={{ width: "100%" }} />
-              </Form.Item>
-            </div>
-
-            {/* NEW: Field to manually select weekdays */}
-            <Form.Item
-              name="scheduleDays"
-              label="Các ngày học trong tuần"
-              rules={[{ required: true, message: "Vui lòng chọn các ngày học trong tuần" }]}
-            >
-              <Select
-                mode="multiple" // Allows multiple selections
-                placeholder="Chọn các ngày học (VD: Thứ 2, Thứ 4)"
-              >
-                <Option value="Mon">Thứ 2</Option>
-                <Option value="Tue">Thứ 3</Option>
-                <Option value="Wed">Thứ 4</Option>
-                <Option value="Thu">Thứ 5</Option>
-                <Option value="Fri">Thứ 6</Option>
-                <Option value="Sat">Thứ 7</Option>
-                <Option value="Sun">Chủ nhật</Option>
-              </Select>
-            </Form.Item>
-
-            <Form.Item
-              name="scheduleTime"
-              label="Thời gian học"
+              name="openingDay" // Changed from 'startDate' to 'openingDay'
+              label="Ngày khai giảng"
               rules={[
-                { required: true, message: "Vui lòng nhập thời gian học (VD: 18:00 to 19:30)" },
-                {
-                  pattern: /^\d{2}:\d{2} to \d{2}:\d{2}$/,
-                  message: "Định dạng phải là HH:MM to HH:MM",
-                },
+                { required: true, message: "Vui lòng chọn ngày khai giảng" },
               ]}
             >
-              <Input placeholder="VD: 18:00 to 19:30" />
+              <DatePicker format="DD/MM/YYYY" style={{ width: "100%" }} />
             </Form.Item>
 
             <Form.Item
-              name="capacity"
-              label="Sức chứa"
-              rules={[{ required: true, message: "Vui lòng nhập sức chứa" }]}
+              name="endDate"
+              label="Ngày kết thúc"
+              rules={[
+                { required: true, message: "Vui lòng chọn ngày kết thúc" },
+              ]}
             >
-              <Input placeholder="VD: 10" type="number" min={1} />
+              <DatePicker format="DD/MM/YYYY" style={{ width: "100%" }} />
             </Form.Item>
-          </Form>
-        </Modal>
-      </div>
+          </div>
+
+          <Form.Item
+            name="scheduleDays"
+            label="Các ngày học trong tuần"
+            rules={[{ required: true, message: "Vui lòng chọn các ngày học trong tuần" }]}
+          >
+            <Select
+              mode="multiple"
+              placeholder="Chọn các ngày học (VD: Thứ 2, Thứ 4)"
+              options={weekdayOptions}
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="scheduleTime"
+            label="Thời gian học"
+            rules={[
+              { required: true, message: "Vui lòng nhập thời gian học (VD: 18:00 to 19:30)" },
+              {
+                pattern: /^\d{2}:\d{2} to \d{2}:\d{2}$/,
+                message: "Định dạng phải là HH:MM to HH:MM",
+              },
+            ]}
+          >
+            <Input placeholder="VD: 18:00 to 19:30" />
+          </Form.Item>
+
+          <Form.Item
+            name="studentQuantity" // Changed from 'capacity' to 'studentQuantity'
+            label="Sĩ số tối đa"
+            rules={[{ required: true, message: "Vui lòng nhập sĩ số tối đa" }]}
+          >
+            <InputNumber placeholder="VD: 10" min={1} style={{ width: '100%' }} />
+          </Form.Item>
+        </Form>
+      </Modal>
+
+      {/* Update Opening Schedule Modal */}
+      <Modal
+        title="Cập nhật Lịch Khai Giảng"
+        open={isUpdateModalVisible}
+        onOk={handleUpdateModalOk}
+        onCancel={handleUpdateModalCancel}
+        footer={[
+          <Button key="back" onClick={handleUpdateModalCancel} icon={<CloseOutlined />}>
+            Hủy
+          </Button>,
+          <Button key="submit" type="primary" onClick={handleUpdateModalOk} icon={<SaveOutlined />}>
+            Lưu thay đổi
+          </Button>,
+        ]}
+        width={600}
+      >
+        <Form
+          form={updateForm}
+          layout="vertical"
+          name="update_schedule_form"
+        >
+          <Form.Item
+            name="classCode"
+            label="Mã lớp"
+            rules={[{ required: true, message: 'Vui lòng nhập mã lớp!' }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            name="subject"
+            label="Môn học"
+            rules={[{ required: true, message: 'Vui lòng nhập môn học!' }]}
+          >
+            <Select placeholder="Chọn môn học">
+              <Option value="Piano">Piano</Option>
+              <Option value="Guitar">Guitar</Option>
+            </Select>
+          </Form.Item>
+
+          <Form.Item
+            name="teacherName"
+            label="Giảng viên"
+            rules={[{ required: true, message: 'Vui lòng nhập tên giảng viên!' }]}
+          >
+            <Select placeholder="Chọn giảng viên">
+              <Option value="Nguyễn Văn A">Nguyễn Văn A</Option>
+              <Option value="Trần Thị B">Trần Thị B</Option>
+              <Option value="Lê Văn C">Lê Văn C</Option>
+              <Option value="Phạm Văn D">Phạm Văn D</Option>
+            </Select>
+          </Form.Item>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "16px",
+            }}
+          >
+            <Form.Item
+              name="openingDay"
+              label="Ngày khai giảng"
+              rules={[{ required: true, message: 'Vui lòng chọn ngày khai giảng!' }]}
+            >
+              <DatePicker format="DD/MM/YYYY" style={{ width: '100%' }} />
+            </Form.Item>
+            <Form.Item
+              name="endDate"
+              label="Ngày kết thúc"
+              rules={[{ required: true, message: 'Vui lòng chọn ngày kết thúc!' }]}
+            >
+              <DatePicker format="DD/MM/YYYY" style={{ width: '100%' }} />
+            </Form.Item>
+          </div>
+
+          <Form.Item
+            name="scheduleDays"
+            label="Các ngày học trong tuần"
+            rules={[{ required: true, message: "Vui lòng chọn các ngày học trong tuần" }]}
+          >
+            <Select
+              mode="multiple"
+              placeholder="Chọn các ngày học (VD: Thứ 2, Thứ 4)"
+              options={weekdayOptions}
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="scheduleTime"
+            label="Thời gian học"
+            rules={[
+              { required: true, message: "Vui lòng nhập thời gian học (VD: 18:00 to 19:30)" },
+              {
+                pattern: /^\d{2}:\d{2} to \d{2}:\d{2}$/,
+                message: "Định dạng phải là HH:MM to HH:MM",
+              },
+            ]}
+          >
+            <Input placeholder="VD: 18:00 to 19:30" />
+          </Form.Item>
+
+          <Form.Item
+            name="studentQuantity"
+            label="Sĩ số tối đa"
+            rules={[{ required: true, message: 'Vui lòng nhập sĩ số!', type: 'number' }]}
+          >
+            <InputNumber min={1} style={{ width: '100%' }} />
+          </Form.Item>
+          <Form.Item
+            name="isAdvancedClass"
+            valuePropName="checked"
+            label="Là lớp nâng cao?"
+          >
+            <Checkbox>Lớp nâng cao</Checkbox>
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
-}
+};
+
+export default CourseSchedule;

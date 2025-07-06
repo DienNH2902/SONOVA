@@ -1,3 +1,4 @@
+/* consultation-page base styles */
 .consultation-page {
   min-height: 100vh;
   background: #f5f5f5;
@@ -14,8 +15,10 @@
   font-size: 36px !important;
   font-weight: 600 !important;
   margin-bottom: 20px !important;
+  text-align: center; /* Center the title */
 }
 
+/* Admin Info */
 .admin-info {
   background: white;
   padding: 12px 20px;
@@ -41,6 +44,112 @@
   border-radius: 4px;
 }
 
+/* --- Filter Card Styling --- */
+.consultation-filter-card {
+  border-radius: 12px; /* Match other cards/tables */
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); /* Consistent shadow */
+  overflow: hidden; /* Ensure content respects border-radius */
+}
+
+.consultation-filter-card .ant-card-head {
+  background-color: #1e3a5f; /* Header background */
+  color: white; /* Header text color */
+  border-bottom: none; /* Remove default border */
+  padding: 16px 24px;
+}
+
+.consultation-filter-card .ant-card-head-title {
+  color: white; /* Ensure title text is white */
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.consultation-filter-card-title {
+    display: flex;
+    align-items: center;
+}
+
+
+.consultation-filter-card .ant-card-body {
+  padding: 24px; /* Default Ant Design Card body padding */
+}
+
+/* Ant Design Radio.Button customization for your theme */
+/* Note: The Radio.Group is now inside the Card, so its parent selector changes */
+.consultation-filter-radio-group .ant-radio-button-wrapper {
+  background: #f0f2f5;
+  border-color: #d9d9d9;
+  color: #555;
+  border-radius: 6px !important;
+  margin-left: 8px; /* Space between buttons */
+  box-shadow: none !important;
+  outline: none !important;
+  transition: all 0.3s ease;
+}
+
+.consultation-filter-radio-group .ant-radio-button-wrapper:first-child {
+  margin-left: 0;
+}
+
+.consultation-filter-radio-group .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+  background-color: #1e3a5f;
+  border-color: #1e3a5f;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(30, 58, 95, 0.2);
+}
+
+.consultation-filter-radio-group .ant-radio-button-wrapper:hover {
+  color: #1e3a5f;
+  border-color: #1e3a5f;
+}
+
+.consultation-filter-radio-group .ant-radio-button-wrapper-checked:hover {
+  color: #fff;
+  background-color: #1a3250;
+  border-color: #1a3250;
+}
+
+/* --- Clear Filter Button Styling --- */
+.clear-filter-button {
+  background: #f0f2f5;
+  border-color: #d9d9d9;
+  color: #555;
+  border-radius: 6px;
+  box-shadow: none;
+  transition: all 0.3s ease;
+}
+
+.clear-filter-button:hover {
+  color: #1e3a5f !important; /* Ant Design hover might override */
+  border-color: #1e3a5f !important;
+  background-color: #e6f7ff !important; /* Lighter blue hover */
+}
+
+.clear-filter-button:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Fix for Ant Design outline/shadow issues on focus/active */
+/* These rules target the pseudo-elements Ant Design uses for focus/active states */
+.consultation-filter-radio-group .ant-radio-button-wrapper::before,
+.consultation-filter-radio-group .ant-radio-button-wrapper::after {
+  content: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  position: static !important; /* This might be key if position was the issue */
+}
+
+.consultation-filter-radio-group .ant-radio-button-wrapper-checked::before,
+.consultation-filter-radio-group .ant-radio-button-wrapper-checked::after {
+  content: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  position: static !important;
+}
+
+
+/* --- Table Styling --- */
 .table-container {
   background: white;
   border-radius: 12px;
@@ -92,6 +201,7 @@
   text-align: left;
 }
 
+/* --- Consultation Tag Styling --- */
 .consultation-tag {
   padding: 4px 12px;
   border-radius: 6px;
@@ -106,8 +216,6 @@
   color: #26b4aa; /* main teal text */
   border: 1px solid rgba(38, 180, 170, 0.3); /* soft teal border */
 }
-
-
 
 .consultation-tag.guitar-basic {
   background: rgba(82, 196, 26, 0.1);
@@ -133,6 +241,13 @@
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
+.consultation-tag.nguyet {
+  background: rgba(114, 46, 209, 0.1); /* Light purple background */
+  color: #722ed1; /* Main purple text */
+  border: 1px solid rgba(114, 46, 209, 0.3); /* Soft purple border */
+}
+
+/* --- Checkbox Styling --- */
 .contact-checkbox {
   transform: scale(1.2);
 }
@@ -151,6 +266,7 @@
   border-color: #1e3a5f;
 }
 
+/* --- Confirmed Info Styling --- */
 .confirmed-info {
   display: flex;
   flex-direction: column;
@@ -173,6 +289,20 @@
 .not-confirmed {
   color: #ccc;
   font-style: italic;
+}
+
+/* --- No Data Message Styling --- */
+.no-data-message {
+  text-align: center;
+  padding: 20px;
+  color: #888;
+  font-size: 16px;
+  background: white;
+  border-radius: 0 0 12px 12px; /* Match table container's bottom border-radius */
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); /* Match table container's shadow */
+  margin-top: -12px; /* Pull it up to sit right below the table */
+  position: relative;
+  z-index: 1;
 }
 
 /* Responsive Design */

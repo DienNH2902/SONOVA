@@ -273,12 +273,325 @@
 
 
 
+// "use client";
+
+// import { Typography, Table, Checkbox, Spin } from "antd"; // Import Spin and message
+// import { useState, useEffect, useRef } from "react"; // Import useRef
+// import "./Consultation.css";
+// import { App } from 'antd'; // Import App for message context
+
+// const { Title } = Typography;
+
+// const Consultation = () => {
+//   const [consultationRequests, setConsultationRequests] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const [currentAdmin, setCurrentAdmin] = useState("");
+//   const [consultationTopicsMap, setConsultationTopicsMap] = useState({}); // To store topic ID to Name mapping
+
+//   // Use App.useApp() for message context
+//   const { message: antdMessage } = App.useApp();
+
+//   // Ref to prevent multiple fetches on initial render (if not already handled by "use client")
+//   const hasFetchedRequests = useRef(false);
+//   const hasFetchedTopics = useRef(false);
+
+//   // Get admin username from localStorage on component mount
+//   useEffect(() => {
+//     const storedUser = localStorage.getItem("user");
+//     if (storedUser) {
+//       try {
+//         const user = JSON.parse(storedUser);
+//         setCurrentAdmin(user.username);
+//       } catch (e) {
+//         console.error("Failed to parse user from localStorage", e);
+//         setCurrentAdmin("Admin"); // Fallback
+//       }
+//     } else {
+//       setCurrentAdmin("Admin"); // Fallback
+//     }
+//   }, []);
+
+//   // Fetch Consultation Topics
+//   useEffect(() => {
+//     if (hasFetchedTopics.current) return;
+//     hasFetchedTopics.current = true;
+
+//     const fetchTopics = async () => {
+//       try {
+//         const response = await fetch(
+//           "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ConsultationTopic"
+//         );
+//         if (!response.ok) {
+//           throw new Error(`HTTP error! status: ${response.status}`);
+//         }
+//         const data = await response.json();
+//         const topicMap = {};
+//         if (data.$values) {
+//           data.$values.forEach((topic) => {
+//             topicMap[topic.consultationTopicId] = topic.consultationTopicName;
+//           });
+//         }
+//         setConsultationTopicsMap(topicMap);
+//       } catch (error) {
+//         console.error("Error fetching consultation topics:", error);
+//         antdMessage.error("Không thể tải danh mục tư vấn.");
+//       }
+//     };
+
+//     fetchTopics();
+//   }, [antdMessage]); // Depend on antdMessage
+
+//   // Fetch Consultation Requests
+//   const fetchConsultationRequests = async () => {
+//     try {
+//       setLoading(true);
+//       const response = await fetch(
+//         "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ConsultationRequest"
+//       );
+//       if (!response.ok) {
+//         throw new Error(`HTTP error! status: ${response.status}`);
+//       }
+//       const data = await response.json();
+//       if (data.$values) {
+//         // Initialize `hasContact` state from fetched data
+//         const initialContactedState = {};
+//         data.$values.forEach(request => {
+//           if (request.hasContact) {
+//             initialContactedState[request.consultationRequestId] = {
+//               contacted: true,
+//               // Note: Backend doesn't provide who confirmed or when.
+//               // We'll set a placeholder or fetch this info if API supports.
+//               // For now, it will be blank if not explicitly set by client.
+//               confirmedBy: "Admin", // Default placeholder
+//               confirmedAt: "Unknown Date", // Default placeholder
+//             };
+//           }
+//         });
+//         // You had `contactedRequests` state earlier, but it wasn't connected to initial API data.
+//         // If you need to persist "confirmedBy" and "confirmedAt" across sessions,
+//         // they must be stored in the backend. For now, they'll be client-side only unless updated via API.
+//         // setContactedRequests(initialContactedState); // If you want to use a separate state for contacted status
+
+//         setConsultationRequests(data.$values);
+//       } else {
+//         setConsultationRequests([]);
+//       }
+//     } catch (error) {
+//       console.error("Error fetching consultation requests:", error);
+//       antdMessage.error("Không thể tải dữ liệu yêu cầu tư vấn.");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   useEffect(() => {
+//     if (hasFetchedRequests.current) return;
+//     hasFetchedRequests.current = true;
+//     fetchConsultationRequests();
+//   }, [antdMessage]); // Depend on antdMessage
+
+//   // Function to update hasContact status on backend
+//   const updateHasContactStatus = async (request) => {
+//     const payload = {
+//       ...request, // Send entire object as PUT is often full replacement
+//       hasContact: !request.hasContact, // Toggle the status
+//     };
+
+//     // If your backend only accepts certain fields for PUT,
+//     // or if it's a PATCH endpoint, adjust this payload and method accordingly.
+//     // Assuming the endpoint is: https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ConsultationRequest/{consultationRequestId}
+//     // and it's a PUT method expecting full object.
+
+//     try {
+//       const response = await fetch(
+//         `https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ConsultationRequest/${request.consultationRequestId}`,
+//         {
+//           method: "PUT", // Or 'PATCH' if backend supports partial update
+//           headers: {
+//             "Content-Type": "application/json",
+//           },
+//           body: JSON.stringify(payload),
+//         }
+//       );
+
+//       if (response.ok) {
+//         antdMessage.success(`Cập nhật trạng thái liên hệ thành công cho ${request.fullname}!`);
+//         // Re-fetch data to reflect the change from the server
+//         fetchConsultationRequests();
+//       } else {
+//         const errorData = await response.json();
+//         console.error("Error updating hasContact status:", errorData);
+//         antdMessage.error(`Cập nhật trạng thái liên hệ thất bại: ${errorData.message || response.statusText}`);
+//       }
+//     } catch (error) {
+//       console.error("Network error updating hasContact status:", error);
+//       antdMessage.error("Có lỗi xảy ra khi cập nhật trạng thái liên hệ.");
+//     }
+//   };
+
+//   const getConsultationTag = (consultationTopicId) => {
+//     const topicName = consultationTopicsMap[consultationTopicId] || "Không xác định";
+//     let className = "default"; // Default class for styling
+
+//     // Map topic names to specific classes for styling (adjust as per your CSS)
+//     if (topicName.includes("Piano")) {
+//       className = topicName.includes("Basic") ? "piano-basic" : "piano-advanced";
+//     } else if (topicName.includes("Guitar")) {
+//       className = topicName.includes("Basic") ? "guitar-basic" : "guitar-advanced";
+//     }
+//     // Add more conditions if you have other topics
+//     // For example: if (topicName === "Nguyet") className = "nguyet-topic";
+
+//     return <span className={`consultation-tag ${className}`}>{topicName}</span>;
+//   };
+
+//   const columns = [
+//     {
+//       title: "STT",
+//       dataIndex: "stt",
+//       key: "stt",
+//       width: 80,
+//       align: "center",
+//       render: (text, record, index) => index + 1, // Render STT dynamically
+//     },
+//     {
+//       title: "Họ và tên",
+//       dataIndex: "fullname",
+//       key: "fullname",
+//       width: 150,
+//     },
+//     {
+//       title: "SĐT",
+//       dataIndex: "contactNumber",
+//       key: "contactNumber",
+//       width: 140,
+//     },
+//     {
+//       title: "Email",
+//       dataIndex: "email",
+//       key: "email",
+//       width: 200,
+//     },
+//     {
+//       title: "Nhu cầu tư vấn",
+//       dataIndex: "consultationTopicId", // Use consultationTopicId from API
+//       key: "consultationNeed",
+//       width: 180,
+//       render: (consultationTopicId) => getConsultationTag(consultationTopicId),
+//     },
+//     {
+//       title: "Ghi chú",
+//       dataIndex: "note", // Use 'note' from API
+//       key: "notes",
+//       width: 120,
+//       render: (note) => note || "-",
+//     },
+//     {
+//       title: "Xác nhận đã liên lạc",
+//       dataIndex: "hasContact", // Use 'hasContact' from API
+//       key: "contacted",
+//       width: 180,
+//       align: "center",
+//       render: (hasContact, record) => (
+//         <Checkbox
+//           checked={hasContact} // Bind to hasContact directly from record
+//           onChange={() => updateHasContactStatus(record)} // Pass the whole record
+//           className="contact-checkbox"
+//         />
+//       ),
+//     },
+//     {
+//       title: "Người xác nhận",
+//       key: "confirmedBy",
+//       width: 160,
+//       align: "center",
+//       // Note: 'confirmedBy' and 'confirmedAt' are not in the current API response for ConsultationRequest.
+//       // If you need to store who confirmed and when, your backend API needs to return these fields.
+//       // For now, this column will not show dynamic data unless the API is updated or you track it purely client-side
+//       // (which would not persist across sessions/reloads).
+//       render: (_, record) => {
+//         // If hasContact is true, display currentAdmin and current time for demo/placeholder
+//         // For production, this data should ideally come from the backend.
+//         if (record.hasContact) {
+//           return (
+//             <div className="confirmed-info">
+//               <div className="confirmed-by">{currentAdmin}</div>
+//               <div className="confirmed-time">
+//                 {/* This time will be when the page loads or when it was last fetched. */}
+//                 {/* For real-time, consider storing this on backend. */}
+//                 Đã liên hệ
+//               </div>
+//             </div>
+//           );
+//         }
+//         return <span className="not-confirmed">-</span>;
+//       },
+//     },
+//   ];
+
+//   if (loading) {
+//     return (
+//       <div
+//         style={{
+//           display: "flex",
+//           justifyContent: "center",
+//           alignItems: "center",
+//           minHeight: "80vh",
+//         }}
+//       >
+//         <Spin size="large" tip="Đang tải dữ liệu tư vấn..." />
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <div className="consultation-page">
+//       <div className="consultation-container">
+//         <Title level={1} className="page-title">
+//           Liên hệ tư vấn
+//         </Title>
+
+//         {/* Current Admin Info */}
+//         <div className="admin-info">
+//           <span className="admin-label">Đang đăng nhập:</span>
+//           <span className="admin-name">{currentAdmin}</span>
+//         </div>
+
+//         {/* Table Section */}
+//         <div className="table-container">
+//           <Table
+//             columns={columns}
+//             dataSource={consultationRequests.map((req, index) => ({
+//               ...req,
+//               key: req.consultationRequestId, // Ant Design table needs a unique key
+//               stt: index + 1, // Add STT for display
+//             }))}
+//             pagination={false}
+//             className="consultation-table"
+//             size="middle"
+//           />
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Consultation;
+
+
+
+
+
+
+
+
+
 "use client";
 
-import { Typography, Table, Checkbox, Spin } from "antd"; // Import Spin and message
-import { useState, useEffect, useRef } from "react"; // Import useRef
-import "./Consultation.css";
-import { App } from 'antd'; // Import App for message context
+import { Typography, Table, Checkbox, Spin, message, Radio, Card, Space, Button, App } from "antd"; // Import Card, Space, Button, App
+import { FilterOutlined } from '@ant-design/icons'; // Import FilterOutlined icon
+import { useState, useEffect, useRef, useMemo } from "react";
+import "./Consultation.css"; // Make sure this path is correct
 
 const { Title } = Typography;
 
@@ -286,16 +599,14 @@ const Consultation = () => {
   const [consultationRequests, setConsultationRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentAdmin, setCurrentAdmin] = useState("");
-  const [consultationTopicsMap, setConsultationTopicsMap] = useState({}); // To store topic ID to Name mapping
+  const [consultationTopicsMap, setConsultationTopicsMap] = useState({});
+  const [filterStatus, setFilterStatus] = useState("notContacted"); // New state for filter: 'notContacted', 'contacted', 'all'
 
-  // Use App.useApp() for message context
-  const { message: antdMessage } = App.useApp();
+  const { message: antdMessage } = App.useApp(); // Use Ant Design's message hook
 
-  // Ref to prevent multiple fetches on initial render (if not already handled by "use client")
   const hasFetchedRequests = useRef(false);
   const hasFetchedTopics = useRef(false);
 
-  // Get admin username from localStorage on component mount
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -304,10 +615,10 @@ const Consultation = () => {
         setCurrentAdmin(user.username);
       } catch (e) {
         console.error("Failed to parse user from localStorage", e);
-        setCurrentAdmin("Admin"); // Fallback
+        setCurrentAdmin("Admin"); // Fallback if parsing fails
       }
     } else {
-      setCurrentAdmin("Admin"); // Fallback
+      setCurrentAdmin("Admin"); // Default if no user in localStorage
     }
   }, []);
 
@@ -339,7 +650,7 @@ const Consultation = () => {
     };
 
     fetchTopics();
-  }, [antdMessage]); // Depend on antdMessage
+  }, [antdMessage]); // Dependency array includes antdMessage
 
   // Fetch Consultation Requests
   const fetchConsultationRequests = async () => {
@@ -353,25 +664,6 @@ const Consultation = () => {
       }
       const data = await response.json();
       if (data.$values) {
-        // Initialize `hasContact` state from fetched data
-        const initialContactedState = {};
-        data.$values.forEach(request => {
-          if (request.hasContact) {
-            initialContactedState[request.consultationRequestId] = {
-              contacted: true,
-              // Note: Backend doesn't provide who confirmed or when.
-              // We'll set a placeholder or fetch this info if API supports.
-              // For now, it will be blank if not explicitly set by client.
-              confirmedBy: "Admin", // Default placeholder
-              confirmedAt: "Unknown Date", // Default placeholder
-            };
-          }
-        });
-        // You had `contactedRequests` state earlier, but it wasn't connected to initial API data.
-        // If you need to persist "confirmedBy" and "confirmedAt" across sessions,
-        // they must be stored in the backend. For now, they'll be client-side only unless updated via API.
-        // setContactedRequests(initialContactedState); // If you want to use a separate state for contacted status
-
         setConsultationRequests(data.$values);
       } else {
         setConsultationRequests([]);
@@ -388,7 +680,7 @@ const Consultation = () => {
     if (hasFetchedRequests.current) return;
     hasFetchedRequests.current = true;
     fetchConsultationRequests();
-  }, [antdMessage]); // Depend on antdMessage
+  }, [antdMessage]); // Dependency array includes antdMessage
 
   // Function to update hasContact status on backend
   const updateHasContactStatus = async (request) => {
@@ -397,16 +689,11 @@ const Consultation = () => {
       hasContact: !request.hasContact, // Toggle the status
     };
 
-    // If your backend only accepts certain fields for PUT,
-    // or if it's a PATCH endpoint, adjust this payload and method accordingly.
-    // Assuming the endpoint is: https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ConsultationRequest/{consultationRequestId}
-    // and it's a PUT method expecting full object.
-
     try {
       const response = await fetch(
         `https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ConsultationRequest/${request.consultationRequestId}`,
         {
-          method: "PUT", // Or 'PATCH' if backend supports partial update
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
@@ -431,18 +718,33 @@ const Consultation = () => {
 
   const getConsultationTag = (consultationTopicId) => {
     const topicName = consultationTopicsMap[consultationTopicId] || "Không xác định";
-    let className = "default"; // Default class for styling
+    let className = "default";
 
-    // Map topic names to specific classes for styling (adjust as per your CSS)
-    if (topicName.includes("Piano")) {
-      className = topicName.includes("Basic") ? "piano-basic" : "piano-advanced";
-    } else if (topicName.includes("Guitar")) {
-      className = topicName.includes("Basic") ? "guitar-basic" : "guitar-advanced";
+    if (topicName.toLowerCase().includes("piano")) {
+      className = topicName.toLowerCase().includes("cơ bản") || topicName.toLowerCase().includes("basic") ? "piano-basic" : "piano-advanced";
+    } else if (topicName.toLowerCase().includes("guitar")) {
+      className = topicName.toLowerCase().includes("cơ bản") || topicName.toLowerCase().includes("basic") ? "guitar-basic" : "guitar-advanced";
+    } else if (topicName.toLowerCase() === "nguyet") {
+      className = "nguyet";
     }
-    // Add more conditions if you have other topics
-    // For example: if (topicName === "Nguyet") className = "nguyet-topic";
 
     return <span className={`consultation-tag ${className}`}>{topicName}</span>;
+  };
+
+  // Filtered data based on filterStatus
+  const filteredRequests = useMemo(() => {
+    if (!consultationRequests.length) return [];
+    if (filterStatus === "notContacted") {
+      return consultationRequests.filter((req) => !req.hasContact);
+    } else if (filterStatus === "contacted") {
+      return consultationRequests.filter((req) => req.hasContact);
+    }
+    return consultationRequests; // 'all' or default
+  }, [consultationRequests, filterStatus]);
+
+  // Function to reset filter to default 'notContacted'
+  const clearFilter = () => {
+    setFilterStatus("notContacted");
   };
 
   const columns = [
@@ -452,7 +754,7 @@ const Consultation = () => {
       key: "stt",
       width: 80,
       align: "center",
-      render: (text, record, index) => index + 1, // Render STT dynamically
+      render: (text, record, index) => index + 1,
     },
     {
       title: "Họ và tên",
@@ -474,28 +776,28 @@ const Consultation = () => {
     },
     {
       title: "Nhu cầu tư vấn",
-      dataIndex: "consultationTopicId", // Use consultationTopicId from API
+      dataIndex: "consultationTopicId",
       key: "consultationNeed",
       width: 180,
       render: (consultationTopicId) => getConsultationTag(consultationTopicId),
     },
     {
       title: "Ghi chú",
-      dataIndex: "note", // Use 'note' from API
+      dataIndex: "note",
       key: "notes",
       width: 120,
       render: (note) => note || "-",
     },
     {
       title: "Xác nhận đã liên lạc",
-      dataIndex: "hasContact", // Use 'hasContact' from API
+      dataIndex: "hasContact",
       key: "contacted",
       width: 180,
       align: "center",
       render: (hasContact, record) => (
         <Checkbox
-          checked={hasContact} // Bind to hasContact directly from record
-          onChange={() => updateHasContactStatus(record)} // Pass the whole record
+          checked={hasContact}
+          onChange={() => updateHasContactStatus(record)}
           className="contact-checkbox"
         />
       ),
@@ -505,22 +807,14 @@ const Consultation = () => {
       key: "confirmedBy",
       width: 160,
       align: "center",
-      // Note: 'confirmedBy' and 'confirmedAt' are not in the current API response for ConsultationRequest.
-      // If you need to store who confirmed and when, your backend API needs to return these fields.
-      // For now, this column will not show dynamic data unless the API is updated or you track it purely client-side
-      // (which would not persist across sessions/reloads).
       render: (_, record) => {
-        // If hasContact is true, display currentAdmin and current time for demo/placeholder
-        // For production, this data should ideally come from the backend.
+        // This part currently uses currentAdmin as a placeholder.
+        // For persistence, backend needs to store confirmedBy and confirmedAt.
         if (record.hasContact) {
           return (
             <div className="confirmed-info">
-              <div className="confirmed-by">{currentAdmin}</div>
-              <div className="confirmed-time">
-                {/* This time will be when the page loads or when it was last fetched. */}
-                {/* For real-time, consider storing this on backend. */}
-                Đã liên hệ
-              </div>
+              <div className="confirmed-by">{currentAdmin}</div> {/* Placeholder */}
+              <div className="confirmed-time">Đã liên hệ</div> {/* Placeholder */}
             </div>
           );
         }
@@ -551,25 +845,64 @@ const Consultation = () => {
           Liên hệ tư vấn
         </Title>
 
-        {/* Current Admin Info */}
         <div className="admin-info">
           <span className="admin-label">Đang đăng nhập:</span>
           <span className="admin-name">{currentAdmin}</span>
         </div>
 
+        {/* Filter Section - Wrapped in Card */}
+        <Card
+          className="consultation-filter-card"
+          // title={
+          //   <div className="consultation-filter-card-title">
+          //     <FilterOutlined style={{ marginRight: '8px' }} /> Bộ lọc yêu cầu tư vấn
+          //   </div>
+          // }
+          style={{ marginBottom: "20px" }}
+          bordered={false}
+        >
+          <Space size="middle" wrap>
+            {/* Filter Radio Buttons */}
+            <Radio.Group
+              onChange={(e) => setFilterStatus(e.target.value)}
+              value={filterStatus}
+              buttonStyle="solid"
+              className="consultation-filter-radio-group"
+            >
+              <Radio.Button value="notContacted">Chưa liên hệ</Radio.Button>
+              <Radio.Button value="contacted">Đã liên hệ</Radio.Button>
+              <Radio.Button value="all">Tất cả</Radio.Button>
+            </Radio.Group>
+
+            {/* Clear Filter Button */}
+            <Button
+              icon={<FilterOutlined />}
+              onClick={clearFilter}
+              className="clear-filter-button"
+            >
+              Xóa bộ lọc
+            </Button>
+          </Space>
+        </Card>
+
         {/* Table Section */}
         <div className="table-container">
           <Table
             columns={columns}
-            dataSource={consultationRequests.map((req, index) => ({
+            dataSource={filteredRequests.map((req, index) => ({
               ...req,
-              key: req.consultationRequestId, // Ant Design table needs a unique key
-              stt: index + 1, // Add STT for display
+              key: req.consultationRequestId,
+              stt: index + 1,
             }))}
             pagination={false}
             className="consultation-table"
             size="middle"
           />
+          {filteredRequests.length === 0 && !loading && (
+            <div className="no-data-message">
+              Không có yêu cầu nào để hiển thị trong mục này.
+            </div>
+          )}
         </div>
       </div>
     </div>
