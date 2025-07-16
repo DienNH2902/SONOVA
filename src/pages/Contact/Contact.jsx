@@ -342,77 +342,71 @@
 
 
 
-import { useState, useEffect, useRef } from "react";
-import {
-  Typography,
-  Row,
-  Col,
-  Card,
-  Carousel,
-  Space,
-  Button,
-  Form, // Import Form from Ant Design
-  Input, // Import Input from Ant Design
-  Select, // Import Select from Ant Design
-  App
-} from "antd";
-import {
-  HomeOutlined,
-  PhoneOutlined,
-  MailOutlined,
-  FacebookOutlined,
-} from "@ant-design/icons";
-import "./Contact.css";
-import qttv from "../../assets/quytrinhtuvan.png";
-import contact from "../../assets/contact.jpg";
+"use client"
 
-import maps from "../../assets/maps.png";
-import "../../assets/font.css";
+import { useState, useEffect, useRef } from "react"
+import { Typography, Form, Input, Select, Button, App } from "antd"
+import { HomeOutlined, PhoneOutlined, MailOutlined, FacebookOutlined } from "@ant-design/icons"
+import "./Contact.css"
+import qttv from "../../assets/quytrinhtuvan.png"
+import contact from "../../assets/contact.jpg"
+import maps from "../../assets/maps.png"
+import "../../assets/font.css"
 
-const { Title, Paragraph } = Typography;
-const { Option } = Select; // Destructure Option from Select
+const { Title, Paragraph } = Typography
+const { Option } = Select
 
 const Contact = () => {
-  const {message} = App.useApp(); // Use message from Ant Design for notifications
-  const [form] = Form.useForm(); // Initialize Ant Design form hook
-  const [consultationTopics, setConsultationTopics] = useState([]);
-  const hasFetchedTopics = useRef(false);
+  const { message } = App.useApp()
+  const [form] = Form.useForm()
+  const [consultationTopics, setConsultationTopics] = useState([])
+  const [loading, setLoading] = useState(false)
+  const hasFetchedTopics = useRef(false)
 
   // Fetch consultation topics when component mounts
   useEffect(() => {
-    if (hasFetchedTopics.current) return; // Prevent re-fetching on re-renders
-    hasFetchedTopics.current = true;
+    if (hasFetchedTopics.current) return
+    hasFetchedTopics.current = true
 
     const fetchConsultationTopics = async () => {
       try {
         const response = await fetch(
-          "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ConsultationTopic"
-        );
+          "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ConsultationTopic",
+        )
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          throw new Error(`HTTP error! status: ${response.status}`)
         }
-        const data = await response.json();
-        // Assuming the API returns a structure like { "$id": "1", "$values": [...] }
-        setConsultationTopics(data.$values || []);
-      } catch (error) {
-        console.error("Error fetching consultation topics:", error);
-        message.error("Không thể tải danh mục tư vấn.");
-      }
-    };
+        const data = await response.json()
 
-    fetchConsultationTopics();
-  }, []); // Empty dependency array means this runs once on mount
+        // Updated: Handle direct array response instead of $values wrapper
+        if (Array.isArray(data)) {
+          setConsultationTopics(data)
+        } else {
+          setConsultationTopics([])
+          console.warn("Unexpected API response format:", data)
+        }
+      } catch (error) {
+        console.error("Error fetching consultation topics:", error)
+        message.error("Không thể tải danh mục tư vấn.")
+      }
+    }
+
+    fetchConsultationTopics()
+  }, [message])
 
   const onFinish = async (values) => {
-    console.log("Received values of form: ", values);
+    console.log("Received values of form: ", values)
+    setLoading(true)
 
     const payload = {
       fullname: values.fullname,
       contactNumber: values.contactNumber,
       email: values.email,
-      note: values.note || "", // `note` can be empty string if not provided
+      note: values.note || "", // note can be empty string if not provided
       consultationTopicId: values.consultationTopicId,
-    };
+      hasContact: false, // Default value for new requests
+      statisticId: null, // Default value as shown in API response
+    }
 
     try {
       const response = await fetch(
@@ -423,27 +417,29 @@ const Contact = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(payload),
-        }
-      );
+        },
+      )
 
       if (response.ok) {
-        message.success("Yêu cầu tư vấn của bạn đã được gửi thành công!");
-        form.resetFields(); // Clear form fields on success
+        message.success("Yêu cầu tư vấn của bạn đã được gửi thành công!")
+        form.resetFields() // Clear form fields on success
       } else {
-        const errorData = await response.json();
-        console.error("API submission error:", errorData);
-        message.error(`Gửi yêu cầu thất bại: ${errorData.message || response.statusText}`);
+        const errorData = await response.json()
+        console.error("API submission error:", errorData)
+        message.error(`Gửi yêu cầu thất bại: ${errorData.message || response.statusText}`)
       }
     } catch (error) {
-      console.error("Network or submission error:", error);
-      message.error("Có lỗi xảy ra khi gửi yêu cầu tư vấn. Vui lòng thử lại.");
+      console.error("Network or submission error:", error)
+      message.error("Có lỗi xảy ra khi gửi yêu cầu tư vấn. Vui lòng thử lại.")
+    } finally {
+      setLoading(false)
     }
-  };
+  }
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-    message.error("Vui lòng điền đầy đủ và đúng định dạng các trường bắt buộc.");
-  };
+    console.log("Failed:", errorInfo)
+    message.error("Vui lòng điền đầy đủ và đúng định dạng các trường bắt buộc.")
+  }
 
   return (
     <div className="contact-page">
@@ -451,7 +447,7 @@ const Contact = () => {
       <section className="contact-hero">
         <div className="half-circle-container">
           <div className="half-circle">
-            <img src={contact} alt="Nhan vien tu van" />
+            <img src={contact || "/placeholder.svg"} alt="Nhan vien tu van" />
           </div>
         </div>
       </section>
@@ -513,9 +509,7 @@ const Contact = () => {
 
             <div
               className="contact-card"
-              onClick={() =>
-                window.open("https://www.facebook.com/nentangsonova", "_blank")
-              }
+              onClick={() => window.open("https://www.facebook.com/nentangsonova", "_blank")}
             >
               <div className="contact-icon">
                 <FacebookOutlined />
@@ -541,6 +535,7 @@ const Contact = () => {
                 nentangsonova
               </p>
             </div>
+
             <div className="contact-card">
               <div className="contact-icon">
                 <HomeOutlined />
@@ -572,10 +567,10 @@ const Contact = () => {
 
           <div className="map-container">
             <div className="map-wrapper">
-              <img src={maps} alt="SONOVA Location Map" className="map-image" />
+              <img src={maps || "/placeholder.svg"} alt="SONOVA Location Map" className="map-image" />
               <div className="map-overlay">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.895315354964!2d106.7725916744883!3d10.817757989332214!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752601d368e737%3A0x6b2b7b5c1c0e3a6c!2zMjJBLCBExrCah_iIMzU5LCBQLiBUxINuZyBOaMW7oW4gUGjDuiwgUXXhuq1uIDksIFRow6BuaCBwaOG7kSBI4buTIEPDrSBNaW5oLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1719572459998!5m2!1svi!2s" // Updated to a valid embed link
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.895315354964!2d106.7725916744883!3d10.817757989332214!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752601d368e737%3A0x6b2b7b5c1c0e3a6c!2zMjJBLCBExrCah_iIMzU5LCBQLiBUxINuZyBOaMW7oW4gUGjDuiwgUXXhuq1uIDksIFRow6BuaCBwaOG7kSBI4buTIEPDrSBNaW5oLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1719572459998!5m2!1svi!2s"
                   width="100%"
                   height="400"
                   style={{ border: 0 }}
@@ -604,14 +599,18 @@ const Contact = () => {
                 layout="vertical"
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
-                className="consultation-form" // Reuse your CSS class if needed
+                className="consultation-form"
               >
                 <div className="form-row">
                   <Form.Item
                     name="fullname"
                     label={<span className="h5g">Họ tên:</span>}
-                    rules={[{ required: true, message: "Vui lòng nhập họ tên của bạn!" }]}
-                    className="form-group" // Reuse your CSS class
+                    rules={[
+                      { required: true, message: "Vui lòng nhập họ tên của bạn!" },
+                      { min: 2, message: "Họ tên phải có ít nhất 2 ký tự!" },
+                      { max: 50, message: "Họ tên không được quá 50 ký tự!" },
+                    ]}
+                    className="form-group"
                   >
                     <Input placeholder="Nhập tên của bạn" />
                   </Form.Item>
@@ -621,11 +620,14 @@ const Contact = () => {
                     label={<span className="h5g">Số điện thoại:</span>}
                     rules={[
                       { required: true, message: "Vui lòng nhập số điện thoại!" },
-                      { pattern: /^[0-9]{10,11}$/, message: "Số điện thoại không hợp lệ!" }, // Basic phone number validation
+                      {
+                        pattern: /^(0[3|5|7|8|9])+([0-9]{8})$/,
+                        message: "Số điện thoại không hợp lệ! (VD: 0901234567)",
+                      },
                     ]}
                     className="form-group"
                   >
-                    <Input placeholder="+84" />
+                    <Input placeholder="0901234567" />
                   </Form.Item>
                 </div>
 
@@ -647,7 +649,7 @@ const Contact = () => {
                   rules={[{ required: true, message: "Vui lòng chọn nhu cầu tư vấn!" }]}
                   className="form-group"
                 >
-                  <Select placeholder="Chọn một danh mục">
+                  <Select placeholder="Chọn một danh mục" loading={consultationTopics.length === 0}>
                     {consultationTopics.map((topic) => (
                       <Option key={topic.consultationTopicId} value={topic.consultationTopicId}>
                         {topic.consultationTopicName}
@@ -660,33 +662,32 @@ const Contact = () => {
                   name="note"
                   label={<span className="h5g">Ghi chú (nếu có):</span>}
                   className="form-group"
+                  rules={[{ max: 500, message: "Ghi chú không được quá 500 ký tự!" }]}
                 >
                   <Input.TextArea
                     rows={6}
                     placeholder="Nhập thêm thông tin bạn muốn chúng tôi biết để quá trình tư vấn hiệu quả hơn"
+                    showCount
+                    maxLength={500}
                   />
                 </Form.Item>
 
                 <Form.Item>
-                  <Button type="primary" htmlType="submit" className="submit-btn">
-                    Gửi
+                  <Button type="primary" htmlType="submit" className="submit-btn" loading={loading} size="large">
+                    {loading ? "Đang gửi..." : "Gửi"}
                   </Button>
                 </Form.Item>
               </Form>
             </div>
 
             <div className="process-flow-wrapper">
-              <img
-                src={qttv}
-                alt="Quy trình tư vấn"
-                className="process-image"
-              />
+              <img src={qttv || "/placeholder.svg"} alt="Quy trình tư vấn" className="process-image" />
             </div>
           </div>
         </div>
       </section>
     </div>
-  );
-};
+  )
+}
 
-export default Contact;
+export default Contact

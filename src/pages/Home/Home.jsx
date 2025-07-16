@@ -22,86 +22,7 @@ const Home = () => {
             </div>
           </section>
 
-      {/* <section className="hero-section">
-  <div className="hero-half hero-left">
-    <div className="hero-image-container">
-      <img
-        src="https://hellosimply.com/blog/wp-content/uploads/2022/10/Untitled-design-56-1200x600.png"
-        alt="Child with guitar"
-        className="hero-image"
-      />
-      <div className="hero-logo-overlay">
-        <span className="hero-logo-text">SONOVA</span>
-      </div>
-    </div>
-  </div>
 
-  <div className="hero-half hero-right">
-    <div className="hero-image-container">
-      <img
-        src="https://wedowegood-school.edu.vn/wp-content/uploads/2021/07/YoungGirlPlayingPiano-BestAgeToStartPiano-PianoKids-6170ArbutusDrPensacolaFL32504-8445574266-https___www.pianokids.com_.jpg"
-        alt="Music theme"
-        className="hero-image"
-      />
-      <div className="hero-right-overlay">
-        <Button type="primary" size="large" className="register-button">
-          ĐĂNG KÝ TƯ VẤN
-        </Button>
-        <div className="vertical-text">ÂM NHẠC & ƯỚC MƠ</div>
-      </div>
-    </div>
-  </div>
-</section> */}
-
-
-      {/* <section className="hero-section">
-        <div className="hero-content">
-          <Row align="middle">
-            <Col xs={24} md={12}>
-              <div className="hero-left">
-                <div className="hero-image-container">
-                  <div className="hero-background-shape"></div>
-                  <img
-                    src="https://i.ytimg.com/vi/Jbxv-yyU0LE/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLDrpXqrJKWkPVw8RhB_uKBah4TXIw"
-                    alt="Child with guitar"
-                    className="hero-image"
-                  />
-                  <div className="hero-logo-overlay">
-                    <span className="hero-logo-text">SONOVA</span>
-                  </div>
-                </div>
-              </div>
-            </Col>
-            <Col xs={24} md={12}>
-              <div className="hero-right">
-                <div className="instrument-grid">
-                  <div className="instrument-item">
-                    <img src={chohoang} alt="Piano keys" />
-                  </div>
-                  <div className="instrument-item">
-                    <img src={chohoang} alt="Guitar" />
-                  </div>
-                  <div className="instrument-item">
-                    <img src={chohoang} alt="Drums" />
-                  </div>
-                </div>
-                <div className="register-button-container">
-                  <Button
-                    type="primary"
-                    size="large"
-                    className="register-button"
-                  >
-                    ĐĂNG KÝ TƯ VẤN
-                  </Button>
-                </div>
-                <div className="vertical-text">ÂM NHẠC & UỚC MƠ</div>
-              </div>
-            </Col>
-          </Row>
-        </div>
-      </section> */}
-
-      {/* Main Content Section */}
       <section className="main-content-section">
         <div className="content-container">
           <div className="content-header">
@@ -196,7 +117,7 @@ const Home = () => {
                     PIANO NÂNG CAO
                   </Title>
                   <Paragraph className="course-desc">
-                    Lớp học dành cho những người đã có kiến thức, cơ bảntừ những gam
+                    Lớp học dành cho những người đã có kiến thức, cơ bản từ những gam
                     đơn đơn đến lên?
                   </Paragraph>
 
@@ -315,20 +236,22 @@ const Home = () => {
               Với hơn 10 năm kinh nghiệm trong nghề, giảng viên không chỉ sở hữu
               kiến thức chuyên môn sâu rộng mà còn có phương pháp giảng dạy sáng
               tạo, dễ hiểu, giúp học viên nhanh chóng nắm bắt và yêu thích âm
-              nhạc.
+              nhạc.<br/><br/>
+
+              Giảng viên của chúng tôi là người giàu kinh nghiệm trong việc giảng
+            dạy và biểu diễn piano, guitar. Bạn sẽ được dẫn dắt qua từng giai
+            đoạn, từ cách đọc hợp âm đến việc chơi các kỹ thuật phức tạp, mang
+            đến cho bạn khả năng biểu diễn đa dạng từ nhạc cổ điển đến hiện đại.
             </p>
           </div>
         </div>
 
         {/* Bottom section: Detailed description */}
-        <div className="teacher-bottom">
+        {/* <div className="teacher-bottom">
           <p className="teacher-details-home">
-            Giảng viên của chúng tôi là người giàu kinh nghiệm trong việc giảng
-            dạy và biểu diễn piano, guitar. Bạn sẽ được dẫn dắt qua từng giai
-            đoạn, từ cách đọc hợp âm đến việc chơi các kỹ thuật phức tạp, mang
-            đến cho bạn khả năng biểu diễn đa dạng từ nhạc cổ điển đến hiện đại.
+            
           </p>
-        </div>
+        </div> */}
       </div>
 
       <div className="testimonials-section-home">

@@ -168,20 +168,25 @@ const AboutUs = () => {
               Với hơn 10 năm kinh nghiệm trong nghề, giảng viên không chỉ sở hữu
               kiến thức chuyên môn sâu rộng mà còn có phương pháp giảng dạy sáng
               tạo, dễ hiểu, giúp học viên nhanh chóng nắm bắt và yêu thích âm
-              nhạc.
+              nhạc.<br/><br/>
+
+              Giảng viên của chúng tôi là người giàu kinh nghiệm trong việc giảng
+            dạy và biểu diễn piano, guitar. Bạn sẽ được dẫn dắt qua từng giai
+            đoạn, từ cách đọc hợp âm đến việc chơi các kỹ thuật phức tạp, mang
+            đến cho bạn khả năng biểu diễn đa dạng từ nhạc cổ điển đến hiện đại.
             </p>
           </div>
         </div>
 
         {/* Bottom section: Detailed description */}
-        <div className="teacher-bottom">
+        {/* <div className="teacher-bottom">
           <p className="teacher-details-home">
             Giảng viên của chúng tôi là người giàu kinh nghiệm trong việc giảng
             dạy và biểu diễn piano, guitar. Bạn sẽ được dẫn dắt qua từng giai
             đoạn, từ cách đọc hợp âm đến việc chơi các kỹ thuật phức tạp, mang
             đến cho bạn khả năng biểu diễn đa dạng từ nhạc cổ điển đến hiện đại.
           </p>
-        </div>
+        </div> */}
       </div>
 
       <div className="testimonials-section-home">

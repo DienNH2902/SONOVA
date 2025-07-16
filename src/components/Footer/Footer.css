@@ -84,15 +84,6 @@
   font-weight: bold;
 }
 
-@media (max-width: 768px) {
-  .footer-content {
-    padding: 0 16px;
-  }
-
-  .footer {
-    padding: 30px 0 15px 0;
-  }
-}
 
 .footer-section-first {
   max-width: 400px;
@@ -104,3 +95,109 @@
   font-family: 'UTM Americana' ;
   color: #1e3a5f !important;
 }
+
+@media (max-width: 1000px) {
+  
+
+  .footer-logo-text {
+    font-size: 20px !important;
+  }
+}
+
+@media (max-width: 800px) {
+  
+
+  .footer-logo-text {
+    font-size: 20px !important;
+  }
+}
+
+@media (max-width: 700px) {
+  
+
+  .footer-logo-text {
+    font-size: 15px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .footer-logo-text {
+    font-size: 15px !important;
+  }
+
+  .footer-title {
+    font-size: 18px !important;
+  }
+
+  .footer-text {
+    font-size: 14px !important;
+  }
+
+  .footer-link {
+    font-size: 14px !important;
+  }
+
+  .social-link {
+    font-size: 14px !important;
+  }
+}
+
+@media (max-width: 540px) {
+  
+
+  .footer-logo-text {
+    font-size: 15px !important;
+  }
+}
+
+@media (max-width: 525px) {
+  
+
+  .footer-logo-text {
+    font-size: 13px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-content {
+    padding: 0 8px;
+  }
+
+  .row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .col {
+    max-width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .footer-logo-text {
+    font-size: 20px !important;
+  }
+}
+
+@media (max-width: 450px) {
+  .footer-logo-text {
+    font-size: 18px !important;
+  }
+
+  .footer-title {
+    font-size: 16px !important;
+  }
+
+  .footer-text {
+    font-size: 12px !important;
+  }
+
+  .footer-link {
+    font-size: 12px !important;
+  }
+
+  .social-link {
+    font-size: 12px !important;
+  }
+}
+

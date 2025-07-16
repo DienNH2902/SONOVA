@@ -12,7 +12,7 @@
   /* background: #1e3a5f; */
   padding: 0;
   margin: 0;
-  height: 500px; /* Ensure the body takes the full height of the Drawer */
+  height: 600px; /* Ensure the body takes the full height of the Drawer */
 }
 
 /* Hide the Drawer header */
@@ -22,7 +22,7 @@
 
 /* Style the sidebar content */
 .sidebar-content {
-  height: 600px; /* Use 100% instead of 100vh to fit within the Drawer */
+  height: 750px; /* Use 100% instead of 100vh to fit within the Drawer */
   display: flex;
   flex-direction: column;
   background: #2a4a73;

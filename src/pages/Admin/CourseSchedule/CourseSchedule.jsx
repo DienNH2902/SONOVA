@@ -2215,18 +2215,42 @@
 
 
 
-"use client";
+"use client"
 
-import { Typography, Table, Spin, Button, Space, Card, Select, App, Modal, Form, Input, DatePicker, InputNumber, Checkbox, Tag, Tooltip } from "antd"; // Import Tooltip
-import { FilterOutlined, EditOutlined, SaveOutlined, CloseOutlined, PlusOutlined, DeleteOutlined } from "@ant-design/icons"; // Import DeleteOutlined
-import { useState, useEffect, useRef, useMemo } from "react";
-import dayjs from 'dayjs';
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-dayjs.extend(isSameOrBefore);
-import "./CourseSchedule.css"; // Đảm bảo đường dẫn đúng
+import {
+  Typography,
+  Table,
+  Spin,
+  Button,
+  Space,
+  Card,
+  Select,
+  App,
+  Modal,
+  Form,
+  Input,
+  DatePicker,
+  InputNumber,
+  Checkbox,
+  Tag,
+  Tooltip,
+} from "antd"
+import {
+  FilterOutlined,
+  EditOutlined,
+  SaveOutlined,
+  CloseOutlined,
+  PlusOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons"
+import { useState, useEffect, useRef, useMemo } from "react"
+import dayjs from "dayjs"
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore"
+dayjs.extend(isSameOrBefore)
+import "./CourseSchedule.css"
 
-const { Title } = Typography;
-const { Option } = Select;
+const { Title } = Typography
+const { Option } = Select
 
 // Mapping for weekdays (short code to Vietnamese name)
 const dayMapToVietnamese = {
@@ -2237,7 +2261,7 @@ const dayMapToVietnamese = {
   Fri: "Thứ 6",
   Sat: "Thứ 7",
   Sun: "Chủ nhật",
-};
+}
 
 // Mapping for weekdays (Ant Design Select value to Vietnamese name)
 const weekdayOptions = [
@@ -2248,225 +2272,286 @@ const weekdayOptions = [
   { label: "Thứ 6", value: "Fri" },
   { label: "Thứ 7", value: "Sat" },
   { label: "Chủ nhật", value: "Sun" },
-];
+]
 
 const CourseSchedule = () => {
-  const [openingSchedules, setOpeningSchedules] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [subjectFilter, setSubjectFilter] = useState(null);
-  const [teacherFilter, setTeacherFilter] = useState(null);
-  const [subjects, setSubjects] = useState([]);
-  const [teachers, setTeachers] = useState([]);
+  const [openingSchedules, setOpeningSchedules] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [subjectFilter, setSubjectFilter] = useState(null)
+  const [teacherFilter, setTeacherFilter] = useState(null)
+  const [subjects, setSubjects] = useState([])
+  const [teachers, setTeachers] = useState([])
+  const [teacherUserId, setTeacherUserId] = useState(null) // Declare teacherUserId variable
+  const [availableTeachers, setAvailableTeachers] = useState([]) // List of teacher objects for dropdowns
+  const hasFetchedTeachers = useRef(false) // Ref to ensure teachers are fetched only once
 
   // States cho modal CẬP NHẬT
-  const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
-  const [currentRecord, setCurrentRecord] = useState(null);
-  const [updateForm] = Form.useForm(); // Form instance cho modal cập nhật
+  const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false)
+  const [currentRecord, setCurrentRecord] = useState(null)
+  const [updateForm] = Form.useForm()
 
   // States cho modal THÊM MỚI
-  const [isAddModalVisible, setIsAddModalVisible] = useState(false);
-  const [isAdvancedClassToAdd, setIsAdvancedClassToAdd] = useState(false); // Để xác định lớp cơ bản/nâng cao khi thêm
-  const [addForm] = Form.useForm(); // Form instance cho modal thêm mới
+  const [isAddModalVisible, setIsAddModalVisible] = useState(false)
+  const [isAdvancedClassToAdd, setIsAdvancedClassToAdd] = useState(false)
+  const [addForm] = Form.useForm()
 
-  const { message: antdMessage, modal: antdModal } = App.useApp(); // Lấy thêm modal từ App
-
-  const hasFetchedSchedules = useRef(false);
-
-  // Teacher mapping as provided in your original code (may not be used if API provides teacherName directly)
-  const teacherMapping = {
-    "Basic Piano": "Nguyễn Văn A",
-    "Advanced Piano": "Nguyễn Văn A",
-    "Basic Guitar": "Trần Thị B",
-    "Advanced Guitar": "Trần Thị B",
-  };
+  const { message: antdMessage, modal: antdModal } = App.useApp()
+  const hasFetchedSchedules = useRef(false)
 
   // Function to fetch opening schedules
   const fetchOpeningSchedules = async () => {
     try {
-      setLoading(true);
+      setLoading(true)
       const response = await fetch(
-        "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/OpeningSchedule"
-      );
+        "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/OpeningSchedule",
+      )
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`HTTP error! status: ${response.status}`)
       }
-      const data = await response.json();
-      if (data.$values) {
-        setOpeningSchedules(data.$values);
+      const data = await response.json()
 
-        // Extract unique subjects and teachers from fetched data
-        const uniqueSubjects = [...new Set(data.$values.map(item => item.subject.replace("Basic ", "").replace("Advanced ", "")))];
-        // Collect all teacher names, then map them to the teacherMapping if needed for consistency, otherwise use directly
-        const allTeacherNamesFromApi = data.$values.map(item => item.teacherName).filter(Boolean);
-        const uniqueTeachers = [...new Set(allTeacherNamesFromApi)]; // Use directly from API if present
-        setSubjects(uniqueSubjects);
-        setTeachers(uniqueTeachers);
+      if (Array.isArray(data)) {
+        setOpeningSchedules(data)
+
+        // Extract unique subjects from instrument names
+        const uniqueSubjects = [...new Set(data.map((item) => item.instrument?.instrumentName).filter(Boolean))]
+
+        // Extract unique teacher names for filtering
+        const allTeacherNamesFromApi = data.map((item) => item.teacherUser?.accountName?.trim()).filter(Boolean)
+        const uniqueTeachersForFilter = [...new Set(allTeacherNamesFromApi)]
+
+        setSubjects(uniqueSubjects)
+        setTeachers(uniqueTeachersForFilter)
       } else {
-        setOpeningSchedules([]);
-        setSubjects([]);
-        setTeachers([]);
+        setOpeningSchedules([])
+        setSubjects([])
+        setTeachers([])
       }
     } catch (error) {
-      console.error("Error fetching opening schedules:", error);
-      antdMessage.error("Không thể tải dữ liệu lịch học.");
+      console.error("Error fetching opening schedules:", error)
+      antdMessage.error("Không thể tải dữ liệu lịch học.")
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
+
+  // Function to fetch available teachers
+  const fetchAvailableTeachers = async () => {
+    try {
+      const token = localStorage.getItem("token") // Get token from localStorage
+      if (!token) {
+        antdMessage.error("Không tìm thấy token xác thực. Vui lòng đăng nhập lại.")
+        return
+      }
+
+      const response = await fetch("https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/User", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          antdMessage.error("Phiên đăng nhập hết hạn hoặc không có quyền truy cập. Vui lòng đăng nhập lại.")
+        } else {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        return
+      }
+
+      const users = await response.json()
+      if (Array.isArray(users)) {
+        // Filter users to get only teachers (assuming roleId: 2 is for Teacher)
+        const teachersData = users.filter((user) => user.roleId === 2 && !user.isDisabled)
+        setAvailableTeachers(teachersData)
+      } else {
+        setAvailableTeachers([])
+      }
+    } catch (error) {
+      console.error("Error fetching available teachers:", error)
+      antdMessage.error(`Không thể tải danh sách giảng viên: ${error.message || "Lỗi không xác định"}`)
+    }
+  }
 
   useEffect(() => {
-    if (hasFetchedSchedules.current) return;
-    hasFetchedSchedules.current = true;
-    fetchOpeningSchedules();
-  }, [antdMessage]);
+    if (hasFetchedSchedules.current) return
+    hasFetchedSchedules.current = true
+    fetchOpeningSchedules()
+  }, [antdMessage])
+
+  // Add useEffect to fetch teachers
+  useEffect(() => {
+    if (!hasFetchedTeachers.current) {
+      hasFetchedTeachers.current = true
+      fetchAvailableTeachers()
+    }
+  }, [])
 
   // Transform schedule data to match your table's display
   const transformScheduleData = (schedules) => {
     return schedules.map((schedule, index) => {
-      const { openingDay, endDate, schedule: rawSchedule, studentQuantity } = schedule;
+      const { openingDay, endDate, schedule: rawSchedule, studentQuantity } = schedule
 
-      let transformedSchedule = {
+      // Get subject from instrument object
+      const subjectName = schedule.instrument?.instrumentName || "Không xác định"
+
+      // Get teacher name from nested structure
+      const teacherName = schedule.teacherUser?.accountName?.trim() || "Chưa phân công"
+
+      const transformedSchedule = {
         key: schedule.openingScheduleId.toString(),
         stt: index + 1,
-        openingScheduleId: schedule.openingScheduleId, // Keep original ID for update
-        subject: schedule.subject.replace("Basic ", "").replace("Advanced ", ""), // Remove prefix for display
-        teacherName: schedule.teacherName, // Use teacherName from API directly
+        openingScheduleId: schedule.openingScheduleId,
+        subject: subjectName,
+        teacherName: teacherName,
         classCode: schedule.classCode,
         openingDay: openingDay,
         endDate: endDate,
         isAdvancedClass: schedule.isAdvancedClass,
-        studentQuantity: studentQuantity, // Keep original for update form
-
-        // Parse schedule string back to parts for forms
+        studentQuantity: studentQuantity,
+        rawSchedule: rawSchedule,
+        instrumentId: schedule.instrumentId, // Add instrumentId for form handling
         scheduleDays: [],
         scheduleTime: "",
-      };
-
-      if (rawSchedule) {
-        const parts = rawSchedule.split(" ");
-        const dayCodes = parts[0].split('/');
-        transformedSchedule.scheduleDays = dayCodes; // Store as array of Mon, Tue, etc.
-        transformedSchedule.scheduleTime = parts.slice(1).join(" "); // Store "HH:MM to HH:MM"
-
-        // For display in table
-        const timeRegex = /(\d{2}:\d{2}) to (\d{2}:\d{2})/;
-        const matchTime = transformedSchedule.scheduleTime.match(timeRegex);
-        let displayTime = '';
-        if (matchTime) {
-            displayTime = `(${matchTime[1]} - ${matchTime[2]})`;
-        }
-        const convertedDaysForDisplay = dayCodes
-            .map((day) => dayMapToVietnamese[day] || day)
-            .join(" / ");
-        transformedSchedule.displaySchedule = `${convertedDaysForDisplay} ${displayTime}`;
       }
 
-      transformedSchedule.displayCapacity = `${Math.floor(studentQuantity * 0.7)}/${studentQuantity}`;
+      // Try to parse the schedule if it follows the expected format
+      if (rawSchedule && typeof rawSchedule === "string") {
+        const scheduleRegex = /^([A-Za-z/]+)\s+(\d{2}:\d{2}\s+to\s+\d{2}:\d{2})$/
+        const match = rawSchedule.match(scheduleRegex)
 
-      return transformedSchedule;
-    });
-  };
+        if (match) {
+          const dayCodes = match[1].split("/")
+          transformedSchedule.scheduleDays = dayCodes
+          transformedSchedule.scheduleTime = match[2]
 
-  const transformedData = useMemo(() => transformScheduleData(openingSchedules), [openingSchedules]);
+          const timeRegex = /(\d{2}:\d{2}) to (\d{2}:\d{2})/
+          const matchTime = transformedSchedule.scheduleTime.match(timeRegex)
+          let displayTime = ""
+          if (matchTime) {
+            displayTime = `(${matchTime[1]} - ${matchTime[2]})`
+          }
+
+          const convertedDaysForDisplay = dayCodes.map((day) => dayMapToVietnamese[day] || day).join(" / ")
+          transformedSchedule.displaySchedule = `${convertedDaysForDisplay} ${displayTime}`
+        } else {
+          transformedSchedule.displaySchedule = rawSchedule
+        }
+      } else {
+        transformedSchedule.displaySchedule = rawSchedule || "Chưa có lịch"
+      }
+
+      transformedSchedule.displayCapacity = `${Math.floor(studentQuantity * 0.7)}/${studentQuantity}`
+      return transformedSchedule
+    })
+  }
+
+  const transformedData = useMemo(() => transformScheduleData(openingSchedules), [openingSchedules])
 
   // Memoized filtered data
   const filteredSchedules = useMemo(() => {
-    let filtered = transformedData;
-
+    let filtered = transformedData
     if (subjectFilter) {
-      filtered = filtered.filter(schedule => schedule.subject === subjectFilter);
+      filtered = filtered.filter((schedule) => schedule.subject === subjectFilter)
     }
     if (teacherFilter) {
-      filtered = filtered.filter(schedule => schedule.teacherName === teacherFilter);
+      filtered = filtered.filter((schedule) => schedule.teacherName === teacherFilter)
     }
-    return filtered;
-  }, [transformedData, subjectFilter, teacherFilter]);
+    return filtered
+  }, [transformedData, subjectFilter, teacherFilter])
 
   // Phân chia lịch học cơ bản và nâng cao
   const basicSchedules = useMemo(() => {
-    return filteredSchedules.filter(schedule => !schedule.isAdvancedClass);
-  }, [filteredSchedules]);
+    return filteredSchedules.filter((schedule) => !schedule.isAdvancedClass)
+  }, [filteredSchedules])
 
   const advancedSchedules = useMemo(() => {
-    return filteredSchedules.filter(schedule => schedule.isAdvancedClass);
-  }, [filteredSchedules]);
+    return filteredSchedules.filter((schedule) => schedule.isAdvancedClass)
+  }, [filteredSchedules])
 
   const clearFilters = () => {
-    setSubjectFilter(null);
-    setTeacherFilter(null);
-  };
+    setSubjectFilter(null)
+    setTeacherFilter(null)
+  }
 
   const getCapacityColor = (capacity) => {
-    const [current, total] = capacity.split("/").map(Number);
-    const percentage = (current / total) * 100;
-    if (percentage >= 80) return "red";
-    if (percentage >= 60) return "orange";
-    return "green";
-  };
+    const [current, total] = capacity.split("/").map(Number)
+    const percentage = (current / total) * 100
+    if (percentage >= 80) return "red"
+    if (percentage >= 60) return "orange"
+    return "green"
+  }
 
   const getSubjectColor = (subject) => {
-    const lowerSubject = subject ? subject.toLowerCase() : '';
-    if (lowerSubject.includes("guitar")) return "blue"; // Your original code used blue for Guitar, green for Piano
-    if (lowerSubject.includes("piano")) return "green";
-    return "default"; // Fallback color
-  };
+    const lowerSubject = subject ? subject.toLowerCase() : ""
+    if (lowerSubject.includes("guitar")) return "blue"
+    if (lowerSubject.includes("piano")) return "green"
+    return "default"
+  }
 
   // --- Update Modal Functions ---
   const handleEdit = (record) => {
-    setCurrentRecord(record);
+    setCurrentRecord(record)
     updateForm.setFieldsValue({
       ...record,
       openingDay: record.openingDay ? dayjs(record.openingDay) : null,
       endDate: record.endDate ? dayjs(record.endDate) : null,
-      // scheduleDays and scheduleTime are already parsed in transformScheduleData
-    });
-    setIsUpdateModalVisible(true);
-  };
+      subject: record.subject,
+      instrumentId: record.instrumentId,
+      isAdvancedClass: record.isAdvancedClass,
+      teacherName: record.teacherName === "Chưa phân công" ? undefined : record.teacherName,
+    })
+    setIsUpdateModalVisible(true)
+  }
 
   const handleUpdateModalCancel = () => {
-    setIsUpdateModalVisible(false);
-    setCurrentRecord(null);
-    updateForm.resetFields();
-  };
+    setIsUpdateModalVisible(false)
+    setCurrentRecord(null)
+    updateForm.resetFields()
+  }
 
   const handleUpdateModalOk = async () => {
     try {
-      const values = await updateForm.validateFields();
-      const subjectPrefix = values.isAdvancedClass ? "Advanced " : "Basic ";
-      const fullSubjectName = subjectPrefix + values.subject;
+      const values = await updateForm.validateFields()
 
-      // Combine scheduleDays and scheduleTime into one string
-      const scheduleDaysPart = values.scheduleDays;
-      const scheduleTimePart = values.scheduleTime;
+      // Combine scheduleDays and scheduleTime into one string if provided
+      let finalSchedule = values.rawSchedule // Use existing schedule as fallback
 
-      if (!scheduleDaysPart || scheduleDaysPart.length === 0) {
-        antdMessage.error("Vui lòng chọn các ngày học trong tuần.");
-        return;
+      if (values.scheduleDays && values.scheduleDays.length > 0 && values.scheduleTime) {
+        const timeRegex = /^\d{2}:\d{2} to \d{2}:\d{2}$/
+        if (!timeRegex.test(values.scheduleTime)) {
+          antdMessage.error("Vui lòng nhập thời gian học theo định dạng HH:MM to HH:MM (VD: 18:00 to 19:30)")
+          return
+        }
+        finalSchedule = `${values.scheduleDays.join("/")} ${values.scheduleTime}`
       }
-      const timeRegex = /^\d{2}:\d{2} to \d{2}:\d{2}$/;
-      if (!timeRegex.test(scheduleTimePart)) {
-        antdMessage.error("Vui lòng nhập thời gian học theo định dạng HH:MM to HH:MM (VD: 18:00 to 19:30)");
-        return;
-      }
-      const finalSchedule = `${scheduleDaysPart.join('/')} ${scheduleTimePart}`;
 
-      const scheduleIdToUpdate = currentRecord.openingScheduleId;
+      const scheduleIdToUpdate = currentRecord.openingScheduleId
       if (!scheduleIdToUpdate) {
-        throw new Error("Không tìm thấy ID lịch học để cập nhật.");
+        throw new Error("Không tìm thấy ID lịch học để cập nhật.")
+      }
+
+      // Find the teacher's userId based on their accountName
+      const selectedTeacher = availableTeachers.find((teacher) => teacher.accountName === values.teacherName)
+      const teacherUserId = selectedTeacher ? selectedTeacher.userId : null
+
+      if (!teacherUserId && values.teacherName) {
+        antdMessage.error("Giảng viên được chọn không hợp lệ. Vui lòng chọn lại.")
+        return
       }
 
       const updatedData = {
-        openingScheduleId: scheduleIdToUpdate, // <--- DÒNG NÀY ĐÃ ĐƯỢC THÊM VÀO!
-        subject: fullSubjectName,
+        openingScheduleId: scheduleIdToUpdate,
+        instrumentId: values.subject === "Piano" ? 2 : 1,
         classCode: values.classCode,
-        openingDay: values.openingDay ? values.openingDay.format('YYYY-MM-DD') : null,
-        endDate: values.endDate ? values.endDate.format('YYYY-MM-DD') : null,
-        schedule: finalSchedule, // Use the combined schedule string
+        openingDay: values.openingDay ? values.openingDay.format("YYYY-MM-DD") : null,
+        endDate: values.endDate ? values.endDate.format("YYYY-MM-DD") : null,
+        schedule: finalSchedule,
         studentQuantity: values.studentQuantity,
         isAdvancedClass: values.isAdvancedClass || false,
-        teacherName: values.teacherName, // Use teacherName from form
-      };
-
+        teacherUserId: teacherUserId,
+      }
 
       const response = await fetch(
         `https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/OpeningSchedule/${scheduleIdToUpdate}`,
@@ -2476,43 +2561,44 @@ const CourseSchedule = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(updatedData),
-        }
-      );
+        },
+      )
 
       if (response.ok) {
-        antdMessage.success("Cập nhật lịch học thành công!");
-        setIsUpdateModalVisible(false);
-        setCurrentRecord(null);
-        updateForm.resetFields();
-        fetchOpeningSchedules();
+        antdMessage.success("Cập nhật lịch học thành công!")
+        setIsUpdateModalVisible(false)
+        setCurrentRecord(null)
+        updateForm.resetFields()
+        fetchOpeningSchedules()
       } else {
-        const errorData = await response.json();
-        console.error("Error updating schedule:", errorData);
-        // Kiểm tra lỗi trùng lặp mã lớp
+        const errorData = await response.json()
+        console.error("Error updating schedule:", errorData)
         if (errorData.errors && errorData.errors.ClassCode && errorData.errors.ClassCode.length > 0) {
-          antdMessage.error(`Cập nhật lịch học thất bại: ${errorData.errors.ClassCode[0]}`);
+          antdMessage.error(`Cập nhật lịch học thất bại: ${errorData.errors.ClassCode[0]}`)
         } else {
-          antdMessage.error(`Cập nhật lịch học thất bại: ${errorData.message || response.statusText || "Lỗi không xác định"}`);
+          antdMessage.error(
+            `Cập nhật lịch học thất bại: ${errorData.message || response.statusText || "Lỗi không xác định"}`,
+          )
         }
       }
     } catch (error) {
-      console.error("Validation failed or network error:", error);
+      console.error("Validation failed or network error:", error)
       if (error.errorFields) {
-        antdMessage.error("Vui lòng điền đầy đủ và đúng định dạng các trường.");
+        antdMessage.error("Vui lòng điền đầy đủ và đúng định dạng các trường.")
       } else {
-        antdMessage.error(`Có lỗi xảy ra: ${error.message || "Lỗi không xác định"}`);
+        antdMessage.error(`Có lỗi xảy ra: ${error.message || "Lỗi không xác định"}`)
       }
     }
-  };
+  }
 
   // --- Delete Function ---
   const handleDelete = (record) => {
     antdModal.confirm({
-      title: 'Xác nhận xóa lịch học',
+      title: "Xác nhận xóa lịch học",
       content: `Bạn có chắc chắn muốn xóa lịch học mã lớp "${record.classCode}" của môn "${record.subject}"?`,
-      okText: 'Xóa',
-      okType: 'danger',
-      cancelText: 'Hủy',
+      okText: "Xóa",
+      okType: "danger",
+      cancelText: "Hủy",
       onOk: async () => {
         try {
           const response = await fetch(
@@ -2522,68 +2608,77 @@ const CourseSchedule = () => {
               headers: {
                 "Content-Type": "application/json",
               },
-            }
-          );
-
+            },
+          )
           if (response.ok) {
-            antdMessage.success("Xóa lịch học thành công!");
-            fetchOpeningSchedules(); // Refresh data after successful deletion
+            antdMessage.success("Xóa lịch học thành công!")
+            fetchOpeningSchedules()
           } else {
-            const errorData = await response.json();
-            console.error("Error deleting schedule:", errorData);
-            antdMessage.error(`Xóa lịch học thất bại: ${errorData.message || response.statusText || "Lỗi không xác định"}`);
+            const errorData = await response.json()
+            console.error("Error deleting schedule:", errorData)
+            antdMessage.error(
+              `Xóa lịch học thất bại: ${errorData.message || response.statusText || "Lỗi không xác định"}`,
+            )
           }
         } catch (error) {
-          console.error("Network error during deletion:", error);
-          antdMessage.error(`Có lỗi xảy ra khi xóa: ${error.message || "Lỗi không xác định"}`);
+          console.error("Network error during deletion:", error)
+          antdMessage.error(`Có lỗi xảy ra khi xóa: ${error.message || "Lỗi không xác định"}`)
         }
       },
-    });
-  };
-
+    })
+  }
 
   // --- Add New Schedule Modal Functions ---
   const handleAddClass = (type) => {
-    addForm.resetFields();
-    setIsAdvancedClassToAdd(type === "advanced");
-    setIsAddModalVisible(true);
-  };
+    addForm.resetFields()
+    setIsAdvancedClassToAdd(type === "advanced")
+    setIsAddModalVisible(true)
+  }
 
   const handleAddModalCancel = () => {
-    setIsAddModalVisible(false);
-    addForm.resetFields();
-  };
+    setIsAddModalVisible(false)
+    addForm.resetFields()
+  }
 
   const handleAddModalOk = async () => {
     try {
-      const values = await addForm.validateFields();
-      const subjectPrefix = isAdvancedClassToAdd ? "Advanced " : "Basic ";
-      const fullSubjectName = subjectPrefix + values.subject;
+      const values = await addForm.validateFields()
 
-      const scheduleDaysPart = values.scheduleDays;
-      const scheduleTimePart = values.scheduleTime;
+      const scheduleDaysPart = values.scheduleDays
+      const scheduleTimePart = values.scheduleTime
 
       if (!scheduleDaysPart || scheduleDaysPart.length === 0) {
-        antdMessage.error("Vui lòng chọn các ngày học trong tuần.");
-        return;
+        antdMessage.error("Vui lòng chọn các ngày học trong tuần.")
+        return
       }
-      const timeRegex = /^\d{2}:\d{2} to \d{2}:\d{2}$/;
+
+      const timeRegex = /^\d{2}:\d{2} to \d{2}:\d{2}$/
       if (!timeRegex.test(scheduleTimePart)) {
-        antdMessage.error("Vui lòng nhập thời gian học theo định dạng HH:MM to HH:MM (VD: 18:00 to 19:30)");
-        return;
+        antdMessage.error("Vui lòng nhập thời gian học theo định dạng HH:MM to HH:MM (VD: 18:00 to 19:30)")
+        return
       }
-      const finalSchedule = `${scheduleDaysPart.join('/')} ${scheduleTimePart}`;
+
+      const finalSchedule = `${scheduleDaysPart.join("/")} ${scheduleTimePart}`
+
+      // Find the teacher's userId based on their accountName
+      const selectedTeacher = availableTeachers.find((teacher) => teacher.accountName === values.teacherName)
+      const teacherUserId = selectedTeacher ? selectedTeacher.userId : null
+
+      if (!teacherUserId && values.teacherName) {
+        antdMessage.error("Giảng viên được chọn không hợp lệ. Vui lòng chọn lại.")
+        return
+      }
 
       const newSchedule = {
-        subject: fullSubjectName,
+        instrumentId: values.subject === "Piano" ? 2 : 1,
         classCode: values.classCode,
-        teacherName: values.teacherName, // Use teacherName from form
-        openingDay: values.openingDay ? values.openingDay.format('YYYY-MM-DD') : null,
-        endDate: values.endDate ? values.endDate.format('YYYY-MM-DD') : null,
+        openingDay: values.openingDay ? values.openingDay.format("YYYY-MM-DD") : null,
+        endDate: values.endDate ? values.endDate.format("YYYY-MM-DD") : null,
         schedule: finalSchedule,
-        studentQuantity: parseInt(values.studentQuantity, 10),
+        studentQuantity: Number.parseInt(values.studentQuantity, 10),
         isAdvancedClass: isAdvancedClassToAdd,
-      };
+        teacherUserId: teacherUserId,
+      }
 
       const response = await fetch(
         "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/OpeningSchedule",
@@ -2593,34 +2688,34 @@ const CourseSchedule = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(newSchedule),
-        }
-      );
+        },
+      )
 
       if (response.ok) {
-        antdMessage.success("Thêm lịch khai giảng mới thành công!");
-        setIsAddModalVisible(false);
-        addForm.resetFields();
-        fetchOpeningSchedules();
+        antdMessage.success("Thêm lịch khai giảng mới thành công!")
+        setIsAddModalVisible(false)
+        addForm.resetFields()
+        fetchOpeningSchedules()
       } else {
-        const errorData = await response.json();
-        console.error("Error adding new schedule:", errorData);
-        // Kiểm tra lỗi trùng lặp mã lớp
+        const errorData = await response.json()
+        console.error("Error adding new schedule:", errorData)
         if (errorData.errors && errorData.errors.ClassCode && errorData.errors.ClassCode.length > 0) {
-          antdMessage.error(`Thêm lịch khai giảng thất bại: ${errorData.errors.ClassCode[0]}`);
+          antdMessage.error(`Thêm lịch khai giảng thất bại: ${errorData.errors.ClassCode[0]}`)
         } else {
-          antdMessage.error(`Thêm lịch khai giảng thất bại: ${errorData.message || response.statusText || "Lỗi không xác định"}`);
+          antdMessage.error(
+            `Thêm lịch khai giảng thất bại: ${errorData.message || response.statusText || "Lỗi không xác định"}`,
+          )
         }
       }
     } catch (error) {
-      console.error("Validation failed or network error:", error);
+      console.error("Validation failed or network error:", error)
       if (error.errorFields) {
-        antdMessage.error("Vui lòng điền đầy đủ và đúng định dạng các trường.");
+        antdMessage.error("Vui lòng điền đầy đủ và đúng định dạng các trường.")
       } else {
-        antdMessage.error(`Có lỗi xảy ra: ${error.message || "Lỗi không xác định"}`);
+        antdMessage.error(`Có lỗi xảy ra: ${error.message || "Lỗi không xác định"}`)
       }
     }
-  };
-
+  }
 
   const columns = [
     {
@@ -2650,7 +2745,7 @@ const CourseSchedule = () => {
     },
     {
       title: "Giảng viên",
-      dataIndex: "teacherName", // Changed from 'teacher' to 'teacherName' as per API
+      dataIndex: "teacherName",
       key: "teacherName",
       width: 150,
     },
@@ -2670,7 +2765,7 @@ const CourseSchedule = () => {
     },
     {
       title: "Lịch học",
-      dataIndex: "displaySchedule", // Display the parsed schedule
+      dataIndex: "displaySchedule",
       key: "displaySchedule",
       width: 180,
       align: "center",
@@ -2691,7 +2786,7 @@ const CourseSchedule = () => {
     },
     {
       title: "Sĩ số tối đa",
-      dataIndex: "displayCapacity", // Display the parsed capacity
+      dataIndex: "displayCapacity",
       key: "displayCapacity",
       width: 120,
       align: "center",
@@ -2713,24 +2808,24 @@ const CourseSchedule = () => {
               type="primary"
               icon={<EditOutlined />}
               onClick={() => handleEdit(record)}
-              className="edit-button" // Class from your CSS
-              aria-label="Sửa lịch học" // Thêm aria-label cho accessibility
+              className="edit-button"
+              aria-label="Sửa lịch học"
             />
           </Tooltip>
           <Tooltip title="Xóa lịch học">
             <Button
               type="primary"
-              danger // Màu đỏ cho nút xóa
+              danger
               icon={<DeleteOutlined />}
               onClick={() => handleDelete(record)}
-              className="delete-button" // Thêm class nếu cần CSS riêng
-              aria-label="Xóa lịch học" // Thêm aria-label cho accessibility
+              className="delete-button"
+              aria-label="Xóa lịch học"
             />
           </Tooltip>
         </Space>
       ),
     },
-  ];
+  ]
 
   if (loading) {
     return (
@@ -2744,7 +2839,7 @@ const CourseSchedule = () => {
       >
         <Spin size="large" tip="Đang tải dữ liệu lịch học..." />
       </div>
-    );
+    )
   }
 
   return (
@@ -2789,11 +2884,7 @@ const CourseSchedule = () => {
                 ))}
               </Select>
             </div>
-            <Button
-              icon={<FilterOutlined />}
-              onClick={clearFilters}
-              className="clear-filter-btn"
-            >
+            <Button icon={<FilterOutlined />} onClick={clearFilters} className="clear-filter-btn">
               Xóa bộ lọc
             </Button>
           </Space>
@@ -2814,7 +2905,6 @@ const CourseSchedule = () => {
               Thêm lịch khai giảng
             </Button>
           </div>
-
           <div className="table-container">
             <Table
               columns={columns}
@@ -2824,9 +2914,7 @@ const CourseSchedule = () => {
               size="middle"
             />
             {basicSchedules.length === 0 && !loading && (
-              <div className="no-data-message">
-                Không có lịch học cơ bản nào để hiển thị.
-              </div>
+              <div className="no-data-message">Không có lịch học cơ bản nào để hiển thị.</div>
             )}
           </div>
         </div>
@@ -2846,7 +2934,6 @@ const CourseSchedule = () => {
               Thêm lịch khai giảng
             </Button>
           </div>
-
           <div className="table-container">
             <Table
               columns={columns}
@@ -2856,9 +2943,7 @@ const CourseSchedule = () => {
               size="middle"
             />
             {advancedSchedules.length === 0 && !loading && (
-              <div className="no-data-message">
-                Không có lịch học nâng cao nào để hiển thị.
-              </div>
+              <div className="no-data-message">Không có lịch học nâng cao nào để hiển thị.</div>
             )}
           </div>
         </div>
@@ -2880,43 +2965,29 @@ const CourseSchedule = () => {
         ]}
         width={600}
       >
-        <Form
-          form={addForm}
-          layout="vertical"
-          name="add_schedule_form"
-        >
-          <Form.Item
-            name="classCode"
-            label="Mã lớp"
-            rules={[{ required: true, message: "Vui lòng nhập mã lớp" }]}
-          >
+        <Form form={addForm} layout="vertical" name="add_schedule_form">
+          <Form.Item name="classCode" label="Mã lớp" rules={[{ required: true, message: "Vui lòng nhập mã lớp" }]}>
             <Input placeholder="Nhập mã lớp" />
           </Form.Item>
-
-          <Form.Item
-            name="subject"
-            label="Môn học"
-            rules={[{ required: true, message: "Vui lòng chọn môn học" }]}
-          >
+          <Form.Item name="subject" label="Môn học" rules={[{ required: true, message: "Vui lòng chọn môn học" }]}>
             <Select placeholder="Chọn môn học">
               <Option value="Piano">Piano</Option>
               <Option value="Guitar">Guitar</Option>
             </Select>
           </Form.Item>
-
           <Form.Item
-            name="teacherName" // Changed from 'teacher' to 'teacherName'
+            name="teacherName"
             label="Giảng viên"
             rules={[{ required: true, message: "Vui lòng chọn giảng viên" }]}
           >
-            <Select placeholder="Chọn giảng viên">
-              <Option value="Nguyễn Văn A">Nguyễn Văn A</Option>
-              <Option value="Trần Thị B">Trần Thị B</Option>
-              <Option value="Lê Văn C">Lê Văn C</Option>
-              <Option value="Phạm Văn D">Phạm Văn D</Option>
+            <Select placeholder="Chọn giảng viên" loading={availableTeachers.length === 0}>
+              {availableTeachers.map((teacher) => (
+                <Option key={teacher.userId} value={teacher.accountName}>
+                  {teacher.accountName}
+                </Option>
+              ))}
             </Select>
           </Form.Item>
-
           <div
             style={{
               display: "grid",
@@ -2925,38 +2996,27 @@ const CourseSchedule = () => {
             }}
           >
             <Form.Item
-              name="openingDay" // Changed from 'startDate' to 'openingDay'
+              name="openingDay"
               label="Ngày khai giảng"
-              rules={[
-                { required: true, message: "Vui lòng chọn ngày khai giảng" },
-              ]}
+              rules={[{ required: true, message: "Vui lòng chọn ngày khai giảng" }]}
             >
               <DatePicker format="DD/MM/YYYY" style={{ width: "100%" }} />
             </Form.Item>
-
             <Form.Item
               name="endDate"
               label="Ngày kết thúc"
-              rules={[
-                { required: true, message: "Vui lòng chọn ngày kết thúc" },
-              ]}
+              rules={[{ required: true, message: "Vui lòng chọn ngày kết thúc" }]}
             >
               <DatePicker format="DD/MM/YYYY" style={{ width: "100%" }} />
             </Form.Item>
           </div>
-
           <Form.Item
             name="scheduleDays"
             label="Các ngày học trong tuần"
             rules={[{ required: true, message: "Vui lòng chọn các ngày học trong tuần" }]}
           >
-            <Select
-              mode="multiple"
-              placeholder="Chọn các ngày học (VD: Thứ 2, Thứ 4)"
-              options={weekdayOptions}
-            />
+            <Select mode="multiple" placeholder="Chọn các ngày học (VD: Thứ 2, Thứ 4)" options={weekdayOptions} />
           </Form.Item>
-
           <Form.Item
             name="scheduleTime"
             label="Thời gian học"
@@ -2970,13 +3030,12 @@ const CourseSchedule = () => {
           >
             <Input placeholder="VD: 18:00 to 19:30" />
           </Form.Item>
-
           <Form.Item
-            name="studentQuantity" // Changed from 'capacity' to 'studentQuantity'
+            name="studentQuantity"
             label="Sĩ số tối đa"
             rules={[{ required: true, message: "Vui lòng nhập sĩ số tối đa" }]}
           >
-            <InputNumber placeholder="VD: 10" min={1} style={{ width: '100%' }} />
+            <InputNumber placeholder="VD: 10" min={1} style={{ width: "100%" }} />
           </Form.Item>
         </Form>
       </Modal>
@@ -2997,43 +3056,29 @@ const CourseSchedule = () => {
         ]}
         width={600}
       >
-        <Form
-          form={updateForm}
-          layout="vertical"
-          name="update_schedule_form"
-        >
-          <Form.Item
-            name="classCode"
-            label="Mã lớp"
-            rules={[{ required: true, message: 'Vui lòng nhập mã lớp!' }]}
-          >
+        <Form form={updateForm} layout="vertical" name="update_schedule_form">
+          <Form.Item name="classCode" label="Mã lớp" rules={[{ required: true, message: "Vui lòng nhập mã lớp!" }]}>
             <Input />
           </Form.Item>
-
-          <Form.Item
-            name="subject"
-            label="Môn học"
-            rules={[{ required: true, message: 'Vui lòng nhập môn học!' }]}
-          >
+          <Form.Item name="subject" label="Môn học" rules={[{ required: true, message: "Vui lòng nhập môn học!" }]}>
             <Select placeholder="Chọn môn học">
               <Option value="Piano">Piano</Option>
               <Option value="Guitar">Guitar</Option>
             </Select>
           </Form.Item>
-
           <Form.Item
             name="teacherName"
             label="Giảng viên"
-            rules={[{ required: true, message: 'Vui lòng nhập tên giảng viên!' }]}
+            rules={[{ required: true, message: "Vui lòng chọn giảng viên!" }]}
           >
-            <Select placeholder="Chọn giảng viên">
-              <Option value="Nguyễn Văn A">Nguyễn Văn A</Option>
-              <Option value="Trần Thị B">Trần Thị B</Option>
-              <Option value="Lê Văn C">Lê Văn C</Option>
-              <Option value="Phạm Văn D">Phạm Văn D</Option>
+            <Select placeholder="Chọn giảng viên" loading={availableTeachers.length === 0}>
+              {availableTeachers.map((teacher) => (
+                <Option key={teacher.userId} value={teacher.accountName}>
+                  {teacher.accountName}
+                </Option>
+              ))}
             </Select>
           </Form.Item>
-
           <div
             style={{
               display: "grid",
@@ -3044,36 +3089,32 @@ const CourseSchedule = () => {
             <Form.Item
               name="openingDay"
               label="Ngày khai giảng"
-              rules={[{ required: true, message: 'Vui lòng chọn ngày khai giảng!' }]}
+              rules={[{ required: true, message: "Vui lòng chọn ngày khai giảng!" }]}
             >
-              <DatePicker format="DD/MM/YYYY" style={{ width: '100%' }} />
+              <DatePicker format="DD/MM/YYYY" style={{ width: "100%" }} />
             </Form.Item>
             <Form.Item
               name="endDate"
               label="Ngày kết thúc"
-              rules={[{ required: true, message: 'Vui lòng chọn ngày kết thúc!' }]}
+              rules={[{ required: true, message: "Vui lòng chọn ngày kết thúc!" }]}
             >
-              <DatePicker format="DD/MM/YYYY" style={{ width: '100%' }} />
+              <DatePicker format="DD/MM/YYYY" style={{ width: "100%" }} />
             </Form.Item>
           </div>
-
           <Form.Item
-            name="scheduleDays"
-            label="Các ngày học trong tuần"
-            rules={[{ required: true, message: "Vui lòng chọn các ngày học trong tuần" }]}
+            name="rawSchedule"
+            label="Lịch học hiện tại"
+            help="Bạn có thể chỉnh sửa trực tiếp hoặc sử dụng các trường bên dưới"
           >
-            <Select
-              mode="multiple"
-              placeholder="Chọn các ngày học (VD: Thứ 2, Thứ 4)"
-              options={weekdayOptions}
-            />
+            <Input placeholder="VD: Mon/Wed 18:00 to 19:30" />
           </Form.Item>
-
+          <Form.Item name="scheduleDays" label="Các ngày học trong tuần (tùy chọn)">
+            <Select mode="multiple" placeholder="Chọn các ngày học (VD: Thứ 2, Thứ 4)" options={weekdayOptions} />
+          </Form.Item>
           <Form.Item
             name="scheduleTime"
-            label="Thời gian học"
+            label="Thời gian học (tùy chọn)"
             rules={[
-              { required: true, message: "Vui lòng nhập thời gian học (VD: 18:00 to 19:30)" },
               {
                 pattern: /^\d{2}:\d{2} to \d{2}:\d{2}$/,
                 message: "Định dạng phải là HH:MM to HH:MM",
@@ -3082,25 +3123,21 @@ const CourseSchedule = () => {
           >
             <Input placeholder="VD: 18:00 to 19:30" />
           </Form.Item>
-
           <Form.Item
             name="studentQuantity"
             label="Sĩ số tối đa"
-            rules={[{ required: true, message: 'Vui lòng nhập sĩ số!', type: 'number' }]}
+            rules={[{ required: true, message: "Vui lòng nhập sĩ số!", type: "number" }]}
           >
-            <InputNumber min={1} style={{ width: '100%' }} />
+            <InputNumber min={1} style={{ width: "100%" }} />
           </Form.Item>
-          <Form.Item
-            name="isAdvancedClass"
-            valuePropName="checked"
-            label="Là lớp nâng cao?"
-          >
+          <Form.Item name="isAdvancedClass" valuePropName="checked" label="Là lớp nâng cao?">
             <Checkbox>Lớp nâng cao</Checkbox>
           </Form.Item>
         </Form>
       </Modal>
     </div>
-  );
-};
+  )
+}
 
-export default CourseSchedule;
+export default CourseSchedule
+

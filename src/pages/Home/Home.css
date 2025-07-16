@@ -157,6 +157,12 @@
   /* transform: translateY(-2px); */
 }
 
+@media (max-width: 576px) {
+  .main-title-sonova {
+    font-size: 64px !important;
+  }
+}
+
 @media (max-width: 768px) {
   .hero-section {
     padding: 40px 0;
@@ -275,7 +281,9 @@
 
 .course-content {
   padding: 20px;
+  min-height: 350px;
 }
+
 
 .course-name {
   color: #1e3a5f !important;
@@ -284,6 +292,7 @@
   font-family: 'UTM Americana EB', serif !important;
   margin-bottom: 10px !important;
   text-align: center;
+  min-height: 56px;
 }
 
 .course-desc {
@@ -383,13 +392,24 @@
 
   .schedule-item {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: 8px;
   }
 
   .schedule-tags {
-    align-self: flex-end;
+    align-self: center;
   }
+
+  .course-name {
+    font-size: 20px !important;
+  }
+}
+
+@media (max-width: 1530px) {
+  .course-name {
+    font-size: 20px !important;
+  }
+  
 }
 
 
@@ -443,7 +463,7 @@
   font-size: 28px;
   font-weight: 600;
   font-family: 'Gilroy', sans-serif;
-  padding-bottom: 40px;
+  padding-bottom: 20px;
   letter-spacing: 1px;
   text-align: left;
 }
@@ -863,4 +883,42 @@
 .testimonials-carousel img {
   width: 100%;
   height: 100%;
+}
+
+@media (max-width: 1400px) {
+  .teacher-top {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .teacher-image {
+    margin: 0 auto;
+    width: 80%;
+    align-items: center;
+  }
+}
+
+@media (max-width: 1300px) {
+  .testimonials-header {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-title-home {
+    font-size: 50px;
+  }
+  .subtitle-home {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 576px) {
+  .main-title-home {
+    font-size: 40px;
+  }
+  .subtitle-home {
+    font-size: 20px;
+  }
 }

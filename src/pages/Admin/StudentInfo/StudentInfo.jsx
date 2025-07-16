@@ -1,485 +1,631 @@
-"use client"
+"use client";
 
-import { Typography, Table, Checkbox, Input, Select, Button, Tag, Space, Pagination } from "antd"
-import { SearchOutlined, EyeOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons"
-import { useState, useMemo } from "react"
-import "./StudentInfo.css"
+import { Typography, Table, Checkbox, Input, Select, Button, Tag, Space, Pagination, Spin, App, Modal, Form, Descriptions } from "antd";
+import { SearchOutlined, EyeOutlined, EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
+import { useState, useEffect, useMemo, useRef } from "react"; // Thêm useRef
+import "./StudentInfo.css"; // Đảm bảo CSS của mày vẫn hoạt động tốt
 
-const { Title } = Typography
-const { Option } = Select
+const { Title } = Typography;
+const { Option } = Select;
+const { confirm } = Modal;
 
 const StudentInfo = () => {
-  const [selectedRowKeys, setSelectedRowKeys] = useState([1, 2])
-  const [searchText, setSearchText] = useState("")
-  const [classFilter, setClassFilter] = useState("Tất cả")
-  const [statusFilter, setStatusFilter] = useState("Tất cả")
-  const [currentPage, setCurrentPage] = useState(1)
-  const pageSize = 10
+    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+    const [searchText, setSearchText] = useState("");
+    const [tempSearchText, setTempSearchText] = useState(""); // State tạm thời cho input search
+    const [classFilter, setClassFilter] = useState("Tất cả");
+    const [statusFilter, setStatusFilter] = useState("Tất cả");
+    const [currentPage, setCurrentPage] = useState(1);
+    const [userData, setUserData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [allClasses, setAllClasses] = useState([]);
+    const { message: antdMessage } = App.useApp();
 
-  // Sample student data with generated student codes
-  const studentData = useMemo(
-    () => [
-      {
-        key: 1,
-        stt: 1,
-        name: "David",
-        username: "david123",
-        phone: "0799294324",
-        class: "K01-PI-CB-01",
-        status: "completed",
-        studentCode: "K01-0001",
-      },
-      {
-        key: 2,
-        stt: 2,
-        name: "Scott",
-        username: "scott123",
-        phone: "0900676932",
-        class: "K01-PI-CB-01",
-        status: "completed",
-        studentCode: "K01-0002",
-      },
-      {
-        key: 3,
-        stt: 3,
-        name: "Xelina",
-        username: "xelina123",
-        phone: "0203066567",
-        class: "K01-PI-CB-01",
-        status: "studying",
-        studentCode: "K01-0003",
-      },
-      {
-        key: 4,
-        stt: 4,
-        name: "Chuatin",
-        username: "chuatin123",
-        phone: "0945732127",
-        class: "K01-GU-CB-02",
-        status: "studying",
-        studentCode: "K01-0004",
-      },
-      {
-        key: 5,
-        stt: 5,
-        name: "Noobita",
-        username: "noobi123",
-        phone: "0703938271",
-        class: "K01-GU-CB-02",
-        status: "studying",
-        studentCode: "K01-0005",
-      },
-      {
-        key: 6,
-        stt: 6,
-        name: "Leona",
-        username: "leona123",
-        phone: "0704656232",
-        class: "K01-GU-CB-02",
-        status: "studying",
-        studentCode: "K01-0006",
-      },
-      {
-        key: 7,
-        stt: 7,
-        name: "Emma",
-        username: "emma123",
-        phone: "0704656233",
-        class: "K01-PI-NC-01",
-        status: "studying",
-        studentCode: "K01-0007",
-      },
-      {
-        key: 8,
-        stt: 8,
-        name: "Ladmira",
-        username: "ladmira123",
-        phone: "0704656234",
-        class: "K01-PI-NC-01",
-        status: "studying",
-        studentCode: "K01-0008",
-      },
-      {
-        key: 9,
-        stt: 9,
-        name: "Puma",
-        username: "puma123",
-        phone: "0704656235",
-        class: "K01-PI-NC-01",
-        status: "studying",
-        studentCode: "K01-0009",
-      },
-      {
-        key: 10,
-        stt: 10,
-        name: "Havana",
-        username: "havana123",
-        phone: "0704656236",
-        class: "K01-GU-NC-02",
-        status: "studying",
-        studentCode: "K01-0010",
-      },
-      {
-        key: 11,
-        stt: 11,
-        name: "Heri",
-        username: "heri123",
-        phone: "0704656237",
-        class: "K01-GU-NC-02",
-        status: "studying",
-        studentCode: "K01-0011",
-      },
-      {
-        key: 12,
-        stt: 12,
-        name: "Donan",
-        username: "donan123",
-        phone: "0704656238",
-        class: "K01-GU-NC-02",
-        status: "studying",
-        studentCode: "K01-0012",
-      },
-      {
-        key: 13,
-        stt: 13,
-        name: "Choe",
-        username: "choe123",
-        phone: "0704656239",
-        class: "K01-PI-CB-01",
-        status: "studying",
-        studentCode: "K01-0013",
-      },
-      {
-        key: 14,
-        stt: 14,
-        name: "Kristina",
-        username: "kristina123",
-        phone: "0704656240",
-        class: "K01-PI-CB-01",
-        status: "studying",
-        studentCode: "K01-0014",
-      },
-      {
-        key: 15,
-        stt: 15,
-        name: "Alex",
-        username: "alex123",
-        phone: "0704656241",
-        class: "K01-PI-CB-01",
-        status: "registered",
-        studentCode: "K01-0015",
-      },
-      {
-        key: 16,
-        stt: 16,
-        name: "Maria",
-        username: "maria123",
-        phone: "0704656242",
-        class: "K01-GU-CB-02",
-        status: "registered",
-        studentCode: "K01-0016",
-      },
-      {
-        key: 17,
-        stt: 17,
-        name: "John",
-        username: "john123",
-        phone: "0704656243",
-        class: "K01-GU-CB-02",
-        status: "registered",
-        studentCode: "K01-0017",
-      },
-      {
-        key: 18,
-        stt: 18,
-        name: "Sarah",
-        username: "sarah123",
-        phone: "0704656244",
-        class: "K01-PI-NC-01",
-        status: "registered",
-        studentCode: "K01-0018",
-      },
-      {
-        key: 19,
-        stt: 19,
-        name: "Mike",
-        username: "mike123",
-        phone: "0704656245",
-        class: "K01-PI-NC-01",
-        status: "registered",
-        studentCode: "K01-0019",
-      },
-      {
-        key: 20,
-        stt: 20,
-        name: "Lisa",
-        username: "lisa123",
-        phone: "0704656246",
-        class: "K01-GU-NC-02",
-        status: "registered",
-        studentCode: "K01-0020",
-      },
-    ],
-    [],
-  )
+    const pageSize = 10;
+    const baseUrl = "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net";
 
-  // Get unique classes for filter options
-  const uniqueClasses = useMemo(() => {
-    return [...new Set(studentData.map((student) => student.class))]
-  }, [studentData])
+    // --- Modals State ---
+    const [isClassEditModalVisible, setIsClassEditModalVisible] = useState(false);
+    const [editingUser, setEditingUser] = useState(null);
+    const [selectedClassesForEdit, setSelectedClassesForEdit] = useState([]);
+    const [form] = Form.useForm();
+    const [isViewModalVisible, setIsViewModalVisible] = useState(false);
+    const [viewingUser, setViewingUser] = useState(null);
 
-  // Generate unique student codes
-  const generateStudentCode = (classCode, index) => {
-    const coursePrefix = classCode.split("-")[0] // Extract K01 from K01-PI-CB-01
-    const studentNumber = String(index).padStart(4, "0")
-    return `${coursePrefix}-${studentNumber}`
-  }
+    // --- Fetch User Data (Students and Teachers) ---
+    const fetchUsers = async () => {
+        setLoading(true);
+        try {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                antdMessage.error("Vui lòng đăng nhập để xem thông tin.");
+                setLoading(false);
+                return;
+            }
 
-  // Filter and search logic
-  const filteredData = useMemo(() => {
-    let filtered = studentData
+            const response = await fetch(`${baseUrl}/api/User`, {
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            });
 
-    // Apply class filter
-    if (classFilter !== "Tất cả") {
-      filtered = filtered.filter((student) => student.class === classFilter)
-    }
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.detail || "Không thể tải dữ liệu người dùng.");
+            }
 
-    // Apply status filter
-    if (statusFilter !== "Tất cả") {
-      filtered = filtered.filter((student) => student.status === statusFilter)
-    }
+            const data = await response.json();
+            // Lọc ra chỉ học sinh (roleId: 3) và giáo viên (roleId: 2)
+            const filteredUsers = data.filter(user => user.roleId === 3 || user.roleId === 2);
 
-    // Apply search filter
-    if (searchText.trim()) {
-      const searchLower = searchText.toLowerCase().trim()
-      filtered = filtered.filter(
-        (student) =>
-          student.name.toLowerCase().includes(searchLower) ||
-          student.username.toLowerCase().includes(searchLower) ||
-          student.phone.includes(searchText.trim()) ||
-          student.studentCode.toLowerCase().includes(searchLower) ||
-          student.class.toLowerCase().includes(searchLower),
-      )
-    }
+            const formattedUsers = filteredUsers.map(user => ({
+                ...user,
+                key: user.userId,
+                name: user.accountName || user.username || "Không tên",
+                phone: user.phoneNumber || "N/A",
+                email: user.email || "N/A",
+                role: user.roleId === 2 ? 'teacher' : (user.roleId === 3 ? 'student' : 'other'),
+            }));
+            setUserData(formattedUsers);
+        } catch (error) {
+            console.error("Error fetching users:", error);
+            antdMessage.error(`Lỗi tải dữ liệu người dùng: ${error.message}`);
+            setUserData([]);
+        } finally {
+            setLoading(false);
+        }
+    };
 
-    return filtered
-  }, [studentData, classFilter, statusFilter, searchText])
+    // --- Fetch All Classes (to populate class filter) ---
+    const fetchAllClasses = async () => {
+        try {
+            const token = localStorage.getItem("token");
+            const response = await fetch(`${baseUrl}/api/Class`, {
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            setAllClasses(data);
+        } catch (error) {
+            console.error("Error fetching classes:", error);
+            antdMessage.error("Không thể tải danh sách lớp học.");
+        }
+    };
 
-  // Paginated data
-  const paginatedData = useMemo(() => {
-    const startIndex = (currentPage - 1) * pageSize
-    const endIndex = startIndex + pageSize
-    return filteredData.slice(startIndex, endIndex)
-  }, [filteredData, currentPage, pageSize])
+    useEffect(() => {
+        fetchUsers();
+        fetchAllClasses();
+    }, []);
 
-  // Reset to first page when filters change
-  const handleFilterChange = (filterType, value) => {
-    setCurrentPage(1)
-    if (filterType === "class") {
-      setClassFilter(value)
-    } else if (filterType === "status") {
-      setStatusFilter(value)
-    }
-  }
+    // --- Debounce effect for search text ---
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setSearchText(tempSearchText); // Cập nhật searchText sau khi ngừng gõ
+            setCurrentPage(1); // Reset trang về 1 khi searchText được cập nhật
+        }, 500); // 500ms debounce time
 
-  const handleSearchChange = (e) => {
-    setSearchText(e.target.value)
-    setCurrentPage(1)
-  }
+        return () => {
+            clearTimeout(handler);
+        };
+    }, [tempSearchText]);
 
-  const getStatusTag = (status) => {
-    const statusConfig = {
-      completed: { color: "default", text: "Đã xong" },
-      studying: { color: "success", text: "Đang học" },
-      registered: { color: "warning", text: "Đã đăng ký" },
-    }
+    // --- Filter and Search Logic ---
+    const filteredAndSearchedData = useMemo(() => {
+        let filtered = userData;
 
-    const config = statusConfig[status] || { color: "default", text: "Unknown" }
-    return <Tag color={config.color}>{config.text}</Tag>
-  }
+        // Apply class filter (by classId)
+        if (classFilter !== "Tất cả") {
+            filtered = filtered.filter(user => user.classIds && user.classIds.includes(parseInt(classFilter)));
+        }
 
-  const columns = [
-    {
-      title: "Mã học viên",
-      dataIndex: "studentCode",
-      key: "studentCode",
-      width: 120,
-      align: "center",
-      render: (code) => <span className="student-code">{code}</span>,
-    },
-    {
-      title: "Họ và tên",
-      dataIndex: "name",
-      key: "name",
-      width: 120,
-    },
-    {
-      title: "Username",
-      dataIndex: "username",
-      key: "username",
-      width: 120,
-    },
-    {
-      title: "SĐT",
-      dataIndex: "phone",
-      key: "phone",
-      width: 120,
-    },
-    {
-      title: "Lớp học",
-      dataIndex: "class",
-      key: "class",
-      width: 140,
-    },
-    {
-      title: "Trạng thái",
-      dataIndex: "status",
-      key: "status",
-      width: 120,
-      render: (status) => getStatusTag(status),
-    },
-    {
-      title: "Thao tác",
-      key: "actions",
-      width: 120,
-      align: "center",
-      render: (_, record) => (
-        <Space size="small">
-          <Button type="text" icon={<EyeOutlined />} size="small" className="action-btn view-btn" />
-          <Button type="text" icon={<EditOutlined />} size="small" className="action-btn edit-btn" />
-          <Button type="text" icon={<DeleteOutlined />} size="small" className="action-btn delete-btn" />
-        </Space>
-      ),
-    },
-  ]
+        // Apply status filter (by isDisabled)
+        if (statusFilter !== "Tất cả") {
+            if (statusFilter === "active") { // Đang học
+                filtered = filtered.filter(user => !user.isDisabled);
+            } else if (statusFilter === "disabled") { // Hoàn thành
+                filtered = filtered.filter(user => user.isDisabled);
+            }
+        }
 
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: (newSelectedRowKeys) => {
-      setSelectedRowKeys(newSelectedRowKeys)
-    },
-    onSelectAll: (selected, selectedRows, changeRows) => {
-      if (selected) {
-        setSelectedRowKeys(paginatedData.map((item) => item.key))
-      } else {
-        setSelectedRowKeys([])
-      }
-    },
-  }
-
-  const handleSelectAll = (e) => {
-    if (e.target.checked) {
-      setSelectedRowKeys(paginatedData.map((item) => item.key))
-    } else {
-      setSelectedRowKeys([])
-    }
-  }
-
-  const clearFilters = () => {
-    setSearchText("")
-    setClassFilter("Tất cả")
-    setStatusFilter("Tất cả")
-    setCurrentPage(1)
-  }
-
+        // Apply search filter
+        if (searchText.trim()) {
+            const searchLower = searchText.toLowerCase().trim();
+            filtered = filtered.filter(
+                (user) =>
+                    user.name.toLowerCase().includes(searchLower) ||
+                    user.username.toLowerCase().includes(searchLower) ||
+                    (user.email && user.email.toLowerCase().includes(searchLower)) ||
+                    (user.phoneNumber && user.phoneNumber.includes(searchText.trim())) ||
+                    String(user.userId).includes(searchText.trim()) ||
+                    user.classIds?.some(classId => {
+  const classInfo = allClasses.find(cls => cls.classId === classId);
+  if (!classInfo) return false;
   return (
-    <div className="student-info-page">
-      <div className="student-info-container">
-        <Title level={1} className="page-title">
-          THÔNG TIN HỌC VIÊN
-        </Title>
+    classInfo.className?.toLowerCase().includes(searchLower) ||
+    classInfo.classCode?.toLowerCase().includes(searchLower)
+  );
+})
 
-        {/* Filters Section */}
-        <div className="filters-section">
-          <div className="filters-left">
-            <Checkbox
-              checked={selectedRowKeys.length === paginatedData.length && paginatedData.length > 0}
-              indeterminate={selectedRowKeys.length > 0 && selectedRowKeys.length < paginatedData.length}
-              onChange={handleSelectAll}
-              className="select-all-checkbox"
+            );
+        }
+
+        return filtered;
+    }, [userData, classFilter, statusFilter, searchText, allClasses]); // searchText là dependency
+
+    // Paginated data
+    const paginatedData = useMemo(() => {
+        const startIndex = (currentPage - 1) * pageSize;
+        const endIndex = startIndex + pageSize;
+        return filteredAndSearchedData.slice(startIndex, endIndex);
+    }, [filteredAndSearchedData, currentPage, pageSize]);
+
+    // Reset to first page when filters change (not search input directly)
+    const handleFilterChange = (filterType, value) => {
+        setCurrentPage(1); // Chỉ reset trang khi filter thay đổi
+        if (filterType === "class") {
+            setClassFilter(value);
+        } else if (filterType === "status") {
+            setStatusFilter(value);
+        }
+    };
+
+    const handleTempSearchChange = (e) => {
+        setTempSearchText(e.target.value); // Chỉ cập nhật tempSearchText
+    };
+
+    const getStatusTag = (isDisabled) => {
+        if (isDisabled) {
+            return <Tag color="error">Hoàn thành</Tag>;
+        }
+        return <Tag color="success">Đang học</Tag>;
+    };
+
+    // --- Handle Edit/Delete/View Actions ---
+
+    const handleViewUser = (record) => {
+        setViewingUser(record);
+        setIsViewModalVisible(true);
+    };
+
+    const handleEditClass = (record) => {
+        setEditingUser(record);
+        setSelectedClassesForEdit(record.classIds || []);
+        form.setFieldsValue({ classes: record.classIds || [] });
+        setIsClassEditModalVisible(true);
+    };
+
+    const handleUpdateClasses = async () => {
+        try {
+            const values = await form.validateFields();
+            if (!editingUser) return;
+
+            const formData = new FormData();
+
+            formData.append("userId", editingUser.userId);
+            formData.append("username", editingUser.username);
+            formData.append("accountName", editingUser.accountName || "");
+            formData.append("email", editingUser.email || "");
+            formData.append("phoneNumber", editingUser.phoneNumber || "");
+            formData.append("roleId", editingUser.roleId);
+            formData.append("isDisabled", editingUser.isDisabled);
+            formData.append("genderId", editingUser.genderId || 0);
+            formData.append("birthday", editingUser.birthday || "");
+            formData.append("address", editingUser.address || "");
+
+            if (values.classes && values.classes.length > 0) {
+                values.classes.forEach(classId => {
+                    formData.append("classIds", classId);
+                });
+            }
+
+            const token = localStorage.getItem("token");
+
+            const response = await fetch(`${baseUrl}/api/User/${editingUser.userId}`, {
+                method: "PUT",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                },
+                body: formData,
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.detail || "Không thể cập nhật thông tin người dùng.");
+            }
+
+            antdMessage.success(`Cập nhật lớp học cho ${editingUser.name} thành công!`);
+            setIsClassEditModalVisible(false);
+            setEditingUser(null);
+            setSelectedClassesForEdit([]);
+            form.resetFields();
+            fetchUsers();
+        } catch (error) {
+            console.error("Error updating user:", error);
+            antdMessage.error(`Cập nhật người dùng thất bại: ${error.message}`);
+        }
+    };
+
+    const handleDeleteUser = (record) => {
+        confirm({
+            title: `Bạn có chắc muốn xóa người dùng ${record.name}?`,
+            icon: <ExclamationCircleOutlined />,
+            content: 'Thao tác này không thể hoàn tác. Người dùng sẽ bị xóa khỏi hệ thống.',
+            okText: 'Xóa',
+            okType: 'danger',
+            cancelText: 'Hủy',
+            async onOk() {
+                try {
+                    const token = localStorage.getItem("token");
+                    const response = await fetch(`${baseUrl}/api/User/${record.userId}`, {
+                        method: "DELETE",
+                        headers: {
+                            "Authorization": `Bearer ${token}`,
+                        },
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.detail || "Không thể xóa người dùng.");
+                    }
+
+                    antdMessage.success(`Đã xóa người dùng ${record.name} thành công.`);
+                    fetchUsers();
+                } catch (error) {
+                    console.error("Error deleting user:", error);
+                    antdMessage.error(`Xóa người dùng thất bại: ${error.message}`);
+                }
+            },
+            onCancel() {
+                console.log('Hủy xóa');
+            },
+        });
+    };
+
+    const columns = [
+        {
+            title: "User ID",
+            dataIndex: "userId",
+            key: "userId",
+            width: 100,
+            align: "center",
+            render: (userId) => <span className="user-id">{userId}</span>,
+        },
+        {
+            title: "Họ và tên",
+            dataIndex: "name",
+            key: "name",
+            width: 150,
+        },
+        {
+            title: "Username",
+            dataIndex: "username",
+            key: "username",
+            width: 120,
+        },
+        {
+            title: "SĐT",
+            dataIndex: "phone",
+            key: "phone",
+            width: 120,
+            render: (phone) => phone === "N/A" ? <Tag>Chưa cập nhật</Tag> : phone,
+        },
+        {
+            title: "Email",
+            dataIndex: "email",
+            key: "email",
+            width: 180,
+            render: (email) => email === "N/A" ? <Tag>Chưa cập nhật</Tag> : email,
+        },
+        {
+            title: "Lớp học",
+            dataIndex: "classIds",
+            key: "class",
+            width: 180,
+            render: (classIds) => {
+                if (!classIds || classIds.length === 0) {
+                    return <Tag color="default">Chưa có lớp</Tag>;
+                }
+                return classIds.map(classId => {
+                    const classInfo = allClasses.find(cls => cls.classId === classId);
+                    const displayClass = classInfo ? classInfo.classCode : `ID: ${classId}`;
+                    return <Tag key={classId} color="blue">{displayClass}</Tag>;
+                });
+            },
+        },
+        {
+            title: "Vai trò",
+            dataIndex: "role",
+            key: "role",
+            width: 100,
+            render: (role) => {
+                let color = '';
+                let text = '';
+                if (role === 'student') {
+                    color = 'geekblue';
+                    text = 'Học viên';
+                } else if (role === 'teacher') {
+                    color = 'volcano';
+                    text = 'Giáo viên';
+                } else {
+                    color = 'default';
+                    text = 'Khác';
+                }
+                return <Tag color={color}>{text}</Tag>;
+            }
+        },
+        {
+            title: "Trạng thái",
+            dataIndex: "isDisabled",
+            key: "status",
+            width: 120,
+            render: (isDisabled) => getStatusTag(isDisabled),
+        },
+        {
+            title: "Thao tác",
+            key: "actions",
+            width: 120,
+            align: "center",
+            render: (_, record) => (
+                <Space size="small">
+                    <Button
+                        type="text"
+                        icon={<EyeOutlined />}
+                        size="small"
+                        className="action-btn view-btn"
+                        onClick={() => handleViewUser(record)}
+                    />
+                    <Button
+                        type="text"
+                        icon={<EditOutlined />}
+                        size="small"
+                        className="action-btn edit-btn"
+                        onClick={() => handleEditClass(record)}
+                    />
+                    <Button
+                        type="text"
+                        icon={<DeleteOutlined />}
+                        size="small"
+                        className="action-btn delete-btn"
+                        onClick={() => handleDeleteUser(record)}
+                    />
+                </Space>
+            ),
+        },
+    ];
+
+    const rowSelection = {
+        selectedRowKeys,
+        onChange: (newSelectedRowKeys) => {
+            setSelectedRowKeys(newSelectedRowKeys);
+        },
+        onSelectAll: (selected) => {
+            if (selected) {
+                setSelectedRowKeys(paginatedData.map((item) => item.key));
+            } else {
+                setSelectedRowKeys([]);
+            }
+        },
+        onSelect: (record, selected) => {
+            if (selected) {
+                setSelectedRowKeys(prev => [...prev, record.key]);
+            } else {
+                setSelectedRowKeys(prev => prev.filter(key => key !== record.key));
+            }
+        }
+    };
+
+    const handleSelectAll = (e) => {
+        if (e.target.checked) {
+            setSelectedRowKeys(paginatedData.map((item) => item.key));
+        } else {
+            setSelectedRowKeys([]);
+        }
+    };
+
+    const clearFilters = () => {
+        setTempSearchText(""); // Reset cả tempSearchText
+        setSearchText(""); // Và searchText
+        setClassFilter("Tất cả");
+        setStatusFilter("Tất cả");
+        setCurrentPage(1);
+    };
+
+    if (loading) {
+        return (
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "80vh" }}>
+                <Spin size="large" tip="Đang tải dữ liệu người dùng..." />
+            </div>
+        );
+    }
+
+    return (
+        <div className="student-info-page">
+            <div className="student-info-container">
+                <Title level={1} className="page-title">
+                    QUẢN LÝ NGƯỜI DÙNG
+                </Title>
+
+                {/* Filters Section */}
+                <div className="filters-section">
+                    <div className="filters-left">
+                        <Checkbox
+                            checked={selectedRowKeys.length === paginatedData.length && paginatedData.length > 0}
+                            indeterminate={selectedRowKeys.length > 0 && selectedRowKeys.length < paginatedData.length}
+                            onChange={handleSelectAll}
+                            className="select-all-checkbox"
+                        >
+                            Đã chọn {selectedRowKeys.length}
+                        </Checkbox>
+                        <Button type="link" onClick={clearFilters} className="clear-filters-btn">
+                            Xóa bộ lọc
+                        </Button>
+                        <Input
+                            placeholder="Tìm kiếm theo tên, username, SĐT, Email, User ID..."
+                            prefix={<SearchOutlined />}
+                            value={tempSearchText} // Bind với tempSearchText
+                            onChange={handleTempSearchChange} // Call handleTempSearchChange
+                            className="search-input"
+                        />
+                    </div>
+
+                    <div className="filters-right">
+                        <div className="filter-group">
+                            <span className="filter-label">Lớp học:</span>
+                            <Select
+                                value={classFilter}
+                                onChange={(value) => handleFilterChange("class", value)}
+                                className="filter-select"
+                                showSearch
+                                optionFilterProp="children"
+                                filterOption={(input, option) =>
+                                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                }
+                            >
+                                <Option value="Tất cả">Tất cả</Option>
+                                {allClasses.map((cls) => (
+                                    <Option key={cls.classId} value={cls.classId}>
+                                        {cls.classCode} - {cls.className}
+                                    </Option>
+                                ))}
+                            </Select>
+                        </div>
+
+                        <div className="filter-group">
+                            <span className="filter-label">Trạng thái:</span>
+                            <Select
+                                value={statusFilter}
+                                onChange={(value) => handleFilterChange("status", value)}
+                                className="filter-select"
+                            >
+                                <Option value="Tất cả">Tất cả</Option>
+                                <Option value="active">Đang học</Option>
+                                <Option value="disabled">Hoàn thành</Option>
+                            </Select>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Results Info */}
+                <div className="results-info">
+                    <span>
+                        Hiển thị {paginatedData.length} / {filteredAndSearchedData.length} người dùng
+                        {filteredAndSearchedData.length !== userData.length && ` (lọc từ ${userData.length} tổng cộng)`}
+                    </span>
+                </div>
+
+                {/* Table Section */}
+                <div className="table-container">
+                    <Table
+                        columns={columns}
+                        dataSource={paginatedData}
+                        rowSelection={rowSelection}
+                        pagination={false}
+                        className="student-table"
+                        size="middle"
+                    />
+                </div>
+
+                {/* Pagination Section */}
+                <div className="pagination-container">
+                    <Pagination
+                        current={currentPage}
+                        total={filteredAndSearchedData.length}
+                        pageSize={pageSize}
+                        showSizeChanger={false}
+                        onChange={setCurrentPage}
+                        className="custom-pagination"
+                        showTotal={(total, range) => `${range[0]}-${range[1]} của ${total} người dùng`}
+                    />
+                </div>
+            </div>
+
+            {/* Class Edit Modal */}
+            <Modal
+                title={`Chỉnh sửa lớp học cho ${editingUser?.name}`}
+                visible={isClassEditModalVisible}
+                onOk={handleUpdateClasses}
+                onCancel={() => {
+                    setIsClassEditModalVisible(false);
+                    setEditingUser(null);
+                    setSelectedClassesForEdit([]);
+                    form.resetFields();
+                }}
+                okText="Cập nhật"
+                cancelText="Hủy"
             >
-              Đã chọn {selectedRowKeys.length}
-            </Checkbox>
-            <Button type="link" onClick={clearFilters} className="clear-filters-btn">
-              Xóa bộ lọc
-            </Button>
-            <Input
-              placeholder="Tìm kiếm theo tên, username, SĐT, mã học viên..."
-              prefix={<SearchOutlined />}
-              value={searchText}
-              onChange={handleSearchChange}
-              className="search-input"
-            />
-          </div>
+                <Form form={form} layout="vertical">
+                    <Form.Item
+                        name="classes"
+                        label="Chọn (các) lớp học"
+                        rules={[{ required: false, message: 'Vui lòng chọn lớp học!' }]}
+                    >
+                        <Select
+                            mode="multiple"
+                            style={{ width: '100%' }}
+                            placeholder="Chọn lớp học"
+                            onChange={setSelectedClassesForEdit}
+                            filterOption={(input, option) =>
+                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                            }
+                        >
+                            {allClasses.map(cls => (
+                                <Option key={cls.classId} value={cls.classId}>
+                                    {cls.classCode} - {cls.className}
+                                </Option>
+                            ))}
+                        </Select>
+                    </Form.Item>
+                </Form>
+            </Modal>
 
-          <div className="filters-right">
-            <div className="filter-group">
-              <span className="filter-label">Lớp học:</span>
-              <Select
-                value={classFilter}
-                onChange={(value) => handleFilterChange("class", value)}
-                className="filter-select"
-              >
-                <Option value="Tất cả">Tất cả</Option>
-                {uniqueClasses.map((className) => (
-                  <Option key={className} value={className}>
-                    {className}
-                  </Option>
-                ))}
-              </Select>
-            </div>
-
-            <div className="filter-group">
-              <span className="filter-label">Trạng thái:</span>
-              <Select
-                value={statusFilter}
-                onChange={(value) => handleFilterChange("status", value)}
-                className="filter-select"
-              >
-                <Option value="Tất cả">Tất cả</Option>
-                <Option value="completed">Đã xong</Option>
-                <Option value="studying">Đang học</Option>
-                <Option value="registered">Đã đăng ký</Option>
-              </Select>
-            </div>
-          </div>
+            {/* View User Info Modal */}
+            <Modal
+                title={`Thông tin chi tiết của ${viewingUser?.name}`}
+                visible={isViewModalVisible}
+                onCancel={() => {
+                    setIsViewModalVisible(false);
+                    setViewingUser(null);
+                }}
+                footer={null}
+                width={600}
+            >
+                {viewingUser && (
+                    <Descriptions bordered column={1} size="small">
+                        <Descriptions.Item label="User ID">{viewingUser.userId}</Descriptions.Item>
+                        <Descriptions.Item label="Họ và tên">{viewingUser.name}</Descriptions.Item>
+                        <Descriptions.Item label="Username">{viewingUser.username}</Descriptions.Item>
+                        <Descriptions.Item label="Email">{viewingUser.email}</Descriptions.Item>
+                        <Descriptions.Item label="SĐT">{viewingUser.phone}</Descriptions.Item>
+                        <Descriptions.Item label="Vai trò">{viewingUser.role === 'student' ? 'Học viên' : viewingUser.role === 'teacher' ? 'Giáo viên' : 'Khác'}</Descriptions.Item>
+                        <Descriptions.Item label="Trạng thái">{getStatusTag(viewingUser.isDisabled)}</Descriptions.Item>
+                        <Descriptions.Item label="Giới tính">{viewingUser.genderId === 1 ? 'Nam' : viewingUser.genderId === 2 ? 'Nữ' : 'Chưa cập nhật'}</Descriptions.Item>
+                        <Descriptions.Item label="Ngày sinh">{viewingUser.birthday ? new Date(viewingUser.birthday).toLocaleDateString('vi-VN') : 'Chưa cập nhật'}</Descriptions.Item>
+                        <Descriptions.Item label="Địa chỉ">{viewingUser.address || 'Chưa cập nhật'}</Descriptions.Item>
+                        <Descriptions.Item label="Lớp học">
+                            {viewingUser.classIds && viewingUser.classIds.length > 0 ? (
+                                viewingUser.classIds.map(classId => {
+                                    const classInfo = allClasses.find(cls => cls.classId === classId);
+                                    return (
+                                        <Tag key={classId} color="blue" style={{ marginBottom: 4 }}>
+                                            {classInfo ? `${classInfo.classCode} - ${classInfo.className}` : `ID: ${classId}`}
+                                        </Tag>
+                                    );
+                                })
+                            ) : (
+                                <Tag color="default">Chưa có lớp</Tag>
+                            )}
+                        </Descriptions.Item>
+                    </Descriptions>
+                )}
+            </Modal>
         </div>
+    );
+};
 
-        {/* Results Info */}
-        <div className="results-info">
-          <span>
-            Hiển thị {paginatedData.length} / {filteredData.length} học viên
-            {filteredData.length !== studentData.length && ` (lọc từ ${studentData.length} tổng cộng)`}
-          </span>
-        </div>
-
-        {/* Table Section */}
-        <div className="table-container">
-          <Table
-            columns={columns}
-            dataSource={paginatedData}
-            rowSelection={rowSelection}
-            pagination={false}
-            className="student-table"
-            size="middle"
-          />
-        </div>
-
-        {/* Pagination Section */}
-        <div className="pagination-container">
-          <Pagination
-            current={currentPage}
-            total={filteredData.length}
-            pageSize={pageSize}
-            showSizeChanger={false}
-            onChange={setCurrentPage}
-            className="custom-pagination"
-            showTotal={(total, range) => `${range[0]}-${range[1]} của ${total} học viên`}
-          />
-        </div>
-      </div>
-    </div>
-  )
-}
-
-export default StudentInfo
+export default StudentInfo;

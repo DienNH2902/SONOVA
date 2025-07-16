@@ -586,166 +586,187 @@
 
 
 
-"use client";
+import { Typography, Table, Checkbox, Spin, Radio, Card, Space, Button, App } from "antd"
+import { FilterOutlined } from "@ant-design/icons"
+import { useState, useEffect, useRef, useMemo } from "react"
+import "./Consultation.css"
 
-import { Typography, Table, Checkbox, Spin, message, Radio, Card, Space, Button, App } from "antd"; // Import Card, Space, Button, App
-import { FilterOutlined } from '@ant-design/icons'; // Import FilterOutlined icon
-import { useState, useEffect, useRef, useMemo } from "react";
-import "./Consultation.css"; // Make sure this path is correct
-
-const { Title } = Typography;
+const { Title } = Typography
 
 const Consultation = () => {
-  const [consultationRequests, setConsultationRequests] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [currentAdmin, setCurrentAdmin] = useState("");
-  const [consultationTopicsMap, setConsultationTopicsMap] = useState({});
-  const [filterStatus, setFilterStatus] = useState("notContacted"); // New state for filter: 'notContacted', 'contacted', 'all'
-
-  const { message: antdMessage } = App.useApp(); // Use Ant Design's message hook
-
-  const hasFetchedRequests = useRef(false);
-  const hasFetchedTopics = useRef(false);
+  const [consultationRequests, setConsultationRequests] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [currentAdmin, setCurrentAdmin] = useState({ username: "Admin", userId: null }) // Cập nhật state để lưu cả userId
+  const [consultationTopicsMap, setConsultationTopicsMap] = useState({})
+  const [filterStatus, setFilterStatus] = useState("notContacted")
+  const { message: antdMessage } = App.useApp()
+  const hasFetchedRequests = useRef(false)
+  const hasFetchedTopics = useRef(false)
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
+    const storedUser = localStorage.getItem("user")
     if (storedUser) {
       try {
-        const user = JSON.parse(storedUser);
-        setCurrentAdmin(user.username);
+        const user = JSON.parse(storedUser)
+        // Lưu cả userId và username
+        setCurrentAdmin({
+          username: user.username || "Admin",
+          userId: user.userId || null, // Đảm bảo user.userId tồn tại
+        })
       } catch (e) {
-        console.error("Failed to parse user from localStorage", e);
-        setCurrentAdmin("Admin"); // Fallback if parsing fails
+        console.error("Failed to parse user from localStorage", e)
+        setCurrentAdmin({ username: "Admin", userId: null }) // Fallback
       }
     } else {
-      setCurrentAdmin("Admin"); // Default if no user in localStorage
+      setCurrentAdmin({ username: "Admin", userId: null }) // Default
     }
-  }, []);
+  }, [])
 
   // Fetch Consultation Topics
   useEffect(() => {
-    if (hasFetchedTopics.current) return;
-    hasFetchedTopics.current = true;
-
+    if (hasFetchedTopics.current) return
+    hasFetchedTopics.current = true
     const fetchTopics = async () => {
       try {
         const response = await fetch(
-          "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ConsultationTopic"
-        );
+          "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ConsultationTopic",
+        )
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          throw new Error(`HTTP error! status: ${response.status}`)
         }
-        const data = await response.json();
-        const topicMap = {};
-        if (data.$values) {
-          data.$values.forEach((topic) => {
-            topicMap[topic.consultationTopicId] = topic.consultationTopicName;
-          });
+        const data = await response.json()
+        const topicMap = {}
+        if (Array.isArray(data)) {
+          data.forEach((topic) => {
+            topicMap[topic.consultationTopicId] = topic.consultationTopicName
+          })
         }
-        setConsultationTopicsMap(topicMap);
+        setConsultationTopicsMap(topicMap)
       } catch (error) {
-        console.error("Error fetching consultation topics:", error);
-        antdMessage.error("Không thể tải danh mục tư vấn.");
+        console.error("Error fetching consultation topics:", error)
+        antdMessage.error("Không thể tải danh mục tư vấn.")
       }
-    };
-
-    fetchTopics();
-  }, [antdMessage]); // Dependency array includes antdMessage
+    }
+    fetchTopics()
+  }, [antdMessage])
 
   // Fetch Consultation Requests
   const fetchConsultationRequests = async () => {
     try {
-      setLoading(true);
+      setLoading(true)
       const response = await fetch(
-        "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ConsultationRequest"
-      );
+        "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ConsultationRequest",
+      )
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`HTTP error! status: ${response.status}`)
       }
-      const data = await response.json();
-      if (data.$values) {
-        setConsultationRequests(data.$values);
+      const data = await response.json()
+      if (Array.isArray(data)) {
+        setConsultationRequests(data)
       } else {
-        setConsultationRequests([]);
+        setConsultationRequests([])
       }
     } catch (error) {
-      console.error("Error fetching consultation requests:", error);
-      antdMessage.error("Không thể tải dữ liệu yêu cầu tư vấn.");
+      console.error("Error fetching consultation requests:", error)
+      antdMessage.error("Không thể tải dữ liệu yêu cầu tư vấn.")
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    if (hasFetchedRequests.current) return;
-    hasFetchedRequests.current = true;
-    fetchConsultationRequests();
-  }, [antdMessage]); // Dependency array includes antdMessage
+    if (hasFetchedRequests.current) return
+    hasFetchedRequests.current = true
+    fetchConsultationRequests()
+  }, [antdMessage])
 
   // Function to update hasContact status on backend
   const updateHasContactStatus = async (request) => {
-    const payload = {
-      ...request, // Send entire object as PUT is often full replacement
-      hasContact: !request.hasContact, // Toggle the status
+    const newHasContactStatus = !request.hasContact; // Trạng thái mới của hasContact
+
+    let payload = {
+      consultationRequestId: request.consultationRequestId,
+      hasContact: newHasContactStatus,
     };
 
+    // Nếu đánh dấu 'đã liên hệ' (chuyển từ false sang true)
+    if (newHasContactStatus) {
+      // Chỉ gửi handledAt, không cần handledBy vì backend sẽ tự động check current user
+      payload = {
+        ...payload,
+        handledAt: new Date().toISOString(), // Thời gian hiện tại theo định dạng ISO 8601
+      };
+    } else {
+        // Nếu bỏ đánh dấu 'đã liên hệ' (chuyển từ true sang false)
+        // Gửi handledAt: null để xóa thông tin người xử lý nếu backend yêu cầu
+        payload = {
+            ...payload,
+            handledAt: null,
+            handledBy: null // Gửi null cho handledBy để xóa thông tin người xử lý
+        };
+    }
+
     try {
+      const token = localStorage.getItem("token"); // Lấy token từ localStorage
       const response = await fetch(
-        `https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ConsultationRequest/${request.consultationRequestId}`,
+        `https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ConsultationRequest/${request.consultationRequestId}/contact-status`,
         {
-          method: "PUT",
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`, // Thêm Bearer token vào header
           },
           body: JSON.stringify(payload),
-        }
-      );
-
+        },
+      )
       if (response.ok) {
-        antdMessage.success(`Cập nhật trạng thái liên hệ thành công cho ${request.fullname}!`);
-        // Re-fetch data to reflect the change from the server
-        fetchConsultationRequests();
+        antdMessage.success(`Cập nhật trạng thái liên hệ thành công cho ${request.fullname}!`)
+        fetchConsultationRequests()
       } else {
-        const errorData = await response.json();
-        console.error("Error updating hasContact status:", errorData);
-        antdMessage.error(`Cập nhật trạng thái liên hệ thất bại: ${errorData.message || response.statusText}`);
+        const errorData = await response.json()
+        console.error("Error updating hasContact status:", errorData)
+        // Hiển thị chi tiết lỗi từ backend nếu có
+        const errorMessage = errorData.detail || errorData.message || response.statusText;
+        antdMessage.error(`Cập nhật trạng thái liên hệ thất bại: ${errorMessage}`);
       }
     } catch (error) {
-      console.error("Network error updating hasContact status:", error);
-      antdMessage.error("Có lỗi xảy ra khi cập nhật trạng thái liên hệ.");
+      console.error("Network error updating hasContact status:", error)
+      antdMessage.error("Có lỗi xảy ra khi cập nhật trạng thái liên hệ.")
     }
-  };
+  }
 
   const getConsultationTag = (consultationTopicId) => {
-    const topicName = consultationTopicsMap[consultationTopicId] || "Không xác định";
-    let className = "default";
-
+    const topicName = consultationTopicsMap[consultationTopicId] || "Không xác định"
+    let className = "default"
     if (topicName.toLowerCase().includes("piano")) {
-      className = topicName.toLowerCase().includes("cơ bản") || topicName.toLowerCase().includes("basic") ? "piano-basic" : "piano-advanced";
+      className =
+        topicName.toLowerCase().includes("cơ bản") || topicName.toLowerCase().includes("basic")
+          ? "piano-basic"
+          : "piano-advanced"
     } else if (topicName.toLowerCase().includes("guitar")) {
-      className = topicName.toLowerCase().includes("cơ bản") || topicName.toLowerCase().includes("basic") ? "guitar-basic" : "guitar-advanced";
+      className =
+        topicName.toLowerCase().includes("cơ bản") || topicName.toLowerCase().includes("basic")
+          ? "guitar-basic"
+          : "guitar-advanced"
     } else if (topicName.toLowerCase() === "nguyet") {
-      className = "nguyet";
+      className = "nguyet"
     }
+    return <span className={`consultation-tag ${className}`}>{topicName}</span>
+  }
 
-    return <span className={`consultation-tag ${className}`}>{topicName}</span>;
-  };
-
-  // Filtered data based on filterStatus
   const filteredRequests = useMemo(() => {
-    if (!consultationRequests.length) return [];
+    if (!consultationRequests.length) return []
     if (filterStatus === "notContacted") {
-      return consultationRequests.filter((req) => !req.hasContact);
+      return consultationRequests.filter((req) => !req.hasContact)
     } else if (filterStatus === "contacted") {
-      return consultationRequests.filter((req) => req.hasContact);
+      return consultationRequests.filter((req) => req.hasContact)
     }
-    return consultationRequests; // 'all' or default
-  }, [consultationRequests, filterStatus]);
+    return consultationRequests
+  }, [consultationRequests, filterStatus])
 
-  // Function to reset filter to default 'notContacted'
   const clearFilter = () => {
-    setFilterStatus("notContacted");
-  };
+    setFilterStatus("notContacted")
+  }
 
   const columns = [
     {
@@ -795,11 +816,7 @@ const Consultation = () => {
       width: 180,
       align: "center",
       render: (hasContact, record) => (
-        <Checkbox
-          checked={hasContact}
-          onChange={() => updateHasContactStatus(record)}
-          className="contact-checkbox"
-        />
+        <Checkbox checked={hasContact} onChange={() => updateHasContactStatus(record)} className="contact-checkbox" />
       ),
     },
     {
@@ -808,20 +825,21 @@ const Consultation = () => {
       width: 160,
       align: "center",
       render: (_, record) => {
-        // This part currently uses currentAdmin as a placeholder.
-        // For persistence, backend needs to store confirmedBy and confirmedAt.
+        // Sử dụng dữ liệu từ API nếu có, nếu không thì hiển thị placeholder
         if (record.hasContact) {
+          const handledByName = record.handledBy?.accountName || currentAdmin.username || "Không xác định";
+          const handledAtTime = record.handledAt ? new Date(record.handledAt).toLocaleString("vi-VN") : "Thời gian không rõ";
           return (
             <div className="confirmed-info">
-              <div className="confirmed-by">{currentAdmin}</div> {/* Placeholder */}
-              <div className="confirmed-time">Đã liên hệ</div> {/* Placeholder */}
+              <div className="confirmed-by">{handledByName}</div>
+              <div className="confirmed-time">{handledAtTime}</div>
             </div>
-          );
+          )
         }
-        return <span className="not-confirmed">-</span>;
+        return <span className="not-confirmed">-</span>
       },
     },
-  ];
+  ]
 
   if (loading) {
     return (
@@ -835,7 +853,7 @@ const Consultation = () => {
       >
         <Spin size="large" tip="Đang tải dữ liệu tư vấn..." />
       </div>
-    );
+    )
   }
 
   return (
@@ -844,25 +862,13 @@ const Consultation = () => {
         <Title level={1} className="page-title">
           Liên hệ tư vấn
         </Title>
-
         <div className="admin-info">
           <span className="admin-label">Đang đăng nhập:</span>
-          <span className="admin-name">{currentAdmin}</span>
+          <span className="admin-name">{currentAdmin.username}</span> {/* Hiển thị username */}
         </div>
 
-        {/* Filter Section - Wrapped in Card */}
-        <Card
-          className="consultation-filter-card"
-          // title={
-          //   <div className="consultation-filter-card-title">
-          //     <FilterOutlined style={{ marginRight: '8px' }} /> Bộ lọc yêu cầu tư vấn
-          //   </div>
-          // }
-          style={{ marginBottom: "20px" }}
-          bordered={false}
-        >
+        <Card className="consultation-filter-card" style={{ marginBottom: "20px" }} bordered={false}>
           <Space size="middle" wrap>
-            {/* Filter Radio Buttons */}
             <Radio.Group
               onChange={(e) => setFilterStatus(e.target.value)}
               value={filterStatus}
@@ -873,19 +879,12 @@ const Consultation = () => {
               <Radio.Button value="contacted">Đã liên hệ</Radio.Button>
               <Radio.Button value="all">Tất cả</Radio.Button>
             </Radio.Group>
-
-            {/* Clear Filter Button */}
-            <Button
-              icon={<FilterOutlined />}
-              onClick={clearFilter}
-              className="clear-filter-button"
-            >
+            <Button icon={<FilterOutlined />} onClick={clearFilter} className="clear-filter-button">
               Xóa bộ lọc
             </Button>
           </Space>
         </Card>
 
-        {/* Table Section */}
         <div className="table-container">
           <Table
             columns={columns}
@@ -899,14 +898,12 @@ const Consultation = () => {
             size="middle"
           />
           {filteredRequests.length === 0 && !loading && (
-            <div className="no-data-message">
-              Không có yêu cầu nào để hiển thị trong mục này.
-            </div>
+            <div className="no-data-message">Không có yêu cầu nào để hiển thị trong mục này.</div>
           )}
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Consultation;
+export default Consultation
