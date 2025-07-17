@@ -1,4 +1,5 @@
-import { Drawer, Menu } from "antd";
+// TeacherSidebar.jsx
+import { Menu } from "antd"; // Loại bỏ Drawer
 import {
   CheckCircleOutlined,
   CalendarOutlined,
@@ -8,41 +9,50 @@ import {
   PhoneOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
-import "../AdminSidebar/AdminSidebar.css";
+import "../AdminSidebar/AdminSidebar.css"; // Import CSS chung từ AdminSidebar (hoặc Sidebar.css nếu đã đổi tên)
 import { useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
-const TeacherSidebar = ({ visible }) => {
-    const navigate = useNavigate()
-    const location = useLocation();
+// Bỏ props 'visible' vì Sider sẽ luôn visible
+const TeacherSidebar = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    const getSelectedKey = () => {
+  // State để quản lý các SubMenu đang mở
+  const [openKeys, setOpenKeys] = useState([]);
+
+  const getSelectedKey = () => {
     switch (location.pathname) {
       case "/teacher":
         return ["teacher-class"];
-      case "/teacher/create-account":
-        return ["create-account"];
+      case "/teacher/schedule":
+        return ["schedule"];
+      case "/teacher/materials":
+        return ["materials"];
       case "/teacher/course-schedule":
         return ["course-schedule"];
       case "/teacher/class-detail-student-info":
         return ["class-detail-student-info"];
-      case "/teacher/sheet-music":
-        return ["sheet-music"];
-      case "/teacher/consultation":
-        return ["consultation"];
-      case "/teacher/materials":
-        return ["materials"];
-      case "/teacher/schedule":
-        return ["schedule"];
-      case "/teacher/absence":
-        return ["absence"];
       case "/teacher/profile":
         return ["profile"];
-
       default:
-        return []; // No default selection if no match
+        return [];
     }
   };
 
+  // Hàm để xác định các SubMenu nào nên được mở khi tải trang
+  // TeacherSidebar hiện tại không có SubMenu, nhưng nếu sau này thêm vào thì dùng hàm này
+  const getInitialOpenKeys = () => {
+    // const path = location.pathname;
+    // if (path.startsWith("/teacher/some-path-with-submenu")) {
+    //   return ["parent-key"];
+    // }
+    return [];
+  };
+
+  useEffect(() => {
+    setOpenKeys(getInitialOpenKeys());
+  }, [location.pathname]);
 
   const menuItems = [
     {
@@ -54,93 +64,36 @@ const TeacherSidebar = ({ visible }) => {
     },
     {
       key: "schedule",
-      icon: <CalendarOutlined />, // Changed icon for better representation
+      icon: <CalendarOutlined />,
       label: "Thời khóa biểu",
       onClick: () => navigate("/teacher/schedule"),
     },
-    // {
-    //   key: "classes", // Parent key for "Lớp học"
-    //   icon: <FileTextOutlined />,
-    //   label: "Lớp học",
-    //   children: [
-    //     {
-    //       key: "course-schedule",
-    //       label: "Lịch khai giảng",
-    //       onClick: () => navigate("/admin/course-schedule"),
-    //     },
-    //     {
-    //       key: "materials",
-    //       label: "Tài liệu",
-    //       onClick: () => navigate("/admin/materials"),
-    //     },
-    //     {
-    //       key: "schedule",
-    //       label: "Thời khóa biểu",
-    //       onClick: () => navigate("/admin/schedule"),
-    //     },
-    //   ],
-    // },
-    // {
-    //   key: "students", // Parent key for "Học viên"
-    //   icon: <ScheduleOutlined />, // Changed icon for better representation
-    //   label: "Học viên",
-    //   children: [
-    //     {
-    //       key: "student-info",
-    //       label: "Thông tin",
-    //       onClick: () => navigate("/admin/student-info"),
-    //     },
-    //     {
-    //       key: "absence",
-    //       label: "Vắng",
-    //       onClick: () => navigate("/admin/absence"),
-    //     },
-    //   ],
-    // },
     {
       key: "materials",
-      icon: <UserOutlined />, // Changed icon for better representation
+      icon: <UserOutlined />, // Icon này vẫn đang dùng UserOutlined, cân nhắc đổi nếu không phù hợp
       label: "Tài liệu",
       onClick: () => navigate("/teacher/materials"),
     },
     {
       key: "course-schedule",
-      icon: <FileTextOutlined />, // Changed icon for better representation
-      label: "Lịch khai giảng", // Updated label based on image
+      icon: <FileTextOutlined />,
+      label: "Lịch khai giảng",
       onClick: () => navigate("/teacher/course-schedule"),
     },
     {
       key: "class-detail-student-info",
-      icon: <ScheduleOutlined />, // Changed icon for better representation
+      icon: <ScheduleOutlined />,
       label: "Thông tin học viên",
       onClick: () => navigate("/teacher/class-detail-student-info"),
     },
-    // {
-    //   key: "absence",
-    //   icon: <CheckCircleOutlined />, // Changed icon for better representation
-    //   label: "Điểm danh vắng",
-    //   onClick: () => navigate("/teacher/absence"),
-    // },
-    // {
-    //   key: "sheet-music",
-    //   icon: <FileTextOutlined />, // Changed icon for better representation
-    //   label: "Sheet nhạc",
-    //   onClick: () => navigate("/teacher/sheet-music"),
-    // },
-    // {
-    //   key: "consultation",
-    //   icon: <PhoneOutlined />, // Changed icon for better representation
-    //   label: "Liên hệ tư vấn", // Updated label based on image
-    //   onClick: () => navigate("/teacher/consultation"),
-    // },
   ];
 
   const bottomItems = [
     {
       key: "profile",
-      icon: <PhoneOutlined />,
+      icon: <PhoneOutlined />, // Icon này vẫn đang dùng PhoneOutlined, cân nhắc đổi nếu không phù hợp
       label: "Tài khoản",
-        onClick: () => navigate("/teacher/profile"), // Assuming you have a profile page
+      onClick: () => navigate("/teacher/profile"),
     },
     {
       key: "logout",
@@ -154,29 +107,34 @@ const TeacherSidebar = ({ visible }) => {
     },
   ];
 
+  const onOpenChange = (keys) => {
+    setOpenKeys(keys);
+  };
+
   return (
-    <Drawer
-      title={null}
-      placement="left"
-      // onClose={onClose}
-      open={visible}
-      mask={false}
-      width={200}
-      styles={{ body: { padding: 0 } }}
-      className="sidebar-drawer no-blur"
-  maskStyle={{ backdropFilter: "none", backgroundColor: "transparent" }}
-  getContainer={false} // Makes drawer render inside its parent, not <body>
-  style={{ position: 'relative' }} // Required when using getContainer={false}
-    >
-      <div className="sidebar-content">
-        <div className="sidebar-main">
-          <Menu mode="vertical" items={menuItems} className="sidebar-menu" selectedKeys={getSelectedKey()} />
-        </div>
-        <div className="sidebar-bottom">
-          <Menu mode="vertical" items={bottomItems} className="sidebar-menu" selectedKeys={getSelectedKey()}/>
-        </div>
+    // Toàn bộ nội dung của Drawer cũ, nhưng không còn là Drawer nữa
+    // Mà sẽ được render trực tiếp trong Sider
+    <div className="sidebar-content"> {/* Sử dụng class sidebar-content chung */}
+      <div className="sidebar-main"> {/* Sử dụng class sidebar-main chung */}
+        <Menu
+          mode="inline" // Thay đổi mode thành "inline" để submenu hiển thị bên trong (nếu có sau này)
+          items={menuItems}
+          className="sidebar-menu" // Sử dụng class sidebar-menu chung
+          selectedKeys={getSelectedKey()}
+          openKeys={openKeys}
+          onOpenChange={onOpenChange}
+          inlineIndent={16}
+        />
       </div>
-    </Drawer>
+      <div className="sidebar-bottom"> {/* Sử dụng class sidebar-bottom chung */}
+        <Menu
+          mode="vertical" // Menu dưới thường không có submenu nên giữ vertical
+          items={bottomItems}
+          className="sidebar-menu" // Vẫn dùng sidebar-menu cho style
+          selectedKeys={getSelectedKey()}
+        />
+      </div>
+    </div>
   );
 };
 

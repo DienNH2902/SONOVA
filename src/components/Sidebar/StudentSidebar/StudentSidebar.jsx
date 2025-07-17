@@ -1,46 +1,46 @@
-import { Drawer, Menu } from "antd";
+// StudentSidebar.jsx
+import { Menu } from "antd";
 import {
   CheckCircleOutlined,
-  CalendarOutlined,
-  FileTextOutlined,
-  ScheduleOutlined,
-  UserOutlined,
-  PhoneOutlined,
+  CalendarOutlined, // Giữ lại CalendarOutlined cho Sheet nhạc
+  // Loại bỏ các icon không dùng
+  // FileTextOutlined,
+  // ScheduleOutlined,
+  // UserOutlined,
+  PhoneOutlined, // Dùng cho Tài khoản
   LogoutOutlined,
 } from "@ant-design/icons";
-import "../Sidebar.css";
+import "../Sidebar.css"; // Giả sử đây là file CSS chung
 import { useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
-const StudentSidebar = ({ visible }) => {
-    const navigate = useNavigate()
-    const location = useLocation();
+const StudentSidebar = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    const getSelectedKey = () => {
+  const [openKeys, setOpenKeys] = useState([]);
+
+  const getSelectedKey = () => {
     switch (location.pathname) {
       case "/student":
         return ["lesson"];
       case "/student/sheet-music":
         return ["sheet-music"];
-      case "/student/course-schedule":
-        return ["course-schedule"];
-      case "/student/student-info":
-        return ["student-info"];
-      case "/student/consultation":
-        return ["consultation"];
-      case "/student/materials":
-        return ["materials"];
-      case "/student/schedule":
-        return ["schedule"];
-      case "/student/absence":
-        return ["absence"];
       case "/student/profile":
         return ["profile"];
-
       default:
-        return []; // No default selection if no match
+        return [];
     }
   };
 
+  // Hàm này vẫn giữ nguyên, nhưng sẽ trả về mảng rỗng vì không có submenu
+  const getInitialOpenKeys = () => {
+    return [];
+  };
+
+  useEffect(() => {
+    setOpenKeys(getInitialOpenKeys());
+  }, [location.pathname]);
 
   const menuItems = [
     {
@@ -52,69 +52,25 @@ const StudentSidebar = ({ visible }) => {
     },
     {
       key: "sheet-music",
-      icon: <CalendarOutlined />, // Changed icon for better representation
+      icon: <CalendarOutlined />, // Vẫn dùng CalendarOutlined như mày muốn
       label: "Sheet nhạc",
       onClick: () => navigate("/student/sheet-music"),
     },
-    // {
-    //   key: "classes", // Parent key for "Lớp học"
-    //   icon: <FileTextOutlined />,
-    //   label: "Lớp học",
-    //   children: [
-    //     {
-    //       key: "course-schedule",
-    //       label: "Lịch khai giảng",
-    //       onClick: () => navigate("/admin/course-schedule"),
-    //     },
-    //     {
-    //       key: "materials",
-    //       label: "Tài liệu",
-    //       onClick: () => navigate("/admin/materials"),
-    //     },
-    //     {
-    //       key: "schedule",
-    //       label: "Thời khóa biểu",
-    //       onClick: () => navigate("/admin/schedule"),
-    //     },
-    //   ],
-    // },
-    // {
-    //   key: "students", // Parent key for "Học viên"
-    //   icon: <ScheduleOutlined />, // Changed icon for better representation
-    //   label: "Học viên",
-    //   children: [
-    //     {
-    //       key: "student-info",
-    //       label: "Thông tin",
-    //       onClick: () => navigate("/admin/student-info"),
-    //     },
-    //     {
-    //       key: "absence",
-    //       label: "Vắng",
-    //       onClick: () => navigate("/admin/absence"),
-    //     },
-    //   ],
-    // },
-    // {
-    //   key: "sheet-music",
-    //   icon: <UserOutlined />, // Changed icon for better representation
-    //   label: "Sheet nhạc",
-    //   onClick: () => navigate("/admin/sheet-music"),
-    // },
-    // {
-    //   key: "consultation",
-    //   icon: <PhoneOutlined />, // Changed icon for better representation
-    //   label: "Liên hệ tư vấn", // Updated label based on image
-    //   onClick: () => navigate("/admin/consultation"),
-    // },
+    // Loại bỏ các mục menu không mong muốn:
+    // { key: "course-schedule", icon: <FileTextOutlined />, label: "Lịch khai giảng", onClick: () => navigate("/student/course-schedule"), },
+    // { key: "student-info", icon: <ScheduleOutlined />, label: "Thông tin học viên", onClick: () => navigate("/student/student-info"), },
+    // { key: "consultation", icon: <PhoneOutlined />, label: "Liên hệ tư vấn", onClick: () => navigate("/student/consultation"), },
+    // { key: "materials", icon: <UserOutlined />, label: "Tài liệu", onClick: () => navigate("/student/materials"), },
+    // { key: "schedule", icon: <CalendarOutlined />, label: "Thời khóa biểu", onClick: () => navigate("/student/schedule"), },
+    // { key: "absence", icon: <CheckCircleOutlined />, label: "Vắng", onClick: () => navigate("/student/absence"), },
   ];
 
   const bottomItems = [
     {
       key: "profile",
-      icon: <PhoneOutlined />,
+      icon: <PhoneOutlined />, // Vẫn dùng PhoneOutlined như mày muốn
       label: "Tài khoản",
-      onClick: () => navigate("/student/profile"), // Assuming you have a profile page
+      onClick: () => navigate("/student/profile"),
     },
     {
       key: "logout",
@@ -128,29 +84,32 @@ const StudentSidebar = ({ visible }) => {
     },
   ];
 
+  const onOpenChange = (keys) => {
+    setOpenKeys(keys);
+  };
+
   return (
-    <Drawer
-      title={null}
-      placement="left"
-      // onClose={onClose}
-      open={visible}
-      mask={false}
-      width={200}
-      styles={{ body: { padding: 0 } }}
-      className="sidebar-drawer no-blur"
-  maskStyle={{ backdropFilter: "none", backgroundColor: "transparent" }}
-  getContainer={false} // Makes drawer render inside its parent, not <body>
-  style={{ position: 'relative' }} // Required when using getContainer={false}
-    >
-      <div className="sidebar-content">
-        <div className="sidebar-main">
-          <Menu mode="vertical" items={menuItems} className="sidebar-menu" selectedKeys={getSelectedKey()} />
-        </div>
-        <div className="sidebar-bottom">
-          <Menu mode="vertical" items={bottomItems} className="sidebar-menu" selectedKeys={getSelectedKey()}/>
-        </div>
+    <div className="sidebar-content">
+      <div className="sidebar-main">
+        <Menu
+          mode="inline"
+          items={menuItems}
+          className="sidebar-menu"
+          selectedKeys={getSelectedKey()}
+          openKeys={openKeys}
+          onOpenChange={onOpenChange}
+          inlineIndent={16}
+        />
       </div>
-    </Drawer>
+      <div className="sidebar-bottom">
+        <Menu
+          mode="vertical"
+          items={bottomItems}
+          className="sidebar-menu"
+          selectedKeys={getSelectedKey()}
+        />
+      </div>
+    </div>
   );
 };
 

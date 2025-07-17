@@ -1,37 +1,25 @@
+/* Sidebar.css */
 
-/* Ensure the Drawer itself is visible and has a high z-index */
-.sidebar-drawer {
-  z-index: 1000; /* Ensure it’s above other elements */
-  position: absolute; /* Use static positioning to avoid conflicts */
-  height: 500px; /* Set a fixed height for the Drawer */
-  top: 60px;
-}
+/* Remove Drawer specific styles */
+/* .sidebar-drawer { ... } */
+/* .sidebar-drawer .ant-drawer-body { ... } */
+/* .sidebar-drawer .ant-drawer-header { ... } */
+/* .sidebar-drawer.no-blur .ant-drawer-mask { ... } */
 
-/* Style the Drawer body */
-.sidebar-drawer .ant-drawer-body {
-  /* background: #1e3a5f; */
-  padding: 0;
-  margin: 0;
-  height: 600px; /* Ensure the body takes the full height of the Drawer */
-}
-
-/* Hide the Drawer header */
-.sidebar-drawer .ant-drawer-header {
-  display: none;
-}
-
-/* Style the sidebar content */
+/* Style for the sidebar content itself (now inside Sider) */
 .sidebar-content {
-  height: 750px; /* Use 100% instead of 100vh to fit within the Drawer */
+  height: 100%; /* Chiếm toàn bộ chiều cao của Sider */
   display: flex;
   flex-direction: column;
-  background: #2a4a73;
+  background: #2a4a73; /* Giữ màu nền */
+  padding-bottom: 20px; /* Thêm padding dưới cho phần bottom menu */
 }
 
 /* Main menu section */
 .sidebar-main {
-  flex: 1;
+  flex: 1; /* Để menu chính chiếm hết không gian còn lại */
   padding-top: 20px;
+  overflow-y: auto; /* Cho phép scroll nếu menu quá dài */
 }
 
 /* Style the main menu */
@@ -52,86 +40,41 @@
 }
 
 .sidebar-menu .ant-menu-item:hover {
-  background: #1e3a5f ;
-  color: #ffa940 !important; 
+  background: #1e3a5f;
+  color: #ffa940 !important;
 }
 
 .sidebar-menu .ant-menu-item-selected {
-  background: #ffa940 ;
+  background: #ffa940;
   color: #1e3a5f;
   font-weight: bold;
 }
 
-/* .sidebar-item-yellow {
-  background: #ffa940 !important;
-  color: #1e3a5f !important;
-  font-weight: bold;
-} */
-
-
-
-
 .sidebar-menu .ant-menu-submenu-title {
   color: white;
+  padding-right: 83px; /* Giữ khoảng trống cho mũi tên */
 }
 
-
-.sidebar-menu .ant-menu-submenu-title {
-  padding-right: 83px;
+/* Style cho icon mũi tên của submenu, nếu cần tùy chỉnh thêm */
+.sidebar-menu .ant-menu-submenu-arrow {
+  color: white;
 }
-
-
-
 
 
 /* Bottom menu section */
 .sidebar-bottom {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding: 20px 0;
+  flex-shrink: 0; /* Ngăn không cho co lại khi có quá nhiều item ở sidebar-main */
 }
 
-/* Style the bottom menu */
-.sidebar-bottom-menu {
-  background: transparent;
-  border: none;
-}
-
-.sidebar-bottom-menu .ant-menu-item {
-  color: white;
-  margin: 0;
-  padding: 10px 20px;
-  height: auto;
-  line-height: 1.5;
-}
-
-.sidebar-bottom-menu .ant-menu-item:hover {
-  background: rgba(255, 169, 64, 0.1);
-  color: #ffa940;
-}
+/* Style the bottom menu (giữ nguyên vì nó vẫn là Menu Ant Design) */
+/* .sidebar-bottom-menu { ... } */ /* không cần vì dùng chung .sidebar-menu */
 
 /* Style the icons in both menus */
 .sidebar-menu .ant-menu-item .anticon,
-.sidebar-menu .ant-menu-submenu-title .anticon,
-.sidebar-bottom-menu .ant-menu-item .anticon {
+.sidebar-menu .ant-menu-submenu-title .anticon {
   margin-right: 12px;
   font-size: 16px;
   margin-left: 0px;
 }
-
-
-
-
-
-
-/* Disable any blur on drawer backdrop */
-.sidebar-drawer.no-blur .ant-drawer-mask {
-  backdrop-filter: none !important;
-  background: transparent !important;
-}
-
-
-
-
-
-
-

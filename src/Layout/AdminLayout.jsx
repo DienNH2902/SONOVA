@@ -1,20 +1,22 @@
+// AdminLayout.jsx
 import { Layout as AntLayout } from "antd";
 import { Outlet } from "react-router-dom";
 import Header from "../components/Header/Header.jsx";
 import "./AdminLayout.css";
-import AdminSidebar from "../components/Sidebar/AdminSidebar/AdminSidebar.jsx";
+import AdminSidebar from "../components/Sidebar/AdminSidebar/AdminSidebar.jsx"; // Vẫn import AdminSidebar
 
-const { Content } = AntLayout;
+const { Content, Sider } = AntLayout; // Import Sider
 
 const AdminLayout = () => {
-
   return (
-    <AntLayout className="layout-admin " >
-      
-      <AntLayout className="layout-admin-content" >
-      <Header/>
-        <AdminSidebar visible style={{ height: "500px" }} />
-        <Content className="main-admin-content" style={{ paddingTop: "63px" }}>
+    <AntLayout className="layout-admin">
+      <Header /> {/* Header nằm trên cùng, full width */}
+      <AntLayout className="layout-admin-content">
+        {/* AntLayout.Sider sẽ thay thế Drawer */}
+        <Sider width={200} style={{paddingTop: "55px"}} className="admin-sider"> 
+          <AdminSidebar /> {/* AdminSidebar giờ nằm bên trong Sider */}
+        </Sider>
+        <Content className="main-admin-content" style={{ paddingTop: "55px" }}> {/* Bỏ paddingTop vì Header đã nằm ngoài */}
           <Outlet />
         </Content>
       </AntLayout>
@@ -24,20 +26,3 @@ const AdminLayout = () => {
 };
 
 export default AdminLayout;
-
-
-// const AdminLayout = () => {
-
-//   return (
-//     <AntLayout className="layout-admin">
-//       <Header/>
-//       <AntLayout className="layout-admin-content">
-//         <Sidebar visible className={sidebarVisible ? "sidebar" : "sidebar hidden"} />
-//         <Content className={`main-admin-content ${!sidebarVisible ? "full-width" : ""}`}>
-//           <Outlet />
-//         </Content>
-//       </AntLayout>
-//       <Footer />
-//     </AntLayout>
-//   );
-// };

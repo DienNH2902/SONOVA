@@ -1,43 +1,50 @@
+/* AdminLayout.css */
+
 .layout-admin {
   min-height: 100vh;
   margin: 0px;
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Đảm bảo header ở trên, content ở dưới */
   position: relative;
-  
 }
 
 .layout-admin-content {
-  display: flex;
-  flex: 1;
+  display: flex; /* Sidebar và Content nằm cạnh nhau */
+  flex: 1; /* Để phần này chiếm hết chiều cao còn lại sau Header */
   position: relative;
-  z-index: 1000;
+  /* z-index: 1000;  Không còn cần thiết vì Sider không chồng lấn như Drawer */
 }
 
-/* Sidebar is 200px wide */
-.sidebar {
-  width: 200px;
-  /* background: #001529; */
-  transition: all 0.3s ease;
-  height: 500px;
-
+/* Sider của Ant Design */
+.admin-sider {
+  background: #2a4a73; /* Đặt màu nền cho Sider, giống màu sidebar-content */
+  overflow: auto; /* Cho phép scroll nếu nội dung sidebar dài */
+  height: 100vh; /* Sider chiếm toàn bộ chiều cao viewport */
+  position: sticky; /* Cố định Sider khi scroll */
+  top: 0; /* Cố định ở đầu trang */
+  left: 0;
+  z-index: 999; /* Đảm bảo Sider nằm dưới Header (nếu Header có z-index cao hơn) */
 }
 
-/* Hidden sidebar */
-.sidebar.hidden {
-  width: 0;
-  overflow: hidden;
-}
-
-/* Main content shifts right when sidebar is visible */
+/* Main content Shifts Right (or rather, is pushed by the Sider) */
 .main-admin-content {
-  flex: 1;
+  flex: 1; /* Chiếm hết không gian còn lại */
   background: #f5f5f5;
-  transition: margin-left 0.3s ease;
-  margin-left: 200px;
+  /* transition: margin-left 0.3s ease;  Không cần margin-left nữa vì Sider đẩy nó ra */
+  margin-left: 0; /* Đảm bảo không có margin nào khác */
+  padding: 24px; /* Thêm padding cho nội dung chính */
+  overflow-y: auto; /* Cho phép scroll nội dung chính nếu dài */
 }
 
-/* When sidebar is hidden */
-.main-admin-content.full-width {
-  margin-left: 0;
-}
+/* Header sẽ nằm ngoài AntLayout.Content để đảm bảo full width */
+/* Giả định Header có class `app-header` hoặc tương tự */
+/* Nếu Header của mày là component đơn giản, mày có thể wrap nó trong một div */
+/* và đặt chiều cao cố định cho nó */
+
+/* Ví dụ: Nếu Header của mày có chiều cao 64px */
+/* Đảm bảo AntLayout.Content có khoảng trống phía trên cho Header */
+/* Không cần nữa vì Header và AntLayout.Content là sibling của AntLayout root */
+
+/* Loại bỏ các style liên quan đến sidebar.hidden và full-width vì không còn toggle ẩn/hiện Sider kiểu đó */
+/* .sidebar.hidden { ... } */
+/* .main-admin-content.full-width { ... } */

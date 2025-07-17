@@ -2276,14 +2276,16 @@ const weekdayOptions = [
 
 const CourseSchedule = () => {
   const [openingSchedules, setOpeningSchedules] = useState([])
+  const [classes, setClasses] = useState([]) // Add classes state
   const [loading, setLoading] = useState(true)
   const [subjectFilter, setSubjectFilter] = useState(null)
   const [teacherFilter, setTeacherFilter] = useState(null)
   const [subjects, setSubjects] = useState([])
   const [teachers, setTeachers] = useState([])
-  const [teacherUserId, setTeacherUserId] = useState(null) // Declare teacherUserId variable
   const [availableTeachers, setAvailableTeachers] = useState([]) // List of teacher objects for dropdowns
+  const [allUsers, setAllUsers] = useState([]) // All users including students
   const hasFetchedTeachers = useRef(false) // Ref to ensure teachers are fetched only once
+  const hasFetchedClasses = useRef(false) // Ref to ensure classes are fetched only once
 
   // States cho modal CẬP NHẬT
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false)
@@ -2335,8 +2337,28 @@ const CourseSchedule = () => {
     }
   }
 
-  // Function to fetch available teachers
-  const fetchAvailableTeachers = async () => {
+  // Function to fetch classes
+  const fetchClasses = async () => {
+    try {
+      const response = await fetch("https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/Class")
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      const data = await response.json()
+
+      if (Array.isArray(data)) {
+        setClasses(data)
+      } else {
+        setClasses([])
+      }
+    } catch (error) {
+      console.error("Error fetching classes:", error)
+      antdMessage.error("Không thể tải dữ liệu lớp học.")
+    }
+  }
+
+  // Function to fetch all users (teachers and students)
+  const fetchAllUsers = async () => {
     try {
       const token = localStorage.getItem("token") // Get token from localStorage
       if (!token) {
@@ -2365,12 +2387,16 @@ const CourseSchedule = () => {
         // Filter users to get only teachers (assuming roleId: 2 is for Teacher)
         const teachersData = users.filter((user) => user.roleId === 2 && !user.isDisabled)
         setAvailableTeachers(teachersData)
+
+        // Store all users for student counting
+        setAllUsers(users)
       } else {
         setAvailableTeachers([])
+        setAllUsers([])
       }
     } catch (error) {
-      console.error("Error fetching available teachers:", error)
-      antdMessage.error(`Không thể tải danh sách giảng viên: ${error.message || "Lỗi không xác định"}`)
+      console.error("Error fetching users:", error)
+      antdMessage.error(`Không thể tải danh sách người dùng: ${error.message || "Lỗi không xác định"}`)
     }
   }
 
@@ -2380,13 +2406,35 @@ const CourseSchedule = () => {
     fetchOpeningSchedules()
   }, [antdMessage])
 
-  // Add useEffect to fetch teachers
+  // Add useEffect to fetch all users
   useEffect(() => {
     if (!hasFetchedTeachers.current) {
       hasFetchedTeachers.current = true
-      fetchAvailableTeachers()
+      fetchAllUsers() // Changed from fetchAvailableTeachers
     }
   }, [])
+
+  // Add useEffect to fetch classes
+  useEffect(() => {
+    if (!hasFetchedClasses.current) {
+      hasFetchedClasses.current = true
+      fetchClasses()
+    }
+  }, [])
+
+  // Helper function to get actual student count for a class using User API
+  const getActualStudentCount = (classCode) => {
+    // Find the class first to get classId
+    const classData = classes.find((cls) => cls.classCode === classCode)
+    if (!classData) return 0
+
+    // Count students (roleId: 3) who have this classId in their classIds array
+    const studentsInClass = allUsers.filter(
+      (user) => user.roleId === 3 && !user.isDisabled && user.classIds && user.classIds.includes(classData.classId),
+    )
+
+    return studentsInClass.length
+  }
 
   // Transform schedule data to match your table's display
   const transformScheduleData = (schedules) => {
@@ -2399,6 +2447,9 @@ const CourseSchedule = () => {
       // Get teacher name from nested structure
       const teacherName = schedule.teacherUser?.accountName?.trim() || "Chưa phân công"
 
+      // Get actual student count from User API (more reliable)
+      const actualStudentCount = getActualStudentCount(schedule.classCode)
+
       const transformedSchedule = {
         key: schedule.openingScheduleId.toString(),
         stt: index + 1,
@@ -2410,8 +2461,9 @@ const CourseSchedule = () => {
         endDate: endDate,
         isAdvancedClass: schedule.isAdvancedClass,
         studentQuantity: studentQuantity,
+        actualStudentCount: actualStudentCount, // From User API
         rawSchedule: rawSchedule,
-        instrumentId: schedule.instrumentId, // Add instrumentId for form handling
+        instrumentId: schedule.instrumentId,
         scheduleDays: [],
         scheduleTime: "",
       }
@@ -2442,12 +2494,13 @@ const CourseSchedule = () => {
         transformedSchedule.displaySchedule = rawSchedule || "Chưa có lịch"
       }
 
-      transformedSchedule.displayCapacity = `${Math.floor(studentQuantity * 0.7)}/${studentQuantity}`
+      // Update display capacity to show actual/max from User API
+      transformedSchedule.displayCapacity = `${actualStudentCount}/${studentQuantity}`
       return transformedSchedule
     })
   }
 
-  const transformedData = useMemo(() => transformScheduleData(openingSchedules), [openingSchedules])
+  const transformedData = useMemo(() => transformScheduleData(openingSchedules), [openingSchedules, classes, allUsers])
 
   // Memoized filtered data
   const filteredSchedules = useMemo(() => {
@@ -2478,9 +2531,10 @@ const CourseSchedule = () => {
   const getCapacityColor = (capacity) => {
     const [current, total] = capacity.split("/").map(Number)
     const percentage = (current / total) * 100
-    if (percentage >= 80) return "red"
-    if (percentage >= 60) return "orange"
-    return "green"
+    if (percentage >= 100) return "red" // Full capacity
+    if (percentage >= 80) return "orange" // Near capacity
+    if (percentage >= 60) return "gold" // Getting full
+    return "green" // Available spots
   }
 
   const getSubjectColor = (subject) => {
@@ -2514,6 +2568,15 @@ const CourseSchedule = () => {
   const handleUpdateModalOk = async () => {
     try {
       const values = await updateForm.validateFields()
+
+      // Validate student quantity doesn't exceed current enrolled students
+      const currentStudentCount = currentRecord.actualStudentCount
+      if (values.studentQuantity < currentStudentCount) {
+        antdMessage.error(
+          `Sĩ số tối đa không thể nhỏ hơn số học viên hiện tại (${currentStudentCount}). Vui lòng nhập số lớn hơn hoặc bằng ${currentStudentCount}.`,
+        )
+        return
+      }
 
       // Combine scheduleDays and scheduleTime into one string if provided
       let finalSchedule = values.rawSchedule // Use existing schedule as fallback
@@ -2570,6 +2633,8 @@ const CourseSchedule = () => {
         setCurrentRecord(null)
         updateForm.resetFields()
         fetchOpeningSchedules()
+        fetchClasses() // Refresh classes data
+        fetchAllUsers() // Refresh user data
       } else {
         const errorData = await response.json()
         console.error("Error updating schedule:", errorData)
@@ -2593,6 +2658,14 @@ const CourseSchedule = () => {
 
   // --- Delete Function ---
   const handleDelete = (record) => {
+    // Check if class has students
+    if (record.actualStudentCount > 0) {
+      antdMessage.error(
+        `Không thể xóa lịch học này vì lớp "${record.classCode}" đang có ${record.actualStudentCount} học viên. Vui lòng chuyển học viên sang lớp khác trước khi xóa.`,
+      )
+      return
+    }
+
     antdModal.confirm({
       title: "Xác nhận xóa lịch học",
       content: `Bạn có chắc chắn muốn xóa lịch học mã lớp "${record.classCode}" của môn "${record.subject}"?`,
@@ -2613,6 +2686,8 @@ const CourseSchedule = () => {
           if (response.ok) {
             antdMessage.success("Xóa lịch học thành công!")
             fetchOpeningSchedules()
+            fetchClasses() // Refresh classes data
+            fetchAllUsers() // Refresh user data
           } else {
             const errorData = await response.json()
             console.error("Error deleting schedule:", errorData)
@@ -2696,6 +2771,8 @@ const CourseSchedule = () => {
         setIsAddModalVisible(false)
         addForm.resetFields()
         fetchOpeningSchedules()
+        fetchClasses() // Refresh classes data
+        fetchAllUsers() // Refresh user data
       } else {
         const errorData = await response.json()
         console.error("Error adding new schedule:", errorData)
@@ -2785,16 +2862,29 @@ const CourseSchedule = () => {
       ),
     },
     {
-      title: "Sĩ số tối đa",
+      title: "Sĩ số",
       dataIndex: "displayCapacity",
       key: "displayCapacity",
       width: 120,
       align: "center",
-      render: (text) => (
-        <Tag color={getCapacityColor(text)} style={{ fontWeight: 600 }}>
-          {text}
-        </Tag>
-      ),
+      render: (text, record) => {
+        const [current, total] = text.split("/").map(Number)
+        const isFull = current >= total
+        return (
+          <Tooltip
+            title={
+              isFull
+                ? "Lớp đã đầy"
+                : `Còn ${total - current} chỗ trống. Hiện tại: ${current} học viên, Tối đa: ${total} học viên`
+            }
+          >
+            <Tag color={getCapacityColor(text)} style={{ fontWeight: 600, cursor: "help" }}>
+              {text}
+              {isFull && " 🔴"}
+            </Tag>
+          </Tooltip>
+        )
+      },
     },
     {
       title: "Hành động",
@@ -2812,7 +2902,7 @@ const CourseSchedule = () => {
               aria-label="Sửa lịch học"
             />
           </Tooltip>
-          <Tooltip title="Xóa lịch học">
+          <Tooltip title={record.actualStudentCount > 0 ? "Không thể xóa lớp có học viên" : "Xóa lịch học"}>
             <Button
               type="primary"
               danger
@@ -2820,6 +2910,7 @@ const CourseSchedule = () => {
               onClick={() => handleDelete(record)}
               className="delete-button"
               aria-label="Xóa lịch học"
+              disabled={record.actualStudentCount > 0}
             />
           </Tooltip>
         </Space>
@@ -3033,7 +3124,10 @@ const CourseSchedule = () => {
           <Form.Item
             name="studentQuantity"
             label="Sĩ số tối đa"
-            rules={[{ required: true, message: "Vui lòng nhập sĩ số tối đa" }]}
+            rules={[
+              { required: true, message: "Vui lòng nhập sĩ số tối đa" },
+              { type: "number", min: 1, message: "Sĩ số tối đa phải lớn hơn 0" },
+            ]}
           >
             <InputNumber placeholder="VD: 10" min={1} style={{ width: "100%" }} />
           </Form.Item>
@@ -3126,9 +3220,20 @@ const CourseSchedule = () => {
           <Form.Item
             name="studentQuantity"
             label="Sĩ số tối đa"
-            rules={[{ required: true, message: "Vui lòng nhập sĩ số!", type: "number" }]}
+            rules={[
+              { required: true, message: "Vui lòng nhập sĩ số!", type: "number" },
+              { type: "number", min: 1, message: "Sĩ số tối đa phải lớn hơn 0" },
+            ]}
+            extra={
+              currentRecord && (
+                <span style={{ color: "#666" }}>
+                  Hiện tại có {currentRecord.actualStudentCount} học viên trong lớp. Sĩ số tối đa phải ≥{" "}
+                  {currentRecord.actualStudentCount}.
+                </span>
+              )
+            }
           >
-            <InputNumber min={1} style={{ width: "100%" }} />
+            <InputNumber min={currentRecord?.actualStudentCount || 1} style={{ width: "100%" }} />
           </Form.Item>
           <Form.Item name="isAdvancedClass" valuePropName="checked" label="Là lớp nâng cao?">
             <Checkbox>Lớp nâng cao</Checkbox>
@@ -3140,4 +3245,5 @@ const CourseSchedule = () => {
 }
 
 export default CourseSchedule
+
 
