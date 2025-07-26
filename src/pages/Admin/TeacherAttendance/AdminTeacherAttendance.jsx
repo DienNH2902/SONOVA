@@ -1,73 +1,213 @@
 "use client"
 
-import { useState } from "react"
-import { Typography, Table, Button, Select, Card, Modal } from "antd"
+import { useState, useEffect } from "react"
+import { Typography, Table, Button, Select, Card, Modal, Spin, message } from "antd"
 import { LeftOutlined, CheckOutlined } from "@ant-design/icons"
 import { useNavigate } from "react-router-dom"
-import "./AdminTeacherAttendance.css"
+import "./AdminTeacherAttendance.css" // Đảm bảo CSS file này tồn tại và được cấu hình đúng
 
 const { Title, Text } = Typography
 const { Option } = Select
 
 const AdminTeacherAttendance = () => {
   const navigate = useNavigate()
-  const [attendanceData, setAttendanceData] = useState([
-    { key: 1, stt: 1, name: "Nguyễn Minh An", status: null },
-    { key: 2, stt: 2, name: "Trần Gia Bảo", status: null },
-    { key: 3, stt: 3, name: "Lê Khanh Châu", status: null },
-    { key: 4, stt: 4, name: "Phạm Hoàng Duy", status: null },
-    { key: 5, stt: 5, name: "Vũ Tuấn Khánh", status: null },
-    { key: 6, stt: 6, name: "Đặng Quang Hưng", status: null },
-    { key: 7, stt: 7, name: "Bùi Thảo Linh", status: null },
-    { key: 8, stt: 8, name: "Đỗ Mai Ngọc", status: null },
-    { key: 9, stt: 9, name: "Trịnh Hữu Quân", status: null },
-    { key: 10, stt: 10, name: "Nguyễn Đức Phúc", status: null },
-    { key: 11, stt: 11, name: "Phan Thành Thảo", status: null },
-    { key: 12, stt: 12, name: "Lý Công Tuấn", status: null },
-    { key: 13, stt: 13, name: "Trương Ngọc Vân", status: null },
-    { key: 14, stt: 14, name: "Bùi Thảo Linh", status: null },
-  ])
 
+  const [attendanceData, setAttendanceData] = useState([]) // Danh sách giáo viên và trạng thái điểm danh
+  const [attendanceStatuses, setAttendanceStatuses] = useState([]) // Các trạng thái điểm danh từ API
+  const [todayClassSessions, setTodayClassSessions] = useState([]) // Các classSession trong ngày hiện tại
+  const [selectedClassSessionId, setSelectedClassSessionId] = useState(null) // classSessionId được chọn để điểm danh
+  const [selectedClassSession, setSelectedClassSession] = useState(null) // Thông tin chi tiết của classSession được chọn
+
+  const [loading, setLoading] = useState(true)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [error, setError] = useState(null)
 
-  const classInfo = {
-    code: "K01 - PI - CB - 01",
-    period: "24/03 - 30/5",
-    level: "Lớp thứ 3 - 5",
-    time: "Giờ học: 18:00-19:30",
+  // Helper để lấy ngày hôm nay ở định dạng YYYY-MM-DD
+  const getTodayDate = () => {
+    const today = new Date()
+    const year = today.getFullYear()
+    const month = (today.getMonth() + 1).toString().padStart(2, "0")
+    const day = today.getDate().toString().padStart(2, "0")
+    return `${year}-${month}-${day}`
   }
 
-  const handleStatusChange = (value, studentKey) => {
+  // Helper để format thời gian (HH:MM:SS -> HH:MM)
+  const formatTime = (timeString) => {
+    if (!timeString) return ""
+    return timeString.substring(0, 5) // Get HH:MM
+  }
+
+  // --- Fetch Data ---
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      setLoading(true)
+      setError(null)
+      try {
+        // 1. Fetch Attendance Statuses
+        const statusRes = await fetch(
+          "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/AttendanceStatus",
+        )
+        if (!statusRes.ok) throw new Error("Failed to fetch attendance statuses.")
+        const statuses = await statusRes.json()
+        setAttendanceStatuses(statuses)
+
+        // 2. Fetch Class Sessions
+        const classSessionRes = await fetch(
+          "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ClassSession",
+        )
+        if (!classSessionRes.ok) throw new Error("Failed to fetch class sessions.")
+        const allClassSessions = await classSessionRes.json()
+
+        const today = getTodayDate()
+        // Lọc các classSession diễn ra trong ngày hôm nay
+        const filteredSessions = allClassSessions.filter(
+          (session) => session.dateOfDay === today,
+        )
+        setTodayClassSessions(filteredSessions)
+
+        // Nếu có classSession trong ngày, chọn cái đầu tiên và fetch giáo viên
+        if (filteredSessions.length > 0) {
+          const firstSession = filteredSessions[0]
+          setSelectedClassSessionId(firstSession.classSessionId)
+          setSelectedClassSession(firstSession)
+          await fetchTeachersAndSetAttendance(firstSession.classSessionId, statuses)
+        } else {
+          setAttendanceData([]) // Không có buổi học nào hôm nay, set rỗng
+        }
+      } catch (err) {
+        console.error("Error fetching initial data:", err)
+        setError("Không thể tải dữ liệu: " + err.message)
+        message.error("Lỗi: " + err.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchInitialData()
+  }, []) // Chạy 1 lần khi component mount
+
+  // Hàm fetch danh sách giáo viên và set trạng thái điểm danh
+  const fetchTeachersAndSetAttendance = async (classSessionId, statuses) => {
+    setLoading(true)
+    setError(null)
+    try {
+      const usersRes = await fetch(
+        `https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ClassSession/${classSessionId}/users`,
+      )
+      if (!usersRes.ok) throw new Error("Failed to fetch users for class session.")
+      const users = await usersRes.json()
+
+      // Lọc ra chỉ giáo viên
+      const teachers = users.filter((user) => user.role?.roleName === "Teacher")
+
+      // Gán trạng thái mặc định "Unmarked" cho giáo viên
+      const unmarkedStatus = statuses.find((s) => s.statusName === "Unmarked")?.statusId || 0
+      const initialAttendance = teachers.map((teacher, index) => ({
+        key: teacher.userId, // Dùng userId làm key
+        stt: index + 1,
+        name: teacher.accountName || teacher.username || "N/A", // Ưu tiên accountName
+        userId: teacher.userId,
+        status: unmarkedStatus, // Mặc định là Unmarked (statusId: 0)
+        note: "none", // Mặc định note
+      }))
+      setAttendanceData(initialAttendance)
+    } catch (err) {
+      console.error("Error fetching teachers:", err)
+      setError("Không thể tải danh sách giáo viên: " + err.message)
+      message.error("Lỗi: " + err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // --- Handlers ---
+  const handleClassSessionChange = async (value) => {
+    const session = todayClassSessions.find((s) => s.classSessionId === value)
+    setSelectedClassSessionId(value)
+    setSelectedClassSession(session)
+    if (session) {
+      await fetchTeachersAndSetAttendance(value, attendanceStatuses)
+    } else {
+      setAttendanceData([])
+    }
+  }
+
+  const handleStatusChange = (value, userId) => {
     setAttendanceData((prev) =>
-      prev.map((student) => (student.key === studentKey ? { ...student, status: value } : student)),
+      prev.map((teacher) => (teacher.userId === userId ? { ...teacher, status: value } : teacher)),
     )
   }
 
-  const handleConfirm = () => {
-    setShowSuccessModal(true)
+  const handleConfirm = async () => {
+    setIsSubmitting(true)
+    setError(null)
+
+    if (!selectedClassSessionId) {
+      message.error("Vui lòng chọn một buổi học để điểm danh.")
+      setIsSubmitting(false)
+      return
+    }
+
+    const attendancePayload = {
+      classSessionId: selectedClassSessionId,
+      attendances: attendanceData.map((teacher) => ({
+        userId: teacher.userId,
+        status: teacher.status,
+        note: teacher.note || "none", // Đảm bảo có note, mặc định là "none"
+      })),
+    }
+
+    try {
+      const response = await fetch(
+        "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/Attendance/bulk",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(attendancePayload),
+        },
+      )
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.message || "Failed to submit attendance.")
+      }
+
+      setShowSuccessModal(true)
+    } catch (err) {
+      console.error("Error submitting attendance:", err)
+      setError("Điểm danh thất bại: " + err.message)
+      message.error("Điểm danh thất bại: " + err.message)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleSuccessModalOk = () => {
     setShowSuccessModal(false)
-    // Navigate back to class detail after successful submission
-    navigate("/teacher/class-detail")
+    navigate("/admin/teacher-attendance") // Điều hướng về trang chi tiết lớp học sau khi điểm danh thành công
   }
 
   const handleBack = () => {
-    navigate("/teacher/class-detail")
+    navigate("/admin/teacher-attendance")
   }
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "present":
+  const getStatusColor = (statusId) => {
+    const statusName = attendanceStatuses.find((s) => s.statusId === statusId)?.statusName
+    switch (statusName) {
+      case "Present":
         return "#52c41a" // Green
-      case "absent":
+      case "Absent":
         return "#ff4d4f" // Red
+      case "Unmarked":
       default:
         return "#d9d9d9" // Gray
     }
   }
 
+  // Định nghĩa cột cho Table
   const columns = [
     {
       title: "STT",
@@ -92,33 +232,78 @@ const AdminTeacherAttendance = () => {
         <Select
           placeholder="Trạng thái"
           value={record.status}
-          onChange={(value) => handleStatusChange(value, record.key)}
+          onChange={(value) => handleStatusChange(value, record.userId)}
           className="status-select"
           style={{
             width: "100%",
             borderColor: getStatusColor(record.status),
           }}
+          disabled={loading || isSubmitting} // Disable khi đang tải hoặc gửi
         >
-          <Option value="present">
-            <span style={{ color: "#52c41a", fontWeight: "500" }}>Hiện diện</span>
-          </Option>
-          <Option value="absent">
-            <span style={{ color: "#ff4d4f", fontWeight: "500" }}>Vắng</span>
-          </Option>
+          {attendanceStatuses.map((status) => (
+            <Option key={status.statusId} value={status.statusId}>
+              <span style={{ color: getStatusColor(status.statusId), fontWeight: "500" }}>
+                {status.statusName === "Present" && "Hiện diện"}
+                {status.statusName === "Absent" && "Vắng"}
+                {status.statusName === "Unmarked" && "Chưa điểm danh"}
+              </span>
+            </Option>
+          ))}
         </Select>
       ),
       className: "attendance-column",
     },
   ]
 
+  // Hiển thị loading spinner toàn màn hình nếu đang tải
+  if (loading && !selectedClassSessionId) {
+    return (
+      <div className="student-attendance-page">
+        <div className="student-attendance-container">
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              minHeight: "400px",
+            }}
+          >
+            <Spin size="large" tip="Đang tải dữ liệu..." />
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Nếu không có buổi học nào trong ngày hôm nay
+  if (todayClassSessions.length === 0) {
+    return (
+      <div className="student-attendance-page">
+        <div className="student-attendance-container">
+          <div className="page-header">
+            <Button type="text" icon={<LeftOutlined />} onClick={handleBack} className="back-button">
+              Trở về
+            </Button>
+            <Title level={1} className="page-title">
+              ĐIỂM DANH
+            </Title>
+          </div>
+          <div style={{ textAlign: "center", padding: "50px 0" }}>
+            <Text type="secondary">Không có buổi học nào hôm nay để điểm danh.</Text>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="student-attendance-page">
       <div className="student-attendance-container">
         {/* Header */}
         <div className="page-header">
-          <Button type="text" icon={<LeftOutlined />} onClick={handleBack} className="back-button">
+          {/* <Button type="text" icon={<LeftOutlined />} onClick={handleBack} className="back-button">
             Trở về
-          </Button>
+          </Button> */}
           <Title level={1} className="page-title">
             ĐIỂM DANH
           </Title>
@@ -127,35 +312,79 @@ const AdminTeacherAttendance = () => {
         <div className="content-layout">
           {/* Main Table */}
           <div className="table-section">
-            <Table
-              columns={columns}
-              dataSource={attendanceData}
-              pagination={false}
-              className="attendance-table"
-              size="middle"
-            />
+            <div className="class-session-selector">
+              <Text strong>Chọn buổi học hôm nay:</Text>
+              <Select
+                value={selectedClassSessionId}
+                onChange={handleClassSessionChange}
+                style={{ width: "100%", marginTop: "10px" }}
+                disabled={loading || isSubmitting}
+              >
+                {todayClassSessions.map((session) => (
+                  <Option key={session.classSessionId} value={session.classSessionId}>
+                    {`${session.classCode} - Buổi ${session.sessionNumber} - ${formatTime(session.startTime)}-${formatTime(session.endTime)} - Phòng ${session.roomCode}`}
+                  </Option>
+                ))}
+              </Select>
+            </div>
+            {loading ? (
+              <div style={{ textAlign: 'center', padding: '50px 0' }}>
+                <Spin tip="Đang tải danh sách giáo viên..." />
+              </div>
+            ) : attendanceData.length === 0 ? (
+                <div style={{ textAlign: 'center', padding: '50px 0' }}>
+                    <Text type="secondary">Không có giáo viên nào trong buổi học này.</Text>
+                </div>
+            ) : (
+              <Table
+                columns={columns}
+                dataSource={attendanceData}
+                pagination={false}
+                className="attendance-table"
+                size="middle"
+              />
+            )}
           </div>
 
           {/* Class Info and Confirm Section */}
           <div className="sidebar-section">
             <Card className="class-info-card">
               <div className="class-header">
-                <Text className="class-code">{classInfo.code}</Text>
+                <Text className="class-code">{selectedClassSession?.classCode || "N/A"}</Text>
               </div>
               <div className="class-details">
                 <div className="class-detail-item">
-                  <Text className="detail-text">{classInfo.period}</Text>
+                  <Text className="detail-text">
+                    Buổi: {selectedClassSession?.sessionNumber || "N/A"}
+                  </Text>
                 </div>
                 <div className="class-detail-item">
-                  <Text className="detail-text">{classInfo.level}</Text>
+                  <Text className="detail-text">
+                    Thời gian: {formatTime(selectedClassSession?.startTime)} -{" "}
+                    {formatTime(selectedClassSession?.endTime)}
+                  </Text>
                 </div>
                 <div className="class-detail-item">
-                  <Text className="detail-text">{classInfo.time}</Text>
+                  <Text className="detail-text">
+                    Phòng: {selectedClassSession?.roomCode || "N/A"}
+                  </Text>
+                </div>
+                <div className="class-detail-item">
+                  <Text className="detail-text">
+                    Môn: {selectedClassSession?.instrumentName || "N/A"}
+                  </Text>
                 </div>
               </div>
             </Card>
 
-            <Button type="primary" className="confirm-button" onClick={handleConfirm} block>
+            <Button
+              type="primary"
+              className="confirm-button"
+              onClick={handleConfirm}
+              block
+              loading={isSubmitting}
+              disabled={!selectedClassSessionId || attendanceData.length === 0}
+            >
               Xác nhận
             </Button>
           </div>
