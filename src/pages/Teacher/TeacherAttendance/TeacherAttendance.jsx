@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Typography, Table, Button, Select, Card, Modal, Spin, message } from "antd" // Thêm Spin, message
+import { Typography, Table, Button, Select, Card, Modal, Spin, message } from "antd"
 import { LeftOutlined, CheckOutlined } from "@ant-design/icons"
 import { useNavigate } from "react-router-dom"
 import "./TeacherAttendance.css"
@@ -74,15 +74,33 @@ const TeacherAttendance = () => {
         // Filter out non-student users (roleId 3 is Student)
         const students = users.filter((user) => user.role?.roleId === 3)
 
+        // 4. Fetch existing attendance records for this class session
+        const existingAttendanceRes = await fetch(
+          "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/Attendance"
+        )
+        if (!existingAttendanceRes.ok) throw new Error("Failed to fetch existing attendance records.")
+        const allExistingAttendances = await existingAttendanceRes.json()
+
+        // Filter attendance records for the current classSessionId
+        const sessionExistingAttendances = allExistingAttendances.filter(
+          (attendance) => attendance.classSessionId === parseInt(classSessionId)
+        )
+
         // Initialize attendance data with default 'Unmarked' status (statusId: 0)
-        const initialAttendance = students.map((student, index) => ({
-          key: student.userId, // Dùng userId làm key
-          stt: index + 1,
-          userId: student.userId, // Lưu userId để gửi lên API
-          name: student.accountName || student.username,
-          status: 0, // Mặc định là Unmarked
-          note: "none", // Mặc định là 'none'
-        }))
+        // Then, update with existing attendance status if found
+        const initialAttendance = students.map((student, index) => {
+          const existingRecord = sessionExistingAttendances.find(
+            (record) => record.userId === student.userId
+          )
+          return {
+            key: student.userId, // Dùng userId làm key
+            stt: index + 1,
+            userId: student.userId, // Lưu userId để gửi lên API
+            name: student.accountName || student.username,
+            status: existingRecord ? existingRecord.statusId : 0, // Mặc định là Unmarked hoặc trạng thái đã có
+            note: existingRecord ? existingRecord.note : "none", // Mặc định là 'none' hoặc note đã có
+          }
+        })
         setAttendanceData(initialAttendance)
       } catch (err) {
         console.error("Error fetching attendance data:", err)

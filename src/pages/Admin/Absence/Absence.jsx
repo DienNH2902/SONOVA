@@ -1,145 +1,97 @@
 "use client"
 
-import { Typography, Table, Checkbox, Button } from "antd"
-import { useState } from "react"
+import { Typography, Table, Spin, message } from "antd" // Bỏ Checkbox, Button
+import { useState, useEffect } from "react" // Thêm useEffect
 import "./Absence.css"
 
-const { Title } = Typography
+const { Title, Text } = Typography
 
 const Absence = () => {
-  const [contactedStudents, setContactedStudents] = useState([])
+  const [absentStudents, setAbsentStudents] = useState([])
+  const [absentTeachers, setAbsentTeachers] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
-  // Sample absent students data
-  const absentStudentsData = [
-    {
-      key: 1,
-      stt: 1,
-      name: "David",
-      phone: "0793826634",
-      email: "david@gmail.com",
-      class: "K01-PI-CB-01",
-    },
-    {
-      key: 2,
-      stt: 2,
-      name: "Scott",
-      phone: "0793822354",
-      email: "scott123@gmail.com",
-      class: "K01-PI-CB-01",
-    },
-    {
-      key: 3,
-      stt: 3,
-      name: "Xelina",
-      phone: "0793826634",
-      email: "xelina@gmail.com",
-      class: "K01-PI-CB-01",
-    },
-    {
-      key: 4,
-      stt: 4,
-      name: "Chuatin",
-      phone: "0793822354",
-      email: "scott123@gmail.com",
-      class: "K01-PI-CB-01",
-    },
-    {
-      key: 5,
-      stt: 5,
-      name: "Noobita",
-      phone: "0793822354",
-      email: "xelina@gmail.com",
-      class: "K01-PI-CB-01",
-    },
-    {
-      key: 6,
-      stt: 6,
-      name: "Leona",
-      phone: "0793826634",
-      email: "david@gmail.com",
-      class: "K01-PI-CB-01",
-    },
-    {
-      key: 7,
-      stt: 7,
-      name: "Emma",
-      phone: "0793826634",
-      email: "david@gmail.com",
-      class: "K01-PI-CB-01",
-    },
-    {
-      key: 8,
-      stt: 8,
-      name: "Ladmira",
-      phone: "0793822354",
-      email: "xelina@gmail.com",
-      class: "K01-PI-CB-01",
-    },
-    {
-      key: 9,
-      stt: 9,
-      name: "Puma",
-      phone: "0793826634",
-      email: "scott123@gmail.com",
-      class: "K01-PI-CB-01",
-    },
-    {
-      key: 10,
-      stt: 10,
-      name: "Havana",
-      phone: "0793822354",
-      email: "xelina@gmail.com",
-      class: "K01-PI-CB-01",
-    },
-    {
-      key: 11,
-      stt: 11,
-      name: "Heri",
-      phone: "0793822354",
-      email: "scott123@gmail.com",
-      class: "K01-PI-CB-01",
-    },
-    {
-      key: 12,
-      stt: 12,
-      name: "Donan",
-      phone: "0793826634",
-      email: "scott123@gmail.com",
-      class: "K01-PI-CB-01",
-    },
-    {
-      key: 13,
-      stt: 13,
-      name: "Choe",
-      phone: "0793822354",
-      email: "david@gmail.com",
-      class: "K01-PI-CB-01",
-    },
-    {
-      key: 14,
-      stt: 14,
-      name: "Kristina",
-      phone: "0793826634",
-      email: "xelina@gmail.com",
-      class: "K01-PI-CB-01",
-    },
-  ]
+  // Helper để lấy ngày hôm nay ở định dạng YYYY-MM-DD
+  const getTodayDate = () => {
+    const today = new Date()
+    const year = today.getFullYear()
+    const month = (today.getMonth() + 1).toString().padStart(2, "0")
+    const day = today.getDate().toString().padStart(2, "0")
+    return `${year}-${month}-${day}`
+  }
 
-  const handleContactedChange = (studentKey, checked) => {
-    if (checked) {
-      setContactedStudents([...contactedStudents, studentKey])
-    } else {
-      setContactedStudents(contactedStudents.filter((key) => key !== studentKey))
+  useEffect(() => {
+    const fetchAbsentUsers = async () => {
+      setLoading(true)
+      setError(null)
+      try {
+        const todayDate = getTodayDate()
+
+        // 1. Fetch all attendance records
+        const attendanceRes = await fetch(
+          "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/Attendance"
+        )
+        if (!attendanceRes.ok) throw new Error("Failed to fetch attendance data.")
+        const allAttendances = await attendanceRes.json()
+
+        // 2. Fetch all user details
+        const userRes = await fetch(
+          "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/User"
+        )
+        if (!userRes.ok) throw new Error("Failed to fetch user data.")
+        const allUsers = await userRes.json()
+
+        const usersMap = new Map(allUsers.map(user => [user.userId, user]));
+
+        const absentStudentsList = [];
+        const absentTeachersList = [];
+        let studentCount = 0;
+        let teacherCount = 0;
+
+        // Filter for absent users today and categorize them
+        for (const record of allAttendances) {
+          // Check if the record is for today and status is "Absent"
+          const recordDate = record.classSession?.date; // Assuming date is available directly or needs to be extracted
+          if (record.statusName === "Absent" && recordDate === todayDate) {
+            const user = usersMap.get(record.userId);
+            if (user) {
+              const userInfo = {
+                key: user.userId,
+                name: user.accountName || user.username,
+                phone: user.phoneNumber || "N/A",
+                email: user.email || "N/A",
+                class: record.classSession?.classCode || "N/A", // Lấy thông tin lớp học từ classSession
+                // Các thông tin khác có thể thêm vào đây nếu cần
+              };
+
+              if (user.role?.roleName === "Student") {
+                studentCount++;
+                absentStudentsList.push({ ...userInfo, stt: studentCount });
+              } else if (user.role?.roleName === "Teacher") {
+                teacherCount++;
+                absentTeachersList.push({ ...userInfo, stt: teacherCount });
+              }
+            }
+          }
+        }
+        
+        setAbsentStudents(absentStudentsList);
+        setAbsentTeachers(absentTeachersList);
+
+      } catch (err) {
+        console.error("Error fetching absent users:", err)
+        setError("Không thể tải danh sách vắng: " + err.message)
+        message.error("Lỗi: " + err.message)
+      } finally {
+        setLoading(false)
+      }
     }
-  }
 
-  const handleConfirm = () => {
-    console.log("Confirmed contacted students:", contactedStudents)
-    // Handle confirmation logic here
-    // You might want to send this data to your backend
-  }
+    fetchAbsentUsers()
+  }, []) // Chỉ chạy một lần khi component mount
 
-  const columns = [
+  const commonColumns = [
     {
       title: "STT",
       dataIndex: "stt",
@@ -171,20 +123,41 @@ const Absence = () => {
       key: "class",
       width: 150,
     },
-    {
-      title: "Xác nhận đã liên lạc",
-      key: "contacted",
-      width: 180,
-      align: "center",
-      render: (_, record) => (
-        <Checkbox
-          checked={contactedStudents.includes(record.key)}
-          onChange={(e) => handleContactedChange(record.key, e.target.checked)}
-          className="contact-checkbox"
-        />
-      ),
-    },
   ]
+
+  if (loading) {
+    return (
+      <div className="absence-page">
+        <div className="absence-container">
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              minHeight: "400px",
+            }}
+          >
+            <Spin size="large" tip="Đang tải danh sách vắng mặt..." />
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="absence-page">
+        <div className="absence-container">
+          <Title level={1} className="page-title">
+            VẮNG
+          </Title>
+          <div style={{ textAlign: "center", padding: "50px 0" }}>
+            <Text type="danger">{error}</Text>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="absence-page">
@@ -193,22 +166,46 @@ const Absence = () => {
           VẮNG
         </Title>
 
-        {/* Table Section */}
-        <div className="table-container">
-          <Table
-            columns={columns}
-            dataSource={absentStudentsData}
-            pagination={false}
-            className="absence-table"
-            size="middle"
-          />
+        {/* Bảng cho Học sinh vắng */}
+        <div className="table-section">
+          <Title level={3} className="section-title">
+            Học sinh vắng ({absentStudents.length})
+          </Title>
+          {absentStudents.length > 0 ? (
+            <Table
+              columns={commonColumns}
+              dataSource={absentStudents}
+              pagination={false}
+              className="absence-table"
+              size="middle"
+            />
+          ) : (
+            <div className="no-data-message">
+              <Text type="secondary">Không có học sinh nào vắng mặt hôm nay.</Text>
+            </div>
+          )}
         </div>
 
-        {/* Confirm Button */}
-        <div className="confirm-container">
-          <Button type="primary" onClick={handleConfirm} className="confirm-button" size="large">
-            Xác nhận
-          </Button>
+        {/* --- */}
+
+        {/* Bảng cho Giáo viên vắng */}
+        <div className="table-section" style={{ marginTop: '40px' }}>
+          <Title level={3} className="section-title">
+            Giáo viên vắng ({absentTeachers.length})
+          </Title>
+          {absentTeachers.length > 0 ? (
+            <Table
+              columns={commonColumns}
+              dataSource={absentTeachers}
+              pagination={false}
+              className="absence-table"
+              size="middle"
+            />
+          ) : (
+            <div className="no-data-message">
+              <Text type="secondary">Không có giáo viên nào vắng mặt hôm nay.</Text>
+            </div>
+          )}
         </div>
       </div>
     </div>

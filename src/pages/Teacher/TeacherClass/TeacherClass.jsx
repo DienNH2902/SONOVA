@@ -27,17 +27,21 @@ const TeacherClass = () => {
   }
 
   useEffect(() => {
+    // Xóa classSessionId khỏi localStorage mỗi khi component này được mount
+    // Điều này đảm bảo không có ID buổi học cũ bị giữ lại
+    localStorage.removeItem("selectedClassSessionId")
+    localStorage.removeItem("attendanceSessionId")
+
     const fetchTeacherClasses = async () => {
       setLoading(true)
       setError(null)
       try {
-        // Lấy thông tin người dùng từ localStorage
-        const userDataString = localStorage.getItem("user") // Giả sử key là 'user'
+        const userDataString = localStorage.getItem("user")
         if (!userDataString) {
           throw new Error("Không tìm thấy thông tin giáo viên trong localStorage.")
         }
         const userData = JSON.parse(userDataString)
-        const teacherClassIds = userData.classIds // Lấy mảng classIds của giáo viên
+        const teacherClassIds = userData.classIds
 
         if (!teacherClassIds || teacherClassIds.length === 0) {
           setTodayTeacherSessions([])
@@ -45,7 +49,6 @@ const TeacherClass = () => {
           return
         }
 
-        // 1. Lấy tất cả ClassSession
         const classSessionRes = await fetch(
           "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ClassSession",
         )
@@ -54,7 +57,6 @@ const TeacherClass = () => {
 
         const today = getTodayDate()
 
-        // 2. Lọc các ClassSession của giáo viên và diễn ra trong ngày hôm nay
         const filteredSessions = allClassSessions.filter(
           (session) =>
             teacherClassIds.includes(session.classId) && session.dateOfDay === today,
@@ -70,16 +72,16 @@ const TeacherClass = () => {
     }
 
     fetchTeacherClasses()
-  }, []) // Chạy 1 lần khi component mount
+  }, []) // Chỉ chạy một lần khi component được mount
 
-  const ClassCard = ({ classInfo }) => ( // Bỏ onClick ở đây vì nó sẽ được thêm trực tiếp vào Card
+  const ClassCard = ({ classInfo }) => (
     <Col xs={24} sm={12} lg={8}>
       <Card
         className="teacher-class-card"
         hoverable
         onClick={() => {
-          localStorage.setItem("selectedClassSessionId", classInfo.classSessionId) // Lưu ID vào localStorage
-          navigate(`/teacher/class-detail`) // Chuyển trang không cần ID trên URL
+          localStorage.setItem("selectedClassSessionId", classInfo.classSessionId)
+          navigate(`/teacher/class-detail`)
         }}
       >
         <div className="teacher-class-header">
@@ -146,7 +148,7 @@ const TeacherClass = () => {
 
         {todayTeacherSessions.length === 0 ? (
           <div style={{ textAlign: "center", padding: "50px 0" }}>
-            <Text type="secondary">Hôm nay mày không có buổi học nào để điểm danh đâu.</Text>
+            <Text type="secondary">Hôm nay bạn không có buổi học nào để điểm danh đâu.</Text>
           </div>
         ) : (
           <>

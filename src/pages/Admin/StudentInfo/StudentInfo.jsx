@@ -126,7 +126,7 @@ const StudentInfo = () => {
 
         // Apply status filter (by isDisabled)
         if (statusFilter !== "Tất cả") {
-            if (statusFilter === "active") { // Đang học
+            if (statusFilter === "active") { // Đang học/Đang dạy
                 filtered = filtered.filter(user => !user.isDisabled);
             } else if (statusFilter === "disabled") { // Hoàn thành
                 filtered = filtered.filter(user => user.isDisabled);
@@ -144,14 +144,13 @@ const StudentInfo = () => {
                     (user.phoneNumber && user.phoneNumber.includes(searchText.trim())) ||
                     String(user.userId).includes(searchText.trim()) ||
                     user.classIds?.some(classId => {
-  const classInfo = allClasses.find(cls => cls.classId === classId);
-  if (!classInfo) return false;
-  return (
-    classInfo.className?.toLowerCase().includes(searchLower) ||
-    classInfo.classCode?.toLowerCase().includes(searchLower)
-  );
-})
-
+                        const classInfo = allClasses.find(cls => cls.classId === classId);
+                        if (!classInfo) return false;
+                        return (
+                            classInfo.className?.toLowerCase().includes(searchLower) ||
+                            classInfo.classCode?.toLowerCase().includes(searchLower)
+                        );
+                    })
             );
         }
 
@@ -179,11 +178,18 @@ const StudentInfo = () => {
         setTempSearchText(e.target.value); // Chỉ cập nhật tempSearchText
     };
 
-    const getStatusTag = (isDisabled) => {
+    // Cập nhật logic hàm getStatusTag
+    const getStatusTag = (isDisabled, role) => {
         if (isDisabled) {
             return <Tag color="error">Hoàn thành</Tag>;
         }
-        return <Tag color="success">Đang học</Tag>;
+        if (role === 'student') {
+            return <Tag color="success">Đang học</Tag>;
+        }
+        if (role === 'teacher') {
+            return <Tag color="success">Đang dạy</Tag>; // Màu khác để phân biệt
+        }
+        return <Tag color="default">Không xác định</Tag>; // Trường hợp khác
     };
 
     // --- Handle Edit/Delete/View Actions ---
@@ -364,7 +370,8 @@ const StudentInfo = () => {
             dataIndex: "isDisabled",
             key: "status",
             width: 120,
-            render: (isDisabled) => getStatusTag(isDisabled),
+            // Truyền cả `record` để có thể truy cập `role`
+            render: (isDisabled, record) => getStatusTag(isDisabled, record.role),
         },
         {
             title: "Thao tác",
@@ -490,7 +497,8 @@ const StudentInfo = () => {
                                 <Option value="Tất cả">Tất cả</Option>
                                 {allClasses.map((cls) => (
                                     <Option key={cls.classId} value={cls.classId}>
-                                        {cls.classCode} - {cls.className}
+                                        {/* {cls.classCode} - {cls.className} */}
+                                        {cls.classCode} 
                                     </Option>
                                 ))}
                             </Select>
@@ -504,7 +512,7 @@ const StudentInfo = () => {
                                 className="filter-select"
                             >
                                 <Option value="Tất cả">Tất cả</Option>
-                                <Option value="active">Đang học</Option>
+                                <Option value="active">Đang hoạt động</Option> {/* Đổi thành "Đang hoạt động" để bao gồm cả Học sinh và Giáo viên */}
                                 <Option value="disabled">Hoàn thành</Option>
                             </Select>
                         </div>
@@ -603,7 +611,8 @@ const StudentInfo = () => {
                         <Descriptions.Item label="Email">{viewingUser.email}</Descriptions.Item>
                         <Descriptions.Item label="SĐT">{viewingUser.phone}</Descriptions.Item>
                         <Descriptions.Item label="Vai trò">{viewingUser.role === 'student' ? 'Học viên' : viewingUser.role === 'teacher' ? 'Giáo viên' : 'Khác'}</Descriptions.Item>
-                        <Descriptions.Item label="Trạng thái">{getStatusTag(viewingUser.isDisabled)}</Descriptions.Item>
+                        {/* Truyền cả role vào getStatusTag trong Descriptions */}
+                        <Descriptions.Item label="Trạng thái">{getStatusTag(viewingUser.isDisabled, viewingUser.role)}</Descriptions.Item>
                         <Descriptions.Item label="Giới tính">{viewingUser.genderId === 1 ? 'Nam' : viewingUser.genderId === 2 ? 'Nữ' : 'Chưa cập nhật'}</Descriptions.Item>
                         <Descriptions.Item label="Ngày sinh">{viewingUser.birthday ? new Date(viewingUser.birthday).toLocaleDateString('vi-VN') : 'Chưa cập nhật'}</Descriptions.Item>
                         <Descriptions.Item label="Địa chỉ">{viewingUser.address || 'Chưa cập nhật'}</Descriptions.Item>

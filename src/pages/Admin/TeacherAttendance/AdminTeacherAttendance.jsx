@@ -89,7 +89,7 @@ const AdminTeacherAttendance = () => {
 
   // Hàm fetch danh sách giáo viên và set trạng thái điểm danh
   const fetchTeachersAndSetAttendance = async (classSessionId, statuses) => {
-    setLoading(true)
+    setLoading(true) // Bắt đầu tải dữ liệu giáo viên và điểm danh
     setError(null)
     try {
       const usersRes = await fetch(
@@ -101,23 +101,42 @@ const AdminTeacherAttendance = () => {
       // Lọc ra chỉ giáo viên
       const teachers = users.filter((user) => user.role?.roleName === "Teacher")
 
-      // Gán trạng thái mặc định "Unmarked" cho giáo viên
+      // Fetch existing attendance records for this class session
+      const existingAttendanceRes = await fetch(
+        "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/Attendance"
+      )
+      if (!existingAttendanceRes.ok) throw new Error("Failed to fetch existing attendance records.")
+      const allExistingAttendances = await existingAttendanceRes.json()
+
+      // Filter attendance records for the current classSessionId and for teachers
+      const sessionExistingTeacherAttendances = allExistingAttendances.filter(
+        (attendance) => 
+          attendance.classSessionId === parseInt(classSessionId) &&
+          teachers.some(teacher => teacher.userId === attendance.userId) // Chỉ lấy điểm danh của giáo viên trong buổi này
+      )
+
+      // Gán trạng thái mặc định "Unmarked" hoặc trạng thái đã có cho giáo viên
       const unmarkedStatus = statuses.find((s) => s.statusName === "Unmarked")?.statusId || 0
-      const initialAttendance = teachers.map((teacher, index) => ({
-        key: teacher.userId, // Dùng userId làm key
-        stt: index + 1,
-        name: teacher.accountName || teacher.username || "N/A", // Ưu tiên accountName
-        userId: teacher.userId,
-        status: unmarkedStatus, // Mặc định là Unmarked (statusId: 0)
-        note: "none", // Mặc định note
-      }))
+      const initialAttendance = teachers.map((teacher, index) => {
+        const existingRecord = sessionExistingTeacherAttendances.find(
+          (record) => record.userId === teacher.userId
+        )
+        return {
+          key: teacher.userId, // Dùng userId làm key
+          stt: index + 1,
+          name: teacher.accountName || teacher.username || "N/A", // Ưu tiên accountName
+          userId: teacher.userId,
+          status: existingRecord ? existingRecord.statusId : unmarkedStatus, // Mặc định là Unmarked hoặc trạng thái đã có
+          note: existingRecord ? existingRecord.note : "none", // Mặc định note hoặc note đã có
+        }
+      })
       setAttendanceData(initialAttendance)
     } catch (err) {
-      console.error("Error fetching teachers:", err)
+      console.error("Error fetching teachers or attendance:", err)
       setError("Không thể tải danh sách giáo viên: " + err.message)
       message.error("Lỗi: " + err.message)
     } finally {
-      setLoading(false)
+      setLoading(false) // Kết thúc tải dữ liệu
     }
   }
 
@@ -127,6 +146,7 @@ const AdminTeacherAttendance = () => {
     setSelectedClassSessionId(value)
     setSelectedClassSession(session)
     if (session) {
+      // Khi thay đổi buổi học, gọi lại hàm để fetch giáo viên và trạng thái điểm danh
       await fetchTeachersAndSetAttendance(value, attendanceStatuses)
     } else {
       setAttendanceData([])
@@ -187,11 +207,16 @@ const AdminTeacherAttendance = () => {
 
   const handleSuccessModalOk = () => {
     setShowSuccessModal(false)
-    navigate("/admin/teacher-attendance") // Điều hướng về trang chi tiết lớp học sau khi điểm danh thành công
+    // Sau khi điểm danh thành công, reload lại dữ liệu cho buổi học hiện tại
+    // để đảm bảo hiển thị trạng thái mới nhất
+    if (selectedClassSessionId && attendanceStatuses.length > 0) {
+      fetchTeachersAndSetAttendance(selectedClassSessionId, attendanceStatuses);
+    }
   }
 
   const handleBack = () => {
-    navigate("/admin/teacher-attendance")
+    // Hiện tại nút back đang bị comment, nếu cần thì sẽ enable và điều hướng
+    // navigate("/admin/dashboard") // Ví dụ: điều hướng về trang dashboard của admin
   }
 
   const getStatusColor = (statusId) => {
@@ -281,9 +306,10 @@ const AdminTeacherAttendance = () => {
       <div className="student-attendance-page">
         <div className="student-attendance-container">
           <div className="page-header">
-            <Button type="text" icon={<LeftOutlined />} onClick={handleBack} className="back-button">
+            {/* Nếu cần nút back thì bỏ comment ở đây */}
+            {/* <Button type="text" icon={<LeftOutlined />} onClick={handleBack} className="back-button">
               Trở về
-            </Button>
+            </Button> */}
             <Title level={1} className="page-title">
               ĐIỂM DANH
             </Title>

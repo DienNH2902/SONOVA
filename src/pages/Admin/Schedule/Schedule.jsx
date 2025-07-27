@@ -1261,8 +1261,8 @@ const Schedule = () => {
             classCodeToDisplay = classInClasses.classCode
           }
 
-          const sessionInfo = `${classCodeToDisplay} - Buổi ${session.sessionNumber}`
-
+          const sessionInfo = `${classCodeToDisplay}`
+          // const sessionInfo = `${classCodeToDisplay} - Buổi ${session.sessionNumber}`
           const dayKey = getDayKeyFromDate(dayInfo.date) // date ở đây là dateOfDay của DayType
           if (dayKey && scheduleData[timeKey]) {
             scheduleData[timeKey][dayKey] = sessionInfo
@@ -1301,7 +1301,7 @@ const Schedule = () => {
         }
       } else {
         // Đã ở tuần đầu tiên của lịch đầu tiên, không làm gì cả
-        message.info("Mày đang ở tuần đầu tiên của thời khóa biểu đầu tiên rồi.")
+        message.info("Bạn đang ở tuần đầu tiên của thời khóa biểu đầu tiên rồi.")
       }
     }
   }
@@ -1317,7 +1317,7 @@ const Schedule = () => {
         setCurrentWeekIndex(0) // Luôn về tuần đầu tiên của tháng tiếp theo
       } else {
         // Đã ở tuần cuối cùng của lịch cuối cùng, không làm gì cả
-        message.info("Mày đang ở tuần cuối cùng của thời khóa biểu cuối cùng rồi.")
+        message.info("Bạn đang ở tuần cuối cùng của thời khóa biểu cuối cùng rồi.")
       }
     }
   }

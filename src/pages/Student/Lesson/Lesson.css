@@ -1,6 +1,6 @@
 .lesson-dashboard-page {
   min-height: 100vh;
-  background: #f5f5f0;
+  background: #f5f5f5;
   padding: 40px 20px;
 }
 
@@ -9,118 +9,16 @@
   margin: 0 auto;
 }
 
-/* Attendance Section */
-.lesson-attendance-section {
+/* Materials Section */
+.lesson-materials-section {
   margin-bottom: 60px;
-}
-
-.lesson-section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
 }
 
 .lesson-section-title {
   color: #333 !important;
   font-size: 32px !important;
-  font-weight: 400 !important;
-  margin-bottom: 0 !important;
-  font-style: italic;
-}
-
-.lesson-nav-arrow {
-  color: #666;
-  font-size: 18px;
-  padding: 8px;
-  border-radius: 50%;
-  transition: all 0.3s ease;
-}
-
-.lesson-nav-arrow:hover {
-  background: rgba(0, 0, 0, 0.05);
-  color: #333;
-}
-
-.lesson-week-header {
-  margin-bottom: 30px;
-}
-
-.lesson-week-text {
-  color: #333 !important;
-  font-size: 18px !important;
-  font-weight: 500;
-}
-
-.lesson-attendance-grid {
-  margin-bottom: 0;
-}
-
-.lesson-attendance-card {
-  border-radius: 12px;
-  border: 1px solid #e8e8e8;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  transition: all 0.3s ease;
-}
-
-.lesson-attendance-card:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  transform: translateY(-2px);
-}
-
-.lesson-attendance-card .ant-card-body {
-  padding: 20px;
-}
-
-.lesson-attendance-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.lesson-attendance-info {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.lesson-session-text {
-  color: #333 !important;
-  font-size: 16px !important;
-  font-weight: 600;
-}
-
-.lesson-date-text {
-  color: #666 !important;
-  font-size: 14px !important;
-}
-
-.lesson-teacher-text {
-  color: #666 !important;
-  font-size: 14px !important;
-}
-
-.lesson-attend-btn {
-  background: #87ceeb;
-  border: none;
-  color: #333;
-  border-radius: 6px;
-  padding: 6px 16px;
-  height: auto;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.lesson-attend-btn:hover {
-  background: #7bb8d1;
-  color: #333;
-  transform: translateY(-1px);
-}
-
-/* Materials Section */
-.lesson-materials-section {
-  margin-top: 60px;
+  font-weight: 600 !important;
+  margin-bottom: 30px !important;
 }
 
 .lesson-materials-grid {
@@ -133,6 +31,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   transition: all 0.3s ease;
   height: 100%;
+  position: relative;
 }
 
 .lesson-material-card:hover {
@@ -143,8 +42,6 @@
 .lesson-material-card .ant-card-body {
   padding: 20px;
   height: 100%;
-  display: flex;
-  flex-direction: column;
 }
 
 .lesson-material-content {
@@ -156,46 +53,107 @@
 .lesson-material-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
+  align-items: flex-start;
+  margin-bottom: 16px;
 }
 
-.lesson-material-session {
+.lesson-session-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lesson-session-number {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.lesson-session-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.lesson-session-text {
   color: #333 !important;
   font-size: 16px !important;
   font-weight: 600;
+  margin: 0;
 }
 
-.lesson-status-btn {
-  border-radius: 6px;
-  padding: 4px 12px;
-  height: auto;
+.lesson-date-text {
+  color: #666 !important;
+  font-size: 14px !important;
+  margin: 0;
+}
+
+.lesson-status-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
   font-size: 12px;
   font-weight: 500;
-  border: none;
-  cursor: default;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.lesson-done-btn {
-  background: #90ee90;
-  color: #333;
+.lesson-today-badge {
+  background: #fff7e6;
+  color: #d48806;
+  border: 1px solid #ffd591;
 }
 
-.lesson-today-btn {
-  background: #ffd700;
-  color: #333;
+.lesson-not-yet-badge {
+  background: #f5f5f5;
+  color: #8c8c8c;
+  border: 1px solid #d9d9d9;
 }
 
-.lesson-not-yet-btn {
-  background: #ddd;
+.lesson-done-badge {
+  background: #f6ffed;
+  color: #52c41a;
+  border: 1px solid #b7eb8f;
+}
+
+.lesson-present-badge {
+  background: #e6f7ff;
+  color: #1890ff;
+  border: 1px solid #91d5ff;
+}
+
+.lesson-absent-badge {
+  background: #fff2f0;
+  color: #ff4d4f;
+  border: 1px solid #ffccc7;
+}
+
+.lesson-material-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  flex: 1;
+}
+
+.lesson-material-icon {
   color: #666;
+  font-size: 16px;
+  margin-top: 2px;
+  flex-shrink: 0;
 }
 
 .lesson-material-title {
   color: #333 !important;
   font-size: 14px !important;
-  line-height: 1.4;
+  line-height: 1.5;
   flex: 1;
+  margin: 0;
 }
 
 /* Responsive Design */
@@ -208,23 +166,13 @@
     font-size: 28px !important;
   }
 
-  .lesson-attendance-content {
+  .lesson-material-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
   }
 
-  .lesson-attend-btn {
-    align-self: flex-end;
-  }
-
-  .lesson-material-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
-
-  .lesson-status-btn {
+  .lesson-status-badge {
     align-self: flex-end;
   }
 }
@@ -238,7 +186,6 @@
     font-size: 24px !important;
   }
 
-  .lesson-attendance-card .ant-card-body,
   .lesson-material-card .ant-card-body {
     padding: 16px;
   }
@@ -246,10 +193,15 @@
   .lesson-material-title {
     font-size: 13px !important;
   }
+
+  .lesson-session-number {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
 }
 
 /* Animation */
-.lesson-attendance-card,
 .lesson-material-card {
   animation: lesson-fadeInUp 0.6s ease-out both;
 }
@@ -266,42 +218,28 @@
 }
 
 /* Staggered animation delays */
-.lesson-attendance-grid .ant-col:nth-child(1) .lesson-attendance-card {
-  animation-delay: 0.1s;
-}
-
-.lesson-attendance-grid .ant-col:nth-child(2) .lesson-attendance-card {
-  animation-delay: 0.2s;
-}
-
 .lesson-materials-grid .ant-col:nth-child(1) .lesson-material-card {
   animation-delay: 0.1s;
 }
-
 .lesson-materials-grid .ant-col:nth-child(2) .lesson-material-card {
   animation-delay: 0.2s;
 }
-
 .lesson-materials-grid .ant-col:nth-child(3) .lesson-material-card {
   animation-delay: 0.3s;
 }
-
 .lesson-materials-grid .ant-col:nth-child(4) .lesson-material-card {
   animation-delay: 0.4s;
 }
-
 .lesson-materials-grid .ant-col:nth-child(5) .lesson-material-card {
   animation-delay: 0.5s;
 }
-
 .lesson-materials-grid .ant-col:nth-child(6) .lesson-material-card {
   animation-delay: 0.6s;
 }
 
 /* Focus states for accessibility */
-.lesson-attend-btn:focus,
-.lesson-nav-arrow:focus {
-  outline: 2px solid rgba(135, 206, 235, 0.5);
+.lesson-material-card:focus {
+  outline: 2px solid rgba(24, 144, 255, 0.5);
   outline-offset: 2px;
 }
 
@@ -312,14 +250,9 @@
     padding: 20px;
   }
 
-  .lesson-attendance-card,
   .lesson-material-card {
     box-shadow: none;
     border: 1px solid #ddd;
     break-inside: avoid;
-  }
-
-  .lesson-nav-arrow {
-    display: none;
   }
 }
