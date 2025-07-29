@@ -83,10 +83,10 @@
 }
 
 .lesson-session-text {
-  color: #333 !important;
-  font-size: 16px !important;
+  color: forestgreen !important;
+  font-size: 20px !important;
   font-weight: 600;
-  margin: 0;
+  margin-bottom: 10px !important;
 }
 
 .lesson-date-text {
@@ -154,6 +154,7 @@
   line-height: 1.5;
   flex: 1;
   margin: 0;
+  font-weight: bold;
 }
 
 /* Responsive Design */
@@ -255,4 +256,8 @@
     border: 1px solid #ddd;
     break-inside: avoid;
   }
+}
+
+.lesson-session-details {
+  text-align: left;
 }

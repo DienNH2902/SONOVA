@@ -61,7 +61,7 @@ const Absence = () => {
                 name: user.accountName || user.username,
                 phone: user.phoneNumber || "N/A",
                 email: user.email || "N/A",
-                class: record.classSession?.classCode || "N/A", // Lấy thông tin lớp học từ classSession
+                class: record?.classCode || "N/A", // Lấy thông tin lớp học từ classSession
                 // Các thông tin khác có thể thêm vào đây nếu cần
               };
 

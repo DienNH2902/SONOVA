@@ -247,8 +247,8 @@ const Lesson = () => {
   const [error, setError] = useState(null)
 
   const materialsData = [
-    { id: 1, session: "Buổi 1", title: "Giới thiệu đàn piano và tư thế chơi" },
-    { id: 2, session: "Buổi 2", title: "Nhận biết phím đen và nốt nhạc" },
+    { id: 1, session: "Buổi 1", title: "Giới thiệu đàn và tư thế chơi" },
+    { id: 2, session: "Buổi 2", title: "Học nhạc lý và nốt nhạc" },
     { id: 3, session: "Buổi 3", title: "Kỹ thuật chạy ngón cơ bản" },
     { id: 4, session: "Buổi 4", title: "Chơi giai điệu đơn giản" },
     { id: 5, session: "Buổi 5", title: "Hợp âm cơ bản" },
@@ -263,10 +263,10 @@ const Lesson = () => {
     { id: 14, session: "Buổi 14", title: "Biểu diễn và đánh giá" },
     { id: 15, session: "Buổi 15", title: "Ôn tập và thực hành tổng hợp" },
     { id: 16, session: "Buổi 16", title: "Giới thiệu các thể loại nhạc" },
-    { id: 17, session: "Buổi 17", title: "Phân tích cấu trúc bài hát" },
-    { id: 18, session: "Buổi 18", title: "Kỹ thuật nâng cao (arpeggios, scales)" },
-    { id: 19, session: "Buổi 19", title: "Sáng tác và ngẫu hứng cơ bản" },
-    { id: 20, session: "Buổi 20", title: "Tổng kết khóa học và định hướng" },
+    { id: 17, session: "Buổi 17", "title": "Phân tích cấu trúc bài hát" },
+    { id: 18, session: "Buổi 18", "title": "Kỹ thuật nâng cao (arpeggios, scales)" },
+    { id: 19, session: "Buổi 19", "title": "Sáng tác và ngẫu hứng cơ bản" },
+    { id: 20, session: "Buổi 20", "title": "Tổng kết khóa học và định hướng" },
   ]
 
   const getSessionColor = (sessionNumber) => {
@@ -435,6 +435,17 @@ const Lesson = () => {
                             <Text className="lesson-date-text">
                               {new Date(session.date).toLocaleDateString("vi-VN")}
                             </Text>
+                            {/* THÊM THÔNG TIN MỚI VÀO ĐÂY */}
+                            <Text className="lesson-room-text">
+                                Phòng: {session.roomCode}
+                            </Text>
+                            <Text className="lesson-instrument-text">
+                                Nhạc cụ: {session.instrumentName}
+                            </Text>
+                            <Text className="lesson-classcode-text">
+                                Mã lớp: {session.classCode}
+                            </Text>
+                            {/* KẾT THÚC PHẦN THÊM */}
                           </div>
                         </div>
                         {getStatusBadge(sessionStatus)}
