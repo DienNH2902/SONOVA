@@ -104,14 +104,13 @@
 }
 
 .student-info-phone-column {
-  color: #666;
+  color: #333;
   text-align: center;
-  font-family: monospace;
+  font-weight: bold !important;
 }
 
-.student-info-email-column {
-  color: #1e3a5f;
-  font-family: monospace;
+.student-info-address-column {
+  color: #666;
 }
 
 /* Responsive Design */

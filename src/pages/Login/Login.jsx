@@ -1,11 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { Form, Input, Button, message } from "antd";
+import { Form, Input, Button, message as antdMessage, App } from "antd";
 import { jwtDecode } from "jwt-decode";
 import "./Login.css";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { message } = App.useApp(); // Sử dụng destructuring để lấy message từ App.useApp()
 
   const onFinish = async (values) => {
     try {
@@ -115,10 +116,10 @@ const Login = () => {
       <div className="login-card">
         <button className="back-home-button" onClick={() => navigate("/")}>
           <ArrowLeftOutlined style={{ fontSize: "16px" }} />
-          <span>Back to Home</span>
+          <span>Quay lại trang chủ</span>
         </button>
 
-        <h2 className="login-title">Welcome Back</h2>
+        <h2 className="login-title">Chào mừng bạn trở lại</h2>
 
         <Form
           layout="vertical"
@@ -127,30 +128,30 @@ const Login = () => {
           autoComplete="off"
         >
           <Form.Item
-            label="Email Address"
+            label="Tên đăng nhập"
             name="email"
-            rules={[{ required: true, message: "Vui lòng nhập email" }]}
+            rules={[{ required: true, message: "Vui lòng nhập tên đăng nhập" }]}
           >
-            <Input placeholder="Email Address" />
+            <Input placeholder="Tên đăng nhập" />
           </Form.Item>
 
           <Form.Item
-            label="Password"
+            label="Mật khẩu"
             name="password"
             rules={[{ required: true, message: "Vui lòng nhập mật khẩu" }]}
           >
-            <Input.Password placeholder="Password" />
+            <Input.Password placeholder="Mật khẩu" />
           </Form.Item>
 
           <Form.Item>
             <Button type="primary" htmlType="submit" block className="login-button">
-              Sign In
+              Đăng Nhập
             </Button>
           </Form.Item>
         </Form>
 
         <p className="auth-switch">
-          Don't have an account? <a href="/contact">Đăng ký để nhận tư vấn miễn phí!</a>
+          Bạn chưa có tài khoản? <a href="/contact">Đăng ký để nhận tư vấn miễn phí!</a>
         </p>
       </div>
     </div>

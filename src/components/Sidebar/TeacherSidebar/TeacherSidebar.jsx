@@ -103,6 +103,9 @@ const TeacherSidebar = () => {
         localStorage.removeItem("user");
         localStorage.removeItem("token");
         window.location.href = "/";
+        localStorage.removeItem("selectedClassSessionId")
+    localStorage.removeItem("attendanceSessionId")
+    localStorage.removeItem("selectedClassIdForStudents")
       },
     },
   ];

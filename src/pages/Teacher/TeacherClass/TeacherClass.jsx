@@ -31,6 +31,8 @@ const TeacherClass = () => {
     // Điều này đảm bảo không có ID buổi học cũ bị giữ lại
     localStorage.removeItem("selectedClassSessionId")
     localStorage.removeItem("attendanceSessionId")
+    localStorage.removeItem("selectedClassIdForStudents")
+
 
     const fetchTeacherClasses = async () => {
       setLoading(true)

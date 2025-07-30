@@ -36,6 +36,8 @@ import CourseGuitarAdvanced from "../pages/CourseGuitarAdvanced/CourseGuitarAdva
 import CoursePianoAdvanced from "../pages/CoursePianoAdvanced/CoursePianoAdvanced.jsx";
 import CoursePiano from "../pages/CoursePianoBasic/CoursePianoBasic.jsx";
 import AdminTeacherAttendance from "../pages/Admin/TeacherAttendance/AdminTeacherAttendance.jsx";
+import TeacherSchedule from "../pages/Teacher/TeacherSchedule/TeacherSchedule.jsx";
+import TeacherCourseSchedule from "../pages/Teacher/TeacherCourseSchedule/TeacherCourseSchedule.jsx";
 
 
 const getUser = () => {
@@ -104,9 +106,9 @@ const AppRoutes = () => {
           <Route path="/teacher/class-detail-student-info" element={<TeacherClassStudentInfo />} />
           <Route path="/teacher/class-detail-student-info/student-info-list" element={<StudentInfoList />} />
           <Route path="/teacher/class-detail/attendance" element={<TeacherAttendance />} />
-          <Route path="/teacher/course-schedule" element={<CourseSchedule />} />
+          <Route path="/teacher/course-schedule" element={<TeacherCourseSchedule />} />
           <Route path="/teacher/materials" element={<Materials />} />
-          <Route path="/teacher/schedule" element={<Schedule />} />
+          <Route path="/teacher/schedule" element={<TeacherSchedule />} />
           <Route path="/teacher/student-info" element={<StudentInfo />} />
           <Route path="/teacher/absence" element={<Absence />} />
           {/* <Route path="/teacher/sheet-music" element={<SheetMusic />} /> */}
