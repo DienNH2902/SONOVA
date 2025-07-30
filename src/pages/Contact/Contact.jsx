@@ -627,7 +627,7 @@ const Contact = () => {
                     ]}
                     className="form-group"
                   >
-                    <Input placeholder="0901234567" />
+                    <Input placeholder="090xxxxxxx" />
                   </Form.Item>
                 </div>
 

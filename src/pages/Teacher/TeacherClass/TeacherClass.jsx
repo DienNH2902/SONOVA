@@ -28,11 +28,9 @@ const TeacherClass = () => {
 
   useEffect(() => {
     // Xóa classSessionId khỏi localStorage mỗi khi component này được mount
-    // Điều này đảm bảo không có ID buổi học cũ bị giữ lại
     localStorage.removeItem("selectedClassSessionId")
     localStorage.removeItem("attendanceSessionId")
     localStorage.removeItem("selectedClassIdForStudents")
-
 
     const fetchTeacherClasses = async () => {
       setLoading(true)
@@ -43,7 +41,7 @@ const TeacherClass = () => {
           throw new Error("Không tìm thấy thông tin giáo viên trong localStorage.")
         }
         const userData = JSON.parse(userDataString)
-        const teacherClassIds = userData.classIds
+        const teacherClassIds = userData.classIds // Đây là các classId mà giáo viên dạy
 
         if (!teacherClassIds || teacherClassIds.length === 0) {
           setTodayTeacherSessions([])
@@ -51,6 +49,7 @@ const TeacherClass = () => {
           return
         }
 
+        // Bước 1: Fetch tất cả ClassSessions
         const classSessionRes = await fetch(
           "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ClassSession",
         )
@@ -59,11 +58,39 @@ const TeacherClass = () => {
 
         const today = getTodayDate()
 
+        // Lọc ra các buổi học của giáo viên trong ngày hôm nay
         const filteredSessions = allClassSessions.filter(
           (session) =>
             teacherClassIds.includes(session.classId) && session.dateOfDay === today,
         )
-        setTodayTeacherSessions(filteredSessions)
+
+        // Bước 2: Fetch tất cả OpeningSchedules để lấy instrumentName
+        const openingScheduleRes = await fetch(
+          "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/OpeningSchedule",
+        )
+        if (!openingScheduleRes.ok) throw new Error("Failed to fetch opening schedules.")
+        const allOpeningSchedules = await openingScheduleRes.json()
+
+        // Tạo một Map để dễ dàng tra cứu instrumentName theo classCode
+        // Lưu ý: API OpeningSchedule không có classId mà chỉ có classCode
+        // Cần đảm bảo rằng classCode trong ClassSession và OpeningSchedule khớp nhau
+        const classCodeToInstrumentMap = new Map()
+        allOpeningSchedules.forEach(schedule => {
+            // Giả định rằng classCode là duy nhất hoặc lấy cái đầu tiên tìm thấy
+            // Nếu có nhiều schedule với cùng classCode nhưng instrument khác, cần logic phức tạp hơn
+            if (schedule.instrument?.instrumentName) {
+                classCodeToInstrumentMap.set(schedule.classCode, schedule.instrument.instrumentName)
+            }
+        })
+
+        // Bước 3: Kết hợp instrumentName vào filteredSessions
+        const sessionsWithInstrument = filteredSessions.map(session => ({
+            ...session,
+            // Lấy instrumentName từ map dựa trên classCode của session
+            instrumentName: classCodeToInstrumentMap.get(session.classCode) || session.instrumentName || "N/A"
+        }))
+
+        setTodayTeacherSessions(sessionsWithInstrument)
       } catch (err) {
         console.error("Error fetching teacher's classes:", err)
         setError("Không thể tải danh sách lớp học: " + err.message)
@@ -74,7 +101,7 @@ const TeacherClass = () => {
     }
 
     fetchTeacherClasses()
-  }, []) // Chỉ chạy một lần khi component được mount
+  }, [])
 
   const ClassCard = ({ classInfo }) => (
     <Col xs={24} sm={12} lg={8}>

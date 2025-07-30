@@ -119,7 +119,8 @@ const { Title, Text } = Typography
 
 const TeacherClassStudentInfo = () => {
   const navigate = useNavigate()
-  const [teacherClasses, setTeacherClasses] = useState([]) // Thay thế pianoClasses/guitarClasses
+  // Khởi tạo teacherClasses là một đối tượng rỗng ngay từ đầu
+  const [teacherClasses, setTeacherClasses] = useState({ piano: [], guitar: [] })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
@@ -128,6 +129,7 @@ const TeacherClassStudentInfo = () => {
     localStorage.removeItem("selectedClassSessionId")
     localStorage.removeItem("attendanceSessionId")
     localStorage.removeItem("selectedClassIdForStudents")
+    
     const fetchTeacherAllClasses = async () => {
       setLoading(true)
       setError(null)
@@ -140,14 +142,13 @@ const TeacherClassStudentInfo = () => {
         const teacherClassIds = userData.classIds // Lấy mảng classIds của giáo viên
 
         if (!teacherClassIds || teacherClassIds.length === 0) {
-          // Khởi tạo teacherClasses với mảng rỗng cho piano và guitar
           setTeacherClasses({ piano: [], guitar: [] })
           setLoading(false)
-          console.log("Không có classIds nào được phân công cho giáo viên này.") // Log ở đây
+          console.log("Không có classIds nào được phân công cho giáo viên này.")
           return
         }
 
-        // Gọi API Class để lấy thông tin chi tiết của tất cả các lớp
+        // Bước 1: Gọi API Class để lấy thông tin chi tiết của tất cả các lớp
         const classRes = await fetch(
           "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/Class",
         )
@@ -155,22 +156,53 @@ const TeacherClassStudentInfo = () => {
         const allClasses = await classRes.json()
 
         // Lọc ra các lớp mà giáo viên này dạy
-        const filteredTeacherClasses = allClasses.filter((classItem) =>
+        let filteredTeacherClasses = allClasses.filter((classItem) =>
           teacherClassIds.includes(classItem.classId)
         )
 
-        // Phân loại lớp theo nhạc cụ để hiển thị riêng nếu cần,
-        // hoặc gộp chung lại nếu muốn hiển thị tất cả cùng một danh sách.
-        // Hiện tại, giữ nguyên cách hiển thị Piano và Guitar riêng.
-        const pianoClasses = filteredTeacherClasses.filter(
+        // Bước 2: Fetch tất cả OpeningSchedules để lấy instrumentName chính xác hơn
+        const openingScheduleRes = await fetch(
+          "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/OpeningSchedule",
+        )
+        if (!openingScheduleRes.ok) throw new Error("Failed to fetch opening schedules data.")
+        const allOpeningSchedules = await openingScheduleRes.json()
+
+        // Tạo một Map để dễ dàng tra cứu instrumentName theo classCode
+        // Giả định classCode là đủ để xác định duy nhất môn học.
+        const classCodeToInstrumentMap = new Map()
+        allOpeningSchedules.forEach(schedule => {
+            if (schedule.instrument?.instrumentName) {
+                classCodeToInstrumentMap.set(schedule.classCode, schedule.instrument.instrumentName)
+            }
+        })
+
+        // Bước 3: Kết hợp instrumentName từ OpeningSchedule vào filteredTeacherClasses
+        const classesWithUpdatedInstrument = filteredTeacherClasses.map(classItem => {
+            const updatedInstrumentName = classCodeToInstrumentMap.get(classItem.classCode)
+            return {
+                ...classItem,
+                // Ưu tiên instrumentName từ OpeningSchedule, nếu không có thì giữ nguyên cái cũ hoặc "N/A"
+                instrument: {
+                    ...classItem.instrument, // Giữ lại các thuộc tính khác nếu có
+                    instrumentName: updatedInstrumentName || classItem.instrument?.instrumentName || "N/A"
+                }
+            }
+        })
+
+        // Phân loại lớp theo nhạc cụ
+        const pianoClasses = classesWithUpdatedInstrument.filter(
           (cls) => cls.instrument?.instrumentName === "Piano"
         );
-        const guitarClasses = filteredTeacherClasses.filter(
+        const guitarClasses = classesWithUpdatedInstrument.filter(
           (cls) => cls.instrument?.instrumentName === "Guitar"
         );
         
-        // Tạo một đối tượng để lưu trữ các lớp đã lọc, phân loại
         setTeacherClasses({ piano: pianoClasses, guitar: guitarClasses });
+
+        // Log ở đây nếu sau khi fetch và lọc mà vẫn không có lớp nào
+        if (pianoClasses.length === 0 && guitarClasses.length === 0) {
+          console.log("Sau khi fetch, không có lớp học nào được phân công cho giáo viên này.");
+        }
 
       } catch (err) {
         console.error("Lỗi khi fetch dữ liệu lớp học của giáo viên:", err)
@@ -185,17 +217,13 @@ const TeacherClassStudentInfo = () => {
   }, []) // Dependency rỗng để chỉ chạy một lần khi component mount
 
   const ClassCard = ({ classInfo, onClick }) => (
-    <Col xs={24} sm={12} lg={8} key={classInfo.classId}> {/* Đổi key sang classInfo.classId */}
+    <Col xs={24} sm={12} lg={8} key={classInfo.classId}>
       <Card className="teacher-class-card" hoverable onClick={onClick}>
         <div className="teacher-class-header">
-          {/* classInfo.classCode đã có sẵn từ API Class */}
           <Text className="teacher-class-code">{classInfo.classCode}</Text> 
         </div>
         <div className="teacher-class-details">
-          {/* Các thông tin này không có trực tiếp trong API Class, nếu cần thì phải lấy từ ClassSession hoặc thêm vào API Class */}
-          {/* Tùy thuộc vào dữ liệu API trả về, bạn có thể cần điều chỉnh lại các Text này */}
           <div className="teacher-class-detail-item">
-            {/* API Class không có period, level, time. Chỉ có instrumentName. */}
             <Text className="teacher-detail-text">
               Môn: {classInfo.instrument?.instrumentName || "N/A"}
             </Text>
@@ -203,18 +231,6 @@ const TeacherClassStudentInfo = () => {
               Mã lớp: {classInfo.classCode || "N/A"}
             </Text>
           </div>
-          {/* Nếu muốn hiển thị period, level, time, bạn cần đảm bảo dữ liệu đó có trong classInfo 
-              hoặc fetch từ API ClassSession và xử lý merge data ở trên.
-              Với API Class hiện tại, chỉ có classCode và instrumentName. */}
-          {/* <div className="teacher-class-detail-item">
-            <Text className="teacher-detail-text">{classInfo.period}</Text>
-          </div>
-          <div className="teacher-class-detail-item">
-            <Text className="teacher-detail-text">{classInfo.level}</Text>
-          </div>
-          <div className="teacher-class-detail-item">
-            <Text className="teacher-detail-text">{classInfo.time}</Text>
-          </div> */}
         </div>
       </Card>
     </Col>
@@ -272,7 +288,6 @@ const TeacherClassStudentInfo = () => {
                   key={classInfo.classId}
                   classInfo={classInfo}
                   onClick={() => {
-                    // Lưu classId vào localStorage khi click
                     localStorage.setItem("selectedClassIdForStudents", classInfo.classId)
                     navigate("/teacher/class-detail-student-info/student-info-list")
                   }}
@@ -294,7 +309,6 @@ const TeacherClassStudentInfo = () => {
                   key={classInfo.classId}
                   classInfo={classInfo}
                   onClick={() => {
-                    // Lưu classId vào localStorage khi click
                     localStorage.setItem("selectedClassIdForStudents", classInfo.classId)
                     navigate("/teacher/class-detail-student-info/student-info-list")
                   }}
@@ -308,7 +322,7 @@ const TeacherClassStudentInfo = () => {
         {(teacherClasses.piano?.length === 0 && teacherClasses.guitar?.length === 0) && !loading && !error && (
           <div style={{ textAlign: "center", padding: "50px 0" }}>
             <Text type="secondary">Bạn không có lớp học nào được phân công.</Text>
-            {console.log("Không có lớp học nào được phân công cho giáo viên này.")}
+            {/* console.log đã được di chuyển vào useEffect */}
           </div>
         )}
       </div>
