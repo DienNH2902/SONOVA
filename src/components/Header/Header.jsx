@@ -244,7 +244,12 @@ const Header = () => {
                 fontWeight: 400,
               }}
             >
-              <Avatar icon={<UserOutlined />} />
+              {/* Logic mới ở đây */}
+              {user.avatarUrl ? (
+                <Avatar src={user.avatarUrl} alt="User Avatar" />
+              ) : (
+                <Avatar icon={<UserOutlined />} />
+              )}
               <span style={{ color: "#fff" }}>{user.displayName}</span>
             </div>
           ) : (
@@ -263,4 +268,4 @@ const Header = () => {
   )
 }
 
-export default Header
+export default Header;

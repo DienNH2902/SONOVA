@@ -322,7 +322,7 @@ const Lesson = () => {
           const firstSession = studentClassSessions.find((session) => session.classId === classId)
           return {
             value: classId,
-            label: `Lớp ${firstSession?.classCode || classId}`, // Use classCode if available
+            label: `${firstSession?.classCode || classId}`, // Use classCode if available
           }
         })
         setClassOptions(classOptionsData)
