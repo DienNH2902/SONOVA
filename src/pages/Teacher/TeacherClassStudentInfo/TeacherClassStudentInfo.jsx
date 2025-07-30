@@ -140,8 +140,10 @@ const TeacherClassStudentInfo = () => {
         const teacherClassIds = userData.classIds // Lấy mảng classIds của giáo viên
 
         if (!teacherClassIds || teacherClassIds.length === 0) {
-          setTeacherClasses([])
+          // Khởi tạo teacherClasses với mảng rỗng cho piano và guitar
+          setTeacherClasses({ piano: [], guitar: [] })
           setLoading(false)
+          console.log("Không có classIds nào được phân công cho giáo viên này.") // Log ở đây
           return
         }
 
@@ -306,6 +308,7 @@ const TeacherClassStudentInfo = () => {
         {(teacherClasses.piano?.length === 0 && teacherClasses.guitar?.length === 0) && !loading && !error && (
           <div style={{ textAlign: "center", padding: "50px 0" }}>
             <Text type="secondary">Bạn không có lớp học nào được phân công.</Text>
+            {console.log("Không có lớp học nào được phân công cho giáo viên này.")}
           </div>
         )}
       </div>

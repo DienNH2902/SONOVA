@@ -8,6 +8,8 @@ import {
   UserOutlined,
   PhoneOutlined,
   LogoutOutlined,
+  ProjectOutlined,
+  TeamOutlined
 } from "@ant-design/icons";
 import "../AdminSidebar/AdminSidebar.css"; // Import CSS chung từ AdminSidebar (hoặc Sidebar.css nếu đã đổi tên)
 import { useLocation, useNavigate } from "react-router-dom";
@@ -70,19 +72,19 @@ const TeacherSidebar = () => {
     },
     {
       key: "materials",
-      icon: <UserOutlined />, // Icon này vẫn đang dùng UserOutlined, cân nhắc đổi nếu không phù hợp
+      icon: <ProjectOutlined />, // Icon này vẫn đang dùng UserOutlined, cân nhắc đổi nếu không phù hợp
       label: "Tài liệu",
       onClick: () => navigate("/teacher/materials"),
     },
     {
       key: "course-schedule",
-      icon: <FileTextOutlined />,
+      icon: <ScheduleOutlined />,
       label: "Lịch khai giảng",
       onClick: () => navigate("/teacher/course-schedule"),
     },
     {
       key: "class-detail-student-info",
-      icon: <ScheduleOutlined />,
+      icon: <TeamOutlined />,
       label: "Thông tin học viên",
       onClick: () => navigate("/teacher/class-detail-student-info"),
     },
@@ -91,7 +93,7 @@ const TeacherSidebar = () => {
   const bottomItems = [
     {
       key: "profile",
-      icon: <PhoneOutlined />, // Icon này vẫn đang dùng PhoneOutlined, cân nhắc đổi nếu không phù hợp
+      icon: <UserOutlined />, // Icon này vẫn đang dùng PhoneOutlined, cân nhắc đổi nếu không phù hợp
       label: "Tài khoản",
       onClick: () => navigate("/teacher/profile"),
     },

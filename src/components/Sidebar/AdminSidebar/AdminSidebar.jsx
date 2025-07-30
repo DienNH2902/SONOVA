@@ -8,6 +8,9 @@ import {
   UserOutlined,
   PhoneOutlined,
   LogoutOutlined,
+  UsergroupAddOutlined,
+  TeamOutlined,
+  ProfileOutlined
 } from "@ant-design/icons";
 import "../Sidebar.css";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -74,7 +77,7 @@ const AdminSidebar = () => {
     },
     {
       key: "create-account",
-      icon: <CalendarOutlined />,
+      icon: <UsergroupAddOutlined />,
       label: "Tạo tài khoản",
       onClick: () => navigate("/admin/create-account"),
     },
@@ -102,8 +105,8 @@ const AdminSidebar = () => {
     },
     {
       key: "students",
-      icon: <ScheduleOutlined />,
-      label: "Học viên",
+      icon: <TeamOutlined />,
+      label: "Tài khoản",
       children: [
         {
           key: "student-info",
@@ -119,7 +122,7 @@ const AdminSidebar = () => {
     },
     {
       key: "sheet-music",
-      icon: <UserOutlined />,
+      icon: <ProfileOutlined />,
       label: "Sheet nhạc",
       onClick: () => navigate("/admin/sheet-music"),
     },
@@ -131,7 +134,7 @@ const AdminSidebar = () => {
     },
     {
       key: "teacher-attendance",
-      icon: <PhoneOutlined />,
+      icon: <UserOutlined />,
       label: "Điểm danh giáo viên",
       onClick: () => navigate("/admin/teacher-attendance"),
     },
@@ -140,7 +143,7 @@ const AdminSidebar = () => {
   const bottomItems = [
     {
       key: "profile",
-      icon: <PhoneOutlined />,
+      icon: <UserOutlined />,
       label: "Tài khoản",
       onClick: () => navigate("/admin/profile"),
     },

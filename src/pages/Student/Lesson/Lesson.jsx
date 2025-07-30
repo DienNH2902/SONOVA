@@ -230,21 +230,24 @@
 
 
 "use client"
-
-import { Typography, Card, Row, Col, Spin, Alert } from "antd"
+import { Typography, Card, Row, Col, Spin, Alert, Select } from "antd"
 import { FileTextOutlined } from "@ant-design/icons"
 import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import "./Lesson.css"
 
 const { Title, Text } = Typography
+const { Option } = Select
 
 const Lesson = () => {
   const navigate = useNavigate()
   const [classSessions, setClassSessions] = useState([])
+  const [allClassSessions, setAllClassSessions] = useState([]) // Store all sessions
   const [attendanceStatus, setAttendanceStatus] = useState({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [selectedClassId, setSelectedClassId] = useState(null) // Filter state
+  const [classOptions, setClassOptions] = useState([]) // Class options for dropdown
 
   const materialsData = [
     { id: 1, session: "Buổi 1", title: "Giới thiệu đàn và tư thế chơi" },
@@ -263,10 +266,10 @@ const Lesson = () => {
     { id: 14, session: "Buổi 14", title: "Biểu diễn và đánh giá" },
     { id: 15, session: "Buổi 15", title: "Ôn tập và thực hành tổng hợp" },
     { id: 16, session: "Buổi 16", title: "Giới thiệu các thể loại nhạc" },
-    { id: 17, session: "Buổi 17", "title": "Phân tích cấu trúc bài hát" },
-    { id: 18, session: "Buổi 18", "title": "Kỹ thuật nâng cao (arpeggios, scales)" },
-    { id: 19, session: "Buổi 19", "title": "Sáng tác và ngẫu hứng cơ bản" },
-    { id: 20, session: "Buổi 20", "title": "Tổng kết khóa học và định hướng" },
+    { id: 17, session: "Buổi 17", title: "Phân tích cấu trúc bài hát" },
+    { id: 18, session: "Buổi 18", title: "Kỹ thuật nâng cao (arpeggios, scales)" },
+    { id: 19, session: "Buổi 19", title: "Sáng tác và ngẫu hứng cơ bản" },
+    { id: 20, session: "Buổi 20", title: "Tổng kết khóa học và định hướng" },
   ]
 
   const getSessionColor = (sessionNumber) => {
@@ -311,7 +314,23 @@ const Lesson = () => {
           .filter((session) => classIds.includes(session.classId))
           .sort((a, b) => new Date(a.date) - new Date(b.date))
 
-        setClassSessions(studentClassSessions)
+        setAllClassSessions(studentClassSessions)
+
+        // Create class options for dropdown
+        const uniqueClasses = [...new Set(studentClassSessions.map((session) => session.classId))]
+        const classOptionsData = uniqueClasses.map((classId) => {
+          const firstSession = studentClassSessions.find((session) => session.classId === classId)
+          return {
+            value: classId,
+            label: `Lớp ${firstSession?.classCode || classId}`, // Use classCode if available
+          }
+        })
+        setClassOptions(classOptionsData)
+
+        // Set default to first class if no selection
+        if (!selectedClassId && classOptionsData.length > 0) {
+          setSelectedClassId(classOptionsData[0].value)
+        }
 
         const attendanceResponse = await fetch(
           "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/Attendance",
@@ -340,6 +359,14 @@ const Lesson = () => {
     fetchClassData()
   }, [])
 
+  // Filter sessions based on selected class
+  useEffect(() => {
+    if (selectedClassId && allClassSessions.length > 0) {
+      const filteredSessions = allClassSessions.filter((session) => session.classId === selectedClassId)
+      setClassSessions(filteredSessions)
+    }
+  }, [selectedClassId, allClassSessions])
+
   const getSessionStatus = (sessionDate, classSessionId) => {
     const today = new Date()
     today.setHours(0, 0, 0, 0)
@@ -347,7 +374,6 @@ const Lesson = () => {
     sessionDay.setHours(0, 0, 0, 0)
 
     const statusFromAttendance = attendanceStatus[classSessionId]
-
     if (sessionDay < today) {
       if (statusFromAttendance) {
         return statusFromAttendance === "Present" ? "present" : "absent"
@@ -406,6 +432,19 @@ const Lesson = () => {
           <Title level={2} className="lesson-section-title">
             Tài liệu
           </Title>
+
+          {/* Class Filter Dropdown */}
+          <div style={{ marginBottom: 24 }}>
+            <Text style={{ marginRight: 8 }}>Lọc theo lớp:</Text>
+            <Select value={selectedClassId} onChange={setSelectedClassId} style={{ width: 200 }} placeholder="Chọn lớp">
+              {classOptions.map((option) => (
+                <Option key={option.value} value={option.value}>
+                  {option.label}
+                </Option>
+              ))}
+            </Select>
+          </div>
+
           <Row gutter={[16, 16]} className="lesson-materials-grid">
             {classSessions.map((session, index) => {
               const material = materialsData[index]
@@ -436,15 +475,9 @@ const Lesson = () => {
                               {new Date(session.date).toLocaleDateString("vi-VN")}
                             </Text>
                             {/* THÊM THÔNG TIN MỚI VÀO ĐÂY */}
-                            <Text className="lesson-room-text">
-                                Phòng: {session.roomCode}
-                            </Text>
-                            <Text className="lesson-instrument-text">
-                                Nhạc cụ: {session.instrumentName}
-                            </Text>
-                            <Text className="lesson-classcode-text">
-                                Mã lớp: {session.classCode}
-                            </Text>
+                            <Text className="lesson-room-text">Phòng: {session.roomCode}</Text>
+                            <Text className="lesson-instrument-text">Nhạc cụ: {session.instrumentName}</Text>
+                            <Text className="lesson-classcode-text">Mã lớp: {session.classCode}</Text>
                             {/* KẾT THÚC PHẦN THÊM */}
                           </div>
                         </div>

@@ -53,6 +53,7 @@
 .sidebar-menu .ant-menu-submenu-title {
   color: white;
   padding-right: 83px; /* Giữ khoảng trống cho mũi tên */
+  font-size: 13px;
 }
 
 /* Style cho icon mũi tên của submenu, nếu cần tùy chỉnh thêm */

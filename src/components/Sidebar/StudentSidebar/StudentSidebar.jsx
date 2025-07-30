@@ -6,7 +6,7 @@ import {
   // Loại bỏ các icon không dùng
   // FileTextOutlined,
   // ScheduleOutlined,
-  // UserOutlined,
+  UserOutlined,
   PhoneOutlined, // Dùng cho Tài khoản
   LogoutOutlined,
 } from "@ant-design/icons";
@@ -68,7 +68,7 @@ const StudentSidebar = () => {
   const bottomItems = [
     {
       key: "profile",
-      icon: <PhoneOutlined />, // Vẫn dùng PhoneOutlined như mày muốn
+      icon: <UserOutlined />, // Vẫn dùng PhoneOutlined như mày muốn
       label: "Tài khoản",
       onClick: () => navigate("/student/profile"),
     },

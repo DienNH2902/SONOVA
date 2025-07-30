@@ -252,9 +252,9 @@ const Header = () => {
               <Button type="text" onClick={handleLogin} style={{ color: "#fff" }}>
                 Đăng nhập
               </Button>
-              <Button type="text" onClick={handleRegister} style={{ color: "#fff" }}>
+              {/* <Button type="text" onClick={handleRegister} style={{ color: "#fff" }}>
                 Đăng ký
-              </Button>
+              </Button> */}
             </>
           )}
         </div>

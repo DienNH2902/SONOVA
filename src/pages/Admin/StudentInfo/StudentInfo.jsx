@@ -584,7 +584,8 @@ const StudentInfo = () => {
                         >
                             {allClasses.map(cls => (
                                 <Option key={cls.classId} value={cls.classId}>
-                                    {cls.classCode} - {cls.className}
+                                    {/* {cls.classCode} - {cls.className} */}
+                                        {cls.classCode} 
                                 </Option>
                             ))}
                         </Select>

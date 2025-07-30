@@ -104,7 +104,7 @@ const Login = () => {
       // Điều hướng người dùng đến trang phù hợp với vai trò
       navigate(routeMap[role] || "/contact");
 
-      message.success("Login successful!");
+      message.success("Đăng nhập thành công!");
     } catch (err) {
       console.error(err);
       message.error(`Đăng nhập thất bại: ${err.message || "Lỗi không xác định"}`);
@@ -119,7 +119,7 @@ const Login = () => {
           <span>Quay lại trang chủ</span>
         </button>
 
-        <h2 className="login-title">Chào mừng bạn trở lại</h2>
+        <h2 className="login-title">Chào mừng trở lại</h2>
 
         <Form
           layout="vertical"
