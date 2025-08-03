@@ -160,6 +160,7 @@
   .mobile-menu-button {
     display: block; /* Hiển thị nút menu trên mobile */
     order: 1; /* Đảm bảo nút menu ở bên trái */
+    margin-right: 60px;
   }
 
   .header-logo {

@@ -330,16 +330,13 @@ const Header = () => {
           })}
         />
         {/* Nút đăng nhập/đăng ký trong Drawer cho Mobile */}
-        {!user && (
+        {/* {!user && (
           <div style={{ padding: '16px', borderTop: '1px solid #f0f0f0' }}>
             <Button type="primary" block onClick={handleLogin}>
               Đăng nhập
             </Button>
-            {/* <Button type="default" block onClick={handleRegister} style={{ marginTop: '8px' }}>
-              Đăng ký
-            </Button> */}
           </div>
-        )}
+        )} */}
       </Drawer>
     </AntHeader>
   );
