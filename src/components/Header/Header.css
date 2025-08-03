@@ -96,6 +96,10 @@
 }
 
 /* Responsive Styles */
+.mobile-menu-button {
+  display: none;
+}
+
 @media (max-width: 1200px){
   .header-logo{
     display: none;
@@ -105,18 +109,14 @@
   .header-content {
     padding: 0 40px;
   }
-
-  .header-user span {
-    /* display: none; */
-  }
-
+  
   .header-menu .ant-menu-item,
   .header-menu .ant-menu-submenu-title {
     font-size: 14px;
     padding: 0 8px;
   }
 
-  .header-logo{
+  .header-logo {
     display: none;
   }
 }
@@ -147,17 +147,19 @@
     font-size: 18px;
   }
 
-  .header-logo{
+  .header-logo {
     display: none;
   }
 }
 
 @media (max-width: 576px) {
-  .header-content {
-    /* flex-direction: row; */
-    padding: 0 12px;
-    height: auto;
-    gap: 8px;
+  .header-menu-desktop {
+    display: none; /* Ẩn menu ngang trên mobile */
+  }
+
+  .mobile-menu-button {
+    display: block; /* Hiển thị nút menu trên mobile */
+    order: 1; /* Đảm bảo nút menu ở bên trái */
   }
 
   .header-logo {
@@ -165,19 +167,57 @@
     left: auto;
     transform: none;
     margin: 0 auto;
+    display: block;
+    order: 2; /* Đảm bảo logo ở giữa */
+  }
+
+  .header-user {
+    order: 3; /* Đảm bảo thông tin người dùng ở bên phải */
+  }
+
+  .header-content {
+    padding: 0 12px;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* Ẩn tên người dùng để tiết kiệm không gian */
+  .header-user .username-text {
     display: none;
   }
-
-  .header-menu {
-    width: 100%;
-    justify-content: center;
-    font-size: 12px;
-    flex-wrap: wrap;
-    margin-top: 4px;
-  }
-
-  /* .header-user {
-    margin-left: 0;
-    align-self: flex-end;
-  } */
 }
+
+/* Style cho Drawer */
+.mobile-drawer .ant-drawer-header {
+  background-color: #1e3a5f;
+  margin-top: 10px;
+}
+
+.mobile-drawer .ant-drawer-title {
+  color: #fff;
+  font-weight: 700;
+}
+
+.mobile-drawer .ant-drawer-close {
+  color: #fff;
+}
+
+.mobile-drawer .ant-menu-inline {
+  border-right: none;
+}
+.mobile-drawer .ant-menu-item,
+.mobile-drawer .ant-menu-submenu-title {
+  font-size: 16px;
+  font-weight: 400;
+  color: #000;
+  text-align: left !important;
+}
+
+.mobile-drawer .ant-menu-item-selected {
+  background-color: #ffa940 !important;
+  color: #1e3a5f !important;
+}
+
+/* .mobile-drawer .ant-menu-submenu .ant-menu-item {
+  padding-left: 48px !important; 
+} */
