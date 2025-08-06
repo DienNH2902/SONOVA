@@ -297,7 +297,7 @@ const Lesson = () => {
         const classIds = userInfo?.classIds
 
         if (!classIds || classIds.length === 0) {
-          setError("Mày chưa được xếp vào lớp nào cả.")
+          setError("Bạn chưa được xếp vào lớp nào cả.")
           setLoading(false)
           return
         }

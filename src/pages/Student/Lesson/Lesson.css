@@ -16,8 +16,10 @@
 
 .lesson-section-title {
   color: #333 !important;
-  font-size: 32px !important;
+  font-size: 48px !important;
   font-weight: 600 !important;
+  font-style: italic !important;
+  font-family: UTM Americana, serif !important;
   margin-bottom: 30px !important;
 }
 
@@ -74,6 +76,7 @@
   font-weight: 600;
   font-size: 16px;
   flex-shrink: 0;
+  font-family: Gilroy, sans-serif !important;
 }
 
 .lesson-session-details {
@@ -87,6 +90,7 @@
   font-size: 20px !important;
   font-weight: 600;
   margin-bottom: 10px !important;
+  font-family: "Gilroy", sans-serif !important;
 }
 
 .lesson-date-text {
@@ -155,6 +159,13 @@
   flex: 1;
   margin: 0;
   font-weight: bold;
+  font-family: Gilroy !important;
+}
+
+.lesson-room-text {
+  /* font-size: 16px !important;
+  font-weight: 400; */
+  /* font-family: Gilroy; */
 }
 
 /* Responsive Design */
@@ -199,6 +210,7 @@
     width: 36px;
     height: 36px;
     font-size: 14px;
+    font-family: Gilroy, sans-serif !important;
   }
 }
 

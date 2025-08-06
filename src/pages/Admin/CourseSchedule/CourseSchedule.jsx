@@ -1038,10 +1038,10 @@ const CourseSchedule = () => {
       >
         <Form form={updateForm} layout="vertical" name="update_schedule_form">
           <Form.Item name="classCode" label="Mã lớp" rules={[{ required: true, message: "Vui lòng nhập mã lớp!" }]}>
-            <Input disabled /> {/* Class code is disabled for editing */}
+            <Input disabled /> 
           </Form.Item>
           <Form.Item name="subject" label="Môn học" rules={[{ required: true, message: "Vui lòng nhập môn học!" }]}>
-            <Select placeholder="Chọn môn học">
+            <Select placeholder="Chọn môn học" disabled>
               <Option value="Piano">Piano</Option>
               <Option value="Guitar">Guitar</Option>
             </Select>
