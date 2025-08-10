@@ -38,6 +38,8 @@ import CoursePiano from "../pages/CoursePianoBasic/CoursePianoBasic.jsx";
 import AdminTeacherAttendance from "../pages/Admin/TeacherAttendance/AdminTeacherAttendance.jsx";
 import TeacherSchedule from "../pages/Teacher/TeacherSchedule/TeacherSchedule.jsx";
 import TeacherCourseSchedule from "../pages/Teacher/TeacherCourseSchedule/TeacherCourseSchedule.jsx";
+import StudentSheetMusic from "../pages/Student/SheetMusic/SheetMusic.jsx";
+import Favorite from "../pages/Student/SheetMusic/Favorite.jsx";
 
 
 const getUser = () => {
@@ -128,6 +130,8 @@ const AppRoutes = () => {
           <Route index element={<Lesson />} />
           <Route path="/student/profile" element={<AdminProfile />} />
           <Route path="/student/student-material" element={<StudentMaterials />} />
+          <Route path="/student/sheet-music" element={<StudentSheetMusic />} />
+          <Route path="/student/sheet-music/favorite" element={<Favorite />} />
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
