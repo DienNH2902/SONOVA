@@ -2,7 +2,6 @@
 import {
   Typography,
   Table,
-  Checkbox,
   Input,
   Button,
   Space,
@@ -16,7 +15,7 @@ import {
   Row,
   Col,
   message,
-  App
+  App,
 } from "antd"
 import {
   SearchOutlined,
@@ -35,8 +34,7 @@ const { Option } = Select
 const { Dragger } = Upload
 
 const SheetMusic = () => {
-  const {message, modal} = App.useApp()
-  const [selectedRowKeys, setSelectedRowKeys] = useState([])
+  const { message, modal } = App.useApp()
   const [searchText, setSearchText] = useState("")
   const [currentPage, setCurrentPage] = useState(1)
   const [sheetMusicData, setSheetMusicData] = useState([])
@@ -53,6 +51,13 @@ const SheetMusic = () => {
   const [selectedSheet, setSelectedSheet] = useState(null)
   const [isAddSheetModalVisible, setIsAddSheetModalVisible] = useState(false)
   const [addSheetForm] = Form.useForm()
+
+  const [isGenreModalVisible, setIsGenreModalVisible] = useState(false)
+  const [isAddGenreModalVisible, setIsAddGenreModalVisible] = useState(false)
+  const [addGenreForm] = Form.useForm()
+  const [isEditGenreModalVisible, setIsEditGenreModalVisible] = useState(false)
+  const [editGenreForm] = Form.useForm()
+  const [selectedGenre, setSelectedGenre] = useState(null)
 
   const normFile = (e) => {
     if (Array.isArray(e)) {
@@ -322,6 +327,87 @@ const SheetMusic = () => {
     })
   }
 
+  // Add new genre
+  const handleAddGenre = async (values) => {
+    try {
+      const response = await fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Genre", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      })
+      if (response.ok) {
+        message.success("Thêm thể loại thành công")
+        setIsAddGenreModalVisible(false)
+        addGenreForm.resetFields()
+        await fetchGenres()
+      } else {
+        message.error("Không thể thêm thể loại")
+      }
+    } catch (error) {
+      message.error("Lỗi khi thêm thể loại")
+      console.error("Error adding genre:", error)
+    }
+  }
+
+  // Update genre
+  const handleUpdateGenre = async (values) => {
+    try {
+      const updatedValues = { ...values, genreId: selectedGenre.genreId }
+      const response = await fetch(
+        `https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Genre/${selectedGenre.genreId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedValues),
+        },
+      )
+      if (response.ok) {
+        message.success("Cập nhật thể loại thành công")
+        setIsEditGenreModalVisible(false)
+        editGenreForm.resetFields()
+        await fetchGenres()
+        await fetchData()
+      } else {
+        message.error("Không thể cập nhật thể loại")
+      }
+    } catch (error) {
+      message.error("Lỗi khi cập nhật thể loại")
+      console.error("Error updating genre:", error)
+    }
+  }
+
+  // Delete genre
+  const handleDeleteGenre = async (genreId) => {
+    modal.confirm({
+      title: "Xác nhận xóa",
+      content: "Bạn có chắc chắn muốn xóa thể loại này?",
+      onOk: async () => {
+        try {
+          const response = await fetch(
+            `https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Genre/${genreId}`,
+            {
+              method: "DELETE",
+            },
+          )
+          if (response.ok) {
+            message.success("Xóa thể loại thành công")
+            await fetchGenres()
+            await fetchData()
+          } else {
+            message.error("Không thể xóa thể loại")
+          }
+        } catch (error) {
+          message.error("Lỗi khi xóa thể loại")
+          console.error("Error deleting genre:", error)
+        }
+      },
+    })
+  }
+
   const columns = [
     {
       title: "STT",
@@ -412,28 +498,6 @@ const SheetMusic = () => {
     },
   ]
 
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: (newSelectedRowKeys) => {
-      setSelectedRowKeys(newSelectedRowKeys)
-    },
-    onSelectAll: (selected, selectedRows, changeRows) => {
-      if (selected) {
-        setSelectedRowKeys(sheetMusicData.map((item) => item.key))
-      } else {
-        setSelectedRowKeys([])
-      }
-    },
-  }
-
-  const handleSelectAll = (e) => {
-    if (e.target.checked) {
-      setSelectedRowKeys(sheetMusicData.map((item) => item.key))
-    } else {
-      setSelectedRowKeys([])
-    }
-  }
-
   const filteredData = sheetMusicData.filter(
     (item) =>
       item.songName.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -458,15 +522,6 @@ const SheetMusic = () => {
         {/* Filters Section */}
         <div className="filters-section">
           <div className="filters-left">
-            <Checkbox
-              checked={selectedRowKeys.length === sheetMusicData.length && sheetMusicData.length > 0}
-              indeterminate={selectedRowKeys.length > 0 && selectedRowKeys.length < sheetMusicData.length}
-              onChange={handleSelectAll}
-              className="select-checkbox"
-            >
-              Đã chọn {selectedRowKeys.length}
-            </Checkbox>
-            <Checkbox className="select-all-text">Chọn tất cả</Checkbox>
             <Input
               placeholder="Tìm kiếm"
               prefix={<SearchOutlined />}
@@ -474,6 +529,7 @@ const SheetMusic = () => {
               onChange={(e) => setSearchText(e.target.value)}
               className="search-input"
             />
+            <Button type="primary" onClick={() => setIsGenreModalVisible(true)}>Thể loại nhạc</Button>
           </div>
           <div className="filters-right">
             <Button
@@ -492,7 +548,6 @@ const SheetMusic = () => {
           <Table
             columns={columns}
             dataSource={filteredData}
-            rowSelection={rowSelection}
             pagination={false}
             className="sheet-music-table"
             size="middle"
@@ -841,6 +896,143 @@ const SheetMusic = () => {
                     addSheetForm.resetFields()
                   }}
                 >
+                  Hủy
+                </Button>
+              </Space>
+            </Form.Item>
+          </Form>
+        </Modal>
+
+        {/* Genre Modal */}
+        <Modal
+          title="Quản lý Thể loại nhạc"
+          open={isGenreModalVisible}
+          onCancel={() => setIsGenreModalVisible(false)}
+          footer={null}
+          width={600}
+        >
+          <div style={{ marginBottom: 16, display: "flex", justifyContent: "flex-end" }}>
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={() => setIsAddGenreModalVisible(true)}
+            >
+              Tạo Thể loại mới
+            </Button>
+          </div>
+          <Table
+            dataSource={genres}
+            pagination={false}
+            columns={[
+              {
+                title: "ID",
+                dataIndex: "genreId",
+                key: "genreId",
+                width: 60,
+                align: "center",
+              },
+              {
+                title: "Tên Thể loại",
+                dataIndex: "genreName",
+                key: "genreName",
+              },
+              {
+                title: "Thao tác",
+                key: "actions",
+                width: 120,
+                align: "center",
+                render: (_, record) => (
+                  <Space size="small">
+                    <Button
+                      type="text"
+                      icon={<EditOutlined />}
+                      size="small"
+                      className="action-btn edit-btn"
+                      onClick={() => {
+                        setSelectedGenre(record)
+                        editGenreForm.setFieldsValue({
+                          genreName: record.genreName,
+                        })
+                        setIsEditGenreModalVisible(true)
+                      }}
+                    />
+                    <Button
+                      type="text"
+                      icon={<DeleteOutlined />}
+                      size="small"
+                      className="action-btn delete-btn"
+                      onClick={() => handleDeleteGenre(record.genreId)}
+                    />
+                  </Space>
+                ),
+              },
+            ]}
+          />
+        </Modal>
+
+        {/* Add Genre Modal */}
+        <Modal
+          title="Tạo Thể loại nhạc mới"
+          open={isAddGenreModalVisible}
+          onCancel={() => {
+            setIsAddGenreModalVisible(false)
+            addGenreForm.resetFields()
+          }}
+          footer={null}
+          width={400}
+        >
+          <Form form={addGenreForm} layout="vertical" onFinish={handleAddGenre}>
+            <Form.Item
+              name="genreName"
+              label="Tên thể loại"
+              rules={[{ required: true, message: "Vui lòng nhập tên thể loại" }]}
+            >
+              <Input placeholder="Nhập tên thể loại" />
+            </Form.Item>
+            <Form.Item>
+              <Space>
+                <Button type="primary" htmlType="submit">
+                  Tạo
+                </Button>
+                <Button onClick={() => {
+                    setIsAddGenreModalVisible(false)
+                    addGenreForm.resetFields()
+                }}>
+                  Hủy
+                </Button>
+              </Space>
+            </Form.Item>
+          </Form>
+        </Modal>
+
+        {/* Edit Genre Modal */}
+        <Modal
+          title="Cập Nhật Thể loại nhạc"
+          open={isEditGenreModalVisible}
+          onCancel={() => {
+            setIsEditGenreModalVisible(false)
+            editGenreForm.resetFields()
+          }}
+          footer={null}
+          width={400}
+        >
+          <Form form={editGenreForm} layout="vertical" onFinish={handleUpdateGenre}>
+            <Form.Item
+              name="genreName"
+              label="Tên thể loại"
+              rules={[{ required: true, message: "Vui lòng nhập tên thể loại" }]}
+            >
+              <Input placeholder="Nhập tên thể loại" />
+            </Form.Item>
+            <Form.Item>
+              <Space>
+                <Button type="primary" htmlType="submit">
+                  Cập nhật
+                </Button>
+                <Button onClick={() => {
+                    setIsEditGenreModalVisible(false)
+                    editGenreForm.resetFields()
+                }}>
                   Hủy
                 </Button>
               </Space>
