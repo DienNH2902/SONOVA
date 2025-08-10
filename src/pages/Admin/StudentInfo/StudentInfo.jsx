@@ -22,7 +22,7 @@
 //     const { message: antdMessage } = App.useApp();
 
 //     const pageSize = 10;
-//     const baseUrl = "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net";
+//     const baseUrl = "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net";
 
 //     // --- Modals State ---
 //     const [isClassEditModalVisible, setIsClassEditModalVisible] = useState(false);
@@ -651,7 +651,7 @@ import "./StudentInfo.css"; // Đảm bảo CSS của mày vẫn hoạt động 
 
 const { Title } = Typography;
 const { Option } = Select;
-const { confirm } = Modal;
+// const { confirm } = Modal;
 
 const StudentInfo = () => {
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -666,10 +666,10 @@ const StudentInfo = () => {
 
     const [loading, setLoading] = useState(true);
     const [allClasses, setAllClasses] = useState([]);
-    const { message: antdMessage } = App.useApp();
+    const { message: antdMessage, modal } = App.useApp();
 
     const pageSize = 10;
-    const baseUrl = "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net";
+    const baseUrl = "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net";
 
     // --- Pagination States ---
     const [studentCurrentPage, setStudentCurrentPage] = useState(1);
@@ -954,40 +954,45 @@ const StudentInfo = () => {
     };
 
     const handleDeleteUser = (record) => {
-        confirm({
-            title: `Bạn có chắc muốn xóa người dùng ${record.name}?`,
-            icon: <ExclamationCircleOutlined />,
-            content: 'Thao tác này không thể hoàn tác. Người dùng sẽ bị xóa khỏi hệ thống.',
-            okText: 'Xóa',
-            okType: 'danger',
-            cancelText: 'Hủy',
-            async onOk() {
-                try {
-                    const token = localStorage.getItem("token");
-                    const response = await fetch(`${baseUrl}/api/User/${record.userId}`, {
-                        method: "DELETE",
-                        headers: {
-                            "Authorization": `Bearer ${token}`,
-                        },
-                    });
+    console.log("Button click detected for user:", record.userId);
+    modal.confirm({
+        title: `Bạn có chắc muốn xóa người dùng ${record.name}?`,
+        icon: <ExclamationCircleOutlined />,
+        content: 'Thao tác này không thể hoàn tác. Người dùng sẽ bị xóa khỏi hệ thống.',
+        okText: 'Xóa',
+        okType: 'danger',
+        cancelText: 'Hủy',
+        async onOk() {
+            console.log("Confirm OK clicked. Sending DELETE request...");
+            try {
+                const token = localStorage.getItem("token");
+                console.log("Token:", token);
+                const response = await fetch(`${baseUrl}/api/User/${record.userId}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                    },
+                });
 
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(errorData.detail || "Không thể xóa người dùng.");
-                    }
-
-                    antdMessage.success(`Đã xóa người dùng ${record.name} thành công.`);
-                    fetchUsers(); // Fetch lại dữ liệu sau khi xóa
-                } catch (error) {
-                    console.error("Error deleting user:", error);
-                    antdMessage.error(`Xóa người dùng thất bại: ${error.message}`);
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error("API Error Response:", errorData);
+                    throw new Error(errorData.detail || "Không thể xóa người dùng.");
                 }
-            },
-            onCancel() {
-                console.log('Hủy xóa');
-            },
-        });
-    };
+
+                console.log("User deleted successfully.");
+                antdMessage.success(`Đã xóa người dùng ${record.name} thành công.`);
+                fetchUsers(); // Fetch lại dữ liệu sau khi xóa
+            } catch (error) {
+                console.error("Final Error in onOk block:", error);
+                antdMessage.error(`Xóa người dùng thất bại: ${error.message}`);
+            }
+        },
+        onCancel() {
+            console.log('Hủy xóa');
+        },
+    });
+};
 
     const columns = [
         {

@@ -319,7 +319,7 @@
 //     const fetchTopics = async () => {
 //       try {
 //         const response = await fetch(
-//           "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ConsultationTopic"
+//           "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/ConsultationTopic"
 //         );
 //         if (!response.ok) {
 //           throw new Error(`HTTP error! status: ${response.status}`);
@@ -346,7 +346,7 @@
 //     try {
 //       setLoading(true);
 //       const response = await fetch(
-//         "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ConsultationRequest"
+//         "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/ConsultationRequest"
 //       );
 //       if (!response.ok) {
 //         throw new Error(`HTTP error! status: ${response.status}`);
@@ -399,12 +399,12 @@
 
 //     // If your backend only accepts certain fields for PUT,
 //     // or if it's a PATCH endpoint, adjust this payload and method accordingly.
-//     // Assuming the endpoint is: https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ConsultationRequest/{consultationRequestId}
+//     // Assuming the endpoint is: https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/ConsultationRequest/{consultationRequestId}
 //     // and it's a PUT method expecting full object.
 
 //     try {
 //       const response = await fetch(
-//         `https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ConsultationRequest/${request.consultationRequestId}`,
+//         `https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/ConsultationRequest/${request.consultationRequestId}`,
 //         {
 //           method: "PUT", // Or 'PATCH' if backend supports partial update
 //           headers: {
@@ -629,7 +629,7 @@ const Consultation = () => {
     const fetchTopics = async () => {
       try {
         const response = await fetch(
-          "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ConsultationTopic",
+          "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/ConsultationTopic",
         )
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`)
@@ -655,7 +655,7 @@ const Consultation = () => {
     try {
       setLoading(true)
       const response = await fetch(
-        "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ConsultationRequest",
+        "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/ConsultationRequest",
       )
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
@@ -709,7 +709,7 @@ const Consultation = () => {
     try {
       const token = localStorage.getItem("token"); // Lấy token từ localStorage
       const response = await fetch(
-        `https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ConsultationRequest/${request.consultationRequestId}/contact-status`,
+        `https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/ConsultationRequest/${request.consultationRequestId}/contact-status`,
         {
           method: "PATCH",
           headers: {

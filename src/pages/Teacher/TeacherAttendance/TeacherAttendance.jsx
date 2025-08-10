@@ -37,7 +37,7 @@ const TeacherAttendance = () => {
 
         // 1. Fetch ClassSession details (for classInfo sidebar)
         const allClassSessionsRes = await fetch(
-          "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ClassSession",
+          "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/ClassSession",
         )
         if (!allClassSessionsRes.ok) throw new Error("Failed to fetch class sessions.")
         const allClassSessions = await allClassSessionsRes.json()
@@ -58,7 +58,7 @@ const TeacherAttendance = () => {
 
         // 2. Fetch attendance statuses
         const statusRes = await fetch(
-          "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/AttendanceStatus",
+          "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/AttendanceStatus",
         )
         if (!statusRes.ok) throw new Error("Failed to fetch attendance statuses.")
         const statuses = await statusRes.json()
@@ -66,7 +66,7 @@ const TeacherAttendance = () => {
 
         // 3. Fetch users in the class session
         const usersRes = await fetch(
-          `https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ClassSession/${classSessionId}/users`,
+          `https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/ClassSession/${classSessionId}/users`,
         )
         if (!usersRes.ok) throw new Error("Failed to fetch class users.")
         const users = await usersRes.json()
@@ -76,7 +76,7 @@ const TeacherAttendance = () => {
 
         // 4. Fetch existing attendance records for this class session
         const existingAttendanceRes = await fetch(
-          "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/Attendance"
+          "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Attendance"
         )
         if (!existingAttendanceRes.ok) throw new Error("Failed to fetch existing attendance records.")
         const allExistingAttendances = await existingAttendanceRes.json()
@@ -139,7 +139,7 @@ const TeacherAttendance = () => {
       }
 
       const response = await fetch(
-        "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/Attendance/bulk",
+        "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Attendance/bulk",
         {
           method: "PUT",
           headers: {

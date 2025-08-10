@@ -12,7 +12,7 @@ const Login = () => {
     try {
       // Bước 1: Gửi yêu cầu đăng nhập để lấy token
       const loginResponse = await fetch(
-        "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/User/Login",
+        "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/User/Login",
         {
           method: "POST",
           body: JSON.stringify({
@@ -48,7 +48,7 @@ const Login = () => {
 
       // Bước 4: Gọi API GetAllUser (hoặc GetUserById nếu có) để lấy thông tin chi tiết của user
       const userDetailResponse = await fetch(
-        `https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/User/${userId}`, // Gọi API lấy chi tiết user theo ID
+        `https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/User/${userId}`, // Gọi API lấy chi tiết user theo ID
         {
           method: "GET",
           headers: {

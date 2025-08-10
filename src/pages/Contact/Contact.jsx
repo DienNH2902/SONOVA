@@ -371,7 +371,7 @@ const Contact = () => {
     const fetchConsultationTopics = async () => {
       try {
         const response = await fetch(
-          "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ConsultationTopic",
+          "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/ConsultationTopic",
         )
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`)
@@ -410,7 +410,9 @@ const Contact = () => {
 
     try {
       const response = await fetch(
-        "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ConsultationRequest",
+        //https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net
+        //"https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/ConsultationRequest",
+        "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/ConsultationRequest",
         {
           method: "POST",
           headers: {

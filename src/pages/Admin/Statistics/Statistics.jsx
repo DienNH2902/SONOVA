@@ -18,7 +18,7 @@
 //     const fetchStatistics = async () => {
 //       try {
 //         setLoading(true)
-//         const response = await fetch("https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/Statistic")
+//         const response = await fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Statistic")
 //         const data = await response.json()
 
 //         // Sort data by date
@@ -673,7 +673,7 @@ const Statistics = () => {
     const fetchStatistics = async () => {
       try {
         setLoading(true)
-        const response = await fetch("https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/Statistic")
+        const response = await fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Statistic")
         const data = await response.json()
 
         // Sort data by date

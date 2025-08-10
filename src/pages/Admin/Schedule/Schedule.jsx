@@ -290,7 +290,7 @@
 // const { Title, Text } = Typography
 
 // // API Base URL - Mày nên đặt cái này vào biến môi trường (environment variable)
-// const API_BASE_URL = "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api";
+// const API_BASE_URL = "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api";
 
 // const Schedule = () => {
 //     const [currentScheduleIndex, setCurrentScheduleIndex] = useState(0); // Index cho lịch trình tháng (scheduleId)
@@ -614,12 +614,12 @@
 //     try {
 //       setLoading(true)
 //       const [schedulesRes, weeksRes, daysRes, timeslotsRes, classSessionsRes, classesRes] = await Promise.all([
-//         fetch("https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/Schedule"),
-//         fetch("https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/Week"),
-//         fetch("https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/Day"),
-//         fetch("https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/Timeslot"),
-//         fetch("https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ClassSession"),
-//         fetch("https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/Class"), // Fetch Class API
+//         fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Schedule"),
+//         fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Week"),
+//         fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Day"),
+//         fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Timeslot"),
+//         fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/ClassSession"),
+//         fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Class"), // Fetch Class API
 //       ])
 
 //       const [schedulesData, weeksData, daysData, timeslotsData, classSessionsData, classesData] = await Promise.all([
@@ -1046,12 +1046,12 @@ const Schedule = () => {
         classSessionsRes,
         daysRes, // Fetch Day API as well
       ] = await Promise.all([
-        fetch("https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/Schedule"),
-        fetch("https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/Week"),
-        fetch("https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/Timeslot"),
-        fetch("https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/Class"),
-        fetch("https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ClassSession"),
-        fetch("https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/Day"), // Fetch Day API
+        fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Schedule"),
+        fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Week"),
+        fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Timeslot"),
+        fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Class"),
+        fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/ClassSession"),
+        fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Day"), // Fetch Day API
       ])
 
       const [

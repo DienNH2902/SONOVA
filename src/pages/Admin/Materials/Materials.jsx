@@ -1,263 +1,163 @@
-"use client"
+"use client";
 
-import { Typography, Table, Button, Tabs, Form, Input, Modal, message } from "antd"
-import { EditOutlined, PlusOutlined } from "@ant-design/icons"
-import "./Materials.css"
-import { useState } from "react"
+import {
+  Typography,
+  Table,
+  Button,
+  Form,
+  Input,
+  Modal,
+  message,
+  Select,
+  Popconfirm,
+  Space,
+} from "antd";
+import {
+  EditOutlined,
+  PlusOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
+import "./Materials.css";
+import { useState, useEffect } from "react";
 
-const { Title } = Typography
-const { TabPane } = Tabs
+const { Title } = Typography;
+const { Option } = Select;
+const { confirm } = Modal;
+
+const baseUrl =
+  "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api";
 
 const Materials = () => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [form] = Form.useForm();
+  const [editingRecord, setEditingRecord] = useState(null);
+  const [materials, setMaterials] = useState([]);
+  const [instruments, setInstruments] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  // Fetch data from API
+  const fetchInstruments = async () => {
+    try {
+      const response = await fetch(`${baseUrl}/Instrument`);
+      const data = await response.json();
+      setInstruments(data);
+    } catch (error) {
+      message.error("Không thể tải danh sách nhạc cụ.");
+      console.error("Error fetching instruments:", error);
+    }
+  };
 
-const [isModalVisible, setIsModalVisible] = useState(false)
-  const [isEditMode, setIsEditMode] = useState(false)
-  const [form] = Form.useForm()
-  const [currentType, setCurrentType] = useState("piano")
-  const [editingRecord, setEditingRecord] = useState(null)
+  const fetchMaterials = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${baseUrl}/Document`);
+      const data = await response.json();
+      setMaterials(data);
+    } catch (error) {
+      message.error("Không thể tải danh sách tài liệu.");
+      console.error("Error fetching materials:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  const showModal = (type) => {
-    setIsEditMode(false)
-    setCurrentType(type)
-    form.resetFields()
-    setIsModalVisible(true)
-  }
+  useEffect(() => {
+    fetchInstruments();
+    fetchMaterials();
+  }, []);
 
-  const showEditModal = (record, type) => {
-    setIsEditMode(true)
-    setCurrentType(type)
-    setEditingRecord(record)
+  const showModal = (instrumentId) => {
+    setIsEditMode(false);
+    setEditingRecord(null);
+    form.resetFields();
+    form.setFieldsValue({ instrumentId: instrumentId }); // Đặt giá trị mặc định cho nhạc cụ
+    setIsModalVisible(true);
+  };
+
+  const showEditModal = (record) => {
+    setIsEditMode(true);
+    setEditingRecord(record);
     form.setFieldsValue({
-      session: record.session,
-      title: record.title,
+      lesson: record.lesson,
+      lessonName: record.lessonName,
       link: record.link,
-    })
-    setIsModalVisible(true)
-  }
+      instrumentId: record.instrumentId,
+    });
+    setIsModalVisible(true);
+  };
 
   const handleCancel = () => {
-    setIsModalVisible(false)
-    form.resetFields()
-  }
+    setIsModalVisible(false);
+    form.resetFields();
+  };
 
-  const handleFinish = (values) => {
-    const newRecord = {
-      ...values,
-      key: editingRecord ? editingRecord.key : Date.now().toString(),
-    }
-
-    const updateMaterials = (prev) => {
+  const handleFinish = async (values) => {
+    try {
+      let response;
       if (isEditMode) {
-        return prev.map((item) =>
-          item.key === editingRecord.key ? { ...item, ...values } : item
-        )
+        // Thêm documentId vào payload khi ở chế độ chỉnh sửa
+        const payload = {
+          documentId: editingRecord.documentId,
+          ...values,
+        };
+        response = await fetch(`${baseUrl}/Document/${editingRecord.documentId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
       } else {
-        return [...prev, newRecord]
+        response = await fetch(`${baseUrl}/Document`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(values),
+        });
       }
+
+      if (!response.ok) {
+        throw new Error("Lỗi khi lưu tài liệu.");
+      }
+
+      message.success(`Đã ${isEditMode ? "cập nhật" : "thêm"} tài liệu thành công!`);
+      handleCancel();
+      fetchMaterials(); // Reload data
+    } catch (error) {
+      message.error(error.message);
     }
+  };
 
-    if (currentType === "piano") {
-      setPianoMaterials(updateMaterials)
-      message
-    } else {
-      setGuitarMaterials(updateMaterials)
+  const handleDeleteMaterial = async (documentId) => {
+    try {
+      const response = await fetch(`${baseUrl}/Document/${documentId}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error("Lỗi khi xóa tài liệu.");
+      }
+      message.success("Đã xóa tài liệu thành công!");
+      fetchMaterials(); // Reload data
+    } catch (error) {
+      message.error(error.message);
     }
+  };
 
-    handleCancel()
-  }
-
-
-  // Piano materials data
-  const [pianoMaterials, setPianoMaterials] = useState([
-    {
-      key: "1",
-      session: 1,
-      title: "Giới thiệu đàn piano và lý thế chơi",
-      link: "https://drive.google.com/file/d/1k3BXCxfz6Ef",
-    },
-    {
-      key: "2",
-      session: 2,
-      title: "Tư thế ngồi đàn và vị trí tay",
-      link: "https://drive.google.com/file/d/7G8RfRu3KzL",
-    },
-    {
-      key: "3",
-      session: 3,
-      title: "Kỹ thuật chạy ngón cơ bản",
-      link: "https://drive.google.com/file/d/1k3BXCxfz6Ef",
-    },
-    {
-      key: "4",
-      session: 4,
-      title: "Chơi giai điệu đơn giản",
-      link: "https://drive.google.com/file/d/7G8RfRu3KzL",
-    },
-    {
-      key: "5",
-      session: 5,
-      title: "Nốt đen và trắng",
-      link: "https://drive.google.com/file/d/1k3BXCxfz6Ef",
-    },
-    {
-      key: "6",
-      session: 6,
-      title: "Phối hợp hai tay",
-      link: "https://drive.google.com/file/d/7G8RfRu3KzL",
-    },
-    {
-      key: "7",
-      session: 7,
-      title: "Nhịp điệu và tiết tấu",
-      link: "https://drive.google.com/file/d/1k3BXCxfz6Ef",
-    },
-    {
-      key: "8",
-      session: 8,
-      title: "Chơi bài hát đơn giản",
-      link: "https://drive.google.com/file/d/7G8RfRu3KzL",
-    },
-    {
-      key: "9",
-      session: 9,
-      title: "Kỹ hiệu nhạc và quãng trong",
-      link: "https://drive.google.com/file/d/1k3BXCxfz6Ef",
-    },
-    {
-      key: "10",
-      session: 10,
-      title: "Chuyển hợp âm mượt mà",
-      link: "https://drive.google.com/file/d/7G8RfRu3KzL",
-    },
-    {
-      key: "11",
-      session: 11,
-      title: "Cách dùng pedal cơ bản",
-      link: "https://drive.google.com/file/d/1k3BXCxfz6Ef",
-    },
-    {
-      key: "12",
-      session: 12,
-      title: "Cải thiện kỹ thuật với gam âm",
-      link: "https://drive.google.com/file/d/7G8RfRu3KzL",
-    },
-    {
-      key: "13",
-      session: 13,
-      title: "Chuyển từ bài tiểu đến",
-      link: "https://drive.google.com/file/d/1k3BXCxfz6Ef",
-    },
-    {
-      key: "14",
-      session: 14,
-      title: "Biểu diễn và đánh giá",
-      link: "https://drive.google.com/file/d/7G8RfRu3KzL",
-    },
-  ])
-
-  // Guitar materials data
-  const [guitarMaterials, setGuitarMaterials] = useState([
-    {
-      key: "1",
-      session: 1,
-      title: "Giới thiệu đàn guitar và lý thế chơi",
-      link: "https://drive.google.com/file/d/1k3BXCxfz6Ef",
-    },
-    {
-      key: "2",
-      session: 2,
-      title: "Tư thế ngồi đàn và vị trí tay",
-      link: "https://drive.google.com/file/d/7G8RfRu3KzL",
-    },
-    {
-      key: "3",
-      session: 3,
-      title: "Kỹ thuật chạy ngón cơ bản",
-      link: "https://drive.google.com/file/d/1k3BXCxfz6Ef",
-    },
-    {
-      key: "4",
-      session: 4,
-      title: "Chơi giai điệu đơn giản",
-      link: "https://drive.google.com/file/d/7G8RfRu3KzL",
-    },
-    {
-      key: "5",
-      session: 5,
-      title: "Nốt đen và trắng",
-      link: "https://drive.google.com/file/d/1k3BXCxfz6Ef",
-    },
-    {
-      key: "6",
-      session: 6,
-      title: "Phối hợp hai tay",
-      link: "https://drive.google.com/file/d/7G8RfRu3KzL",
-    },
-    {
-      key: "7",
-      session: 7,
-      title: "Nhịp điệu và tiết tấu",
-      link: "https://drive.google.com/file/d/1k3BXCxfz6Ef",
-    },
-    {
-      key: "8",
-      session: 8,
-      title: "Chơi bài hát đơn giản",
-      link: "https://drive.google.com/file/d/7G8RfRu3KzL",
-    },
-    {
-      key: "9",
-      session: 9,
-      title: "Kỹ hiệu nhạc và quãng trong",
-      link: "https://drive.google.com/file/d/1k3BXCxfz6Ef",
-    },
-    {
-      key: "10",
-      session: 10,
-      title: "Chuyển hợp âm mượt mà",
-      link: "https://drive.google.com/file/d/7G8RfRu3KzL",
-    },
-    {
-      key: "11",
-      session: 11,
-      title: "Cách dùng pedal cơ bản",
-      link: "https://drive.google.com/file/d/1k3BXCxfz6Ef",
-    },
-    {
-      key: "12",
-      session: 12,
-      title: "Cải thiện kỹ thuật với gam âm",
-      link: "https://drive.google.com/file/d/7G8RfRu3KzL",
-    },
-    {
-      key: "13",
-      session: 13,
-      title: "Chuyển từ bài tiểu đến",
-      link: "https://drive.google.com/file/d/1k3BXCxfz6Ef",
-    },
-    {
-      key: "14",
-      session: 14,
-      title: "Biểu diễn và đánh giá",
-      link: "https://drive.google.com/file/d/7G8RfRu3KzL",
-    },
-  ])
+  const pianoMaterials = materials.filter((m) => m.instrumentId === 2);
+  const guitarMaterials = materials.filter((m) => m.instrumentId === 1);
 
   // Table columns configuration
   const columns = [
     {
       title: "Buổi",
-      dataIndex: "session",
-      key: "session",
+      dataIndex: "lesson",
+      key: "lesson",
       width: 80,
       align: "center",
       className: "session-column",
     },
     {
       title: "Tên bài học",
-      dataIndex: "title",
-      key: "title",
+      dataIndex: "lessonName",
+      key: "lessonName",
       className: "title-column",
     },
     {
@@ -272,19 +172,42 @@ const [isModalVisible, setIsModalVisible] = useState(false)
       ),
     },
     {
-      title: "Buổi",
+      title: "Thao tác",
       key: "action",
-      width: 80,
+      width: 120,
       align: "center",
       className: "action-column",
       render: (_, record) => (
-        <Button type="default" icon={<EditOutlined />} size="small" className="edit-button" onClick={() => showEditModal(record, currentType)}>
-          Sửa
-        </Button>
+        <Space size="middle">
+          <Button
+            type="default"
+            icon={<EditOutlined />}
+            size="small"
+            className="edit-button"
+            onClick={() => showEditModal(record)}
+          >
+            Sửa
+          </Button>
+          <Popconfirm
+            title="Bạn có chắc muốn xóa?"
+            onConfirm={() => handleDeleteMaterial(record.documentId)}
+            okText="Có"
+            cancelText="Không"
+          >
+            <Button
+              type="primary"
+              danger
+              icon={<DeleteOutlined />}
+              size="small"
+              className="delete-button"
+            >
+              Xóa
+            </Button>
+          </Popconfirm>
+        </Space>
       ),
     },
-  ]
-
+  ];
 
   return (
     <div className="materials-page">
@@ -292,13 +215,21 @@ const [isModalVisible, setIsModalVisible] = useState(false)
         <Title level={1} className="page-title">
           Tài liệu
         </Title>
-
         {/* Piano Materials Section */}
         <div className="materials-section">
           <Title level={2} className="section-title piano-title">
             PIANO
           </Title>
-
+          <div className="add-material-container">
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={() => showModal(2)} // instrumentId = 2 cho Piano
+              className="add-material-button"
+            >
+              Thêm tài liệu
+            </Button>
+          </div>
           <div className="table-container">
             <Table
               columns={columns}
@@ -306,19 +237,11 @@ const [isModalVisible, setIsModalVisible] = useState(false)
               pagination={false}
               className="materials-table"
               size="middle"
-              rowClassName={(record, index) => (index % 2 === 0 ? "even-row" : "odd-row")}
+              rowClassName={(record, index) =>
+                index % 2 === 0 ? "even-row" : "odd-row"
+              }
+              loading={loading}
             />
-          </div>
-
-          <div className="add-material-container">
-            <Button
-              type="primary"
-              icon={<PlusOutlined />}
-              onClick={() => showModal("piano")}
-              className="add-material-button"
-            >
-              Thêm tài liệu
-            </Button>
           </div>
         </div>
 
@@ -327,7 +250,16 @@ const [isModalVisible, setIsModalVisible] = useState(false)
           <Title level={2} className="section-title guitar-title">
             GUITAR
           </Title>
-
+          <div className="add-material-container">
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={() => showModal(1)} // instrumentId = 1 cho Guitar
+              className="add-material-button"
+            >
+              Thêm tài liệu
+            </Button>
+          </div>
           <div className="table-container">
             <Table
               columns={columns}
@@ -335,24 +267,15 @@ const [isModalVisible, setIsModalVisible] = useState(false)
               pagination={false}
               className="materials-table"
               size="middle"
-              rowClassName={(record, index) => (index % 2 === 0 ? "even-row" : "odd-row")}
+              rowClassName={(record, index) =>
+                index % 2 === 0 ? "even-row" : "odd-row"
+              }
+              loading={loading}
             />
           </div>
-
-          <div className="add-material-container">
-            <Button
-              type="primary"
-              icon={<PlusOutlined />}
-              onClick={() => showModal("guitar")}
-              className="add-material-button"
-            >
-              Thêm tài liệu
-            </Button>
-          </div>
-
-
-
-          {/* Modal for Add/Edit */}
+        </div>
+        
+        {/* Modal for Add/Edit */}
         <Modal
           title={isEditMode ? "Cập nhật tài liệu" : "Thêm tài liệu"}
           open={isModalVisible}
@@ -360,18 +283,16 @@ const [isModalVisible, setIsModalVisible] = useState(false)
           footer={null}
         >
           <Form form={form} layout="vertical" onFinish={handleFinish}>
-            {!isEditMode && (
-              <Form.Item
-                label="Buổi"
-                name="session"
-                rules={[{ required: true, message: "Vui lòng nhập buổi" }]}
-              >
-                <Input />
-              </Form.Item>
-            )}
+            <Form.Item
+              label="Buổi"
+              name="lesson"
+              rules={[{ required: true, message: "Vui lòng nhập buổi" }]}
+            >
+              <Input type="number" />
+            </Form.Item>
             <Form.Item
               label="Tên bài học"
-              name="title"
+              name="lessonName"
               rules={[{ required: true, message: "Vui lòng nhập tên bài học" }]}
             >
               <Input />
@@ -383,6 +304,29 @@ const [isModalVisible, setIsModalVisible] = useState(false)
             >
               <Input />
             </Form.Item>
+            {isEditMode ? (
+              <Form.Item
+                label="Nhạc cụ"
+                name="instrumentId"
+                rules={[{ required: true, message: "Vui lòng chọn nhạc cụ" }]}
+              >
+                <Select placeholder="Chọn nhạc cụ">
+                  {instruments.map((instrument) => (
+                    <Option
+                      key={instrument.instrumentId}
+                      value={instrument.instrumentId}
+                    >
+                      {instrument.instrumentName}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            ) : (
+              // Trường này chỉ dùng để truyền giá trị khi thêm mới
+              <Form.Item name="instrumentId" noStyle>
+                <Input type="hidden" />
+              </Form.Item>
+            )}
             <Form.Item>
               <Button type="primary" htmlType="submit" block>
                 Xác nhận
@@ -390,10 +334,9 @@ const [isModalVisible, setIsModalVisible] = useState(false)
             </Form.Item>
           </Form>
         </Modal>
-        </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Materials
+export default Materials;

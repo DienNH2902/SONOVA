@@ -36,7 +36,7 @@ const AdminProfile = () => {
       }
 
       const response = await fetch(
-        `https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/User/${userId}`,
+        `https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/User/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -155,7 +155,7 @@ const AdminProfile = () => {
       }
 
       const response = await fetch(
-        `https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/User/${userId}`,
+        `https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/User/${userId}`,
         {
           method: "PUT",
           headers: {
@@ -209,7 +209,7 @@ const AdminProfile = () => {
     formData.append("newPassword", values.newPassword)
 
     const response = await fetch(
-      `https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/User/${userId}`,
+      `https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/User/${userId}`,
       {
         method: "PUT",
         headers: {

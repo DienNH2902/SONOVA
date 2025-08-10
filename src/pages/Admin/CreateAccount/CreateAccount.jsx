@@ -38,7 +38,7 @@ const CreateAccount = () => {
         return;
       }
 
-      const response = await fetch("https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/Class", {
+      const response = await fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Class", {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json', // Vẫn giữ cho API lấy danh sách lớp học
@@ -141,7 +141,7 @@ const CreateAccount = () => {
         // Trình duyệt sẽ tự động đặt header này và boundary khi gửi FormData.
       };
 
-      const response = await fetch("https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/User", {
+      const response = await fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/User", {
         method: "POST",
         headers: requestHeaders,
         body: formData, // Gửi FormData object

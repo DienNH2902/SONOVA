@@ -51,7 +51,7 @@ const TeacherClassDetail = () => {
 
         // 1. Lấy tất cả ClassSession để tìm thông tin lớp học và các buổi khác
         const allSessionsRes = await fetch(
-          "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ClassSession",
+          "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/ClassSession",
         )
         if (!allSessionsRes.ok)
           throw new Error("Failed to fetch class sessions.")

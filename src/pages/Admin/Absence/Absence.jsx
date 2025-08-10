@@ -30,14 +30,14 @@ const Absence = () => {
 
         // 1. Fetch all attendance records
         const attendanceRes = await fetch(
-          "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/Attendance"
+          "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Attendance"
         )
         if (!attendanceRes.ok) throw new Error("Failed to fetch attendance data.")
         const allAttendances = await attendanceRes.json()
 
         // 2. Fetch all user details
         const userRes = await fetch(
-          "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/User"
+          "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/User"
         )
         if (!userRes.ok) throw new Error("Failed to fetch user data.")
         const allUsers = await userRes.json()

@@ -150,7 +150,7 @@ const TeacherClassStudentInfo = () => {
 
         // Bước 1: Gọi API Class để lấy thông tin chi tiết của tất cả các lớp
         const classRes = await fetch(
-          "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/Class",
+          "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Class",
         )
         if (!classRes.ok) throw new Error("Failed to fetch class data.")
         const allClasses = await classRes.json()
@@ -162,7 +162,7 @@ const TeacherClassStudentInfo = () => {
 
         // Bước 2: Fetch tất cả OpeningSchedules để lấy instrumentName chính xác hơn
         const openingScheduleRes = await fetch(
-          "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/OpeningSchedule",
+          "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/OpeningSchedule",
         )
         if (!openingScheduleRes.ok) throw new Error("Failed to fetch opening schedules data.")
         const allOpeningSchedules = await openingScheduleRes.json()

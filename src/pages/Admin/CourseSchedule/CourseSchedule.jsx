@@ -94,7 +94,7 @@ const CourseSchedule = () => {
     try {
       setLoading(true)
       const response = await fetch(
-        "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/OpeningSchedule",
+        "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/OpeningSchedule",
       )
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
@@ -127,7 +127,7 @@ const CourseSchedule = () => {
 
   const fetchClassSessions = async () => {
     try {
-      const response = await fetch("https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ClassSession")
+      const response = await fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/ClassSession")
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
@@ -152,7 +152,7 @@ const CourseSchedule = () => {
         return
       }
 
-      const response = await fetch("https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/User", {
+      const response = await fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/User", {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -185,7 +185,7 @@ const CourseSchedule = () => {
 
   const fetchRooms = async () => {
     try {
-      const response = await fetch("https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/Room")
+      const response = await fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Room")
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
@@ -203,7 +203,7 @@ const CourseSchedule = () => {
 
   const fetchTimeslots = async () => {
     try {
-      const response = await fetch("https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/Timeslot")
+      const response = await fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Timeslot")
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
@@ -449,7 +449,7 @@ const CourseSchedule = () => {
       }
 
       const response = await fetch(
-        `https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/OpeningSchedule/${scheduleIdToUpdate}`,
+        `https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/OpeningSchedule/${scheduleIdToUpdate}`,
         {
           method: "PUT",
           headers: {
@@ -506,7 +506,7 @@ const CourseSchedule = () => {
       onOk: async () => {
         try {
           const response = await fetch(
-            `https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/OpeningSchedule/${record.openingScheduleId}`,
+            `https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/OpeningSchedule/${record.openingScheduleId}`,
             {
               method: "DELETE",
               headers: {
@@ -583,7 +583,7 @@ const CourseSchedule = () => {
       }
 
       const response = await fetch(
-        "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/OpeningSchedule",
+        "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/OpeningSchedule",
         {
           method: "POST",
           headers: {

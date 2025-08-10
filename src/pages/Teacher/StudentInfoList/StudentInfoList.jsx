@@ -30,7 +30,7 @@ const StudentInfoList = () => {
 
         // Gọi API Class để lấy thông tin chi tiết của lớp, bao gồm danh sách học sinh
         const classRes = await fetch(
-          `https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/Class/${selectedClassId}`,
+          `https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Class/${selectedClassId}`,
         )
 
         if (!classRes.ok) {

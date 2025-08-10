@@ -71,7 +71,7 @@
 
 //         // Lấy tất cả class sessions
 //         const classSessionResponse = await fetch(
-//           "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ClassSession",
+//           "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/ClassSession",
 //         )
 //         if (!classSessionResponse.ok) {
 //           throw new Error(`HTTP error! status: ${classSessionResponse.status}`)
@@ -87,7 +87,7 @@
 
 //         // Lấy dữ liệu điểm danh của học sinh
 //         const attendanceResponse = await fetch(
-//           "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/Attendance",
+//           "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Attendance",
 //         )
 //         if (!attendanceResponse.ok) {
 //           throw new Error(`HTTP error! status: ${attendanceResponse.status}`)
@@ -303,7 +303,7 @@ const Lesson = () => {
         }
 
         const classSessionResponse = await fetch(
-          "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/ClassSession",
+          "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/ClassSession",
         )
         if (!classSessionResponse.ok) {
           throw new Error(`HTTP error! status: ${classSessionResponse.status}`)
@@ -333,7 +333,7 @@ const Lesson = () => {
         }
 
         const attendanceResponse = await fetch(
-          "https://innovus-api-hdhxgcahcdehh8gw.eastasia-01.azurewebsites.net/api/Attendance",
+          "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Attendance",
         )
         if (!attendanceResponse.ok) {
           throw new Error(`HTTP error! status: ${attendanceResponse.status}`)
