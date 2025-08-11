@@ -1,6 +1,6 @@
 .materials-page {
   min-height: 100vh;
-  background: #f5f5f5;
+  background: #f5f7ed;
   padding: 40px 20px;
 }
 
@@ -34,7 +34,7 @@
 }
 
 .table-container {
-  background: white;
+  background: #f5f7ed;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
@@ -43,15 +43,17 @@
 
 .materials-table {
   border-radius: 12px;
+  background-color: #f5f7ed;
 }
 
 .materials-table .ant-table-thead > tr > th {
   background: #1e3a5f;
   color: white;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 14px;
   border: none;
   padding: 16px 12px;
+  font-family: 'SVN-Gilroy';
 }
 
 .materials-table .ant-table-thead > tr > th:first-child {
@@ -64,21 +66,22 @@
 
 .materials-table .ant-table-tbody > tr > td {
   padding: 14px 12px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 0px solid #f5f7ed;
   font-size: 14px;
   color: #333;
+  font-family: 'SVN-Gilroy';
 }
 
 .materials-table .ant-table-tbody > tr.even-row {
-  background: #fafafa;
+  background: #f5f7ed;
 }
 
 .materials-table .ant-table-tbody > tr.odd-row {
-  background: white;
+  background: #f5f7ed;
 }
 
 .materials-table .ant-table-tbody > tr:hover {
-  background: #f0f8ff !important;
+  background: #f5f7ed !important;
 }
 
 .session-column {
@@ -106,7 +109,7 @@
   text-decoration: underline;
 }
 
-.edit-button {
+.edit-button-material {
   border-radius: 6px;
   font-size: 12px;
   padding: 0 8px;
@@ -116,9 +119,23 @@
   justify-content: center;
   border-color: #d9d9d9;
   color: #666;
+  font-family: 'SVN-Gilroy';
 }
 
-.edit-button:hover {
+.delete-button-material {
+  border-radius: 6px;
+  font-size: 12px;
+  padding: 0 8px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #d9d9d9;
+  color: #666;
+  font-family: 'SVN-Gilroy';
+}
+
+.edit-button-material:hover {
   color: #1e3a5f;
   border-color: #1e3a5f;
 }
@@ -139,6 +156,7 @@
   align-items: center;
   gap: 6px;
   margin-bottom: 20px;
+  font-family: 'SVN-Gilroy';
 }
 
 .add-material-button:hover {
@@ -178,7 +196,7 @@
     max-width: 150px;
   }
 
-  .edit-button {
+  .edit-button-material {
     font-size: 11px;
     padding: 0 6px;
     height: 26px;
@@ -217,9 +235,25 @@
     max-width: 120px;
   }
 
-  .edit-button {
+  .edit-button-material {
     font-size: 10px;
     padding: 0 4px;
     height: 24px;
   }
+}
+
+.section-title-piano-title-material{
+  font-family: 'UTM Americana';
+  font-size: 32px !important;
+  font-weight: 400 !important;
+  font-style: italic !important;
+  color: #ffa940 !important
+}
+
+.section-title-guitar-title-material{
+  font-family: 'UTM Americana';
+  font-size: 32px !important;
+  font-weight: 400 !important;
+  font-style: italic !important;
+  color: #ffa940 !important
 }

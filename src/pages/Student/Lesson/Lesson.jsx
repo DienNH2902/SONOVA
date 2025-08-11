@@ -435,7 +435,7 @@ const Lesson = () => {
 
           {/* Class Filter Dropdown */}
           <div style={{ marginBottom: 24 }}>
-            <Text style={{ marginRight: 8 }}>Lọc theo lớp:</Text>
+            <Text style={{ marginRight: 8, fontFamily: 'SVN-Gilroy', fontSize: '16px' }}>Lọc theo lớp:</Text>
             <Select value={selectedClassId} onChange={setSelectedClassId} style={{ width: 200 }} placeholder="Chọn lớp">
               {classOptions.map((option) => (
                 <Option key={option.value} value={option.value}>

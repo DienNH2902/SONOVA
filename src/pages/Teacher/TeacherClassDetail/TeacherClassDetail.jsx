@@ -218,7 +218,7 @@ const TeacherClassDetail = () => {
       <div className="attendance-detail-page">
         <div className="attendance-detail-container">
           <div className="page-header">
-            <Button type="text" icon={<LeftOutlined />} onClick={handleBack} className="back-button">
+            <Button type="text" icon={<LeftOutlined />} onClick={handleBack} className="back-button-class-detail">
               Trở về
             </Button>
             <Title level={1} className="page-title">
@@ -238,7 +238,7 @@ const TeacherClassDetail = () => {
       <div className="attendance-detail-container">
         {/* Header */}
         <div className="page-header">
-          <Button type="text" icon={<LeftOutlined />} onClick={handleBack} className="back-button">
+          <Button type="text" icon={<LeftOutlined />} onClick={handleBack} className="back-button-class-detail">
             Trở về
           </Button>
           <Title level={1} className="page-title">
@@ -248,7 +248,7 @@ const TeacherClassDetail = () => {
 
         <div className="content-layout">
           {/* Main Table */}
-          <div className="table-section">
+          <div className="table-section-class-detail">
             <Table
               columns={columns}
               dataSource={classSessions} // Dùng dữ liệu từ API
@@ -262,14 +262,14 @@ const TeacherClassDetail = () => {
           <div className="sidebar-section">
             <Card className="class-info-card">
               <div className="class-header">
-                <Text className="class-code">{classInfo?.code || "N/A"}</Text>
+                <Text className="class-code-class-detail">{classInfo?.code || "N/A"}</Text>
               </div>
               <div className="class-details">
                 <div className="class-detail-item">
-                  <Text className="detail-text">Môn: {classInfo?.instrumentName || "N/A"}</Text>
+                  <Text className="detail-text-class-detail">Môn: {classInfo?.instrumentName || "N/A"}</Text>
                 </div>
                 <div className="class-detail-item">
-                  <Text className="detail-text">{classInfo?.time || "N/A"}</Text>
+                  <Text className="detail-text-class-detail">{classInfo?.time || "N/A"}</Text>
                 </div>
               </div>
             </Card>

@@ -167,7 +167,7 @@ const Absence = () => {
         </Title>
 
         {/* Bảng cho Học sinh vắng */}
-        <div className="table-section">
+        <div className="table-section-absent">
           <Title level={3} className="section-title">
             Học sinh vắng ({absentStudents.length})
           </Title>
@@ -189,7 +189,7 @@ const Absence = () => {
         {/* --- */}
 
         {/* Bảng cho Giáo viên vắng */}
-        <div className="table-section" style={{ marginTop: '40px' }}>
+        <div className="table-section-absent" style={{ marginTop: '40px' }}>
           <Title level={3} className="section-title">
             Giáo viên vắng ({absentTeachers.length})
           </Title>

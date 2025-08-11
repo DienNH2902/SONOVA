@@ -1,6 +1,6 @@
 .lesson-dashboard-page {
   min-height: 100vh;
-  background: #f5f5f5;
+  background: #f5f7ed;
   padding: 40px 20px;
 }
 
@@ -15,11 +15,11 @@
 }
 
 .lesson-section-title {
-  color: #333 !important;
+  color: #1e3a5f !important;
   font-size: 48px !important;
   font-weight: 600 !important;
   font-style: italic !important;
-  font-family: UTM Americana, serif !important;
+  font-family: 'UTM Americana' !important;
   margin-bottom: 30px !important;
 }
 
@@ -90,13 +90,25 @@
   font-size: 20px !important;
   font-weight: 600;
   margin-bottom: 10px !important;
-  font-family: "Gilroy", sans-serif !important;
+  font-family: "SVN-Gilroy"!important;
 }
 
 .lesson-date-text {
   color: #666 !important;
   font-size: 14px !important;
-  margin: 0;
+  font-family: 'SVN-Gilroy' !important;
+}
+
+.lesson-instrument-text {
+  color: #666 !important;
+  font-size: 14px !important;
+  font-family: 'SVN-Gilroy' !important;
+}
+
+.lesson-classcode-text {
+  color: #666 !important;
+  font-size: 14px !important;
+  font-family: 'SVN-Gilroy' !important;
 }
 
 .lesson-status-badge {
@@ -159,13 +171,13 @@
   flex: 1;
   margin: 0;
   font-weight: bold;
-  font-family: Gilroy !important;
+  font-family: 'SVN-Gilroy' !important;
 }
 
 .lesson-room-text {
-  /* font-size: 16px !important;
-  font-weight: 400; */
-  /* font-family: Gilroy; */
+  color: #666 !important;
+  font-size: 14px !important;
+  font-family: 'SVN-Gilroy' !important;
 }
 
 /* Responsive Design */

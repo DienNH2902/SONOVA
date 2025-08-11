@@ -183,7 +183,7 @@ const Materials = () => {
             type="default"
             icon={<EditOutlined />}
             size="small"
-            className="edit-button"
+            className="edit-button-material"
             onClick={() => showEditModal(record)}
           >
             Sửa
@@ -199,7 +199,7 @@ const Materials = () => {
               danger
               icon={<DeleteOutlined />}
               size="small"
-              className="delete-button"
+              className="delete-button-material"
             >
               Xóa
             </Button>
@@ -217,7 +217,7 @@ const Materials = () => {
         </Title>
         {/* Piano Materials Section */}
         <div className="materials-section">
-          <Title level={2} className="section-title piano-title">
+          <Title level={2} className="section-title-piano-title-material">
             PIANO
           </Title>
           <div className="add-material-container">
@@ -247,7 +247,7 @@ const Materials = () => {
 
         {/* Guitar Materials Section */}
         <div className="materials-section">
-          <Title level={2} className="section-title guitar-title">
+          <Title level={2} className="section-title-guitar-title-material">
             GUITAR
           </Title>
           <div className="add-material-container">

@@ -255,7 +255,7 @@ const TeacherAttendance = () => {
       <div className="student-attendance-page">
         <div className="student-attendance-container">
           <div className="page-header">
-            <Button type="text" icon={<LeftOutlined />} onClick={handleBack} className="back-button">
+            <Button type="text" icon={<LeftOutlined />} onClick={handleBack} className="back-button-class-detail">
               Trở về
             </Button>
             <Title level={1} className="page-title">
@@ -275,7 +275,7 @@ const TeacherAttendance = () => {
       <div className="student-attendance-container">
         {/* Header */}
         <div className="page-header">
-          <Button type="text" icon={<LeftOutlined />} onClick={handleBack} className="back-button">
+          <Button type="text" icon={<LeftOutlined />} onClick={handleBack} className="back-button-class-detail">
             Trở về
           </Button>
           <Title level={1} className="page-title">
@@ -285,7 +285,7 @@ const TeacherAttendance = () => {
 
         <div className="content-layout">
           {/* Main Table */}
-          <div className="table-section">
+          <div className="table-section-student-attendance">
             <Table
               columns={columns}
               dataSource={attendanceData}
@@ -299,24 +299,24 @@ const TeacherAttendance = () => {
           <div className="sidebar-section">
             <Card className="class-info-card">
               <div className="class-header">
-                <Text className="class-code">{classInfo?.code || "N/A"}</Text>
+                <Text className="class-code-class-detail">{classInfo?.code || "N/A"}</Text>
               </div>
               <div className="class-details">
                 <div className="class-detail-item">
-                  <Text className="detail-text">{classInfo?.period || "N/A"}</Text>
+                  <Text className="detail-text-class-detail">{classInfo?.period || "N/A"}</Text>
                 </div>
                 <div className="class-detail-item">
-                  <Text className="detail-text">{classInfo?.level || "N/A"}</Text>
+                  <Text className="detail-text-class-detail">{classInfo?.level || "N/A"}</Text>
                 </div>
                 <div className="class-detail-item">
-                  <Text className="detail-text">{classInfo?.time || "N/A"}</Text>
+                  <Text className="detail-text-class-detail">{classInfo?.time || "N/A"}</Text>
                 </div>
               </div>
             </Card>
 
             <Button
               type="primary"
-              className="confirm-button"
+              className="confirm-button-attendance"
               onClick={handleConfirm}
               block
               loading={submitting}
@@ -335,7 +335,7 @@ const TeacherAttendance = () => {
           className="success-modal"
           centered
           footer={[
-            <Button key="ok" type="primary" onClick={handleSuccessModalOk} className="modal-confirm-btn">
+            <Button key="ok" type="primary" onClick={handleSuccessModalOk} className="modal-confirm-btn-attendance">
               Xác nhận
             </Button>,
           ]}

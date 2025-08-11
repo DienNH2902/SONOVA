@@ -84,7 +84,7 @@ const CoursePianoAdvanced = () => {
                 </div>
               </div>
 
-              <button className="course-button full">Đã đủ học viên</button>
+              <button className="course-button full" onClick={() => navigate('/contact')}>Đã đủ học viên</button>
             </div>
 
             <div className="course-card">
@@ -135,7 +135,7 @@ const CoursePianoAdvanced = () => {
                 </div>
               </div>
 
-              <button className="course-button">Đăng ký tư vấn</button>
+              <button className="course-button" onClick={() => navigate('/contact')}>Đăng ký tư vấn</button>
             </div>
           </div>
         </div>

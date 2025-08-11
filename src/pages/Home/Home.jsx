@@ -1,34 +1,34 @@
 import { Button, Typography, Row, Col, Card, Carousel, Space } from "antd";
 import thayAn from "../../assets/thayAn.png";
 import firstHome from "../../assets/firstHome.png";
+import { useNavigate } from "react-router-dom";
 
 import "./Home.css";
 
 const { Title, Paragraph } = Typography;
 
 const Home = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="home-page">
       {/* Hero Section */}
-    <section className="course-hero">
-            <div className="half-circle-container">
-              <div className="half-circle">
-                <img src={firstHome} alt="Piano Player" />
-                {/* <div class="text-overlay">
+      <section className="course-hero">
+        <div className="half-circle-container">
+          <div className="half-circle">
+            <img src={firstHome} alt="Piano Player" />
+            {/* <div class="text-overlay">
                   <h2>Sonova</h2>
                   <p>Hành trình mang đến giá trị</p>
                 </div> */}
-              </div>
-            </div>
-          </section>
-
+          </div>
+        </div>
+      </section>
 
       <section className="main-content-section">
         <div className="content-container">
           <div className="content-header">
-            <Title className="main-title-sonova">
-              Sonova
-            </Title>
+            <Title className="main-title-sonova">Sonova</Title>
             <Title className="subtitle-sonova">
               Hành trình mang đến gia trị
             </Title>
@@ -49,7 +49,12 @@ const Home = () => {
           </div>
 
           <div className="cta-button-container">
-            <Button type="default" size="large" className="learn-more-button">
+            <Button
+              type="default"
+              size="large"
+              className="learn-more-button"
+              onClick={() => navigate("/contact")}
+            >
               Tìm hiểu thêm
             </Button>
           </div>
@@ -74,15 +79,18 @@ const Home = () => {
             <Col xs={24} sm={12} lg={6}>
               <Card className="course-card">
                 <div className="course-image" style={{ height: "200px" }}>
-                  <img src="https://www.acustica.nl/wp-content/uploads/2017/08/Een-zelfspelende-piano.jpg" alt="Piano basic course" />
+                  <img
+                    src="https://www.acustica.nl/wp-content/uploads/2017/08/Een-zelfspelende-piano.jpg"
+                    alt="Piano basic course"
+                  />
                 </div>
                 <div className="course-content">
                   <Title level={4} className="course-name">
                     PIANO CĂN BẢN
                   </Title>
                   <Paragraph className="course-desc">
-                    Lớp học dành cho những người mới bắt đầu, cơ bản từ những gam đơn
-                    đơn đến lên?
+                    Lớp học dành cho những người mới bắt đầu, cơ bản từ những
+                    gam đơn đơn đến lên?
                   </Paragraph>
 
                   <div className="course-schedule">
@@ -110,15 +118,18 @@ const Home = () => {
             <Col xs={24} sm={12} lg={6}>
               <Card className="course-card">
                 <div className="course-image" style={{ height: "200px" }}>
-                  <img src="https://www.acustica.nl/wp-content/uploads/2017/08/Een-zelfspelende-piano.jpg" alt="Piano advanced course" />
+                  <img
+                    src="https://www.acustica.nl/wp-content/uploads/2017/08/Een-zelfspelende-piano.jpg"
+                    alt="Piano advanced course"
+                  />
                 </div>
                 <div className="course-content">
                   <Title level={4} className="course-name">
                     PIANO NÂNG CAO
                   </Title>
                   <Paragraph className="course-desc">
-                    Lớp học dành cho những người đã có kiến thức, cơ bản từ những gam
-                    đơn đơn đến lên?
+                    Lớp học dành cho những người đã có kiến thức, cơ bản từ
+                    những gam đơn đơn đến lên?
                   </Paragraph>
 
                   <div className="course-schedule">
@@ -146,15 +157,18 @@ const Home = () => {
             <Col xs={24} sm={12} lg={6}>
               <Card className="course-card">
                 <div className="course-image" style={{ height: "200px" }}>
-                  <img src="https://img.freepik.com/free-photo/acoustic-guitar-close-up-beautiful-colored-background_169016-3530.jpg" alt="Guitar basic course" />
+                  <img
+                    src="https://img.freepik.com/free-photo/acoustic-guitar-close-up-beautiful-colored-background_169016-3530.jpg"
+                    alt="Guitar basic course"
+                  />
                 </div>
                 <div className="course-content">
                   <Title level={4} className="course-name">
                     GUITAR CĂN BẢN
                   </Title>
                   <Paragraph className="course-desc">
-                    Lớp học dành cho những người mới bắt đầu, cơ bản từ những gam đơn
-                    đơn đến lên?
+                    Lớp học dành cho những người mới bắt đầu, cơ bản từ những
+                    gam đơn đơn đến lên?
                   </Paragraph>
 
                   <div className="course-schedule">
@@ -182,15 +196,18 @@ const Home = () => {
             <Col xs={24} sm={12} lg={6}>
               <Card className="course-card">
                 <div className="course-image" style={{ height: "200px" }}>
-                  <img src="https://img.freepik.com/free-photo/acoustic-guitar-close-up-beautiful-colored-background_169016-3530.jpg" alt="Guitar advanced course" />
+                  <img
+                    src="https://img.freepik.com/free-photo/acoustic-guitar-close-up-beautiful-colored-background_169016-3530.jpg"
+                    alt="Guitar advanced course"
+                  />
                 </div>
                 <div className="course-content">
                   <Title level={4} className="course-name">
                     GUITAR NÂNG CAO
                   </Title>
                   <Paragraph className="course-desc">
-                    Lớp học dành cho những người đã có kiến thức, cơ bảntừ những gam
-                    đơn đơn đến lên?
+                    Lớp học dành cho những người đã có kiến thức, cơ bảntừ những
+                    gam đơn đơn đến lên?
                   </Paragraph>
 
                   <div className="course-schedule">
@@ -228,20 +245,21 @@ const Home = () => {
           </div>
 
           <div className="teacher-basic-info">
-          <p className="teacher-title-home">Thạc sĩ Thanh nhạc</p>
+            <p className="teacher-title-home">Thạc sĩ Thanh nhạc</p>
             <h3 className="teacher-name-home">TRẦN CÔNG THÙY</h3>
-            
 
             <p className="teacher-description">
               Với hơn 10 năm kinh nghiệm trong nghề, giảng viên không chỉ sở hữu
               kiến thức chuyên môn sâu rộng mà còn có phương pháp giảng dạy sáng
               tạo, dễ hiểu, giúp học viên nhanh chóng nắm bắt và yêu thích âm
-              nhạc.<br/><br/>
-
-              Giảng viên của chúng tôi là người giàu kinh nghiệm trong việc giảng
-            dạy và biểu diễn piano, guitar. Bạn sẽ được dẫn dắt qua từng giai
-            đoạn, từ cách đọc hợp âm đến việc chơi các kỹ thuật phức tạp, mang
-            đến cho bạn khả năng biểu diễn đa dạng từ nhạc cổ điển đến hiện đại.
+              nhạc.
+              <br />
+              <br />
+              Giảng viên của chúng tôi là người giàu kinh nghiệm trong việc
+              giảng dạy và biểu diễn piano, guitar. Bạn sẽ được dẫn dắt qua từng
+              giai đoạn, từ cách đọc hợp âm đến việc chơi các kỹ thuật phức tạp,
+              mang đến cho bạn khả năng biểu diễn đa dạng từ nhạc cổ điển đến
+              hiện đại.
             </p>
           </div>
         </div>
@@ -290,7 +308,12 @@ const Home = () => {
         </div> */}
         <div className="testimonials-carousel">
           {/* <img src={fb} alt="Student feedback" className="testimonial-image" /> */}
-        <button className="view-more-btn">Tìm hiểu thêm</button>
+          <button
+            className="view-more-btn"
+            onClick={() => navigate("/contact")}
+          >
+            Tìm hiểu thêm
+          </button>
         </div>
 
         {/* <div className="testimonials-footer">
@@ -298,161 +321,172 @@ const Home = () => {
         </div> */}
       </div>
 
-      
+      <div className="learning-space-container">
+        <div className="learning-space-header">
+          <h2 className="main-title-home">Không gian học</h2>
+          <h4 className="subtitle-home">trông như nào nhỉ?</h4>
+        </div>
 
-    
-    <div className="learning-space-container">
-  <div className="learning-space-header">
-    <h2 className="main-title-home">Không gian học</h2>
-    <h4 className="subtitle-home">trông như nào nhỉ?</h4>
-  </div>
-      
-      <Carousel autoplay effect="fade">
-        <div>
-          <div
-            style={{
-              height: "500px",
-              background:
-                "url(https://littleschoolofmusic.com/wp-content/uploads/2021/07/Singing-Class-1-scaled.jpg) center/cover no-repeat",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "column",
-              textAlign: "center",
-              color: "white",
-              padding: "0 20px",
-              position: "relative",
-            }}
-          >
+        <Carousel autoplay effect="fade">
+          <div>
             <div
               style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                backgroundColor: "rgba(0,0,0,0.5)",
+                height: "500px",
+                background:
+                  "url(https://littleschoolofmusic.com/wp-content/uploads/2021/07/Singing-Class-1-scaled.jpg) center/cover no-repeat",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "column",
+                textAlign: "center",
+                color: "white",
+                padding: "0 20px",
+                position: "relative",
               }}
-            />
-            <div style={{ position: "relative", zIndex: 1 }}>
-              <Title style={{ color: "white", marginBottom: 20 }}>
-                Hòa Âm Cuộc Sống, Khơi Nguồn Đam Mê.
-              </Title>
-              <Paragraph
-                style={{ color: "white", fontSize: 18, marginBottom: 30 }}
-              >
-                Gợi cảm hứng, nhấn mạnh âm nhạc là một phần của cuộc sống và khơi dậy đam mê
-              </Paragraph>
-              <Space>
+            >
+              <div
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  backgroundColor: "rgba(0,0,0,0.5)",
+                }}
+              />
+              <div style={{ position: "relative", zIndex: 1 }}>
+                <Title style={{ color: "white", marginBottom: 20 }}>
+                  Hòa Âm Cuộc Sống, Khơi Nguồn Đam Mê.
+                </Title>
+                <Paragraph
+                  style={{ color: "white", fontSize: 18, marginBottom: 30 }}
+                >
+                  Gợi cảm hứng, nhấn mạnh âm nhạc là một phần của cuộc sống và
+                  khơi dậy đam mê
+                </Paragraph>
+                <Space>
+                  <Button
+                    type="primary"
+                    size="large"
+                    onClick={() => navigate("/contact")}
+                  >
+                    Đăng Ký Ngay
+                  </Button>
+                  <Button size="large" onClick={() => navigate("/contact")}>
+                    Tìm Hiểu Thêm
+                  </Button>
+                </Space>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div
+              style={{
+                height: "500px",
+                background:
+                  "url(https://vsoschoolofmusic.ca/wp-content/uploads/2017/10/Guitar-Explorations-mh.jpg) center/cover no-repeat",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "column",
+                textAlign: "center",
+                color: "white",
+                padding: "0 20px",
+                position: "relative",
+              }}
+            >
+              <div
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  backgroundColor: "rgba(0,0,0,0.5)",
+                }}
+              />
+              <div style={{ position: "relative", zIndex: 1 }}>
+                <Title style={{ color: "white", marginBottom: 20 }}>
+                  Chất Lượng Thăng Hoa, Tài Năng Tỏa Sáng.
+                </Title>
+                <Paragraph
+                  style={{ color: "white", fontSize: 18, marginBottom: 30 }}
+                >
+                  Nhấn mạnh chất lượng đào tạo và kết quả là sự phát triển của
+                  tài năng học viên
+                </Paragraph>
                 <Button
                   type="primary"
                   size="large"
-                  
+                  onClick={() => navigate("/contact")}
                 >
-                  Đăng Ký Ngay
+                  Bắt Đầu Lập Kế Hoạch
                 </Button>
-                <Button size="large">Tìm Hiểu Thêm</Button>
-              </Space>
+              </div>
             </div>
           </div>
-        </div>
-        <div>
-          <div
-            style={{
-              height: "500px",
-              background:
-                "url(https://vsoschoolofmusic.ca/wp-content/uploads/2017/10/Guitar-Explorations-mh.jpg) center/cover no-repeat",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "column",
-              textAlign: "center",
-              color: "white",
-              padding: "0 20px",
-              position: "relative",
-            }}
-          >
+
+          <div>
             <div
               style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                backgroundColor: "rgba(0,0,0,0.5)",
+                height: "500px",
+                background:
+                  "url(https://www.ensembleschools.com/wp-content/uploads/2021/03/2-2.jpg) center/cover no-repeat",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "column",
+                textAlign: "center",
+                color: "white",
+                padding: "0 20px",
+                position: "relative",
               }}
-            />
-            <div style={{ position: "relative", zIndex: 1 }}>
-              <Title style={{ color: "white", marginBottom: 20 }}>
-                Chất Lượng Thăng Hoa, Tài Năng Tỏa Sáng.
-              </Title>
-              <Paragraph
-                style={{ color: "white", fontSize: 18, marginBottom: 30 }}
-              >
-                Nhấn mạnh chất lượng đào tạo và kết quả là sự phát triển của tài năng học viên
-              </Paragraph>
-              <Button type="primary" size="large">
-                Bắt Đầu Lập Kế Hoạch
-              </Button>
+            >
+              <div
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  backgroundColor: "rgba(0,0,0,0.5)",
+                }}
+              />
+              <div style={{ position: "relative", zIndex: 1 }}>
+                <Title style={{ color: "white", marginBottom: 20 }}>
+                  Nơi Giai Điệu Bắt Đầu, Giấc Mơ Cất Cánh.
+                </Title>
+                <Paragraph
+                  style={{ color: "white", fontSize: 18, marginBottom: 30 }}
+                >
+                  Mang tính thơ mộng, thể hiện nơi đây là điểm khởi đầu cho hành
+                  trình âm nhạc và hiện thực hóa ước mơ
+                </Paragraph>
+                <Space>
+                  <Button
+                    type="primary"
+                    size="large"
+                    onClick={() => navigate("/contact")}
+                  >
+                    Tham Gia Ngay
+                  </Button>
+                </Space>
+              </div>
             </div>
           </div>
-        </div>
-
-        <div>
-          <div
-            style={{
-              height: "500px",
-              background:
-                "url(https://www.ensembleschools.com/wp-content/uploads/2021/03/2-2.jpg) center/cover no-repeat",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "column",
-              textAlign: "center",
-              color: "white",
-              padding: "0 20px",
-              position: "relative",
-            }}
+        </Carousel>
+        <div className="registration-section">
+          <button
+            className="register-button"
+            onClick={() => navigate("/contact")}
           >
-            <div
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                backgroundColor: "rgba(0,0,0,0.5)",
-              }}
-            />
-            <div style={{ position: "relative", zIndex: 1 }}>
-              <Title style={{ color: "white", marginBottom: 20 }}>
-                Nơi Giai Điệu Bắt Đầu, Giấc Mơ Cất Cánh.
-              </Title>
-              <Paragraph
-                style={{ color: "white", fontSize: 18, marginBottom: 30 }}
-              >
-                Mang tính thơ mộng, thể hiện nơi đây là điểm khởi đầu cho hành trình âm nhạc và hiện thực hóa ước mơ
-              </Paragraph>
-              <Space>
-                <Button type="primary" size="large">
-                  Tham Gia Ngay
-                </Button>
-              </Space>
-            </div>
-          </div>
+            Đăng ký học ngay
+          </button>
+          <p className="register-text" onClick={() => navigate("/contact")}>
+            Để bắt đầu hành trình âm nhạc của bạn <strong>NGAY HÔM NAY!</strong>
+          </p>
         </div>
-      </Carousel>
-      <div className="registration-section">
-    <button className="register-button">
-      Đăng ký học ngay
-    </button>
-    <p className="register-text">
-      Để bắt đầu hành trình âm nhạc của bạn <strong>NGAY HÔM NAY!</strong>
-    </p>
-  </div>
-</div>
-
-      
+      </div>
     </div>
   );
 };

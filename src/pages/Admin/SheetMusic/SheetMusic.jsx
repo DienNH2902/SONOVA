@@ -520,23 +520,23 @@ const SheetMusic = () => {
         </Title>
 
         {/* Filters Section */}
-        <div className="filters-section">
+        <div className="filters-section-sheet">
           <div className="filters-left">
             <Input
               placeholder="Tìm kiếm"
               prefix={<SearchOutlined />}
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
-              className="search-input"
+              className="search-input-sheet"
             />
-            <Button type="primary" onClick={() => setIsGenreModalVisible(true)}>Thể loại nhạc</Button>
+            <Button className="genre-button-sheet" type="primary" onClick={() => setIsGenreModalVisible(true)}>Thể loại nhạc</Button>
           </div>
           <div className="filters-right">
             <Button
               type="primary"
               icon={<PlusOutlined />}
               onClick={() => setIsAddModalVisible(true)}
-              className="add-button"
+              className="add-button-sheet"
             >
               Thêm
             </Button>
@@ -720,15 +720,15 @@ const SheetMusic = () => {
 
         {/* Detail Modal */}
         <Modal
-          title="Chi Tiết Sheet Nhạc"
           open={isDetailModalVisible}
           onCancel={() => setIsDetailModalVisible(false)}
           footer={null}
           width={1200}
-          className="detail-modal"
+          className="detail-modals-sheet"
         >
           {selectedSheetMusic && (
             <div>
+              <Title className="detail-modals-sheet" level={2}>{selectedSheetMusic.songName}</Title>
               <div style={{ marginBottom: 24 }}>
                 <Row gutter={16}>
                   <Col span={8}>
@@ -739,25 +739,25 @@ const SheetMusic = () => {
                     />
                   </Col>
                   <Col span={16} style={{ paddingLeft: 300, textAlign: "left" }}>
-                    <Title level={3}>{selectedSheetMusic.songName}</Title>
+                    {/* <Title className="detail-modal-sheet-title" level={3}>{selectedSheetMusic.songName}</Title> */}
                     <p>
-                      <strong>Tác giả:</strong> {selectedSheetMusic.composer}
+                      <strong className="detail-modal-sheet-title">Tác giả:</strong> {selectedSheetMusic.composer}
                     </p>
                     <p>
-                      <strong>Thể loại:</strong> {selectedSheetMusic.genre}
+                      <strong className="detail-modal-sheet-title">Thể loại:</strong> {selectedSheetMusic.genre}
                     </p>
                     <p>
-                      <strong>Số lượng sheet:</strong> {selectedSheetMusic.quantity}
+                      <strong className="detail-modal-sheet-title">Số lượng sheet:</strong> {selectedSheetMusic.quantity}
                     </p>
                     <p>
-                      <strong>Lượt yêu thích:</strong> {selectedSheetMusic.favoriteCount}
+                      <strong className="detail-modal-sheet-title">Lượt yêu thích:</strong> {selectedSheetMusic.favoriteCount}
                     </p>
                   </Col>
                 </Row>
               </div>
 
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-                <Title level={4}>Danh sách Sheet</Title>
+                <Title className="detail-modal-sheet-title" level={4}>Danh sách Sheet</Title>
                 <Button
                   type="primary"
                   icon={<PlusOutlined />}

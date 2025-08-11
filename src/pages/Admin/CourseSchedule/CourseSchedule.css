@@ -1,6 +1,6 @@
 .course-schedule-page {
   min-height: 100vh;
-  background: #f5f5f5;
+  background: #f7f5ed;
   padding: 40px 20px;
 }
 
@@ -16,31 +16,33 @@
   margin-bottom: 40px !important;
 }
 
-.filter-section {
-  background: #f5f5f5;
+.filter-section-op {
+  background: #f7f5ed;
   padding: 20px;
-  margin-top: 50px;
+  margin-top: 0px;
   border-radius: 12px;
-  margin-bottom: 30px;
+  margin-bottom: 0px;
+  border: none;
   /* box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); */
 }
 
-.filter-item {
+.filter-item-create {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.filter-item label {
+.filter-item-create label {
   font-weight: 500;
   color: #1e3a5f;
   min-width: 80px;
+  font-family: "SVN-Gilroy";
 }
 
 .clear-filter-btn {
-  background: #f5f5f5;
+  background: #fa262a;
   border-color: #d9d9d9;
-  color: #666;
+  color: white;
 }
 
 .clear-filter-btn:hover {
@@ -51,6 +53,7 @@
 
 .schedule-section {
   margin-bottom: 50px;
+  background-color: #f7f5ed;
 }
 
 .section-header {
@@ -75,7 +78,7 @@
   color: #ffa940 !important;
 }
 
-.add-button {
+.add-button-create {
   background: #1e3a5f;
   border-color: #1e3a5f;
   border-radius: 6px;
@@ -84,22 +87,26 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  font-family: 'SVN-Gilroy';
 }
 
-.add-button:hover {
+.add-button-create:hover {
   background: #2c5282;
   border-color: #2c5282;
 }
 
 .table-container {
-  background: white;
+  background: #f7f5ed;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  /* box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); */
 }
 
 .schedule-table {
   border-radius: 12px;
+    background: #f7f5ed;
+    border: none;
+  box-shadow: none;
 }
 
 .schedule-table .ant-table-thead > tr > th {
@@ -110,6 +117,7 @@
   border: none;
   padding: 16px 12px;
   text-align: center;
+  font-family: 'SVN-Gilroy';
 }
 
 .schedule-table .ant-table-thead > tr > th:first-child {
@@ -122,18 +130,27 @@
 
 .schedule-table .ant-table-tbody > tr > td {
   padding: 14px 12px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 0px solid #f7f5ed;
   font-size: 14px;
   color: #333;
   text-align: center;
+  font-family: 'SVN-Gilroy';
 }
 
 .schedule-table .ant-table-tbody > tr:nth-child(even) {
-  background: #fafafa;
+  background: #f7f5ed;
+}
+
+.schedule-table .ant-table-tbody > tr:nth-child(odd) {
+  background: #f7f5ed;
 }
 
 .schedule-table .ant-table-tbody > tr:hover {
-  background: #f0f8ff !important;
+  background: #f7f5ed !important;
+}
+
+.schedule-table .ant-table-cell > td:hover {
+  background: #f7f5ed !important;
 }
 
 .stt-column {
@@ -199,6 +216,7 @@
   .schedule-table .ant-table-tbody > tr > td {
     padding: 12px 8px;
     font-size: 13px;
+    font-family: 'SVN-Gilroy';
   }
 }
 
@@ -212,17 +230,17 @@
     margin-bottom: 30px !important;
   }
 
-  .filter-section {
+  .filter-section-op {
     padding: 16px;
   }
 
-  .filter-item {
+  .filter-item-create {
     flex-direction: column;
     align-items: flex-start;
     gap: 4px;
   }
 
-  .filter-item label {
+  .filter-item-create label {
     min-width: auto;
   }
 
@@ -233,7 +251,7 @@
     margin-bottom: 16px;
   }
 
-  .add-button {
+  .add-button-create {
     align-self: flex-end;
   }
 
@@ -249,6 +267,7 @@
   .schedule-table .ant-table-tbody > tr > td {
     padding: 10px 6px;
     font-size: 12px;
+    font-family: 'SVN-Gilroy';
   }
 
   .table-container {
@@ -277,6 +296,7 @@
   .schedule-table .ant-table-tbody > tr > td {
     padding: 8px 4px;
     font-size: 11px;
+    font-family: 'SVN-Gilroy';
   }
 
   .subject-tag {
@@ -295,8 +315,24 @@
   }
 }
 
+.section-title-basic-title {
+  font-family: 'UTM Americana';
+  font-size: 32px !important;
+  font-style: italic !important;
+  font-weight: 400 !important;
+  color: #ffa940 !important;
+}
 
+.section-title-advanced-title {
+  font-family: 'UTM Americana';
+  font-size: 32px !important;
+  font-style: italic !important;
+  font-weight: 400 !important;
+  color: #ffa940 !important;
+}
 
-
+.add-schedule-form {
+  font-family: 'SVN-Gilroy';
+}
 
 

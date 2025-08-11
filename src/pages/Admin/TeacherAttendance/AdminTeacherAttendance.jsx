@@ -310,7 +310,7 @@ const AdminTeacherAttendance = () => {
             {/* <Button type="text" icon={<LeftOutlined />} onClick={handleBack} className="back-button">
               Trở về
             </Button> */}
-            <Title level={1} className="page-title">
+            <Title level={1} className="page-title-attendance">
               ĐIỂM DANH
             </Title>
           </div>
@@ -330,20 +330,20 @@ const AdminTeacherAttendance = () => {
           {/* <Button type="text" icon={<LeftOutlined />} onClick={handleBack} className="back-button">
             Trở về
           </Button> */}
-          <Title level={1} className="page-title">
+          <Title level={1} className="page-title-attendance">
             ĐIỂM DANH
           </Title>
         </div>
 
         <div className="content-layout">
           {/* Main Table */}
-          <div className="table-section">
+          <div className="table-section-attendance">
             <div className="class-session-selector">
-              <Text strong>Chọn buổi học hôm nay:</Text>
+              <Text className="choose-class" strong>Chọn buổi học hôm nay để điểm danh:</Text>
               <Select
                 value={selectedClassSessionId}
                 onChange={handleClassSessionChange}
-                style={{ width: "100%", marginTop: "10px" }}
+                style={{ width: "100%", marginTop: "10px", marginBottom: "20px" }}
                 disabled={loading || isSubmitting}
               >
                 {todayClassSessions.map((session) => (
@@ -376,27 +376,27 @@ const AdminTeacherAttendance = () => {
           <div className="sidebar-section">
             <Card className="class-info-card">
               <div className="class-header">
-                <Text className="class-code">{selectedClassSession?.classCode || "N/A"}</Text>
+                <Text className="class-code-attendance">{selectedClassSession?.classCode || "N/A"}</Text>
               </div>
               <div className="class-details">
                 <div className="class-detail-item">
-                  <Text className="detail-text">
+                  <Text className="detail-text-attendance">
                     Buổi: {selectedClassSession?.sessionNumber || "N/A"}
                   </Text>
                 </div>
                 <div className="class-detail-item">
-                  <Text className="detail-text">
+                  <Text className="detail-text-attendance">
                     Thời gian: {formatTime(selectedClassSession?.startTime)} -{" "}
                     {formatTime(selectedClassSession?.endTime)}
                   </Text>
                 </div>
                 <div className="class-detail-item">
-                  <Text className="detail-text">
+                  <Text className="detail-text-attendance">
                     Phòng: {selectedClassSession?.roomCode || "N/A"}
                   </Text>
                 </div>
                 <div className="class-detail-item">
-                  <Text className="detail-text">
+                  <Text className="detail-text-attendance">
                     Môn: {selectedClassSession?.instrumentName || "N/A"}
                   </Text>
                 </div>
@@ -405,7 +405,7 @@ const AdminTeacherAttendance = () => {
 
             <Button
               type="primary"
-              className="confirm-button"
+              className="confirm-button-attendance"
               onClick={handleConfirm}
               block
               loading={isSubmitting}
@@ -424,7 +424,7 @@ const AdminTeacherAttendance = () => {
           className="success-modal"
           centered
           footer={[
-            <Button key="ok" type="primary" onClick={handleSuccessModalOk} className="modal-confirm-btn">
+            <Button key="ok" type="primary" onClick={handleSuccessModalOk} className="modal-confirm-btn-attendance">
               Xác nhận
             </Button>,
           ]}

@@ -19,7 +19,8 @@ const TeacherSchedule = () => {
   const [classSessions, setClassSessions] = useState([])
   const [days, setDays] = useState([])
 
-  const [teacherClassIds, setTeacherClassIds] = useState([])
+  // teacherClassIds không cần state vì chỉ dùng một lần lúc fetch
+  // const [teacherClassIds, setTeacherClassIds] = useState([]) 
 
   const hasFetchedData = useRef(false)
 
@@ -33,115 +34,136 @@ const TeacherSchedule = () => {
     { key: "sunday", label: "Chủ nhật", dayIndex: 0 },
   ]
 
-  const getTeacherClassIds = () => {
-    try {
-      const user = localStorage.getItem("user")
-      if (user) {
-        const userData = JSON.parse(user)
-        if (userData.role === "teacher" && userData.classIds) {
-          setTeacherClassIds(userData.classIds)
-          return userData.classIds
+  useEffect(() => {
+    if (hasFetchedData.current) return
+    hasFetchedData.current = true
+    
+    // Đưa getTeacherClassIds ra ngoài để dễ đọc
+    const getTeacherClassIds = () => {
+      try {
+        const user = localStorage.getItem("user")
+        if (user) {
+          const userData = JSON.parse(user)
+          if (userData.role === "teacher" && userData.classIds) {
+            return userData.classIds
+          }
         }
+      } catch (error) {
+        console.error("Error parsing user data from localStorage:", error)
+        return []
       }
-    } catch (error) {
-      console.error("Error parsing user data from localStorage:", error)
       return []
     }
-    return []
-  }
 
-  const fetchAllData = async () => {
-    try {
+    const fetchAllData = async () => {
       setLoading(true)
+      try {
+        const teacherClassIds = getTeacherClassIds()
 
-      const teacherClassIds = getTeacherClassIds()
+        const [
+          schedulesRes,
+          weeksRes,
+          timeslotsRes,
+          classesRes,
+          classSessionsRes,
+          daysRes,
+        ] = await Promise.all([
+          fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Schedule"),
+          fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Week"),
+          fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Timeslot"),
+          fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Class"),
+          fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/ClassSession"),
+          fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Day"),
+        ])
 
-      const [
-        schedulesRes,
-        weeksRes,
-        timeslotsRes,
-        classesRes,
-        classSessionsRes,
-        daysRes,
-      ] = await Promise.all([
-        fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Schedule"),
-        fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Week"),
-        fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Timeslot"),
-        fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Class"),
-        fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/ClassSession"),
-        fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Day"),
-      ])
+        const schedulesData = await schedulesRes.json()
+        const weeksData = await weeksRes.json()
+        const timeslotsData = await timeslotsRes.json()
+        const classesData = await classesRes.json()
+        const classSessionsData = await classSessionsRes.json()
+        const daysData = await daysRes.json()
 
-      const [
-        schedulesData,
-        weeksData,
-        timeslotsData,
-        classesData,
-        classSessionsData,
-        daysData,
-      ] = await Promise.all([
-        schedulesRes.json(),
-        weeksRes.json(),
-        timeslotsRes.json(),
-        classesRes.json(),
-        classSessionsRes.json(),
-        daysRes.json(),
-      ])
+        // Lọc dữ liệu theo classIds của giáo viên
+        const filteredClassSessions = (Array.isArray(classSessionsData) ? classSessionsData : []).filter(
+          (session) => teacherClassIds.includes(session.classId),
+        )
+        const filteredClasses = (Array.isArray(classesData) ? classesData : []).filter(
+          (cls) => teacherClassIds.includes(cls.classId),
+        )
+        const dayIdsOfTeacherClasses = [...new Set(filteredClassSessions.map((session) => session.dayId))]
+        const filteredDays = (Array.isArray(daysData) ? daysData : []).filter((day) =>
+          dayIdsOfTeacherClasses.includes(day.dayId),
+        )
+        const weekIdsOfTeacherClasses = [...new Set(filteredDays.map((day) => day.weekId))]
+        const filteredWeeks = (Array.isArray(weeksData) ? weeksData : []).filter((week) =>
+          weekIdsOfTeacherClasses.includes(week.weekId),
+        )
+        const scheduleIdsOfTeacherClasses = [...new Set(filteredWeeks.map((week) => week.scheduleId))]
+        const filteredSchedules = (Array.isArray(schedulesData) ? schedulesData : []).filter(
+          (schedule) => scheduleIdsOfTeacherClasses.includes(schedule.scheduleId),
+        )
 
-      const filteredClassSessions = (Array.isArray(classSessionsData) ? classSessionsData : []).filter(
-        (session) => teacherClassIds.includes(session.classId),
-      )
+        const sortedSchedules = [...filteredSchedules].sort(
+          (a, b) => new Date(a.monthYear).getTime() - new Date(b.monthYear).getTime(),
+        )
 
-      const filteredClasses = (Array.isArray(classesData) ? classesData : []).filter(
-        (cls) => teacherClassIds.includes(cls.classId),
-      )
+        // Lưu dữ liệu đã lọc vào state
+        setSchedules(sortedSchedules)
+        setWeeks(filteredWeeks)
+        setTimeslots(Array.isArray(timeslotsData) ? timeslotsData : [])
+        setClasses(filteredClasses)
+        setClassSessions(filteredClassSessions)
+        setDays(filteredDays)
+        
+        // *** NEW LOGIC: Find and set the current week ***
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        let found = false;
 
-      const dayIdsOfTeacherClasses = [...new Set(filteredClassSessions.map((session) => session.dayId))]
-      const filteredDays = (Array.isArray(daysData) ? daysData : []).filter((day) =>
-        dayIdsOfTeacherClasses.includes(day.dayId),
-      )
+        const todayDayObject = filteredDays.find(day => {
+            const dayDate = new Date(day.dateOfDay);
+            dayDate.setHours(0, 0, 0, 0);
+            return dayDate.getTime() === today.getTime();
+        });
 
-      const weekIdsOfTeacherClasses = [...new Set(filteredDays.map((day) => day.weekId))]
-      const filteredWeeks = (Array.isArray(weeksData) ? weeksData : []).filter((week) =>
-        weekIdsOfTeacherClasses.includes(week.weekId),
-      )
+        if (todayDayObject) {
+            const todayWeekObject = filteredWeeks.find(week => week.weekId === todayDayObject.weekId);
+            if (todayWeekObject) {
+                const scheduleIndex = sortedSchedules.findIndex(schedule => schedule.scheduleId === todayWeekObject.scheduleId);
+                
+                if (scheduleIndex !== -1) {
+                    const weeksForThisSchedule = filteredWeeks
+                        .filter(week => week.scheduleId === todayWeekObject.scheduleId)
+                        .sort((a, b) => a.weekNumberInMonth - b.weekNumberInMonth);
 
-      const scheduleIdsOfTeacherClasses = [...new Set(filteredWeeks.map((week) => week.scheduleId))]
-      const filteredSchedules = (Array.isArray(schedulesData) ? schedulesData : []).filter(
-        (schedule) => scheduleIdsOfTeacherClasses.includes(schedule.scheduleId),
-      )
+                    const weekIndex = weeksForThisSchedule.findIndex(week => week.weekId === todayWeekObject.weekId);
 
-      setSchedules(filteredSchedules)
-      setWeeks(filteredWeeks)
-      setTimeslots(Array.isArray(timeslotsData) ? timeslotsData : [])
-      setClasses(filteredClasses)
-      setClassSessions(filteredClassSessions)
-      setDays(filteredDays)
+                    if (weekIndex !== -1) {
+                        setCurrentScheduleIndex(scheduleIndex);
+                        setCurrentWeekIndex(weekIndex);
+                        found = true;
+                    }
+                }
+            }
+        }
+        
+        // Fallback: If current week not found, default to the first available week
+        if (!found) {
+            setCurrentScheduleIndex(0);
+            setCurrentWeekIndex(0);
+        }
+        // *** END OF NEW LOGIC ***
 
-      const sortedSchedules = Array.isArray(filteredSchedules)
-        ? [...filteredSchedules].sort(
-            (a, b) => new Date(a.monthYear).getTime() - new Date(b.monthYear).getTime(),
-          )
-        : []
-      setSchedules(sortedSchedules)
-
-      setCurrentScheduleIndex(0)
-      setCurrentWeekIndex(0)
-
-    } catch (error) {
-      console.error("Error fetching schedule data:", error)
-      message.error("Không thể tải dữ liệu thời khóa biểu. Vui lòng thử lại.")
-    } finally {
-      setLoading(false)
+      } catch (error) {
+        console.error("Error fetching schedule data:", error)
+        message.error("Không thể tải dữ liệu thời khóa biểu. Vui lòng thử lại.")
+      } finally {
+        setLoading(false)
+      }
     }
-  }
 
-  useEffect(() => {
-    if (!hasFetchedData.current) {
-      hasFetchedData.current = true
-      fetchAllData()
-    }
-  }, [])
+    fetchAllData()
+  }, []) // Dependency rỗng để đảm bảo chỉ chạy 1 lần
 
   const formatTime = (timeString) => {
     if (!timeString) return ""
@@ -212,14 +234,14 @@ const TeacherSchedule = () => {
     )
 
     const apiDaysMap = new Map()
-    if (currentWeekData && currentWeekData.days) {
-      const daysInCurrentWeek = days.filter(d => d.weekId === currentWeekData.weekId)
-      daysInCurrentWeek.forEach((apiDay) => {
+    // Đảm bảo chỉ lấy các ngày thuộc tuần hiện tại từ state `days` đã được lọc
+    const daysInCurrentWeek = days.filter(d => d.weekId === currentWeekData?.weekId)
+
+    daysInCurrentWeek.forEach((apiDay) => {
         const date = new Date(apiDay.dateOfDay)
         const dayOfWeek = date.getUTCDay()
         apiDaysMap.set(dayOfWeek, apiDay)
-      })
-    }
+    })
 
     const structuredDays = weekDaysStructure.map((dayStructure) => {
       const dayFromApi = apiDaysMap.get(dayStructure.dayIndex)
@@ -270,10 +292,7 @@ const TeacherSchedule = () => {
 
         if (timeslot && classInClasses) {
           const timeKey = `${formatTime(timeslot.startTime)}-${formatTime(timeslot.endTime)}`
-
-          let classCodeToDisplay = classInClasses.classCode
-
-          const sessionInfo = `${classCodeToDisplay}`
+          const sessionInfo = `${classInClasses.classCode}`
           const dayKey = getDayKeyFromDate(dayInfo.date)
           if (dayKey && scheduleData[timeKey]) {
             scheduleData[timeKey][dayKey] = sessionInfo
@@ -291,8 +310,9 @@ const TeacherSchedule = () => {
       setCurrentWeekIndex(currentWeekIndex - 1)
     } else {
       if (currentScheduleIndex > 0) {
-        setCurrentScheduleIndex(currentScheduleIndex - 1)
-        const prevScheduleId = schedules[currentScheduleIndex - 1]?.scheduleId
+        const prevScheduleIndex = currentScheduleIndex - 1
+        setCurrentScheduleIndex(prevScheduleIndex)
+        const prevScheduleId = schedules[prevScheduleIndex]?.scheduleId
         if (prevScheduleId !== undefined) {
           const prevScheduleWeeks = weeks.filter((week) => week.scheduleId === prevScheduleId)
           const prevWeekNumbers = [...new Set(prevScheduleWeeks.map((week) => week.weekNumberInMonth))].sort(
@@ -307,7 +327,7 @@ const TeacherSchedule = () => {
           setCurrentWeekIndex(0)
         }
       } else {
-        message.info("Bạn đang ở tuần đầu tiên của thời khóa biểu đầu tiên rồi.")
+        message.info("Bạn đang ở tuần đầu tiên của thời khóa biểu.")
       }
     }
   }
@@ -321,7 +341,7 @@ const TeacherSchedule = () => {
         setCurrentScheduleIndex(currentScheduleIndex + 1)
         setCurrentWeekIndex(0)
       } else {
-        message.info("Bạn đang ở tuần cuối cùng của thời khóa biểu cuối cùng rồi.")
+        message.info("Bạn đang ở tuần cuối cùng của thời khóa biểu.")
       }
     }
   }
@@ -345,7 +365,7 @@ const TeacherSchedule = () => {
       .sort((a, b) => a.startTime.localeCompare(b.startTime))
       .map((ts) => `${formatTime(ts.startTime)}-${formatTime(ts.endTime)}`)
 
-    if (!currentWeekNumber || currentWeekDays.every((d) => !d.date) || timeSlots.length === 0) {
+    if (schedules.length > 0 && (!currentWeekNumber || currentWeekDays.every((d) => !d.date))) {
       return (
         <div style={{ textAlign: "center", padding: "50px 0" }}>
           <Text type="secondary">Không có dữ liệu thời khóa biểu cho tuần này.</Text>
@@ -410,7 +430,7 @@ const TeacherSchedule = () => {
     )
   }
 
-  if (schedules.length === 0) {
+  if (schedules.length === 0 && !loading) {
     return (
       <div className="schedule-main-page">
         <div className="schedule-main-container">
@@ -471,6 +491,7 @@ const TeacherSchedule = () => {
             onClick={handleNextWeek}
             className="schedule-nav-button"
             disabled={
+              schedules.length > 0 &&
               currentScheduleIndex === schedules.length - 1 &&
               currentWeekIndex === weekNumbersForCurrentSchedule.length - 1
             }

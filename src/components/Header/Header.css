@@ -29,7 +29,7 @@
   flex: 1;
   justify-content: flex-start;
   margin-left: 0px;
-  font-family: "Gilroy", sans-serif;
+  font-family: "SVN-Gilroy";
   font-size: 16px;
   line-height: 24px;
   font-weight: 400;
@@ -72,7 +72,7 @@
 
 /* Submenu Styles */
 .header-menu .ant-menu-submenu .ant-menu {
-  background-color: #1e3a5f;
+  background-color: #1e3a5f !important;
   padding: 0;
   border: none;
   box-shadow: none;
@@ -84,6 +84,7 @@
   padding: 10px 20px;
   font-size: 14px;
   height: auto;
+  font-family: 'SVN-Gilroy' !important;
 }
 
 .header-menu .ant-menu-submenu .ant-menu-item:hover {
@@ -93,6 +94,8 @@
 
 .header-menu .ant-menu-submenu-popup {
   margin-top: 0px;
+  font-family: 'SVN-Gilroy' !important;
+  background: #1e3a5f;
 }
 
 /* Responsive Styles */

@@ -1,6 +1,6 @@
 .attendance-detail-page {
   min-height: 100vh;
-  background: #f5f5f0;
+  background: #f5f7ed;
   padding: 40px 20px;
 }
 
@@ -16,7 +16,7 @@
   margin-bottom: 40px;
 }
 
-.back-button {
+.back-button-class-detail {
   color: #1e3a5f !important;
   font-size: 16px;
   font-weight: 500;
@@ -28,9 +28,10 @@
   border-radius: 8px;
   transition: all 0.3s ease;
   margin-bottom: 100px;
+  font-family: 'SVN-Gilroy' !important;
 }
 
-.back-button:hover {
+.back-button-class-detail:hover {
   background: rgba(30, 58, 95, 0.1);
   color: #1e3a5f !important;
 }
@@ -50,11 +51,11 @@
   align-items: start;
 }
 
-.table-section {
-  background: white;
+.table-section-class-detail {
+  background: #f5f7ed !important;
   border-radius: 12px;
   padding: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); */
 }
 
 .attendance-table {
@@ -142,7 +143,7 @@
 .class-info-card {
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  /* box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12); */
   border: none;
   background: white;
 }
@@ -157,12 +158,13 @@
   text-align: center;
 }
 
-.class-code {
+.class-code-class-detail {
   color: white !important;
   font-size: 18px !important;
   font-weight: 700 !important;
   letter-spacing: 1px;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  font-family: 'SVN-Gilroy';
 }
 
 .class-details {
@@ -185,11 +187,12 @@
   transform: translateX(4px);
 }
 
-.detail-text {
+.detail-text-class-detail {
   color: #1e3a5f !important;
   font-size: 15px !important;
   font-weight: 500;
   line-height: 1.6;
+  font-family: 'SVN-Gilroy' !important;
 }
 
 /* Responsive Design */
@@ -225,7 +228,7 @@
     font-size: 36px !important;
   }
 
-  .table-section {
+  .table-section-class-detail {
     padding: 16px;
     overflow-x: auto;
   }
@@ -277,7 +280,7 @@
     padding: 20px 16px;
   }
 
-  .class-code {
+  .class-code-class-detail {
     font-size: 16px !important;
   }
 
@@ -285,7 +288,7 @@
     padding: 20px 16px;
   }
 
-  .detail-text {
+  .detail-text-class-detail {
     font-size: 14px !important;
   }
 }

@@ -1,3 +1,4 @@
+
 import {
   Typography,
   Table,
@@ -783,13 +784,13 @@ const TeacherCourseSchedule = () => {
     <div className="course-schedule-page">
       <div className="course-schedule-container">
         <Title level={1} className="page-title">
-          Lịch Khai Giảng
+          Quản lý Lịch Khai Giảng
         </Title>
 
         {/* Filter Section */}
-        <Card className="filter-section" bordered={false}>
+        <Card className="filter-section-op">
           <Space size="middle" wrap>
-            <div className="filter-item">
+            <div className="filter-item-create">
               <label>Môn học:</label>
               <Select
                 placeholder="Chọn môn học"
@@ -805,7 +806,7 @@ const TeacherCourseSchedule = () => {
                 ))}
               </Select>
             </div>
-            <div className="filter-item">
+            <div className="filter-item-create">
               <label>Giảng viên:</label>
               <Select
                 placeholder="Chọn giảng viên"
@@ -830,13 +831,13 @@ const TeacherCourseSchedule = () => {
         {/* Basic Course Schedule Section */}
         <div className="schedule-section">
           <div className="section-header">
-            <Title level={3} className="section-title basic-title">
+            <Title level={3} className="section-title-basic-title">
               Lịch học cơ bản
             </Title>
             {/* <Button
               type="primary"
               icon={<PlusOutlined />}
-              className="add-button"
+              className="add-button-create"
               onClick={() => handleAddClass("basic")}
             >
               Thêm lịch khai giảng
@@ -859,13 +860,13 @@ const TeacherCourseSchedule = () => {
         {/* Advanced Course Schedule Section */}
         <div className="schedule-section">
           <div className="section-header">
-            <Title level={3} className="section-title advanced-title">
+            <Title level={3} className="section-title-advanced-title">
               Lịch học nâng cao
             </Title>
             {/* <Button
               type="primary"
               icon={<PlusOutlined />}
-              className="add-button"
+              className="add-button-create"
               onClick={() => handleAddClass("advanced")}
             >
               Thêm lịch khai giảng
@@ -902,7 +903,7 @@ const TeacherCourseSchedule = () => {
         ]}
         width={600}
       >
-        <Form form={addForm} layout="vertical" name="add_schedule_form">
+        <Form form={addForm} layout="vertical" name="add-schedule-form">
           <Form.Item name="classCode" label="Mã lớp" rules={[{ required: true, message: "Vui lòng nhập mã lớp" }]}>
             <Input placeholder="Nhập mã lớp" />
           </Form.Item>
@@ -1037,10 +1038,10 @@ const TeacherCourseSchedule = () => {
       >
         <Form form={updateForm} layout="vertical" name="update_schedule_form">
           <Form.Item name="classCode" label="Mã lớp" rules={[{ required: true, message: "Vui lòng nhập mã lớp!" }]}>
-            <Input disabled /> {/* Class code is disabled for editing */}
+            <Input disabled /> 
           </Form.Item>
           <Form.Item name="subject" label="Môn học" rules={[{ required: true, message: "Vui lòng nhập môn học!" }]}>
-            <Select placeholder="Chọn môn học">
+            <Select placeholder="Chọn môn học" disabled>
               <Option value="Piano">Piano</Option>
               <Option value="Guitar">Guitar</Option>
             </Select>
@@ -1163,3 +1164,5 @@ const TeacherCourseSchedule = () => {
 }
 
 export default TeacherCourseSchedule
+
+

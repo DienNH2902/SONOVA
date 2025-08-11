@@ -134,7 +134,7 @@ const AdminSidebar = () => {
     },
     {
       key: "teacher-attendance",
-      icon: <UserOutlined />,
+      icon: <TeamOutlined />,
       label: "Điểm danh giáo viên",
       onClick: () => navigate("/admin/teacher-attendance"),
     },

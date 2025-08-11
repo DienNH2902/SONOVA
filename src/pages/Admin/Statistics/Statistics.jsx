@@ -646,18 +646,12 @@ const Statistics = () => {
         }
       }
 
-      // Sum up the values for the month
-      monthlyGroups[monthKey].totalStudents = Math.max(monthlyGroups[monthKey].totalStudents, item.totalStudents || 0)
+      // For totalStudents, totalPianoClass, totalGuitarClass, use the value of the last day of the month
+      monthlyGroups[monthKey].totalStudents = item.totalStudents || 0
       monthlyGroups[monthKey].newStudents += item.newStudents || 0
       monthlyGroups[monthKey].consultationRequestCount += item.consultationRequestCount || 0
-      monthlyGroups[monthKey].totalPianoClass = Math.max(
-        monthlyGroups[monthKey].totalPianoClass,
-        item.totalPianoClass || 0,
-      )
-      monthlyGroups[monthKey].totalGuitarClass = Math.max(
-        monthlyGroups[monthKey].totalGuitarClass,
-        item.totalGuitarClass || 0,
-      )
+      monthlyGroups[monthKey].totalPianoClass = item.totalPianoClass || 0
+      monthlyGroups[monthKey].totalGuitarClass = item.totalGuitarClass || 0
       monthlyGroups[monthKey].monthlyRevenue += item.monthlyRevenue || 0
       monthlyGroups[monthKey].dataPoints.push(item)
     })
@@ -700,12 +694,27 @@ const Statistics = () => {
     return `Tháng ${monthData.month}/${monthData.year}`
   }
 
-  // Helper function to calculate percentage change
-  const calculatePercentageChange = (current, previous) => {
-    if (!previous || previous === 0) return { value: 0, isPositive: true }
-    const change = ((current - previous) / previous) * 100
-    return { value: Math.abs(change).toFixed(1), isPositive: change >= 0 }
+  // HÀM ĐÃ SỬA
+const calculatePercentageChange = (current, previous) => {
+  // Kiểm tra nếu không có dữ liệu tháng trước (undefined) hoặc là giá trị không hợp lệ
+  if (previous === undefined || previous === null) {
+    return { value: 0, isPositive: true }; // Hoặc bạn có thể trả về 'N/A'
   }
+
+  // Xử lý trường hợp tháng trước có giá trị là 0
+  if (previous === 0) {
+    if (current > 0) {
+      // Nếu tháng trước là 0 và tháng này lớn hơn 0, coi như tăng 100%
+      return { value: 100, isPositive: true };
+    }
+    // Nếu cả hai tháng đều là 0, không có sự thay đổi
+    return { value: 0, isPositive: true };
+  }
+
+  // Tính toán bình thường
+  const change = ((current - previous) / previous) * 100;
+  return { value: Math.abs(change).toFixed(1), isPositive: change >= 0 };
+};
 
   // Get current and previous month data
   const currentMonthData = monthlyData[currentMonthIndex] || {}
@@ -718,23 +727,27 @@ const Statistics = () => {
     currentMonthData.consultationRequestCount,
     previousMonthData.consultationRequestCount,
   )
+  // Calculate revenue and its change
+  const currentMonthRevenue = (currentMonthData.totalStudents || 0) * 125000
+  const previousMonthRevenue = (previousMonthData.totalStudents || 0) * 125000
+  const revenueChange = calculatePercentageChange(currentMonthRevenue, previousMonthRevenue)
 
   // Prepare chart data for student trend
-  const studentTrendData = monthlyData.map((item, index) => ({
+  const studentTrendData = monthlyData.map((item) => ({
     month: `T${item.month}`,
     value: item.totalStudents || 0,
     monthData: item,
   }))
 
   // Prepare chart data for Piano classes
-  const pianoClassData = monthlyData.map((item, index) => ({
+  const pianoClassData = monthlyData.map((item) => ({
     month: `T${item.month}`,
     value: item.totalPianoClass || 0,
     monthData: item,
   }))
 
   // Prepare chart data for Guitar classes
-  const guitarClassData = monthlyData.map((item, index) => ({
+  const guitarClassData = monthlyData.map((item) => ({
     month: `T${item.month}`,
     value: item.totalGuitarClass || 0,
     monthData: item,
@@ -977,7 +990,8 @@ const Statistics = () => {
             </div>
           </div>
           <Row gutter={[24, 24]} className="stats-cards">
-            <Col xs={24} sm={12} lg={8}>
+            {/* UPDATED: Changed lg from 8 to 6 */}
+            <Col xs={24} sm={12} lg={6}>
               <Card className="stat-card">
                 <div className="stat-icon student-icon">
                   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1010,7 +1024,8 @@ const Statistics = () => {
               </Card>
             </Col>
 
-            <Col xs={24} sm={12} lg={8}>
+            {/* UPDATED: Changed lg from 8 to 6 */}
+            <Col xs={24} sm={12} lg={6}>
               <Card className="stat-card">
                 <div className="stat-icon new-student-icon">
                   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1057,7 +1072,8 @@ const Statistics = () => {
               </Card>
             </Col>
 
-            <Col xs={24} sm={12} lg={8}>
+            {/* UPDATED: Changed lg from 8 to 6 */}
+            <Col xs={24} sm={12} lg={6}>
               <Card className="stat-card">
                 <div className="stat-icon registration-icon">
                   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1085,6 +1101,54 @@ const Statistics = () => {
                   <div className={`stat-change ${consultationChange.isPositive ? "positive" : "negative"}`}>
                     {consultationChange.isPositive ? <ArrowUpOutlined /> : <ArrowDownOutlined />}
                     <Text>{consultationChange.value}% so với tháng trước</Text>
+                  </div>
+                </div>
+              </Card>
+            </Col>
+
+            {/* NEW CARD: Total Revenue */}
+            <Col xs={24} sm={12} lg={6}>
+              <Card className="stat-card">
+                <div className="stat-icon revenue-icon">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M9 12C9 13.3807 10.1193 14.5 11.5 14.5C12.8807 14.5 14 13.3807 14 12C14 10.6193 12.8807 9.5 11.5 9.5C10.1193 9.5 9 10.6193 9 12Z"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M12 17C15.866 17 19 15.2091 19 12C19 8.79086 15.866 7 12 7C8.13401 7 5 8.79086 5 12C5 15.2091 8.13401 17 12 17Z"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M5 12V16C5 19.2091 8.13401 21 12 21C15.866 21 19 19.2091 19 16V12"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M5 12V8C5 4.79086 8.13401 3 12 3C15.866 3 19 4.79086 19 8V12"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
+                <div className="stat-content">
+                  <Text className="stat-label">Tổng doanh thu (Ước tính)</Text>
+                  <Title level={3} className="stat-value">
+                    {currentMonthRevenue.toLocaleString("vi-VN", { style: "currency", currency: "VND" })}
+                  </Title>
+                  <div className={`stat-change ${revenueChange.isPositive ? "positive" : "negative"}`}>
+                    {revenueChange.isPositive ? <ArrowUpOutlined /> : <ArrowDownOutlined />}
+                    <Text>{revenueChange.value}% so với tháng trước</Text>
                   </div>
                 </div>
               </Card>

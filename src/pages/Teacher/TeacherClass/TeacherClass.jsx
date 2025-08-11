@@ -1,3 +1,5 @@
+"use client"
+
 import { useState, useEffect } from "react"
 import { Typography, Row, Col, Card, Spin, message } from "antd"
 import "./TeacherClass.css" // Đảm bảo CSS file này tồn tại và được cấu hình đúng
@@ -70,14 +72,9 @@ const TeacherClass = () => {
         )
         if (!openingScheduleRes.ok) throw new Error("Failed to fetch opening schedules.")
         const allOpeningSchedules = await openingScheduleRes.json()
-
-        // Tạo một Map để dễ dàng tra cứu instrumentName theo classCode
-        // Lưu ý: API OpeningSchedule không có classId mà chỉ có classCode
-        // Cần đảm bảo rằng classCode trong ClassSession và OpeningSchedule khớp nhau
+        
         const classCodeToInstrumentMap = new Map()
         allOpeningSchedules.forEach(schedule => {
-            // Giả định rằng classCode là duy nhất hoặc lấy cái đầu tiên tìm thấy
-            // Nếu có nhiều schedule với cùng classCode nhưng instrument khác, cần logic phức tạp hơn
             if (schedule.instrument?.instrumentName) {
                 classCodeToInstrumentMap.set(schedule.classCode, schedule.instrument.instrumentName)
             }
@@ -86,11 +83,19 @@ const TeacherClass = () => {
         // Bước 3: Kết hợp instrumentName vào filteredSessions
         const sessionsWithInstrument = filteredSessions.map(session => ({
             ...session,
-            // Lấy instrumentName từ map dựa trên classCode của session
             instrumentName: classCodeToInstrumentMap.get(session.classCode) || session.instrumentName || "N/A"
         }))
 
-        setTodayTeacherSessions(sessionsWithInstrument)
+        // *** UPDATED SECTION: Sort sessions by start time ***
+        // Sắp xếp các buổi học theo thời gian bắt đầu (startTime)
+        const sortedSessions = sessionsWithInstrument.sort((a, b) => {
+            // So sánh chuỗi thời gian, ví dụ "08:00:00" sẽ nhỏ hơn "10:00:00"
+            return a.startTime.localeCompare(b.startTime);
+        });
+
+        setTodayTeacherSessions(sortedSessions); // Lưu danh sách đã được sắp xếp vào state
+        // *** END OF UPDATED SECTION ***
+
       } catch (err) {
         console.error("Error fetching teacher's classes:", err)
         setError("Không thể tải danh sách lớp học: " + err.message)

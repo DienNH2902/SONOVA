@@ -130,6 +130,7 @@ const Login = () => {
           <Form.Item
             label="Tên đăng nhập"
             name="email"
+            className="login-input"
             rules={[{ required: true, message: "Vui lòng nhập tên đăng nhập" }]}
           >
             <Input placeholder="Tên đăng nhập" />
@@ -138,6 +139,7 @@ const Login = () => {
           <Form.Item
             label="Mật khẩu"
             name="password"
+            className="login-input"
             rules={[{ required: true, message: "Vui lòng nhập mật khẩu" }]}
           >
             <Input.Password placeholder="Mật khẩu" />

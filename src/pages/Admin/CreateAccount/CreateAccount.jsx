@@ -197,6 +197,7 @@ const CreateAccount = () => {
               <Form form={form} layout="vertical" onFinish={handleSubmit} className="create-account-form">
                 <Form.Item
                   label="Họ và tên"
+                  className="form-item-create"
                   name="fullName"
                   rules={[{ required: true, message: "Vui lòng nhập họ và tên" }]}
                 >
@@ -227,7 +228,7 @@ const CreateAccount = () => {
                   name="accountType"
                   rules={[{ required: true, message: "Vui lòng chọn loại tài khoản" }]}
                 >
-                  <Radio.Group className="radio-group">
+                  <Radio.Group className="radio-group-create">
                     <Radio value="student">Học viên</Radio>
                     <Radio value="teacher">Giáo viên</Radio>
                     <Radio value="admin">Admin</Radio>
@@ -247,7 +248,7 @@ const CreateAccount = () => {
                   name="gender"
                   rules={[{ required: true, message: "Vui lòng chọn giới tính" }]}
                 >
-                  <Radio.Group className="radio-group">
+                  <Radio.Group className="radio-group-create">
                     <Radio value="male">Nam</Radio>
                     <Radio value="female">Nữ</Radio>
                   </Radio.Group>
@@ -292,7 +293,7 @@ const CreateAccount = () => {
                             >
                               <Select
                                 placeholder="Chọn mã lớp học"
-                                className="form-input"
+                                className="form-input-create"
                                 loading={loadingClasses}
                                 showSearch
                                 optionFilterProp="children"

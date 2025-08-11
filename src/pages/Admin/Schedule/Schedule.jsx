@@ -1015,13 +1015,10 @@ const Schedule = () => {
   const [timeslots, setTimeslots] = useState([])
   const [classes, setClasses] = useState([])
   const [classSessions, setClassSessions] = useState([])
-  // Store fetched days for easier access (since Day API is separate)
   const [days, setDays] = useState([])
 
   const hasFetchedData = useRef(false)
 
-  // Fixed week structure - Monday to Sunday with dayIndex (0 for Sunday, 1 for Monday)
-  // Đây là cấu trúc chuẩn của Date.getDay()
   const weekDaysStructure = [
     { key: "monday", label: "Thứ 2", dayIndex: 1 },
     { key: "tuesday", label: "Thứ 3", dayIndex: 2 },
@@ -1032,72 +1029,116 @@ const Schedule = () => {
     { key: "sunday", label: "Chủ nhật", dayIndex: 0 },
   ]
 
-  // Fetch all API data
-  const fetchAllData = async () => {
-    try {
-      setLoading(true)
-
-      // Fetch all data in parallel
-      const [
-        schedulesRes,
-        weeksRes,
-        timeslotsRes,
-        classesRes,
-        classSessionsRes,
-        daysRes, // Fetch Day API as well
-      ] = await Promise.all([
-        fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Schedule"),
-        fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Week"),
-        fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Timeslot"),
-        fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Class"),
-        fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/ClassSession"),
-        fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Day"), // Fetch Day API
-      ])
-
-      const [
-        schedulesData,
-        weeksData,
-        timeslotsData,
-        classesData,
-        classSessionsData,
-        daysData, // Parse Day API response
-      ] = await Promise.all([
-        schedulesRes.json(),
-        weeksRes.json(),
-        timeslotsRes.json(),
-        classesRes.json(),
-        classSessionsRes.json(),
-        daysRes.json(), // Parse Day API response
-      ])
-
-      setSchedules(Array.isArray(schedulesData) ? schedulesData : [])
-      setWeeks(Array.isArray(weeksData) ? weeksData : [])
-      setTimeslots(Array.isArray(timeslotsData) ? timeslotsData : [])
-      setClasses(Array.isArray(classesData) ? classesData : [])
-      setClassSessions(Array.isArray(classSessionsData) ? classSessionsData : [])
-      setDays(Array.isArray(daysData) ? daysData : []) // Set Days state
-
-      // Sắp xếp schedules theo monthYear để đảm bảo thứ tự
-      const sortedSchedules = Array.isArray(schedulesData)
-        ? [...schedulesData].sort(
-            (a, b) => new Date(a.monthYear).getTime() - new Date(b.monthYear).getTime(),
-          )
-        : []
-      setSchedules(sortedSchedules)
-    } catch (error) {
-      console.error("Error fetching schedule data:", error)
-      message.error("Không thể tải dữ liệu thời khóa biểu. Vui lòng thử lại.")
-    } finally {
-      setLoading(false)
-    }
-  }
-
+  // *** UPDATED SECTION START ***
   useEffect(() => {
-    if (!hasFetchedData.current) {
-      hasFetchedData.current = true
-      fetchAllData()
+    // Chỉ fetch dữ liệu một lần
+    if (hasFetchedData.current) return
+    hasFetchedData.current = true
+
+    const fetchAndSetInitialSchedule = async () => {
+      setLoading(true)
+      try {
+        // 1. Fetch tất cả dữ liệu từ API
+        const [
+          schedulesRes,
+          weeksRes,
+          timeslotsRes,
+          classesRes,
+          classSessionsRes,
+          daysRes,
+        ] = await Promise.all([
+          fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Schedule"),
+          fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Week"),
+          fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Timeslot"),
+          fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Class"),
+          fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/ClassSession"),
+          fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Day"),
+        ])
+
+        const schedulesData = await schedulesRes.json()
+        const weeksData = await weeksRes.json()
+        const timeslotsData = await timeslotsRes.json()
+        const classesData = await classesRes.json()
+        const classSessionsData = await classSessionsRes.json()
+        const daysData = await daysRes.json()
+
+        // Sắp xếp schedules theo monthYear để đảm bảo thứ tự
+        const sortedSchedules = Array.isArray(schedulesData)
+          ? [...schedulesData].sort(
+              (a, b) => new Date(a.monthYear).getTime() - new Date(b.monthYear).getTime(),
+            )
+          : []
+        
+        // 2. Lưu tất cả dữ liệu vào state
+        setSchedules(sortedSchedules)
+        setWeeks(Array.isArray(weeksData) ? weeksData : [])
+        setTimeslots(Array.isArray(timeslotsData) ? timeslotsData : [])
+        setClasses(Array.isArray(classesData) ? classesData : [])
+        setClassSessions(Array.isArray(classSessionsData) ? classSessionsData : [])
+        setDays(Array.isArray(daysData) ? daysData : [])
+
+        // 3. Logic tìm và đặt tuần hiện tại
+        const today = new Date()
+        today.setHours(0, 0, 0, 0) // Chuẩn hóa để chỉ so sánh ngày
+
+        let found = false
+        if (Array.isArray(daysData)) {
+          // Tìm ngày hôm nay trong dữ liệu
+          const todayDayObject = daysData.find((day) => {
+            const dayDate = new Date(day.dateOfDay)
+            dayDate.setHours(0, 0, 0, 0)
+            return dayDate.getTime() === today.getTime()
+          })
+
+          if (todayDayObject) {
+            // Nếu tìm thấy, tìm tuần và lịch chứa ngày đó
+            const todayWeekObject = weeksData.find((week) => week.weekId === todayDayObject.weekId)
+            if (todayWeekObject) {
+              const scheduleIndex = sortedSchedules.findIndex(
+                (schedule) => schedule.scheduleId === todayWeekObject.scheduleId,
+              )
+              
+              if (scheduleIndex !== -1) {
+                // Tìm vị trí (index) của tuần đó trong tháng
+                const weeksForThisSchedule = weeksData
+                  .filter((week) => week.scheduleId === todayWeekObject.scheduleId)
+                  .sort((a, b) => a.weekNumberInMonth - b.weekNumberInMonth)
+
+                const weekIndex = weeksForThisSchedule.findIndex(
+                  (week) => week.weekId === todayWeekObject.weekId,
+                )
+
+                if (weekIndex !== -1) {
+                  setCurrentScheduleIndex(scheduleIndex)
+                  setCurrentWeekIndex(weekIndex)
+                  found = true
+                }
+              }
+            }
+          }
+        }
+        
+        // 4. Nếu không tìm thấy, sử dụng logic mặc định (hiển thị tuần cuối cùng của lịch mới nhất)
+        if (!found && sortedSchedules.length > 0) {
+          setCurrentScheduleIndex(sortedSchedules.length - 1)
+          // Đặt tuần là tuần cuối cùng của tháng đó
+          const lastScheduleWeeks = weeksData.filter(w => w.scheduleId === sortedSchedules[sortedSchedules.length - 1].scheduleId);
+          const lastScheduleWeekNumbers = [...new Set(lastScheduleWeeks.map(w => w.weekNumberInMonth))].sort((a, b) => a - b);
+          setCurrentWeekIndex(lastScheduleWeekNumbers.length > 0 ? lastScheduleWeekNumbers.length - 1 : 0);
+        }
+
+      } catch (error) {
+        console.error("Error fetching schedule data:", error)
+        message.error("Không thể tải dữ liệu thời khóa biểu. Vui lòng thử lại.")
+      } finally {
+        setLoading(false)
+      }
     }
-  }, [])
+
+    fetchAndSetInitialSchedule()
+  }, []) // Dependency rỗng đảm bảo chỉ chạy một lần
+  // *** UPDATED SECTION END ***
+
 
   // Helper function to format time from API (HH:MM:SS -> HH:MM)
   const formatTime = (timeString) => {
@@ -1106,10 +1147,8 @@ const Schedule = () => {
   }
 
   // Helper function to get day key from date (0=Sunday, 1=Monday, ...)
-  // Adjusted to use local date to avoid timezone issues affecting getDay()
   const getDayKeyFromDate = (dateString) => {
     const date = new Date(dateString)
-    // Use UTC methods to avoid local timezone shifts changing the day
     const dayOfWeek = date.getUTCDay()
     const dayStructure = weekDaysStructure.find((day) => day.dayIndex === dayOfWeek)
     return dayStructure ? dayStructure.key : null
@@ -1131,7 +1170,7 @@ const Schedule = () => {
   // Get current month/year for display based on current schedule
   const getCurrentMonthYear = () => {
     const currentSchedule = getCurrentSchedule()
-    if (!currentSchedule) return "Đang tải..." // Hoặc một giá trị mặc định khác
+    if (!currentSchedule) return "Đang tải..."
 
     const date = new Date(currentSchedule.monthYear)
     const month = (date.getMonth() + 1).toString().padStart(2, "0")
@@ -1146,13 +1185,12 @@ const Schedule = () => {
 
     return weeks
       .filter((week) => week.scheduleId === currentSchedule.scheduleId)
-      .sort((a, b) => a.weekNumberInMonth - b.weekNumberInMonth) // Sắp xếp theo weekNumberInMonth
+      .sort((a, b) => a.weekNumberInMonth - b.weekNumberInMonth)
   }
 
   // Get unique week numbers (assuming weekNumberInMonth is consistent)
   const getWeekNumbers = () => {
     const scheduleWeeks = getCurrentScheduleWeeks()
-    // Lấy weekNumberInMonth từ các tuần và loại bỏ trùng lặp, sau đó sắp xếp
     const weekNumbers = [...new Set(scheduleWeeks.map((week) => week.weekNumberInMonth))].sort(
       (a, b) => a - b,
     )
@@ -1163,13 +1201,12 @@ const Schedule = () => {
   const getCurrentWeekDays = () => {
     const currentScheduleWeeks = getCurrentScheduleWeeks()
     const weekNumbers = getWeekNumbers()
-    const currentWeekNum = weekNumbers[currentWeekIndex] // Lấy weekNumberInMonth thực tế
+    const currentWeekNum = weekNumbers[currentWeekIndex]
 
     if (currentWeekNum === undefined)
       return weekDaysStructure.map((day) => ({
         ...day,
         date: null,
-        // formattedDate is not needed in this component, but keeping it for consistency if needed elsewhere
         formattedDate: "",
         weekId: null,
         dayId: null,
@@ -1179,17 +1216,17 @@ const Schedule = () => {
       (week) => week.weekNumberInMonth === currentWeekNum,
     )
 
-    // Tạo một map để dễ dàng truy cập Day data từ API theo dayIndex
     const apiDaysMap = new Map()
-    if (currentWeekData && currentWeekData.days) {
-      currentWeekData.days.forEach((apiDay) => {
+    const daysForCurrentWeek = days.filter(d => d.weekId === currentWeekData?.weekId)
+
+    if (daysForCurrentWeek) {
+      daysForCurrentWeek.forEach((apiDay) => {
         const date = new Date(apiDay.dateOfDay)
-        const dayOfWeek = date.getUTCDay() // Lấy ngày trong tuần theo UTC
+        const dayOfWeek = date.getUTCDay()
         apiDaysMap.set(dayOfWeek, apiDay)
       })
     }
-
-    // Kết hợp cấu trúc tuần cố định với dữ liệu ngày từ API
+    
     const structuredDays = weekDaysStructure.map((dayStructure) => {
       const dayFromApi = apiDaysMap.get(dayStructure.dayIndex)
       return {
@@ -1203,10 +1240,8 @@ const Schedule = () => {
       }
     })
 
-    // Sắp xếp lại để Thứ 2 (dayIndex: 1) đứng đầu, sau đó đến Thứ 3, ..., Chủ nhật (dayIndex: 0)
-    // Logic này để đảm bảo thứ tự hiển thị luôn là Thứ 2 -> Chủ Nhật
     structuredDays.sort((a, b) => {
-      const aIndex = a.dayIndex === 0 ? 7 : a.dayIndex // Coi Chủ nhật là ngày thứ 7+1 để nó về cuối
+      const aIndex = a.dayIndex === 0 ? 7 : a.dayIndex
       const bIndex = b.dayIndex === 0 ? 7 : b.dayIndex
       return aIndex - bIndex
     })
@@ -1219,7 +1254,6 @@ const Schedule = () => {
     const currentWeekDays = getCurrentWeekDays()
     const scheduleData = {}
 
-    // Initialize schedule structure with fixed time slots and days
     const sortedTimeslots = [...timeslots].sort((a, b) =>
       a.startTime.localeCompare(b.startTime),
     )
@@ -1227,29 +1261,25 @@ const Schedule = () => {
       const timeKey = `${formatTime(timeslot.startTime)}-${formatTime(timeslot.endTime)}`
       scheduleData[timeKey] = {}
 
-      // Initialize all days of the week with empty string
       weekDaysStructure.forEach((dayStructure) => {
         scheduleData[timeKey][dayStructure.key] = ""
       })
     })
 
-    // Fill in class sessions
     currentWeekDays.forEach((dayInfo) => {
-      if (!dayInfo.dayId) return // Skip if no actual day data for this structure's day
+      if (!dayInfo.dayId) return
 
-      // Filter class sessions for this specific dayId
       const dayClassSessions = classSessions.filter((session) => session.dayId === dayInfo.dayId)
 
       dayClassSessions.forEach((session) => {
         const timeslot = timeslots.find((ts) => ts.timeslotId === session.timeSlotId)
-        const classInClasses = classes.find((cls) => cls.classId === session.classId) // Tìm kiếm thông tin lớp từ mảng classes
+        const classInClasses = classes.find((cls) => cls.classId === session.classId)
 
         if (timeslot) {
           const timeKey = `${formatTime(timeslot.startTime)}-${formatTime(timeslot.endTime)}`
 
           let classCodeToDisplay = "Lớp N/A"
 
-          // Ưu tiên session.classCode nếu nó tồn tại và KHÔNG PHẢI là chuỗi "string" (case-insensitive)
           if (
             session.classCode &&
             typeof session.classCode === "string" &&
@@ -1257,13 +1287,11 @@ const Schedule = () => {
           ) {
             classCodeToDisplay = session.classCode
           } else if (classInClasses?.classCode) {
-            // Fallback dùng classCode từ API Class nếu session.classCode lỗi hoặc là "string"
             classCodeToDisplay = classInClasses.classCode
           }
 
           const sessionInfo = `${classCodeToDisplay}`
-          // const sessionInfo = `${classCodeToDisplay} - Buổi ${session.sessionNumber}`
-          const dayKey = getDayKeyFromDate(dayInfo.date) // date ở đây là dateOfDay của DayType
+          const dayKey = getDayKeyFromDate(dayInfo.date)
           if (dayKey && scheduleData[timeKey]) {
             scheduleData[timeKey][dayKey] = sessionInfo
           }
@@ -1276,47 +1304,39 @@ const Schedule = () => {
 
   // Navigation handlers
   const handlePrevWeek = () => {
-    const weekNumbers = getWeekNumbers() // Lấy số tuần của tháng hiện tại
+    const weekNumbers = getWeekNumbers()
     if (currentWeekIndex > 0) {
       setCurrentWeekIndex(currentWeekIndex - 1)
     } else {
-      // Đã ở tuần đầu tiên của tháng hiện tại, thử chuyển sang tháng trước
       if (currentScheduleIndex > 0) {
-        setCurrentScheduleIndex(currentScheduleIndex - 1) // Chuyển sang tháng trước
-        // Sau khi chuyển tháng, cần cập nhật lại currentWeekIndex
-        // Lấy số tuần của tháng MỚI (tháng trước đó)
-        const prevScheduleId = schedules[currentScheduleIndex - 1]?.scheduleId
+        const prevScheduleIndex = currentScheduleIndex - 1
+        setCurrentScheduleIndex(prevScheduleIndex)
+
+        const prevScheduleId = schedules[prevScheduleIndex]?.scheduleId
         if (prevScheduleId !== undefined) {
           const prevScheduleWeeks = weeks.filter((week) => week.scheduleId === prevScheduleId)
           const prevWeekNumbers = [...new Set(prevScheduleWeeks.map((week) => week.weekNumberInMonth))].sort(
             (a, b) => a - b,
           )
-          if (prevWeekNumbers.length > 0) {
-            setCurrentWeekIndex(prevWeekNumbers.length - 1) // Đặt về tuần cuối cùng của tháng trước đó
-          } else {
-            setCurrentWeekIndex(0) // Nếu tháng trước không có tuần nào, về 0
-          }
+          setCurrentWeekIndex(prevWeekNumbers.length > 0 ? prevWeekNumbers.length - 1 : 0)
         } else {
-          setCurrentWeekIndex(0) // Nếu không tìm thấy schedule trước đó, về 0
+          setCurrentWeekIndex(0)
         }
       } else {
-        // Đã ở tuần đầu tiên của lịch đầu tiên, không làm gì cả
         message.info("Bạn đang ở tuần đầu tiên của thời khóa biểu đầu tiên rồi.")
       }
     }
   }
 
   const handleNextWeek = () => {
-    const weekNumbers = getWeekNumbers() // Lấy số tuần của tháng hiện tại
+    const weekNumbers = getWeekNumbers()
     if (currentWeekIndex < weekNumbers.length - 1) {
       setCurrentWeekIndex(currentWeekIndex + 1)
     } else {
-      // Đã ở tuần cuối cùng của tháng hiện tại, thử chuyển sang tháng tiếp theo
       if (currentScheduleIndex < schedules.length - 1) {
-        setCurrentScheduleIndex(currentScheduleIndex + 1) // Chuyển sang tháng tiếp theo
-        setCurrentWeekIndex(0) // Luôn về tuần đầu tiên của tháng tiếp theo
+        setCurrentScheduleIndex(currentScheduleIndex + 1)
+        setCurrentWeekIndex(0)
       } else {
-        // Đã ở tuần cuối cùng của lịch cuối cùng, không làm gì cả
         message.info("Bạn đang ở tuần cuối cùng của thời khóa biểu cuối cùng rồi.")
       }
     }
@@ -1327,7 +1347,6 @@ const Schedule = () => {
     if (!dayInfo.date) return false
     const today = new Date()
     const dayDate = new Date(dayInfo.date)
-    // Đặt giờ, phút, giây, mili giây về 0 để so sánh chỉ ngày
     today.setHours(0, 0, 0, 0)
     dayDate.setHours(0, 0, 0, 0)
     return today.getTime() === dayDate.getTime()
@@ -1335,8 +1354,7 @@ const Schedule = () => {
 
   const renderCurrentWeekSchedule = () => {
     const weekNumbers = getWeekNumbers()
-    const currentWeekNumber = weekNumbers[currentWeekIndex] // Sử dụng currentWeekIndex
-    // const weekTitle = `Tuần ${currentWeekNumber || 'N/A'}`; // Bỏ cái này đi vì sẽ hiển thị ở trên
+    const currentWeekNumber = weekNumbers[currentWeekIndex]
 
     const currentWeekDays = getCurrentWeekDays()
     const scheduleData = buildScheduleData()
@@ -1344,7 +1362,6 @@ const Schedule = () => {
       .sort((a, b) => a.startTime.localeCompare(b.startTime))
       .map((ts) => `${formatTime(ts.startTime)}-${formatTime(ts.endTime)}`)
 
-    // Kiểm tra nếu không có dữ liệu để hiển thị
     if (!currentWeekNumber || currentWeekDays.every((d) => !d.date) || timeSlots.length === 0) {
       return (
         <div style={{ textAlign: "center", padding: "50px 0" }}>
@@ -1355,11 +1372,7 @@ const Schedule = () => {
 
     return (
       <div className="schedule-week-section">
-        {/* <Title level={3} className="schedule-week-title">
-          {weekTitle} // Bỏ dòng này đi
-        </Title> */}
         <div className="schedule-table-wrapper">
-          {/* Header Row */}
           <div className="schedule-table-header">
             <div className="schedule-time-header">Thời gian</div>
             {currentWeekDays.map((dayInfo) => (
@@ -1370,12 +1383,10 @@ const Schedule = () => {
                 }`}
               >
                 <div className="schedule-day-name">{dayInfo.label}</div>
-                {/* <div className="schedule-day-date">{dayInfo.formattedDate || "--/--"}</div> // Bỏ dòng này đi */}
               </div>
             ))}
           </div>
 
-          {/* Time Slot Rows */}
           {timeSlots.map((timeSlot) => (
             <div key={timeSlot} className="schedule-table-row">
               <div className="schedule-time-cell">{timeSlot}</div>
@@ -1386,7 +1397,7 @@ const Schedule = () => {
                 const isTodayCol = isTodayColumn(dayInfo)
                 return (
                   <div
-                    key={`${timeSlot}-${dayInfo.key}`} // Key duy nhất hơn
+                    key={`${timeSlot}-${dayInfo.key}`}
                     className={`schedule-class-cell ${
                       cellClassInfo ? "schedule-has-class" : ""
                     } ${isTodayCol ? "schedule-today-column" : ""}`}
@@ -1421,7 +1432,6 @@ const Schedule = () => {
     )
   }
 
-  // Nếu không có schedule nào
   if (schedules.length === 0) {
     return (
       <div className="schedule-main-page">
@@ -1437,27 +1447,24 @@ const Schedule = () => {
     )
   }
 
-  // Lấy thông tin tuần để hiển thị "Từ ngày ... đến ngày ..."
   const weekNumbersForCurrentSchedule = getWeekNumbers()
   const currentWeekNumberToDisplay = weekNumbersForCurrentSchedule[currentWeekIndex] || "N/A"
 
-  const currentWeekDays = getCurrentWeekDays();
-  let startDate = "N/A";
-  let endDate = "N/A";
+  const currentWeekDays = getCurrentWeekDays()
+  let startDate = "N/A"
+  let endDate = "N/A"
 
   if (currentWeekDays.length > 0) {
-      // Lấy ngày đầu tiên và cuối cùng có dữ liệu thực tế
-      const actualDates = currentWeekDays
-                            .filter(day => day.date)
-                            .map(day => new Date(day.date))
-                            .sort((a, b) => a.getTime() - b.getTime());
-      
-      if (actualDates.length > 0) {
-          startDate = formatDateForDisplay(actualDates[0].toISOString());
-          endDate = formatDateForDisplay(actualDates[actualDates.length - 1].toISOString());
-      }
-  }
+    const actualDates = currentWeekDays
+      .filter((day) => day.date)
+      .map((day) => new Date(day.date))
+      .sort((a, b) => a.getTime() - b.getTime())
 
+    if (actualDates.length > 0) {
+      startDate = formatDateForDisplay(actualDates[0].toISOString())
+      endDate = formatDateForDisplay(actualDates[actualDates.length - 1].toISOString())
+    }
+  }
 
   return (
     <div className="schedule-main-page">
@@ -1466,17 +1473,16 @@ const Schedule = () => {
           Thời khóa biểu
         </Title>
 
-        {/* Week Navigation */}
         <div className="schedule-month-navigation">
           <Button
             type="primary"
             icon={<LeftOutlined />}
             onClick={handlePrevWeek}
             className="schedule-nav-button"
-            disabled={currentScheduleIndex === 0 && currentWeekIndex === 0} // Disable nếu ở tuần đầu tiên của lịch đầu tiên
+            disabled={currentScheduleIndex === 0 && currentWeekIndex === 0}
           />
           <div className="schedule-current-month">
-            Tuần {currentWeekNumberToDisplay} -  ({startDate} - {endDate}) - Tháng {getCurrentMonthYear()}
+            Tuần {currentWeekNumberToDisplay} - ({startDate} - {endDate}) - Tháng {getCurrentMonthYear()}
           </div>
           <Button
             type="primary"
@@ -1486,11 +1492,10 @@ const Schedule = () => {
             disabled={
               currentScheduleIndex === schedules.length - 1 &&
               currentWeekIndex === weekNumbersForCurrentSchedule.length - 1
-            } // Disable nếu ở tuần cuối cùng của lịch cuối cùng
+            }
           />
         </div>
 
-        {/* Legend */}
         <div className="schedule-legend">
           <Text className="schedule-legend-title">Chú thích</Text>
           <div className="schedule-legend-item">
@@ -1499,7 +1504,6 @@ const Schedule = () => {
           </div>
         </div>
 
-        {/* Current Week Schedule */}
         <div className="schedule-weeks-container">{renderCurrentWeekSchedule()}</div>
       </div>
     </div>

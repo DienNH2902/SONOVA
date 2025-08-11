@@ -4,14 +4,14 @@
 }
 
 .favorite-header {
-  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  background: #192f59;
   padding: 30px 40px;
-  display: flex;
+  display: flex-column;
   align-items: center;
   gap: 20px;
 }
 
-.back-button {
+.back-button-favorite {
   color: white !important;
   border: 1px solid rgba(255, 255, 255, 0.3) !important;
   border-radius: 8px !important;
@@ -22,20 +22,23 @@
   gap: 8px !important;
   font-weight: 500 !important;
   transition: all 0.3s ease !important;
+  font-family: 'SVN-Gilroy' !important;
 }
 
-.back-button:hover {
+.back-button-favorite:hover {
   background: rgba(255, 255, 255, 0.1) !important;
   border-color: rgba(255, 255, 255, 0.5) !important;
   color: white !important;
 }
 
-.page-title {
+.page-title-favorite {
   font-size: 32px;
   font-weight: 600;
   color: white;
   margin: 0;
   flex: 1;
+  padding: 40px 30px;
+  font-family: 'UTM Americana' !important;
 }
 
 .favorite-content {
@@ -54,7 +57,7 @@
 
 .empty-icon {
   font-size: 80px;
-  color: #d9d9d9;
+  color: #ffa940;
   margin-bottom: 24px;
 }
 
@@ -132,8 +135,8 @@
   right: 12px;
   width: 36px;
   height: 36px;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 50%;
+  /* background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -142,14 +145,14 @@
   z-index: 2;
 }
 
-.heart-icon:hover {
+/* .heart-icon:hover {
   background: white;
   transform: scale(1.1);
-}
+} */
 
 .heart-filled {
-  color: #ff4d4f;
-  font-size: 18px;
+  color: #ff9c0d;
+  font-size: 25px;
 }
 
 .card-content {
@@ -316,7 +319,7 @@
     gap: 16px;
   }
 
-  .back-button {
+  .back-button-favorite {
     align-self: flex-start;
   }
 }

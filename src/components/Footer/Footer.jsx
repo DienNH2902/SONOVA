@@ -33,7 +33,7 @@ const Footer = () => {
                 </Text>
                 <br />
                 <Text className="footer-text">
-                  <strong>Hotline:</strong> 0909863921
+                  <strong>Hotline:</strong> 0375044354
                 </Text>
               </div>
             </div>

@@ -1171,10 +1171,10 @@ const StudentInfo = () => {
                 </Title>
 
                 {/* Filters Section */}
-                <div className="filters-section">
+                <div className="filters-section-user">
                     <div className="filters-left">
                         {/* Checkbox "Đã chọn X" sẽ là tổng số đã chọn trên cả 2 bảng */}
-                        <Checkbox
+                        {/* <Checkbox
                             checked={selectedRowKeys.length > 0 && selectedRowKeys.length === (paginatedStudentData.length + paginatedTeacherData.length)}
                             indeterminate={selectedRowKeys.length > 0 && selectedRowKeys.length < (paginatedStudentData.length + paginatedTeacherData.length)}
                             onChange={(e) => {
@@ -1187,8 +1187,8 @@ const StudentInfo = () => {
                             className="select-all-checkbox"
                         >
                             Đã chọn {selectedRowKeys.length}
-                        </Checkbox>
-                        <Button type="link" onClick={clearFilters} className="clear-filters-btn">
+                        </Checkbox> */}
+                        <Button type="link" onClick={clearFilters} className="clear-filters-btn-user">
                             Xóa bộ lọc
                         </Button>
                         <Input
@@ -1202,7 +1202,7 @@ const StudentInfo = () => {
 
                     <div className="filters-right">
                         <div className="filter-group">
-                            <span className="filter-label">Lớp học:</span>
+                            <span className="filter-label-user">Lớp học:</span>
                             <Select
                                 value={classFilter}
                                 onChange={(value) => handleFilterChange("class", value)}
@@ -1223,7 +1223,7 @@ const StudentInfo = () => {
                         </div>
 
                         <div className="filter-group">
-                            <span className="filter-label">Trạng thái:</span>
+                            <span className="filter-label-user">Trạng thái:</span>
                             <Select
                                 value={statusFilter}
                                 onChange={(value) => handleFilterChange("status", value)}
@@ -1239,8 +1239,8 @@ const StudentInfo = () => {
 
                 {/* Student Table Section */}
                 {filteredAndSearchedStudents.length > 0 && (
-                    <div className="table-section">
-                        <Title level={2} className="section-title">Học viên</Title>
+                    <div className="table-section-user">
+                        <Title level={2} className="section-title-user">Học viên</Title>
                         <div className="results-info">
                             <span>
                                 Hiển thị {paginatedStudentData.length} / {filteredAndSearchedStudents.length} học viên
@@ -1251,7 +1251,7 @@ const StudentInfo = () => {
                             <Table
                                 columns={columns}
                                 dataSource={paginatedStudentData}
-                                rowSelection={rowSelection}
+                                // rowSelection={rowSelection}
                                 pagination={false}
                                 className="student-table"
                                 size="middle"
@@ -1265,7 +1265,7 @@ const StudentInfo = () => {
                                 showSizeChanger={false}
                                 onChange={setStudentCurrentPage}
                                 className="custom-pagination"
-                                showTotal={(total, range) => `${range[0]}-${range[1]} của ${total} học viên`}
+                                // showTotal={(total, range) => `${range[0]}-${range[1]} của ${total} học viên`}
                             />
                         </div>
                     </div>
@@ -1273,8 +1273,8 @@ const StudentInfo = () => {
 
                 {/* Teacher Table Section */}
                 {filteredAndSearchedTeachers.length > 0 && (
-                    <div className="table-section" style={{ marginTop: '40px' }}>
-                        <Title level={2} className="section-title">Giáo viên</Title>
+                    <div className="table-section-user" style={{ marginTop: '40px' }}>
+                        <Title level={2} className="section-title-user">Giáo viên</Title>
                         <div className="results-info">
                             <span>
                                 Hiển thị {paginatedTeacherData.length} / {filteredAndSearchedTeachers.length} giáo viên
@@ -1285,25 +1285,25 @@ const StudentInfo = () => {
                             <Table
                                 columns={columns}
                                 dataSource={paginatedTeacherData}
-                                rowSelection={{
-                                    selectedRowKeys,
-                                    onChange: (newSelectedRowKeys) => setSelectedRowKeys(newSelectedRowKeys),
-                                    onSelectAll: (selected, selectedRows, changeRows) => {
-                                        const currentPaginatedKeys = paginatedTeacherData.map((item) => item.key);
-                                        if (selected) {
-                                            setSelectedRowKeys(prev => Array.from(new Set([...prev, ...currentPaginatedKeys])));
-                                        } else {
-                                            setSelectedRowKeys(prev => prev.filter(key => !currentPaginatedKeys.includes(key)));
-                                        }
-                                    },
-                                    onSelect: (record, selected) => {
-                                        if (selected) {
-                                            setSelectedRowKeys(prev => [...prev, record.key]);
-                                        } else {
-                                            setSelectedRowKeys(prev => prev.filter(key => key !== record.key));
-                                        }
-                                    }
-                                }}
+                                // rowSelection={{
+                                //     selectedRowKeys,
+                                //     onChange: (newSelectedRowKeys) => setSelectedRowKeys(newSelectedRowKeys),
+                                //     onSelectAll: (selected, selectedRows, changeRows) => {
+                                //         const currentPaginatedKeys = paginatedTeacherData.map((item) => item.key);
+                                //         if (selected) {
+                                //             setSelectedRowKeys(prev => Array.from(new Set([...prev, ...currentPaginatedKeys])));
+                                //         } else {
+                                //             setSelectedRowKeys(prev => prev.filter(key => !currentPaginatedKeys.includes(key)));
+                                //         }
+                                //     },
+                                //     onSelect: (record, selected) => {
+                                //         if (selected) {
+                                //             setSelectedRowKeys(prev => [...prev, record.key]);
+                                //         } else {
+                                //             setSelectedRowKeys(prev => prev.filter(key => key !== record.key));
+                                //         }
+                                //     }
+                                // }}
                                 pagination={false}
                                 className="teacher-table"
                                 size="middle"
@@ -1317,7 +1317,7 @@ const StudentInfo = () => {
                                 showSizeChanger={false}
                                 onChange={setTeacherCurrentPage}
                                 className="custom-pagination"
-                                showTotal={(total, range) => `${range[0]}-${range[1]} của ${total} giáo viên`}
+                                // showTotal={(total, range) => `${range[0]}-${range[1]} của ${total} giáo viên`}
                             />
                         </div>
                     </div>

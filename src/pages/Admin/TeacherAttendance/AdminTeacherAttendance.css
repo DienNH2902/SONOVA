@@ -1,7 +1,8 @@
 .student-attendance-page {
   min-height: 100vh;
-  background: #f5f5f0;
+  background: #f5f7ed;
   padding: 40px 20px;
+  font-family: 'SVN-Gilroy';
 }
 
 .student-attendance-container {
@@ -34,12 +35,14 @@
   color: #1e3a5f !important;
 }
 
-.page-title {
+.page-title-attendance {
   color: #1e3a5f !important;
   font-size: 48px !important;
   font-weight: 700 !important;
   margin-bottom: 0 !important;
+  font-family: 'UTM Americana';
   letter-spacing: 2px;
+  text-align: center;
 }
 
 .content-layout {
@@ -49,11 +52,18 @@
   align-items: start;
 }
 
-.table-section {
-  background: white;
+.table-section-attendance {
+  background: #f5f7ed;
   border-radius: 12px;
   padding: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); */
+}
+
+.choose-class {
+  font-family: 'SVN-Gilroy';
+  color: #1e3a5f;
+  margin-bottom: 16px;
+  font-size: 20px;
 }
 
 .attendance-table {
@@ -68,17 +78,27 @@
   font-size: 16px;
   border: none;
   padding: 16px 12px;
+  font-family: 'SVN-Gilroy';
 }
 
 .attendance-table .ant-table-tbody > tr > td {
   padding: 16px 12px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 0px solid #f0f0f0;
   font-size: 14px;
   font-weight: 500;
+  font-family: 'SVN-Gilroy';
 }
 
-.attendance-table .ant-table-tbody > tr:hover > td {
+/* .attendance-table .ant-table-tbody > tr:hover > td {
   background: #f8f9fa;
+} */
+
+.attendance-table .ant-table-tbody > tr:nth-child(odd) {
+  background: #f5f7ed;
+}
+
+.attendance-table .ant-table-tbody > tr:nth-child(even) {
+  background: #f5f7ed;
 }
 
 .stt-column {
@@ -112,7 +132,7 @@
 .class-info-card {
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  /* box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12); */
   border: none;
   background: white;
 }
@@ -127,12 +147,13 @@
   text-align: center;
 }
 
-.class-code {
+.class-code-attendance {
   color: white !important;
   font-size: 18px !important;
   font-weight: 700 !important;
+  font-family: 'SVN-Gilroy' !important;
   letter-spacing: 1px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  /* text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); */
 }
 
 .class-details {
@@ -154,14 +175,15 @@
   background: rgba(255, 169, 64, 0.1);
 }
 
-.detail-text {
+.detail-text-attendance {
   color: #1e3a5f !important;
   font-size: 15px !important;
   font-weight: 500;
   line-height: 1.6;
+  font-family: 'SVN-Gilroy' !important;
 }
 
-.confirm-button {
+.confirm-button-attendance {
   background: #1e3a5f;
   border-color: #1e3a5f;
   height: 50px;
@@ -169,20 +191,21 @@
   font-weight: 600;
   border-radius: 8px;
   transition: all 0.3s ease;
+  font-family: 'SVN-Gilroy' !important;
 }
 
-.confirm-button:hover {
+.confirm-button-attendance:hover {
   background: #2c5282;
   border-color: #2c5282;
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(30, 58, 95, 0.3);
+  /* box-shadow: 0 8px 20px rgba(30, 58, 95, 0.3); */
 }
 
 /* Success Modal Styles */
 .success-modal .ant-modal-content {
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); */
   align-items: center;
     justify-content: center;
 }
@@ -221,9 +244,10 @@
   font-weight: 600 !important;
   margin-bottom: 0 !important;
   letter-spacing: 1px;
+  font-family: 'SVN-Gilroy' !important;
 }
 
-.modal-confirm-btn {
+.modal-confirm-btn-attendance {
   background: #1e3a5f;
   border-color: #1e3a5f;
   height: 40px;
@@ -232,9 +256,10 @@
   min-width: 100px;
   align-items: center;
   justify-content: center;
+  font-family: 'SVN-Gilroy' !important;
 }
 
-.modal-confirm-btn:hover {
+.modal-confirm-btn-attendance:hover {
   background: #2c5282;
   border-color: #2c5282;
 }
@@ -263,7 +288,7 @@
     flex: 1;
   }
 
-  .confirm-button {
+  .confirm-button-attendance {
     min-width: 200px;
   }
 }
@@ -273,11 +298,11 @@
     padding: 20px 15px;
   }
 
-  .page-title {
+  .page-title-attendance {
     font-size: 36px !important;
   }
 
-  .table-section {
+  .table-section-attendance {
     padding: 16px;
     overflow-x: auto;
   }
@@ -296,7 +321,7 @@
     flex-direction: column;
   }
 
-  .confirm-button {
+  .confirm-button-attendance {
     min-width: auto;
   }
 }
@@ -308,7 +333,7 @@
     gap: 12px;
   }
 
-  .page-title {
+  .page-title-attendance {
     font-size: 28px !important;
   }
 
@@ -339,7 +364,7 @@
   animation: slideInRight 0.6s ease-out;
 }
 
-.confirm-button {
+.confirm-button-attendance {
   animation: slideInRight 0.8s ease-out;
 }
 

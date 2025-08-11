@@ -788,9 +788,9 @@ const CourseSchedule = () => {
         </Title>
 
         {/* Filter Section */}
-        <Card className="filter-section" bordered={false}>
+        <Card className="filter-section-op">
           <Space size="middle" wrap>
-            <div className="filter-item">
+            <div className="filter-item-create">
               <label>Môn học:</label>
               <Select
                 placeholder="Chọn môn học"
@@ -806,7 +806,7 @@ const CourseSchedule = () => {
                 ))}
               </Select>
             </div>
-            <div className="filter-item">
+            <div className="filter-item-create">
               <label>Giảng viên:</label>
               <Select
                 placeholder="Chọn giảng viên"
@@ -831,13 +831,13 @@ const CourseSchedule = () => {
         {/* Basic Course Schedule Section */}
         <div className="schedule-section">
           <div className="section-header">
-            <Title level={3} className="section-title basic-title">
+            <Title level={3} className="section-title-basic-title">
               Lịch học cơ bản
             </Title>
             <Button
               type="primary"
               icon={<PlusOutlined />}
-              className="add-button"
+              className="add-button-create"
               onClick={() => handleAddClass("basic")}
             >
               Thêm lịch khai giảng
@@ -860,13 +860,13 @@ const CourseSchedule = () => {
         {/* Advanced Course Schedule Section */}
         <div className="schedule-section">
           <div className="section-header">
-            <Title level={3} className="section-title advanced-title">
+            <Title level={3} className="section-title-advanced-title">
               Lịch học nâng cao
             </Title>
             <Button
               type="primary"
               icon={<PlusOutlined />}
-              className="add-button"
+              className="add-button-create"
               onClick={() => handleAddClass("advanced")}
             >
               Thêm lịch khai giảng
@@ -903,7 +903,7 @@ const CourseSchedule = () => {
         ]}
         width={600}
       >
-        <Form form={addForm} layout="vertical" name="add_schedule_form">
+        <Form form={addForm} layout="vertical" name="add-schedule-form">
           <Form.Item name="classCode" label="Mã lớp" rules={[{ required: true, message: "Vui lòng nhập mã lớp" }]}>
             <Input placeholder="Nhập mã lớp" />
           </Form.Item>

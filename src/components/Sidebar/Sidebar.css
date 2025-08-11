@@ -37,6 +37,7 @@
   border-radius: 0;
   text-align: left;
   font-size: 12px;
+  font-family: 'SVN-Gilroy';
 }
 
 .sidebar-menu .ant-menu-item:hover {
@@ -54,6 +55,8 @@
   color: white;
   padding-right: 83px; /* Giữ khoảng trống cho mũi tên */
   font-size: 13px;
+  font-family: 'SVN-Gilroy';
+  text-align: left;
 }
 
 /* Style cho icon mũi tên của submenu, nếu cần tùy chỉnh thêm */

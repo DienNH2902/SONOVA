@@ -134,10 +134,10 @@ const Favorite = () => {
     <div className="favorite-page">
       {/* Header */}
       <div className="favorite-header">
-        <Button icon={<ArrowLeftOutlined />} onClick={handleBack} className="back-button" type="text">
+        <Button icon={<ArrowLeftOutlined />} onClick={handleBack} className="back-button-favorite" type="text">
           Quay lại
         </Button>
-        <h1 className="page-title">Mục yêu thích của bạn</h1>
+        <h1 className="page-title-favorite">Mục yêu thích của bạn</h1>
       </div>
 
       {/* Content */}
@@ -195,7 +195,7 @@ const Favorite = () => {
       </div>
 
       {/* Detail Modal */}
-      <Modal
+      {/* <Modal
         title={selectedSheet?.musicName}
         open={isDetailModalVisible}
         onCancel={() => setIsDetailModalVisible(false)}
@@ -226,6 +226,50 @@ const Favorite = () => {
                       />
                     </div>
                     <div className="sheet-info">
+                      <h5>Sheet {index + 1}</h5>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </Modal> */}
+
+      <Modal
+        // title={selectedSheet?.musicName}
+        open={isDetailModalVisible}
+        onCancel={() => setIsDetailModalVisible(false)}
+        footer={null}
+        width={800}
+        className="student-sheet-music-sheet-detail-modal"
+      >
+        {selectedSheet && (
+          <div className="student-sheet-music-modal-content">
+            <div className="student-sheet-music-modal-header">
+              <div className="student-sheet-music-modal-info">
+                <h3>{selectedSheet.musicName}</h3>
+                <p>Tác giả: {selectedSheet.composer}</p>
+                <p>Số lượng sheet: {selectedSheet.sheetQuantity}</p>
+                <p>Lượt yêu thích: {selectedSheet.favoriteCount}</p>
+              </div>
+            </div>
+            <div className="student-sheet-music-sheets-container">
+              <h4>Danh sách Sheet</h4>
+              <div className="student-sheet-music-sheets-list">
+                {selectedSheet.sheets?.map((sheet, index) => (
+                  <div
+                    key={sheet.sheetId}
+                    className="student-sheet-music-sheet-item"
+                  >
+                    <div className="student-sheet-music-sheet-image-container">
+                      <Image
+                        src={sheet.sheetUrl || "/placeholder.svg"}
+                        alt={`Sheet ${index + 1}`}
+                        className="student-sheet-music-sheet-image"
+                      />
+                    </div>
+                    <div className="student-sheet-music-sheet-info">
                       <h5>Sheet {index + 1}</h5>
                     </div>
                   </div>

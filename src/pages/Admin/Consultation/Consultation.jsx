@@ -867,7 +867,7 @@ const Consultation = () => {
           <span className="admin-name">{currentAdmin.username}</span> {/* Hiển thị username */}
         </div>
 
-        <Card className="consultation-filter-card" style={{ marginBottom: "20px" }} bordered={false}>
+        <Card className="consultation-filter-card" style={{ marginBottom: "20px" }}>
           <Space size="middle" wrap>
             <Radio.Group
               onChange={(e) => setFilterStatus(e.target.value)}
@@ -879,7 +879,7 @@ const Consultation = () => {
               <Radio.Button value="contacted">Đã liên hệ</Radio.Button>
               <Radio.Button value="all">Tất cả</Radio.Button>
             </Radio.Group>
-            <Button icon={<FilterOutlined />} onClick={clearFilter} className="clear-filter-button">
+            <Button icon={<FilterOutlined />} onClick={clearFilter} className="clear-filter-button-consultation">
               Xóa bộ lọc
             </Button>
           </Space>

@@ -1,7 +1,10 @@
+
+
 .create-account-page {
   min-height: 100vh;
-  background: #f5f5f5;
+  background: #f7f5ed;
   padding: 40px 20px;
+  font-family: 'Gilroy', sans-serif;
 }
 
 .create-account-container {
@@ -18,17 +21,18 @@
 }
 
 .form-container {
-  background: white;
+  background: #f7f5ed;
   border-radius: 16px;
   padding: 40px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); */
   height: fit-content;
 }
 
 .create-account-form .ant-form-item-label > label {
   color: #1e3a5f;
-  font-weight: 500;
+  font-weight: 700;
   font-size: 16px;
+  font-family: 'SVN-Gilroy';
 }
 
 .form-input {
@@ -48,22 +52,24 @@
   width: 100%;
 }
 
-.radio-group {
+.radio-group-create {
   display: flex;
   gap: 24px;
+
 }
 
-.radio-group .ant-radio-wrapper {
+.radio-group-create .ant-radio-wrapper {
   color: #333;
   font-size: 16px;
+    font-family: 'SVN-Gilroy';
 }
 
-.radio-group .ant-radio-checked .ant-radio-inner {
+.radio-group-create .ant-radio-checked .ant-radio-inner {
   border-color: #1e3a5f;
   background-color: #1e3a5f;
 }
 
-.radio-group .ant-radio-wrapper:hover .ant-radio-inner {
+.radio-group-create .ant-radio-wrapper:hover .ant-radio-inner {
   border-color: #1e3a5f;
 }
 
@@ -124,6 +130,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  font-family: 'SVN-Gilroy';
 }
 
 .add-course-btn:hover {
@@ -145,6 +152,7 @@
   border-radius: 8px;
   font-size: 16px;
   font-weight: 500;
+  font-family: 'SVN-Gilroy';
 }
 
 .submit-btn:hover {
@@ -231,7 +239,7 @@
     padding: 24px;
   }
 
-  .radio-group {
+  .radio-group-create {
     flex-direction: column;
     gap: 12px;
   }
@@ -300,4 +308,13 @@
 .success-content button {
   background-color: #0b3d91;
   border: none;
+}
+
+
+.form-item-create {
+  font-family: 'SVN-Gilroy' !important;
+}
+
+.form-input-create {
+  font-family: 'SVN-Gilroy' !important;
 }
