@@ -16,7 +16,7 @@ const Home = () => {
       <section className="course-hero">
         <div className="half-circle-container">
           <div className="half-circle">
-            <img src={firstHome} alt="Piano Player" />
+            <img src={firstHome} alt="Kid Player" />
             {/* <div class="text-overlay">
                   <h2>Sonova</h2>
                   <p>Hành trình mang đến giá trị</p>

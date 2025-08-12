@@ -479,7 +479,7 @@ const Contact = () => {
                   fontFamily: "Gilroy",
                 }}
               >
-                0908051111
+                0375044354
               </p>
             </div>
 

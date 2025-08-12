@@ -51,7 +51,7 @@ const Footer = () => {
                   </a>
                 </div>
                 <div>
-                  <a href="/courses" className="footer-link">
+                  <a href="/course/piano-basic" className="footer-link">
                     Các khóa học
                   </a>
                 </div>
@@ -71,22 +71,22 @@ const Footer = () => {
               </Title>
               <div className="footer-links">
                 <div>
-                  <a href="/courses/piano" className="footer-link">
+                  <a href="/course/piano-basic" className="footer-link">
                     Piano căn bản
                   </a>
                 </div>
                 <div>
-                  <a href="/courses/piano-advanced" className="footer-link">
+                  <a href="/course/piano-advanced" className="footer-link">
                     Piano nâng cao
                   </a>
                 </div>
                 <div>
-                  <a href="/courses/guitar" className="footer-link">
+                  <a href="/course/guitar-basic" className="footer-link">
                     Guitar căn bản
                   </a>
                 </div>
                 <div>
-                  <a href="/courses/guitar-advanced" className="footer-link">
+                  <a href="/course/guitar-advanced" className="footer-link">
                     Guitar nâng cao
                   </a>
                 </div>
@@ -100,7 +100,7 @@ const Footer = () => {
                 Mạng xã hội
               </Title>
               <div className="footer-social">
-                <a href="#" className="social-link">
+                <a href="https://www.facebook.com/nentangsonova" className="social-link">
                   <FacebookOutlined /> Facebook
                 </a>
                 <a href="#" className="social-link">

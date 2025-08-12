@@ -1350,7 +1350,7 @@ const StudentInfo = () => {
                 <Form form={form} layout="vertical">
                     <Form.Item
                         name="classes"
-                        label="Chọn (các) lớp học"
+                        label="Chọn (các) lớp học, tối thiểu 1 lớp"
                         rules={[{ required: false, message: 'Vui lòng chọn lớp học!' }]}
                     >
                         <Select
