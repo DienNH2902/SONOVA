@@ -9,6 +9,9 @@ import {
   UserOutlined,
   PhoneOutlined, // Dùng cho Tài khoản
   LogoutOutlined,
+  ScheduleOutlined,
+  MenuOutlined,
+  FileOutlined,
 } from "@ant-design/icons";
 import "../Sidebar.css"; // Giả sử đây là file CSS chung
 import { useLocation, useNavigate } from "react-router-dom";
@@ -28,6 +31,8 @@ const StudentSidebar = () => {
         return ["sheet-music"];
       case "/student/profile":
         return ["profile"];
+      case "/student/schedule":
+        return ["schedule"];
       default:
         return [];
     }
@@ -49,6 +54,18 @@ const StudentSidebar = () => {
       label: "Khoá học của tôi",
       className: "sidebar-item-yellow",
       onClick: () => navigate("/student"),
+    },
+    {
+      key: "schedule",
+      icon: <ScheduleOutlined />, // Vẫn dùng CalendarOutlined như mày muốn
+      label: "Thời khóa biểu",
+      onClick: () => navigate("/student/schedule"),
+    },
+    {
+      key: "materials",
+      icon: <FileOutlined />, // Vẫn dùng CalendarOutlined như mày muốn
+      label: "Tài liệu",
+      onClick: () => navigate("/student/materials"),
     },
     {
       key: "sheet-music",

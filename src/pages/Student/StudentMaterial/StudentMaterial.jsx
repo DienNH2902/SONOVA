@@ -1,113 +1,342 @@
-"use client"
+"use client";
 
-import { Typography, Collapse, Button } from "antd"
-import { LeftOutlined, DownOutlined } from "@ant-design/icons"
-import { useNavigate } from "react-router-dom"
-import "./StudentMaterial.css"
+import {
+  Typography,
+  Table,
+  Button,
+  Form,
+  Input,
+  Modal,
+  message,
+  Select,
+  Popconfirm,
+  Space,
+} from "antd";
+import {
+  EditOutlined,
+  PlusOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
+import "../../Admin/Materials/Materials.css";
+import { useState, useEffect } from "react";
 
-const { Title, Text } = Typography
-const { Panel } = Collapse
+const { Title } = Typography;
+const { Option } = Select;
+const { confirm } = Modal;
+
+const baseUrl =
+  "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api";
 
 const StudentMaterials = () => {
-  const navigate = useNavigate()
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [form] = Form.useForm();
+  const [editingRecord, setEditingRecord] = useState(null);
+  const [materials, setMaterials] = useState([]);
+  const [instruments, setInstruments] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleBack = () => {
-    navigate("/student")
-  }
+  // Fetch data from API
+  const fetchInstruments = async () => {
+    try {
+      const response = await fetch(`${baseUrl}/Instrument`);
+      const data = await response.json();
+      setInstruments(data);
+    } catch (error) {
+      message.error("Không thể tải danh sách nhạc cụ.");
+      console.error("Error fetching instruments:", error);
+    }
+  };
 
-  const materialsData = [
+  const fetchMaterials = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${baseUrl}/Document`);
+      const data = await response.json();
+      setMaterials(data);
+    } catch (error) {
+      message.error("Không thể tải danh sách tài liệu.");
+      console.error("Error fetching materials:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchInstruments();
+    fetchMaterials();
+  }, []);
+
+  const showModal = (instrumentId) => {
+    setIsEditMode(false);
+    setEditingRecord(null);
+    form.resetFields();
+    form.setFieldsValue({ instrumentId: instrumentId }); // Đặt giá trị mặc định cho nhạc cụ
+    setIsModalVisible(true);
+  };
+
+  const showEditModal = (record) => {
+    setIsEditMode(true);
+    setEditingRecord(record);
+    form.setFieldsValue({
+      lesson: record.lesson,
+      lessonName: record.lessonName,
+      link: record.link,
+      instrumentId: record.instrumentId,
+    });
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    form.resetFields();
+  };
+
+  const handleFinish = async (values) => {
+    try {
+      let response;
+      if (isEditMode) {
+        // Thêm documentId vào payload khi ở chế độ chỉnh sửa
+        const payload = {
+          documentId: editingRecord.documentId,
+          ...values,
+        };
+        response = await fetch(`${baseUrl}/Document/${editingRecord.documentId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+      } else {
+        response = await fetch(`${baseUrl}/Document`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(values),
+        });
+      }
+
+      if (!response.ok) {
+        throw new Error("Lỗi khi lưu tài liệu.");
+      }
+
+      message.success(`Đã ${isEditMode ? "cập nhật" : "thêm"} tài liệu thành công!`);
+      handleCancel();
+      fetchMaterials(); // Reload data
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
+
+  const handleDeleteMaterial = async (documentId) => {
+    try {
+      const response = await fetch(`${baseUrl}/Document/${documentId}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error("Lỗi khi xóa tài liệu.");
+      }
+      message.success("Đã xóa tài liệu thành công!");
+      fetchMaterials(); // Reload data
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
+
+  const pianoMaterials = materials.filter((m) => m.instrumentId === 2);
+  const guitarMaterials = materials.filter((m) => m.instrumentId === 1);
+
+  // Table columns configuration
+  const columns = [
     {
-      key: "1",
-      title: "Giới thiệu đàn Piano",
-      content: (
-        <div className="piano-materials-content">
-          <p>
-            Đàn piano là một nhạc cụ có bàn phím, được chơi bằng cách nhấn các phím để tạo ra âm thanh. Piano có 88
-            phím, bao gồm 52 phím trắng và 36 phím đen.
-          </p>
-          <p>Đàn piano được chia thành hai loại chính: piano cơ (acoustic piano) và piano điện (digital piano).</p>
-          <ul>
-            <li>Piano cơ: Tạo âm thanh thông qua dây đàn và búa đập</li>
-            <li>Piano điện: Tạo âm thanh thông qua công nghệ số</li>
-          </ul>
-        </div>
-      ),
+      title: "Buổi",
+      dataIndex: "lesson",
+      key: "lesson",
+      width: 80,
+      align: "center",
+      className: "session-column",
     },
     {
-      key: "2",
-      title: "Tư thế ngồi đàn Piano đúng tầu chuẩn thế giới",
-      content: (
-        <div className="piano-materials-content">
-          <p>Tư thế ngồi đúng là nền tảng quan trọng để chơi piano hiệu quả và tránh chấn thương.</p>
-          <h4>Các yếu tố quan trọng:</h4>
-          <ul>
-            <li>
-              <strong>Chiều cao ghế:</strong> Khuỷu tay tạo góc 90 độ khi đặt tay lên bàn phím
-            </li>
-            <li>
-              <strong>Khoảng cách:</strong> Ngồi cách đàn khoảng 1 gang tay
-            </li>
-            <li>
-              <strong>Tư thế lưng:</strong> Thẳng, không dựa vào lưng ghế
-            </li>
-            <li>
-              <strong>Chân:</strong> Đặt phẳng trên sàn hoặc bàn đạp chân
-            </li>
-            <li>
-              <strong>Vai:</strong> Thả lỏng, không căng thẳng
-            </li>
-            <li>
-              <strong>Cổ tay:</strong> Thẳng, không cong lên hoặc xuống
-            </li>
-          </ul>
-          <p>
-            <strong>Lưu ý:</strong> Tư thế đúng giúp bạn chơi lâu mà không mệt mỏi và phát triển kỹ thuật tốt hơn.
-          </p>
-        </div>
+      title: "Tên bài học",
+      dataIndex: "lessonName",
+      key: "lessonName",
+      className: "title-column",
+    },
+    {
+      title: "Link",
+      dataIndex: "link",
+      key: "link",
+      className: "link-column",
+      render: (text) => (
+        <a href={text} target="_blank" rel="noopener noreferrer" className="material-link">
+          {text}
+        </a>
       ),
     },
-  ]
+    // {
+    //   title: "Thao tác",
+    //   key: "action",
+    //   width: 120,
+    //   align: "center",
+    //   className: "action-column",
+    //   render: (_, record) => (
+    //     <Space size="middle">
+    //       <Button
+    //         type="default"
+    //         icon={<EditOutlined />}
+    //         size="small"
+    //         className="edit-button-material"
+    //         onClick={() => showEditModal(record)}
+    //       >
+    //         Sửa
+    //       </Button>
+    //       <Popconfirm
+    //         title="Bạn có chắc muốn xóa?"
+    //         onConfirm={() => handleDeleteMaterial(record.documentId)}
+    //         okText="Có"
+    //         cancelText="Không"
+    //       >
+    //         <Button
+    //           type="primary"
+    //           danger
+    //           icon={<DeleteOutlined />}
+    //           size="small"
+    //           className="delete-button-material"
+    //         >
+    //           Xóa
+    //         </Button>
+    //       </Popconfirm>
+    //     </Space>
+    //   ),
+    // },
+  ];
 
   return (
-    <div className="piano-materials-page">
-      <div className="piano-materials-container">
-        {/* Back Button */}
-        <div className="piano-materials-back-section">
-          <Button type="text" icon={<LeftOutlined />} onClick={handleBack} className="piano-materials-back-button">
-            Trở về
-          </Button>
+    <div className="materials-page">
+      <div className="materials-container">
+        <Title level={1} className="page-title">
+          Tài liệu
+        </Title>
+        {/* Piano Materials Section */}
+        <div className="materials-section">
+          <Title level={2} className="section-title-piano-title-material">
+            PIANO
+          </Title>
+          {/* <div className="add-material-container">
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={() => showModal(2)} // instrumentId = 2 cho Piano
+              className="add-material-button"
+            >
+              Thêm tài liệu
+            </Button>
+          </div> */}
+          <div className="table-container">
+            <Table
+              columns={columns}
+              dataSource={pianoMaterials}
+              pagination={false}
+              className="materials-table"
+              size="middle"
+              rowClassName={(record, index) =>
+                index % 2 === 0 ? "even-row" : "odd-row"
+              }
+              loading={loading}
+            />
+          </div>
         </div>
 
-        {/* Page Title */}
-        <div className="piano-materials-header">
-          <Title level={1} className="piano-materials-title">
-            Giới thiệu đàn piano và tư thế chơi
+        {/* Guitar Materials Section */}
+        <div className="materials-section">
+          <Title level={2} className="section-title-guitar-title-material">
+            GUITAR
           </Title>
+          {/* <div className="add-material-container">
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={() => showModal(1)} // instrumentId = 1 cho Guitar
+              className="add-material-button"
+            >
+              Thêm tài liệu
+            </Button>
+          </div> */}
+          <div className="table-container">
+            <Table
+              columns={columns}
+              dataSource={guitarMaterials}
+              pagination={false}
+              className="materials-table"
+              size="middle"
+              rowClassName={(record, index) =>
+                index % 2 === 0 ? "even-row" : "odd-row"
+              }
+              loading={loading}
+            />
+          </div>
         </div>
-
-        {/* Materials Section */}
-        <div className="piano-materials-section">
-          <Title level={3} className="piano-materials-section-title">
-            Tài liệu
-          </Title>
-
-          <Collapse
-            className="piano-materials-collapse"
-            expandIcon={({ isActive }) => (
-              <DownOutlined rotate={isActive ? 180 : 0} className="piano-materials-expand-icon" />
+        
+        {/* Modal for Add/Edit */}
+        <Modal
+          title={isEditMode ? "Cập nhật tài liệu" : "Thêm tài liệu"}
+          open={isModalVisible}
+          onCancel={handleCancel}
+          footer={null}
+        >
+          <Form form={form} layout="vertical" onFinish={handleFinish}>
+            <Form.Item
+              label="Buổi"
+              name="lesson"
+              rules={[{ required: true, message: "Vui lòng nhập buổi" }]}
+            >
+              <Input type="number" />
+            </Form.Item>
+            <Form.Item
+              label="Tên bài học"
+              name="lessonName"
+              rules={[{ required: true, message: "Vui lòng nhập tên bài học" }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              label="Link"
+              name="link"
+              rules={[{ required: true, message: "Vui lòng nhập link tài liệu" }]}
+            >
+              <Input />
+            </Form.Item>
+            {isEditMode ? (
+              <Form.Item
+                label="Nhạc cụ"
+                name="instrumentId"
+                rules={[{ required: true, message: "Vui lòng chọn nhạc cụ" }]}
+              >
+                <Select placeholder="Chọn nhạc cụ">
+                  {instruments.map((instrument) => (
+                    <Option
+                      key={instrument.instrumentId}
+                      value={instrument.instrumentId}
+                    >
+                      {instrument.instrumentName}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            ) : (
+              // Trường này chỉ dùng để truyền giá trị khi thêm mới
+              <Form.Item name="instrumentId" noStyle>
+                <Input type="hidden" />
+              </Form.Item>
             )}
-            expandIconPosition="end"
-          >
-            {materialsData.map((item) => (
-              <Panel header={item.title} key={item.key} className="piano-materials-panel">
-                {item.content}
-              </Panel>
-            ))}
-          </Collapse>
-        </div>
+            <Form.Item>
+              <Button type="primary" htmlType="submit" block>
+                Xác nhận
+              </Button>
+            </Form.Item>
+          </Form>
+        </Modal>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default StudentMaterials
+export default StudentMaterials;

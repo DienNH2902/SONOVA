@@ -40,6 +40,7 @@ import TeacherSchedule from "../pages/Teacher/TeacherSchedule/TeacherSchedule.js
 import TeacherCourseSchedule from "../pages/Teacher/TeacherCourseSchedule/TeacherCourseSchedule.jsx";
 import StudentSheetMusic from "../pages/Student/SheetMusic/SheetMusic.jsx";
 import Favorite from "../pages/Student/SheetMusic/Favorite.jsx";
+import StudentSchedule from "../pages/Student/StudentSchedule/StudentSchedule.jsx";
 
 
 const getUser = () => {
@@ -132,6 +133,8 @@ const AppRoutes = () => {
           <Route path="/student/student-material" element={<StudentMaterials />} />
           <Route path="/student/sheet-music" element={<StudentSheetMusic />} />
           <Route path="/student/sheet-music/favorite" element={<Favorite />} />
+          <Route path="/student/schedule" element={<StudentSchedule />} />
+          <Route path="/student/materials" element={<StudentMaterials />} />
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>

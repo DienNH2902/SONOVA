@@ -460,7 +460,8 @@ const Lesson = () => {
                 <Col xs={24} sm={12} lg={8} key={session.classSessionId}>
                   <Card
                     className="lesson-material-card"
-                    onClick={() => handleMaterialNavigation(session.classSessionId)}
+                    // onClick={() => handleMaterialNavigation(session.classSessionId)}
+                    onClick={() => navigate('student-material')}
                     style={{ cursor: "pointer" }}
                   >
                     <div className="lesson-material-content">

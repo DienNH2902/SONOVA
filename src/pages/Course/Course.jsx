@@ -54,14 +54,20 @@ const Course = () => {
               <div className="course-details">
                 <div className="detail-item">
                   <span className="detail-icon">📅</span>
-                  <span className="detail-text-class">Học từ 04/03 đến 31/05</span>
+                  <span className="detail-text-class">
+                    Học từ 04/03 đến 31/05
+                  </span>
                 </div>
 
                 <div className="detail-item">
                   <span className="detail-icon">🕔</span>
                   <div className="detail-text-group">
-                    <span className="detail-text-class">Tối thứ 3: 18h - 19h30</span>
-                    <span className="detail-text-class">Tối thứ 6: 18h - 19h30</span>
+                    <span className="detail-text-class">
+                      Tối thứ 3: 18h - 19h30
+                    </span>
+                    <span className="detail-text-class">
+                      Tối thứ 6: 18h - 19h30
+                    </span>
                   </div>
                 </div>
 
@@ -80,11 +86,18 @@ const Course = () => {
 
                 <div className="detail-item">
                   <span className="detail-icon">💰</span>
-                  <span className="detail-text-class">Học phí: 2.500.000 VND</span>
+                  <span className="detail-text-class">
+                    Học phí: 2.500.000 VND
+                  </span>
                 </div>
               </div>
 
-              <button className="course-button full" onClick={() => navigate('/contact')}>Đã đủ học viên</button>
+              <button
+                className="course-button full"
+                onClick={() => navigate("/contact")}
+              >
+                Đã đủ học viên
+              </button>
             </div>
 
             <div className="course-card">
@@ -103,13 +116,17 @@ const Course = () => {
               <div className="course-details">
                 <div className="detail-item">
                   <span className="detail-icon">📅</span>
-                  <span className="detail-text-class">Học từ 13/04 đến 08/06</span>
+                  <span className="detail-text-class">
+                    Học từ 13/04 đến 08/06
+                  </span>
                 </div>
 
                 <div className="detail-item">
                   <span className="detail-icon">🕔</span>
                   <div className="detail-text-group">
-                    <span className="detail-text-class">Tối thứ 4: 18h - 19h30</span>
+                    <span className="detail-text-class">
+                      Tối thứ 4: 18h - 19h30
+                    </span>
                     <span className="detail-text-class">
                       Chiều thứ 7: 15h - 17h30
                     </span>
@@ -131,11 +148,18 @@ const Course = () => {
 
                 <div className="detail-item">
                   <span className="detail-icon">💰</span>
-                  <span className="detail-text-class">Học phí: 2.500.000 VND</span>
+                  <span className="detail-text-class">
+                    Học phí: 2.500.000 VND
+                  </span>
                 </div>
               </div>
 
-              <button className="course-button" onClick={() => navigate('/contact')}>Đăng ký tư vấn</button>
+              <button
+                className="course-button"
+                onClick={() => navigate("/contact")}
+              >
+                Đăng ký tư vấn
+              </button>
             </div>
           </div>
         </div>
@@ -157,76 +181,71 @@ const Course = () => {
               <tbody>
                 <tr>
                   <td>Buổi 1</td>
-                  <td>Giới thiệu đàn piano và lý thế nhạc</td>
-                  <td>Cảm nghĩ đúng, đặt tay, sử dụng ngón tay, kỹ thuật</td>
+                  <td>Giới thiệu đàn guitar & tư thế chơi</td>
+                  <td>Hướng dẫn cách cầm đàn, tư thế ngồi đúng dùng</td>
                 </tr>
                 <tr className="alternate-row">
                   <td>Buổi 2</td>
-                  <td>Nhịp điệu phím đàn và nốt nhạc</td>
-                  <td>Học vị trí các nốt trên đàn và bàn nhạc</td>
+                  <td>Cách bấm nốt trên cần đàn</td>
+                  <td>Làm quen với cần đàn, cách bấm nốt chính xác</td>
                 </tr>
                 <tr>
                   <td>Buổi 3</td>
-                  <td>Kỹ thuật chạy ngón cơ bản</td>
-                  <td>
-                    Luyện tập ngón với bài tập đơn giản (5 ngón, C major scale)
-                  </td>
+                  <td>Hợp âm cơ bản</td>
+                  <td>Học các hợp âm mở (C, G, D, A, E, Am, Em, Dm)</td>
                 </tr>
                 <tr className="alternate-row">
                   <td>Buổi 4</td>
-                  <td>Chơi giai điệu đơn giản</td>
-                  <td>Thực hành đọc nốt và chơi bảng tay phải</td>
+                  <td>Chuyển hợp âm cơ bản</td>
+                  <td>Luyện tập chuyển hợp âm nhanh và đúng nhịp</td>
                 </tr>
                 <tr>
                   <td>Buổi 5</td>
-                  <td>Hợp âm cơ bản</td>
-                  <td>
-                    Giới thiệu hợp âm trưởng, hợp âm thứ, cách đánh hợp âm
-                  </td>
+                  <td>Cách quạt chả (strumming)</td>
+                  <td>Học các kiểu đệm quạt chả đơn giản</td>
                 </tr>
                 <tr className="alternate-row">
                   <td>Buổi 6</td>
-                  <td>Phối hợp hai tay</td>
-                  <td>Tập chơi giai điệu tay phải và hợp âm tay trái</td>
+                  <td>Chơi bài hát đơn giản</td>
+                  <td>Áp dụng hợp âm và quạt chả vào một bài hát dễ</td>
                 </tr>
                 <tr>
                   <td>Buổi 7</td>
-                  <td>Hiệp điệu và tiết tấu</td>
-                  <td>
-                    Luyện tập điểm nhấn, giữ nhịp giai điệu với các kỹ thuật
-                  </td>
+                  <td>Nhịp và tiết tấu</td>
+                  <td>Học cách giữ nhịp khi chơi bằng tay phải</td>
                 </tr>
                 <tr className="alternate-row">
                   <td>Buổi 8</td>
-                  <td>Chơi bài hát đơn giản</td>
-                  <td>Ứng dụng các kỹ năng đã học vào một bài hát cơ bản</td>
+                  <td>Đọc tab guitar và giai điệu đơn giản</td>
+                  <td>Làm quen với tab guitar, chơi các giai điệu đơn giản</td>
                 </tr>
                 <tr>
                   <td>Buổi 9</td>
-                  <td>Kỹ hiệu nhạc lý quan trọng</td>
-                  <td>Học về dấu nhấn dài, dấu hóa, dấu lặng</td>
+                  <td>Fingerstyle cơ bản</td>
+                  <td>Tập picking (chơi ngón) với các bài tập đơn giản</td>
                 </tr>
                 <tr className="alternate-row">
                   <td>Buổi 10</td>
-                  <td>Chuyển hợp âm mượt mà</td>
-                  <td>Luyện cách chuyển đổi hợp âm mượt và đúng nhịp</td>
+                  <td>Tìm hiểu vòng hòa âm</td>
+                  <td>Cách sử dụng vòng hòa âm phổ biến trong đệm hát</td>
                 </tr>
                 <tr>
                   <td>Buổi 11</td>
-                  <td>Cách đánh pedal cơ bản</td>
-                  <td>Giới thiệu và hướng dẫn sử dụng pedal sustain</td>
+                  <td>Sử dụng capo & kỹ thuật mở rộng</td>
+                  <td>Học cách dùng capo để đổi tone bài hát</td>
                 </tr>
                 <tr className="alternate-row">
                   <td>Buổi 12</td>
-                  <td>Cải thiện kỹ thuật và cảm âm</td>
+                  <td>Cách sử dụng hiệu ứng guitar</td>
                   <td>
-                    Nghe và chơi lại các giai điệu đơn giản, phát triển cảm âm
+                    Tìm hiểu về delay, reverb, overdrive... (dành cho guitar
+                    điện)
                   </td>
                 </tr>
                 <tr>
                   <td>Buổi 13</td>
-                  <td>Chuẩn bị bài biểu diễn</td>
-                  <td>Luyện tập một bài nhạc hoàn chỉnh theo ý thích</td>
+                  <td>Chơi bài hát yêu thích</td>
+                  <td>Luyện tập một bài hát hoàn chỉnh theo sở thích</td>
                 </tr>
                 <tr className="alternate-row">
                   <td>Buổi 14</td>
@@ -250,10 +269,7 @@ const Course = () => {
 
           <div class="instructor-content">
             <div class="instructor-image">
-              <img
-                src={gvhd}
-                alt="Giảng viên và học sinh"
-              />
+              <img src={gvhd} alt="Giảng viên và học sinh" />
             </div>
 
             <div class="instructor-description">
@@ -429,7 +445,12 @@ const Course = () => {
                   <strong>0375044354</strong>
                 </p>
               </div>
-              <button class="consultation-btn" onClick={() => navigate("/contact")}>Đăng ký học ngay</button>
+              <button
+                class="consultation-btn"
+                onClick={() => navigate("/contact")}
+              >
+                Đăng ký học ngay
+              </button>
             </div>
             <div class="contact-illustration">
               <img

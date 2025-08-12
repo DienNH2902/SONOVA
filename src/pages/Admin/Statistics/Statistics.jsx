@@ -1232,7 +1232,7 @@ const calculatePercentageChange = (current, previous) => {
             <Col xs={24} sm={12}>
               <Card className="summary-card">
                 <Statistic
-                  title="Tăng"
+                  title="Thống kê"
                   value={`${calculatePercentageChange(currentMonthData.totalPianoClass, previousMonthData.totalPianoClass).value}%`}
                   valueStyle={{
                     color: calculatePercentageChange(
@@ -1291,7 +1291,7 @@ const calculatePercentageChange = (current, previous) => {
             <Col xs={24} sm={12}>
               <Card className="summary-card">
                 <Statistic
-                  title="Tăng"
+                  title="Thống kê"
                   value={`${calculatePercentageChange(currentMonthData.totalGuitarClass, previousMonthData.totalGuitarClass).value}%`}
                   valueStyle={{
                     color: calculatePercentageChange(

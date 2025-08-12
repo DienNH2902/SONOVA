@@ -54,14 +54,20 @@ const CoursePianoAdvanced = () => {
               <div className="course-details">
                 <div className="detail-item">
                   <span className="detail-icon">📅</span>
-                  <span className="detail-text-class">Học từ 04/03 đến 31/05</span>
+                  <span className="detail-text-class">
+                    Học từ 04/03 đến 31/05
+                  </span>
                 </div>
 
                 <div className="detail-item">
                   <span className="detail-icon">🕔</span>
                   <div className="detail-text-group">
-                    <span className="detail-text-class">Tối thứ 3: 18h - 19h30</span>
-                    <span className="detail-text-class">Tối thứ 6: 18h - 19h30</span>
+                    <span className="detail-text-class">
+                      Tối thứ 3: 18h - 19h30
+                    </span>
+                    <span className="detail-text-class">
+                      Tối thứ 6: 18h - 19h30
+                    </span>
                   </div>
                 </div>
 
@@ -80,11 +86,18 @@ const CoursePianoAdvanced = () => {
 
                 <div className="detail-item">
                   <span className="detail-icon">💰</span>
-                  <span className="detail-text-class">Học phí: 2.500.000 VND</span>
+                  <span className="detail-text-class">
+                    Học phí: 2.500.000 VND
+                  </span>
                 </div>
               </div>
 
-              <button className="course-button full" onClick={() => navigate('/contact')}>Đã đủ học viên</button>
+              <button
+                className="course-button full"
+                onClick={() => navigate("/contact")}
+              >
+                Đã đủ học viên
+              </button>
             </div>
 
             <div className="course-card">
@@ -103,13 +116,17 @@ const CoursePianoAdvanced = () => {
               <div className="course-details">
                 <div className="detail-item">
                   <span className="detail-icon">📅</span>
-                  <span className="detail-text-class">Học từ 13/04 đến 08/06</span>
+                  <span className="detail-text-class">
+                    Học từ 13/04 đến 08/06
+                  </span>
                 </div>
 
                 <div className="detail-item">
                   <span className="detail-icon">🕔</span>
                   <div className="detail-text-group">
-                    <span className="detail-text-class">Tối thứ 4: 18h - 19h30</span>
+                    <span className="detail-text-class">
+                      Tối thứ 4: 18h - 19h30
+                    </span>
                     <span className="detail-text-class">
                       Chiều thứ 7: 15h - 17h30
                     </span>
@@ -131,11 +148,18 @@ const CoursePianoAdvanced = () => {
 
                 <div className="detail-item">
                   <span className="detail-icon">💰</span>
-                  <span className="detail-text-class">Học phí: 2.500.000 VND</span>
+                  <span className="detail-text-class">
+                    Học phí: 2.500.000 VND
+                  </span>
                 </div>
               </div>
 
-              <button className="course-button" onClick={() => navigate('/contact')}>Đăng ký tư vấn</button>
+              <button
+                className="course-button"
+                onClick={() => navigate("/contact")}
+              >
+                Đăng ký tư vấn
+              </button>
             </div>
           </div>
         </div>
@@ -151,88 +175,114 @@ const CoursePianoAdvanced = () => {
                 <tr>
                   <th className="lesson-column">Buổi</th>
                   <th className="content-column">Nội dung</th>
-                  <th className="goal-column">Mục tiêu</th>
+                  <th className="goal-column">Mô tả</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>Buổi 1</td>
-                  <td>Giới thiệu đàn piano và lý thế nhạc</td>
-                  <td>Cảm nghĩ đúng, đặt tay, sử dụng ngón tay, kỹ thuật</td>
+                  <td>Kỹ thuật ngón nâng cao</td>
+                  <td>
+                    Luyện tập chạy ngón chromatic, arpeggio phức tạp, và scales
+                    ở tốc độ cao
+                  </td>
                 </tr>
                 <tr className="alternate-row">
                   <td>Buổi 2</td>
-                  <td>Nhịp điệu phím đàn và nốt nhạc</td>
-                  <td>Học vị trí các nốt trên đàn và bàn nhạc</td>
+                  <td>Hợp âm và thế bấm nâng cao</td>
+                  <td>
+                    Thực hành hợp âm mở rộng (9th, 11th, 13th), voicing nâng cao
+                    và thế bấm đảo
+                  </td>
                 </tr>
                 <tr>
                   <td>Buổi 3</td>
-                  <td>Kỹ thuật chạy ngón cơ bản</td>
+                  <td>Điều khiển động lực (Dynamics)</td>
                   <td>
-                    Luyện tập ngón với bài tập đơn giản (5 ngón, C major scale)
+                    Kỹ thuật kiểm soát cường độ, cách chơi pianissimo và
+                    fortissimo một cách tinh tế
                   </td>
                 </tr>
                 <tr className="alternate-row">
                   <td>Buổi 4</td>
-                  <td>Chơi giai điệu đơn giản</td>
-                  <td>Thực hành đọc nốt và chơi bảng tay phải</td>
+                  <td>Luyện tập Legato và Staccato nâng cao</td>
+                  <td>
+                    Ứng dụng legato mềm mại và staccato sắc nét vào các tác phẩm
+                    phức tạp
+                  </td>
                 </tr>
                 <tr>
                   <td>Buổi 5</td>
-                  <td>Hợp âm cơ bản</td>
+                  <td>Đọc và chơi nhạc nhanh</td>
                   <td>
-                    Giới thiệu hợp âm trưởng, hợp âm thứ, cách đánh hợp âm
+                    Phát triển khả năng sight-reading với các bản nhạc nâng cao
                   </td>
                 </tr>
                 <tr className="alternate-row">
                   <td>Buổi 6</td>
-                  <td>Phối hợp hai tay</td>
-                  <td>Tập chơi giai điệu tay phải và hợp âm tay trái</td>
+                  <td>Ứng dụng hòa âm nâng cao</td>
+                  <td>
+                    Phân tích và áp dụng tiến trình hòa âm trong tác phẩm cổ
+                    điển và hiện đại
+                  </td>
                 </tr>
                 <tr>
                   <td>Buổi 7</td>
-                  <td>Hiệp điệu và tiết tấu</td>
+                  <td>Biểu cảm trong trình diễn</td>
                   <td>
-                    Luyện tập điểm nhấn, giữ nhịp giai điệu với các kỹ thuật
+                    Nghiên cứu phrasing, rubato và cách thể hiện cảm xúc trong
+                    tác phẩm
                   </td>
                 </tr>
                 <tr className="alternate-row">
                   <td>Buổi 8</td>
-                  <td>Chơi bài hát đơn giản</td>
-                  <td>Ứng dụng các kỹ năng đã học vào một bài hát cơ bản</td>
+                  <td>Phân tích tác phẩm</td>
+                  <td>
+                    Hiểu sâu về cấu trúc nhạc lý của một bản nhạc nâng cao
+                  </td>
                 </tr>
                 <tr>
                   <td>Buổi 9</td>
-                  <td>Kỹ hiệu nhạc lý quan trọng</td>
-                  <td>Học về dấu nhấn dài, dấu hóa, dấu lặng</td>
+                  <td>Kỹ thuật chạy ngón nhanh và mạnh</td>
+                  <td>Luyện tập Hanon, Czerny và các bài tập chuyên sâu</td>
                 </tr>
                 <tr className="alternate-row">
                   <td>Buổi 10</td>
-                  <td>Chuyển hợp âm mượt mà</td>
-                  <td>Luyện cách chuyển đổi hợp âm mượt và đúng nhịp</td>
+                  <td>Phối hợp hai tay trong tác phẩm khó</td>
+                  <td>
+                    Rèn luyện đọc lập tay trái, tay phải với nhạc phức điệu
+                  </td>
                 </tr>
                 <tr>
                   <td>Buổi 11</td>
-                  <td>Cách đánh pedal cơ bản</td>
-                  <td>Giới thiệu và hướng dẫn sử dụng pedal sustain</td>
+                  <td>Luyện tập tác phẩm khó</td>
+                  <td>
+                    Tập trung vào một tác phẩm khó theo phong cách tự chọn (cổ
+                    điển, jazz, hiện đại)
+                  </td>
                 </tr>
                 <tr className="alternate-row">
                   <td>Buổi 12</td>
-                  <td>Cải thiện kỹ thuật và cảm âm</td>
+                  <td>Cách ứng biến trên piano</td>
                   <td>
-                    Nghe và chơi lại các giai điệu đơn giản, phát triển cảm âm
+                    Giới thiệu về improvisation, cách tạo giai điệu và hợp âm
+                    trên vòng hòa âm
                   </td>
                 </tr>
                 <tr>
                   <td>Buổi 13</td>
-                  <td>Chuẩn bị bài biểu diễn</td>
-                  <td>Luyện tập một bài nhạc hoàn chỉnh theo ý thích</td>
+                  <td>Thực hành biểu diễn</td>
+                  <td>
+                    Chuẩn bị và diễn tập một tác phẩm hoàn chỉnh trước khi biểu
+                    diễn
+                  </td>
                 </tr>
                 <tr className="alternate-row">
                   <td>Buổi 14</td>
                   <td>Biểu diễn và đánh giá</td>
                   <td>
-                    Trình diễn bài đã luyện, nhận xét và hướng dẫn cải thiện
+                    Trình diễn tác phẩm, nhận xét, đánh giá và hướng dẫn cải
+                    thiện
                   </td>
                 </tr>
               </tbody>
@@ -250,10 +300,7 @@ const CoursePianoAdvanced = () => {
 
           <div class="instructor-content">
             <div class="instructor-image">
-              <img
-                src={gvhd}
-                alt="Giảng viên và học sinh"
-              />
+              <img src={gvhd} alt="Giảng viên và học sinh" />
             </div>
 
             <div class="instructor-description">
@@ -429,7 +476,12 @@ const CoursePianoAdvanced = () => {
                   <strong>0375044354</strong>
                 </p>
               </div>
-              <button class="consultation-btn" onClick={() => navigate("/contact")}>Đăng ký học ngay</button>
+              <button
+                class="consultation-btn"
+                onClick={() => navigate("/contact")}
+              >
+                Đăng ký học ngay
+              </button>
             </div>
             <div class="contact-illustration">
               <img
