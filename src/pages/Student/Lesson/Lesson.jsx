@@ -390,15 +390,15 @@ const Lesson = () => {
   const getStatusBadge = (status) => {
     switch (status) {
       case "today":
-        return <span className="lesson-status-badge lesson-today-badge">Today</span>
+        return <span className="lesson-status-badge lesson-today-badge">Hôm nay</span>
       case "not-yet":
-        return <span className="lesson-status-badge lesson-not-yet-badge">Not yet</span>
+        return <span className="lesson-status-badge lesson-not-yet-badge">Chưa diễn ra</span>
       case "done":
-        return <span className="lesson-status-badge lesson-done-badge">Done</span>
+        return <span className="lesson-status-badge lesson-done-badge">Hoàn thành</span>
       case "present":
-        return <span className="lesson-status-badge lesson-present-badge">Present</span>
+        return <span className="lesson-status-badge lesson-present-badge">Hiện diện</span>
       case "absent":
-        return <span className="lesson-status-badge lesson-absent-badge">Absent</span>
+        return <span className="lesson-status-badge lesson-absent-badge">Vắng</span>
       default:
         return null
     }

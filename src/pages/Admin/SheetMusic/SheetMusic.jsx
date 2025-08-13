@@ -14,7 +14,6 @@ import {
   Card,
   Row,
   Col,
-  message,
   App,
 } from "antd"
 import {

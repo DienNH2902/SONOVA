@@ -39,7 +39,7 @@
   font-size: 16px;
   font-weight: 700;
   font-style: italic;
-  font-family: 'Gilroy', sans-serif;
+  font-family: 'SVN-Gilroy';
   line-height: 1.8;
   margin-bottom: 20px;
   text-align: justify;
@@ -103,7 +103,7 @@
 .card-content {
   font-size: 14px;
   font-weight: 300;
-  font-family: 'Gilroy', sans-serif;
+  font-family: 'SVN-Gilroy';
   line-height: 1.8;
   text-align: justify;
   margin-bottom: 0;
@@ -236,7 +236,7 @@
   color: #666;
   font-size: 14px;
   font-weight: 300;
-  font-family: 'Gilroy', sans-serif;
+  font-family: 'SVN-Gilroy';
   line-height: 1.6;
   max-width: 600px;
   margin: 0 auto;

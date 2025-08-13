@@ -6,18 +6,119 @@ import guitarad2 from "../../assets/guitarad2.png";
 import gvhd from "../../assets/gvhd.png";
 import cholienhetuvan from "../../assets/cholienhetuvan.png";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const { Title, Paragraph } = Typography;
 
 const CourseGuitarAdvanced = () => {
   const navigate = useNavigate();
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const getTodayDate = () => {
+    const today = new Date();
+    return today.toISOString().split("T")[0]; // Format: YYYY-MM-DD
+  };
+
+  const formatMonthYear = (dateString) => {
+    const date = new Date(dateString);
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${month}/${year}`;
+  };
+
+  const getDayName = (dayId) => {
+    const dayNames = {
+      0: "Chủ nhật",
+      1: "Thứ 2",
+      2: "Thứ 3",
+      3: "Thứ 4",
+      4: "Thứ 5",
+      5: "Thứ 6",
+      6: "Thứ 7",
+    };
+    return dayNames[dayId] || "";
+  };
+
+  const formatTime = (timeString) => {
+    if (!timeString) return "";
+    return timeString.substring(0, 5);
+  };
+
+  useEffect(() => {
+    const fetchCourseData = async () => {
+      setLoading(true);
+      try {
+        // Fetch both APIs in parallel
+        const [openingScheduleRes, classRes] = await Promise.all([
+          fetch(
+            "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/OpeningSchedule"
+          ),
+          fetch(
+            "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Class"
+          ),
+        ]);
+
+        if (!openingScheduleRes.ok || !classRes.ok) {
+          throw new Error("Failed to fetch course data");
+        }
+
+        const openingSchedules = await openingScheduleRes.json();
+        const classes = await classRes.json();
+
+        const today = getTodayDate();
+
+        // Filter for Piano basic courses with future opening dates
+        const pianoBasicCourses = openingSchedules.filter(
+          (schedule) =>
+            schedule.instrumentId === 1 && // Piano
+            schedule.isAdvancedClass && // Basic level
+            schedule.openingDay > today // Future courses only
+        );
+
+        // Sort by opening date
+        pianoBasicCourses.sort(
+          (a, b) => new Date(a.openingDay) - new Date(b.openingDay)
+        );
+
+        // Take only first 2 courses
+        const selectedCourses = pianoBasicCourses.slice(0, 2);
+
+        // Enrich with enrollment data
+        const enrichedCourses = selectedCourses.map((course) => {
+          const classData = classes.find(
+            (cls) => cls.classCode === course.classCode
+          );
+          const enrolledStudents = classData
+            ? classData.users.filter((user) => user.roleId === 3).length
+            : 0;
+          const isFull = enrolledStudents >= course.studentQuantity;
+
+          return {
+            ...course,
+            enrolledStudents,
+            isFull,
+          };
+        });
+
+        setCourses(enrichedCourses);
+      } catch (error) {
+        console.error("Error fetching course data:", error);
+        setCourses([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCourseData();
+  }, []);
   return (
     <div className="course-page">
       {/* Hero Section */}
       <section className="course-hero">
         <div class="half-circle-container">
           <div class="half-circle">
-            <img src={guitarcb} alt="Piano Player" />
+            <img src={guitarcb} alt="Guitar Player" />
             {/* <div class="text-overlay">
               <h2>Sonova</h2>
               <p>Hành trình mang đến giá trị</p>
@@ -38,129 +139,231 @@ const CourseGuitarAdvanced = () => {
           </div>
 
           <div className="course-cards">
-            <div className="course-card">
-              <div className="course-image-container">
-                <img
-                  src={guitarad1}
-                  alt="Piano hands close-up"
-                  className="course-image"
-                />
-                <div className="course-overlay">
-                  <h3 className="course-name-class">KHÓA GUITAR NÂNG CAO</h3>
-                  <p className="course-date">THÁNG 03/2025</p>
-                </div>
-              </div>
+            {loading ? (
+              <div>Đang tải thông tin khóa học...</div>
+            ) : (
+              <>
+                {/* First course card */}
+                {courses.length > 0 ? (
+                  <div className="course-card">
+                    <div className="course-image-container">
+                      <img
+                        src={guitarad1 || "/placeholder.svg"}
+                        alt="Guitar hands close-up"
+                        className="course-image"
+                      />
+                      <div className="course-overlay">
+                        <h3 className="course-name-class">
+                          KHÓA GUITAR NÂNG CAO
+                        </h3>
+                        <p className="course-date">
+                          THÁNG {formatMonthYear(courses[0].openingDay)}
+                        </p>
+                      </div>
+                    </div>
 
-              <div className="course-details">
-                <div className="detail-item">
-                  <span className="detail-icon">📅</span>
-                  <span className="detail-text-class">
-                    Học từ 04/03 đến 31/05
-                  </span>
-                </div>
+                    <div className="course-details">
+                      <div className="detail-item">
+                        <span className="detail-icon">📅</span>
+                        <span className="detail-text-class">
+                          Học từ{" "}
+                          {new Date(courses[0].openingDay).toLocaleDateString(
+                            "vi-VN"
+                          )}{" "}
+                          đến{" "}
+                          {new Date(courses[0].endDate).toLocaleDateString(
+                            "vi-VN"
+                          )}
+                        </span>
+                      </div>
 
-                <div className="detail-item">
-                  <span className="detail-icon">🕔</span>
-                  <div className="detail-text-group">
-                    <span className="detail-text-class">
-                      Tối thứ 3: 18h - 19h30
-                    </span>
-                    <span className="detail-text-class">
-                      Tối thứ 6: 18h - 19h30
-                    </span>
+                      <div className="detail-item">
+                        <span className="detail-icon">🕔</span>
+                        <div className="detail-text-group">
+                          {courses[0].selectedDayOfWeekIds.map(
+                            (dayId, index) => (
+                              <span key={index} className="detail-text-class">
+                                {getDayName(dayId)}:{" "}
+                                {formatTime(courses[0].timeSlots[0]?.startTime)}{" "}
+                                - {formatTime(courses[0].timeSlots[0]?.endTime)}
+                              </span>
+                            )
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="detail-item">
+                        <span className="detail-icon">📚</span>
+                        <span className="detail-text-class">
+                          {courses[0].totalSessions} buổi học
+                        </span>
+                      </div>
+
+                      <div className="detail-item">
+                        <span className="detail-icon">📍</span>
+                        <span className="detail-text-class">
+                          Địa điểm: 55-299, đường 379, phường Tăng Nhơn Phú A,
+                          thành phố Thủ Đức, TP.HCM
+                        </span>
+                      </div>
+
+                      <div className="detail-item">
+                        <span className="detail-icon">💰</span>
+                        <span className="detail-text-class">
+                          Học phí: 125.000 VND
+                        </span>
+                      </div>
+                    </div>
+
+                    <button
+                      className={`course-button ${
+                        courses[0].isFull ? "full" : ""
+                      }`}
+                      onClick={() => navigate("/contact")}
+                      disabled={courses[0].isFull}
+                    >
+                      {courses[0].isFull ? "Đã đủ học viên" : "Đăng ký tư vấn"}
+                    </button>
                   </div>
-                </div>
-
-                <div className="detail-item">
-                  <span className="detail-icon">📚</span>
-                  <span className="detail-text-class">14 buổi học</span>
-                </div>
-
-                <div className="detail-item">
-                  <span className="detail-icon">📍</span>
-                  <span className="detail-text-class">
-                    Địa điểm: 55-299, đường 379, phường Tăng Nhơn Phú A, thành
-                    phố Thủ Đức, TP.HCM
-                  </span>
-                </div>
-
-                <div className="detail-item">
-                  <span className="detail-icon">💰</span>
-                  <span className="detail-text-class">
-                    Học phí: 2.500.000 VND
-                  </span>
-                </div>
-              </div>
-
-              <button
-                className="course-button full"
-                onClick={() => navigate("/contact")}
-              >
-                Đã đủ học viên
-              </button>
-            </div>
-
-            <div className="course-card">
-              <div className="course-image-container">
-                <img
-                  src={guitarad2}
-                  alt="Child playing piano"
-                  className="course-image"
-                />
-                <div className="course-overlay">
-                  <h3 className="course-name-class">KHÓA GUITAR NÂNG CAO</h3>
-                  <p className="course-date">THÁNG 04/2025</p>
-                </div>
-              </div>
-
-              <div className="course-details">
-                <div className="detail-item">
-                  <span className="detail-icon">📅</span>
-                  <span className="detail-text-class">
-                    Học từ 13/04 đến 08/06
-                  </span>
-                </div>
-
-                <div className="detail-item">
-                  <span className="detail-icon">🕔</span>
-                  <div className="detail-text-group">
-                    <span className="detail-text-class">
-                      Tối thứ 4: 18h - 19h30
-                    </span>
-                    <span className="detail-text-class">
-                      Chiều thứ 7: 15h - 17h30
-                    </span>
+                ) : (
+                  <div className="course-card">
+                    <div className="course-image-container">
+                      <img
+                        src={guitarad1 || "/placeholder.svg"}
+                        alt="Guitar hands close-up"
+                        className="course-image"
+                      />
+                      <div className="course-overlay">
+                        <h3 className="course-name-class">
+                          KHÓA GUITAR NÂNG CAO
+                        </h3>
+                        <p className="course-date">CHƯA CÓ LỚP KHAI GIẢNG</p>
+                      </div>
+                    </div>
+                    <div className="course-details">
+                      <div className="detail-item">
+                        <span className="detail-text-class">
+                          Hiện tại chưa có lớp khai giảng
+                        </span>
+                      </div>
+                    </div>
+                    {/* <button className="course-button" onClick={() => navigate("/contact")}>
+                                          Đăng ký tư vấn
+                                        </button> */}
                   </div>
-                </div>
+                )}
 
-                <div className="detail-item">
-                  <span className="detail-icon">📚</span>
-                  <span className="detail-text-class">14 buổi học</span>
-                </div>
+                {/* Second course card */}
+                {courses.length > 1 ? (
+                  <div className="course-card">
+                    <div className="course-image-container">
+                      <img
+                        src={guitarad2 || "/placeholder.svg"}
+                        alt="Child playing guitar"
+                        className="course-image"
+                      />
+                      <div className="course-overlay">
+                        <h3 className="course-name-class">
+                          KHÓA GUITAR NÂNG CAO
+                        </h3>
+                        <p className="course-date">
+                          THÁNG {formatMonthYear(courses[1].openingDay)}
+                        </p>
+                      </div>
+                    </div>
 
-                <div className="detail-item">
-                  <span className="detail-icon">📍</span>
-                  <span className="detail-text-class">
-                    Địa điểm: 55-299, đường 379, phường Tăng Nhơn Phú A, thành
-                    phố Thủ Đức, TP.HCM
-                  </span>
-                </div>
+                    <div className="course-details">
+                      <div className="detail-item">
+                        <span className="detail-icon">📅</span>
+                        <span className="detail-text-class">
+                          Học từ{" "}
+                          {new Date(courses[1].openingDay).toLocaleDateString(
+                            "vi-VN"
+                          )}{" "}
+                          đến{" "}
+                          {new Date(courses[1].endDate).toLocaleDateString(
+                            "vi-VN"
+                          )}
+                        </span>
+                      </div>
 
-                <div className="detail-item">
-                  <span className="detail-icon">💰</span>
-                  <span className="detail-text-class">
-                    Học phí: 2.500.000 VND
-                  </span>
-                </div>
-              </div>
+                      <div className="detail-item">
+                        <span className="detail-icon">🕔</span>
+                        <div className="detail-text-group">
+                          {courses[1].selectedDayOfWeekIds.map(
+                            (dayId, index) => (
+                              <span key={index} className="detail-text-class">
+                                {getDayName(dayId)}:{" "}
+                                {formatTime(courses[1].timeSlots[0]?.startTime)}{" "}
+                                - {formatTime(courses[1].timeSlots[0]?.endTime)}
+                              </span>
+                            )
+                          )}
+                        </div>
+                      </div>
 
-              <button
-                className="course-button"
-                onClick={() => navigate("/contact")}
-              >
-                Đăng ký tư vấn
-              </button>
-            </div>
+                      <div className="detail-item">
+                        <span className="detail-icon">📚</span>
+                        <span className="detail-text-class">
+                          {courses[1].totalSessions} buổi học
+                        </span>
+                      </div>
+
+                      <div className="detail-item">
+                        <span className="detail-icon">📍</span>
+                        <span className="detail-text-class">
+                          Địa điểm: 55-299, đường 379, phường Tăng Nhơn Phú A,
+                          thành phố Thủ Đức, TP.HCM
+                        </span>
+                      </div>
+
+                      <div className="detail-item">
+                        <span className="detail-icon">💰</span>
+                        <span className="detail-text-class">
+                          Học phí: 125.000 VND
+                        </span>
+                      </div>
+                    </div>
+
+                    <button
+                      className={`course-button ${
+                        courses[1].isFull ? "full" : ""
+                      }`}
+                      onClick={() => navigate("/contact")}
+                      disabled={courses[1].isFull}
+                    >
+                      {courses[1].isFull ? "Đã đủ học viên" : "Đăng ký tư vấn"}
+                    </button>
+                  </div>
+                ) : (
+                  <div className="course-card">
+                    <div className="course-image-container">
+                      <img
+                        src={guitarad2 || "/placeholder.svg"}
+                        alt="Child playing guitar"
+                        className="course-image"
+                      />
+                      <div className="course-overlay">
+                        <h3 className="course-name-class">
+                          KHÓA GUITAR NÂNG CAO
+                        </h3>
+                        <p className="course-date">CHƯA CÓ LỚP KHAI GIẢNG</p>
+                      </div>
+                    </div>
+                    <div className="course-details">
+                      <div className="detail-item">
+                        <span className="detail-text-class">
+                          Hiện tại chưa có lớp khai giảng
+                        </span>
+                      </div>
+                    </div>
+                    {/* <button className="course-button" onClick={() => navigate("/contact")}>
+                                          Đăng ký tư vấn
+                                        </button> */}
+                  </div>
+                )}
+              </>
+            )}
           </div>
         </div>
       </section>

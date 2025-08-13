@@ -156,7 +156,11 @@
 }
 
 .card-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Đảm bảo .card-content chiếm toàn bộ chiều cao của card */
   padding: 20px;
+  height: 250px;
 }
 
 .song-title {
@@ -190,6 +194,7 @@
 }
 
 .favorite-info {
+  margin-top: auto; /* Đẩy phần này xuống cuối card */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -201,6 +206,13 @@
   font-size: 14px;
   color: #ff4d4f;
   font-weight: 500;
+}
+
+.card-container {
+  /* Bạn cần thêm một container cha cho card để đặt chiều cao cố định */
+  height: 200px; /* Chiều cao mẫu, bạn có thể điều chỉnh */
+  display: flex;
+  flex-direction: column;
 }
 
 /* Modal Styles */
