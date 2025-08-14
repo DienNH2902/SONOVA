@@ -94,7 +94,7 @@ const Home = () => {
                   </Paragraph>
 
                   <div className="course-schedule">
-                    <div className="schedule-item">
+                    {/* <div className="schedule-item">
                       <span className="schedule-date">24/03 - 30/5</span>
                       <div className="schedule-tags">
                         <span className="tag offline">Offline</span>
@@ -107,10 +107,10 @@ const Home = () => {
                         <span className="tag offline">Offline</span>
                         <span className="tag open">Open</span>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
 
-                  <Button className="course-detail-btn">Xem chi tiết</Button>
+                  <Button className="course-detail-btn" onClick={() => navigate('/contact')}>Xem chi tiết</Button>
                 </div>
               </Card>
             </Col>
@@ -133,7 +133,7 @@ const Home = () => {
                   </Paragraph>
 
                   <div className="course-schedule">
-                    <div className="schedule-item">
+                    {/* <div className="schedule-item">
                       <span className="schedule-date">24/03 - 30/5</span>
                       <div className="schedule-tags">
                         <span className="tag online">Online</span>
@@ -146,10 +146,10 @@ const Home = () => {
                         <span className="tag online">Online</span>
                         <span className="tag open">Open</span>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
 
-                  <Button className="course-detail-btn">Xem chi tiết</Button>
+                  <Button className="course-detail-btn" onClick={() => navigate('/contact')}>Xem chi tiết</Button>
                 </div>
               </Card>
             </Col>
@@ -172,7 +172,7 @@ const Home = () => {
                   </Paragraph>
 
                   <div className="course-schedule">
-                    <div className="schedule-item">
+                    {/* <div className="schedule-item">
                       <span className="schedule-date">24/03 - 30/5</span>
                       <div className="schedule-tags">
                         <span className="tag offline">Offline</span>
@@ -185,10 +185,10 @@ const Home = () => {
                         <span className="tag offline">Offline</span>
                         <span className="tag open">Open</span>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
 
-                  <Button className="course-detail-btn">Xem chi tiết</Button>
+                  <Button className="course-detail-btn" onClick={() => navigate('/contact')}>Xem chi tiết</Button>
                 </div>
               </Card>
             </Col>
@@ -211,7 +211,7 @@ const Home = () => {
                   </Paragraph>
 
                   <div className="course-schedule">
-                    <div className="schedule-item">
+                    {/* <div className="schedule-item">
                       <span className="schedule-date">24/03 - 30/5</span>
                       <div className="schedule-tags">
                         <span className="tag offline">Offline</span>
@@ -224,10 +224,10 @@ const Home = () => {
                         <span className="tag offline">Offline</span>
                         <span className="tag open">Open</span>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
 
-                  <Button className="course-detail-btn">Xem chi tiết</Button>
+                  <Button className="course-detail-btn" onClick={() => navigate('/contact')}>Xem chi tiết</Button>
                 </div>
               </Card>
             </Col>

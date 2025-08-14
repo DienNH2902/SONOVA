@@ -828,11 +828,11 @@ const Consultation = () => {
         // Sử dụng dữ liệu từ API nếu có, nếu không thì hiển thị placeholder
         if (record.hasContact) {
           const handledByName = record.handledBy?.accountName || currentAdmin.username || "Không xác định";
-          const handledAtTime = record.handledAt ? new Date(record.handledAt).toLocaleString("vi-VN") : "Thời gian không rõ";
+          // const handledAtTime = record.handledAt ? new Date(record.handledAt).toLocaleString("vi-VN") : "Thời gian không rõ";
           return (
             <div className="confirmed-info">
               <div className="confirmed-by">{handledByName}</div>
-              <div className="confirmed-time">{handledAtTime}</div>
+              {/* <div className="confirmed-time">{handledAtTime}</div> */}
             </div>
           )
         }

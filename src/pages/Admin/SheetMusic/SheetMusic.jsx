@@ -553,6 +553,16 @@ const SheetMusic = () => {
             loading={loading}
           />
         </div>
+        {/* <div className="filters-right">
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={() => setIsAddModalVisible(true)}
+              className="add-button-sheet"
+            >
+              Thêm
+            </Button>
+          </div> */}
 
         {/* Pagination Section */}
         <div className="pagination-container">
