@@ -332,9 +332,9 @@ const StudentSheetMusic = () => {
         // Filtered view
         <div>
           <div className="student-sheet-music-genre-filter-bar">
-            <Button icon={<ArrowLeftOutlined />} onClick={handleBack} className="back-button-favorite" type="text">
+            {/* <Button icon={<ArrowLeftOutlined />} onClick={handleBack} className="back-button-favorite" type="text">
               Quay lại
-            </Button>
+            </Button> */}
             {genres.map((genre) => (
               <Button
                 key={genre.genreId}
@@ -349,6 +349,9 @@ const StudentSheetMusic = () => {
           </div>
           <div className="student-sheet-music-filtered-view">
             <div className="student-sheet-music-main-content">
+            <Button icon={<ArrowLeftOutlined />} onClick={handleBack} className="back-button-favorite-home" type="text">
+          {/* Quay lại */}
+        </Button>
               <div className="student-sheet-music-filtered-section">
                 <h2>{selectedGenre}</h2>
                 <div className="student-sheet-music-filtered-grid">
