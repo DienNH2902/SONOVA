@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Input, Button, Modal, Image, message } from "antd"
+import { Input, Button, message } from "antd"
 import {
   SearchOutlined,
   HeartOutlined,
@@ -23,8 +23,6 @@ const StudentSheetMusic = () => {
   const [loading, setLoading] = useState(false)
   const [popularStartIndex, setPopularStartIndex] = useState(0)
   const [favoriteStartIndex, setFavoriteStartIndex] = useState(0)
-  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
-  const [selectedSheet, setSelectedSheet] = useState(null)
   const [showFilteredView, setShowFilteredView] = useState(false)
 
   // Helper to get headers with Authorization token
@@ -181,8 +179,7 @@ const StudentSheetMusic = () => {
   const detailedFavoriteSheetMusic = allSheetMusic.filter((sheet) => favoriteSheetMusicIds.has(sheet.sheetMusicId))
 
   const handleCardClick = (sheet) => {
-    setSelectedSheet(sheet)
-    setIsDetailModalVisible(true)
+    navigate(`/student/sheet-music/${sheet.sheetMusicId}`)
   }
 
   const handleGenreClick = (genreName) => {
@@ -198,13 +195,10 @@ const StudentSheetMusic = () => {
 
   return (
     <div className="student-sheet-music-page">
-{/* Header */}
+      {/* Header */}
       <div className="student-sheet-music-header-section">
-
         <h1 className="student-sheet-music-main-title">Tìm kiếm sheet nhạc yêu thích của bạn </h1>
-
         <div className="student-sheet-music-search-container">
-
           <Input
             className="student-sheet-music-search-input"
             placeholder="Nhập tên bài hát hoặc tên tác giả"
@@ -217,36 +211,28 @@ const StudentSheetMusic = () => {
             }}
             size="large"
           />
-
           <Button type="primary" className="student-sheet-music-search-button" size="large">
-<SearchOutlined />
+            <SearchOutlined />
           </Button>
-
         </div>
-
       </div>
 
       {!hasFilters ? (
         <>
-{/* Popular Music Section */}
+          {/* Popular Music Section */}
           <div className="student-sheet-music-section-sheet">
-           
             <div className="student-sheet-music-section-header">
               <h2 className="student-h2">Bài nhạc thịnh hành</h2>
             </div>
-           
             <div className="student-sheet-music-music-grid">
-          
               {popularSheetMusic.slice(0, 8).map((sheet) => (
                 <div
                   key={sheet.sheetMusicId}
                   className="student-sheet-music-music-card"
                   onClick={() => handleCardClick(sheet)}
                 >
-                  
                   <div className="student-sheet-music-card-image">
                     <img src={sheet.coverUrl || "/placeholder.svg"} alt={sheet.musicName} />
-                    
                     <div
                       className="student-sheet-music-heart-icon"
                       onClick={(e) => {
@@ -254,101 +240,66 @@ const StudentSheetMusic = () => {
                         toggleFavorite(sheet.sheetMusicId)
                       }}
                     >
-                     
                       {isFavorited(sheet.sheetMusicId) ? (
                         <HeartFilled className="student-sheet-music-heart-filled" />
                       ) : (
                         <HeartOutlined className="student-sheet-music-heart-outline" />
                       )}
-                   
                     </div>
-                    
                   </div>
-                
                   <div className="student-sheet-music-card-content">
-                    
-                    <h3 className="student-sheet-music-song-title">
-                     {sheet.musicName}
-                    </h3>
-                   
-                    <p className="student-sheet-music-composer">
-                      {sheet.composer}
-                    </p>
-                    
-                    {/* <div className="student-sheet-music-genre-tags">
-{sheet.genres.map((genre) => (
- <span
- key={genre.genreId}
- className="student-sheet-music-genre-tag"
->
- {genre.genreName}
- </span>
-))}
-</div> */}
-                    
+                    <h3 className="student-sheet-music-song-title">{sheet.musicName}</h3>
+                    <p className="student-sheet-music-composer">{sheet.composer}</p>
                   </div>
-                  
                 </div>
               ))}
-             
             </div>
-           
           </div>
-       {/* Genre Filter Section */}
+
+          {/* Genre Filter Section */}
           <div className="student-sheet-music-genre-section">
             <h2 className="student-h2">Tìm theo thể loại</h2>
             <div className="student-sheet-music-genre-buttons">
-              
               {genres.map((genre) => (
                 <Button
                   key={genre.genreId}
                   className="student-sheet-music-genre-button"
                   onClick={() => handleGenreClick(genre.genreName)}
                 >
-                {genre.genreName}
+                  {genre.genreName}
                 </Button>
               ))}
-             
             </div>
-            
           </div>
-      {/* User Favorites Section */}
+
+          {/* User Favorites Section */}
           <div className="student-sheet-music-section-sheet">
-           
             <div className="student-sheet-music-section-header">
-             <h2 className="student-h2">Mục yêu thích của bạn</h2>
+              <h2 className="student-h2">Mục yêu thích của bạn</h2>
               <div className="student-sheet-music-navigation-arrows">
-              
                 <Button
                   icon={<LeftOutlined />}
                   onClick={handlePrevFavorite}
                   disabled={favoriteStartIndex === 0}
                   className="student-sheet-music-nav-arrow"
                 />
-            
                 <Button
                   icon={<RightOutlined />}
                   onClick={handleNextFavorite}
                   disabled={favoriteStartIndex + 4 >= detailedFavoriteSheetMusic.length}
                   className="student-sheet-music-nav-arrow"
                 />
-           
               </div>
-     
             </div>
-      
             <div className="student-sheet-music-music-grid">
-        
               {detailedFavoriteSheetMusic.slice(favoriteStartIndex, favoriteStartIndex + 4).map((sheet) => (
                 <div
                   key={sheet.sheetMusicId}
                   className="student-sheet-music-music-card"
                   onClick={() => handleCardClick(sheet)}
                 >
-              
                   <div className="student-sheet-music-card-image">
-                 <img src={sheet.coverUrl || "/placeholder.svg"} alt={sheet.musicName} />
-            
+                    <img src={sheet.coverUrl || "/placeholder.svg"} alt={sheet.musicName} />
                     <div
                       className="student-sheet-music-heart-icon"
                       onClick={(e) => {
@@ -356,65 +307,34 @@ const StudentSheetMusic = () => {
                         toggleFavorite(sheet.sheetMusicId)
                       }}
                     >
-                    <HeartFilled className="student-sheet-music-heart-filled" />
-          
+                      <HeartFilled className="student-sheet-music-heart-filled" />
                     </div>
-                 
                   </div>
-                
                   <div className="student-sheet-music-card-content">
-             
-                    <h3 className="student-sheet-music-song-title">
-                     {sheet.musicName}
-                    </h3>
-             
-                    <p className="student-sheet-music-composer">
-                    {sheet.composer}
-                    </p>
-                  
-                    {/* <div className="student-sheet-music-genre-tags">
-{sheet.genres.map((genre) => (
-<span
- key={genre.genreId}
-className="student-sheet-music-genre-tag"
- >
-{genre.genreName}
- </span>
-))}
-</div> */}
-               
+                    <h3 className="student-sheet-music-song-title">{sheet.musicName}</h3>
+                    <p className="student-sheet-music-composer">{sheet.composer}</p>
                   </div>
-        
                 </div>
               ))}
-           
             </div>
-         
             <div className="student-sheet-music-see-more-container">
-         
               <Button
                 type="primary"
                 className="student-sheet-music-see-more-button"
                 onClick={() => navigate("/student/sheet-music/favorite")}
               >
-            Xem thêm
+                Xem thêm
               </Button>
-       
             </div>
-
           </div>
-    
         </>
       ) : (
         // Filtered view
         <div>
-        
           <div className="student-sheet-music-genre-filter-bar">
-           
             <Button icon={<ArrowLeftOutlined />} onClick={handleBack} className="back-button-favorite" type="text">
-              Quay lại 
+              Quay lại
             </Button>
-       
             {genres.map((genre) => (
               <Button
                 key={genre.genreId}
@@ -423,30 +343,23 @@ className="student-sheet-music-genre-tag"
                 }`}
                 onClick={() => handleGenreClick(genre.genreName)}
               >
-              {genre.genreName}
+                {genre.genreName}
               </Button>
             ))}
-  
           </div>
-  
           <div className="student-sheet-music-filtered-view">
-     
             <div className="student-sheet-music-main-content">
-          
               <div className="student-sheet-music-filtered-section">
-              <h2>{selectedGenre}</h2>
+                <h2>{selectedGenre}</h2>
                 <div className="student-sheet-music-filtered-grid">
-                
                   {filteredSheetMusic.map((sheet) => (
                     <div
                       key={sheet.sheetMusicId}
                       className="student-sheet-music-music-card"
                       onClick={() => handleCardClick(sheet)}
                     >
-                    
                       <div className="student-sheet-music-card-image">
                         <img src={sheet.coverUrl || "/placeholder.svg"} alt={sheet.musicName} />
-                    
                         <div
                           className="student-sheet-music-heart-icon"
                           onClick={(e) => {
@@ -454,190 +367,68 @@ className="student-sheet-music-genre-tag"
                             toggleFavorite(sheet.sheetMusicId)
                           }}
                         >
-                     
                           {isFavorited(sheet.sheetMusicId) ? (
                             <HeartFilled className="student-sheet-music-heart-filled" />
                           ) : (
                             <HeartOutlined className="student-sheet-music-heart-outline" />
                           )}
-                    
                         </div>
-                     
                       </div>
-                
                       <div className="student-sheet-music-card-content">
-                     
-                        <h3 className="student-sheet-music-song-title">
-                     {sheet.musicName}
-                        </h3>
-                      
-                        <p className="student-sheet-music-composer">
-                       {sheet.composer}
-                        </p>
-                   
-                        {/* <div className="student-sheet-music-genre-tags">
-{sheet.genres.map((genre) => (
-<span
-key={genre.genreId}
-className="student-sheet-music-genre-tag"
->
-{genre.genreName}
- </span>
-))}
-</div> */}
-                    
+                        <h3 className="student-sheet-music-song-title">{sheet.musicName}</h3>
+                        <p className="student-sheet-music-composer">{sheet.composer}</p>
                       </div>
-                   
                     </div>
                   ))}
-                
                 </div>
-           
               </div>
-          
             </div>
-       
             <div className="student-sheet-music-sidebar">
-         
               <div className="student-sheet-music-sidebar-section">
-          <h3>Thịnh hành</h3>
+                <h3>Thịnh hành</h3>
                 <div className="student-sheet-music-sidebar-list">
-                 
                   {popularSheetMusic.slice(0, 6).map((sheet, index) => (
                     <div
                       key={sheet.sheetMusicId}
                       className="student-sheet-music-sidebar-item"
                       onClick={() => handleCardClick(sheet)}
                     >
-             
-                      <span className="student-sheet-music-item-number">
-                     {index + 1}
-                      </span>
-                  
+                      <span className="student-sheet-music-item-number">{index + 1}</span>
                       <div className="student-sheet-music-item-info">
-                     
-                        <p className="student-sheet-music-item-title">
-                      {sheet.musicName}
-                        </p>
-                       
-                        {/* <p className="student-sheet-music-item-composer">
-{sheet.composer}
- </p> */}
-                     
+                        <p className="student-sheet-music-item-title">{sheet.musicName}</p>
                       </div>
-                  
                     </div>
                   ))}
-               
                 </div>
-           
               </div>
-             
               <div className="student-sheet-music-sidebar-section">
-             <h3>Mục yêu thích</h3>
+                <h3>Mục yêu thích</h3>
                 <div className="student-sheet-music-sidebar-list">
-               
                   {detailedFavoriteSheetMusic.slice(0, 6).map((sheet, index) => (
                     <div
                       key={sheet.sheetMusicId}
                       className="student-sheet-music-sidebar-item"
                       onClick={() => handleCardClick(sheet)}
                     >
-                    
-                      <span className="student-sheet-music-item-number">
-                      {index + 1}
-                      </span>
-                    
+                      <span className="student-sheet-music-item-number">{index + 1}</span>
                       <div className="student-sheet-music-item-info">
-                      
-                        <p className="student-sheet-music-item-title">
-                     {sheet.musicName}
-                        </p>
-                        
-                        {/* <p className="student-sheet-music-item-composer">
- {sheet.composer}
-</p> */}
-                       
+                        <p className="student-sheet-music-item-title">{sheet.musicName}</p>
                       </div>
-                     
                     </div>
                   ))}
-               
                 </div>
-               
                 <Button
                   type="link"
                   className="student-sheet-music-sidebar-see-more"
                   onClick={() => navigate("/student/sheet-music/favorite")}
                 >
-                 Xem thêm 
+                  Xem thêm
                 </Button>
-              
               </div>
-              
             </div>
-         
           </div>
-       
         </div>
       )}
-{/* Detail Modal */}
-      <Modal
-        // title={selectedSheet?.musicName}
-        open={isDetailModalVisible}
-        onCancel={() => setIsDetailModalVisible(false)}
-        footer={null}
-        width={800}
-        className="student-sheet-music-sheet-detail-modal"
-      >
-     
-        {selectedSheet && (
-          <div className="student-sheet-music-modal-content">
-           
-            <div className="student-sheet-music-modal-header">
-          
-              <div className="student-sheet-music-modal-info">
-               <h3>{selectedSheet.musicName}</h3>
-                <p>Tác giả: {selectedSheet.composer}</p>
-                <p>Số lượng sheet: {selectedSheet.sheetQuantity}</p>
-                <p>Lượt yêu thích: {selectedSheet.favoriteCount}</p>
-              </div>
-       
-            </div>
-
-            <div className="student-sheet-music-sheets-container">
-             <h4>Danh sách Sheet</h4>
-              <div className="student-sheet-music-sheets-list">
-         
-                {selectedSheet.sheets?.map((sheet, index) => (
-                  <div key={sheet.sheetId} className="student-sheet-music-sheet-item">
-                
-                    <div className="student-sheet-music-sheet-image-container">
-               
-                      <Image
-                        src={sheet.sheetUrl || "/placeholder.svg"}
-                        alt={`Sheet ${index + 1}`}
-                        className="student-sheet-music-sheet-image"
-                      />
-                  
-                    </div>
-                   
-                    <div className="student-sheet-music-sheet-info">
-                      <h5>Sheet {index + 1}</h5>
-                    </div>
-                  
-                  </div>
-                ))}
-               
-              </div>
-            
-            </div>
-          
-          </div>
-        )}
-      
-      </Modal>
-  
     </div>
   )
 }

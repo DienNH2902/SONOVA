@@ -41,6 +41,7 @@ import TeacherCourseSchedule from "../pages/Teacher/TeacherCourseSchedule/Teache
 import StudentSheetMusic from "../pages/Student/SheetMusic/SheetMusic.jsx";
 import Favorite from "../pages/Student/SheetMusic/Favorite.jsx";
 import StudentSchedule from "../pages/Student/StudentSchedule/StudentSchedule.jsx";
+import Sheet from "../pages/Student/SheetMusic/Sheet.jsx";
 
 
 const getUser = () => {
@@ -133,6 +134,7 @@ const AppRoutes = () => {
           <Route path="/student/student-material" element={<StudentMaterials />} />
           <Route path="/student/sheet-music" element={<StudentSheetMusic />} />
           <Route path="/student/sheet-music/favorite" element={<Favorite />} />
+          <Route path="/student/sheet-music/:id" element={<Sheet />} />
           <Route path="/student/schedule" element={<StudentSchedule />} />
           <Route path="/student/materials" element={<StudentMaterials />} />
 

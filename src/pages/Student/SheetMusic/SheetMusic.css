@@ -738,3 +738,23 @@
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
+
+.back-button-favorite-home {
+  color: #192f59 !important;
+  border: 1px solid #192f59 !important;
+  border-radius: 8px !important;
+  padding: 8px 16px !important;
+  height: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  font-weight: 500 !important;
+  transition: all 0.3s ease !important;
+  font-family: 'SVN-Gilroy' !important;
+}
+
+.back-button-favorite-home:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  color: white !important;
+}
