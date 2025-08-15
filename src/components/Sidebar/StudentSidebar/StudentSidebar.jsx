@@ -55,18 +55,18 @@ const StudentSidebar = () => {
       className: "sidebar-item-yellow",
       onClick: () => navigate("/student"),
     },
-    {
-      key: "schedule",
-      icon: <ScheduleOutlined />, // Vẫn dùng CalendarOutlined như mày muốn
-      label: "Thời khóa biểu",
-      onClick: () => navigate("/student/schedule"),
-    },
-    {
-      key: "materials",
-      icon: <FileOutlined />, // Vẫn dùng CalendarOutlined như mày muốn
-      label: "Tài liệu",
-      onClick: () => navigate("/student/materials"),
-    },
+    // {
+    //   key: "schedule",
+    //   icon: <ScheduleOutlined />, // Vẫn dùng CalendarOutlined như mày muốn
+    //   label: "Thời khóa biểu",
+    //   onClick: () => navigate("/student/schedule"),
+    // },
+    // {
+    //   key: "materials",
+    //   icon: <FileOutlined />, // Vẫn dùng CalendarOutlined như mày muốn
+    //   label: "Tài liệu",
+    //   onClick: () => navigate("/student/materials"),
+    // },
     {
       key: "sheet-music",
       icon: <CalendarOutlined />, // Vẫn dùng CalendarOutlined như mày muốn

@@ -103,10 +103,10 @@ const Footer = () => {
                 <a href="https://www.facebook.com/nentangsonova" className="social-link">
                   <FacebookOutlined /> Facebook
                 </a>
-                <a href="#" className="social-link">
+                {/* <a href="#" className="social-link">
                   <YoutubeOutlined /> Youtube
-                </a>
-                <a href="#" className="social-link">
+                </a> */}
+                <a href="https://www.tiktok.com/@sonovaxmusicgarden?_t=ZS-8yrvCLrgddc&_r=1" className="social-link">
                   <span className="tiktok-icon">♪</span> Tiktok
                 </a>
               </div>

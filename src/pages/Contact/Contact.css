@@ -38,6 +38,21 @@
   padding: 30px 20px;
   border-radius: 15px;
   text-align: center;
+  /* box-shadow: 0 10px 30px rgba(30, 58, 95, 0.2); */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-card:hover {
+  transform: translateY(-5px);
+  /* box-shadow: 0 15px 40px rgba(30, 58, 95, 0.3); */
+}
+
+.contact-card-face {
+  background: #1e3a5f;
+  color: white;
+  padding: 30px 20px;
+  border-radius: 15px;
+  text-align: center;
   cursor: pointer;
   /* box-shadow: 0 10px 30px rgba(30, 58, 95, 0.2); */
   transition: transform 0.3s ease, box-shadow 0.3s ease;

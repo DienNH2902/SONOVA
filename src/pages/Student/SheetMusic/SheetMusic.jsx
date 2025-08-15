@@ -292,7 +292,7 @@ const StudentSheetMusic = () => {
                       <p className="student-sheet-music-composer">
                         {sheet.composer}
                       </p>
-                      <div className="student-sheet-music-genre-tags">
+                      {/* <div className="student-sheet-music-genre-tags">
                         {sheet.genres.map((genre) => (
                           <span
                             key={genre.genreId}
@@ -301,7 +301,7 @@ const StudentSheetMusic = () => {
                             {genre.genreName}
                           </span>
                         ))}
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 ))}
@@ -380,7 +380,7 @@ const StudentSheetMusic = () => {
                       <p className="student-sheet-music-composer">
                         {sheet.composer}
                       </p>
-                      <div className="student-sheet-music-genre-tags">
+                      {/* <div className="student-sheet-music-genre-tags">
                         {sheet.genres.map((genre) => (
                           <span
                             key={genre.genreId}
@@ -389,7 +389,7 @@ const StudentSheetMusic = () => {
                             {genre.genreName}
                           </span>
                         ))}
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 ))}
@@ -461,7 +461,7 @@ const StudentSheetMusic = () => {
                         <p className="student-sheet-music-composer">
                           {sheet.composer}
                         </p>
-                        <div className="student-sheet-music-genre-tags">
+                        {/* <div className="student-sheet-music-genre-tags">
                           {sheet.genres.map((genre) => (
                             <span
                               key={genre.genreId}
@@ -470,7 +470,7 @@ const StudentSheetMusic = () => {
                               {genre.genreName}
                             </span>
                           ))}
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   ))}

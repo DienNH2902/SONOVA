@@ -510,7 +510,7 @@ const Contact = () => {
             </div>
 
             <div
-              className="contact-card"
+              className="contact-card-face"
               onClick={() => window.open("https://www.facebook.com/nentangsonova", "_blank")}
             >
               <div className="contact-icon">
@@ -629,7 +629,7 @@ const Contact = () => {
                     ]}
                     className="form-group"
                   >
-                    <Input placeholder="090xxxxxxx" />
+                    <Input placeholder="Nhập số điện thoại của bạn" />
                   </Form.Item>
                 </div>
 
