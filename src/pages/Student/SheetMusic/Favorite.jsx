@@ -6,6 +6,11 @@ import { useNavigate } from "react-router-dom"
 import "./Favorite.css"
 
 const Favorite = () => {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   const navigate = useNavigate()
   const [favoriteSheetMusic, setFavoriteSheetMusic] = useState([])
   const [allSheetMusic, setAllSheetMusic] = useState([])

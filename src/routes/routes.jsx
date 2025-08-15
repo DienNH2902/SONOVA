@@ -42,6 +42,7 @@ import StudentSheetMusic from "../pages/Student/SheetMusic/SheetMusic.jsx";
 import Favorite from "../pages/Student/SheetMusic/Favorite.jsx";
 import StudentSchedule from "../pages/Student/StudentSchedule/StudentSchedule.jsx";
 import Sheet from "../pages/Student/SheetMusic/Sheet.jsx";
+import ScrollToTop from "./scrollTop.jsx";
 
 
 const getUser = () => {
@@ -61,6 +62,7 @@ const ProtectedRoute = ({ allowedRoles }) => {
 const AppRoutes = () => {
   return (
     <Router>
+    <ScrollToTop /> {/* Đặt ngay trong Router */}
       <Routes>
 
 

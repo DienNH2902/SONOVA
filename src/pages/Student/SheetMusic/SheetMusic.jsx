@@ -12,8 +12,14 @@ import {
 } from "@ant-design/icons"
 import { useNavigate } from "react-router-dom"
 import "./SheetMusic.css" // CSS vẫn được import như cũ
+import ScrollToTop from "../../../routes/scrollTop"
 
 const StudentSheetMusic = () => {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const navigate = useNavigate()
   const [searchText, setSearchText] = useState("")
   const [selectedGenre, setSelectedGenre] = useState("Tất cả")
@@ -194,7 +200,9 @@ const StudentSheetMusic = () => {
   }
 
   return (
+
     <div className="student-sheet-music-page">
+    <ScrollToTop /> {/* Đặt ngay trong Router */}
       {/* Header */}
       <div className="student-sheet-music-header-section">
         <h1 className="student-sheet-music-main-title">Tìm kiếm sheet nhạc yêu thích của bạn </h1>
@@ -221,6 +229,7 @@ const StudentSheetMusic = () => {
         <>
           {/* Popular Music Section */}
           <div className="student-sheet-music-section-sheet">
+          <ScrollToTop /> {/* Đặt ngay trong Router */}
             <div className="student-sheet-music-section-header">
               <h2 className="student-h2">Bài nhạc thịnh hành</h2>
             </div>
@@ -331,6 +340,7 @@ const StudentSheetMusic = () => {
       ) : (
         // Filtered view
         <div>
+        <ScrollToTop /> {/* Đặt ngay trong Router */}
           <div className="student-sheet-music-genre-filter-bar">
             {/* <Button icon={<ArrowLeftOutlined />} onClick={handleBack} className="back-button-favorite" type="text">
               Quay lại

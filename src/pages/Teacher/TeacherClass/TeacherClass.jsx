@@ -8,6 +8,11 @@ import { useNavigate } from "react-router-dom"
 const { Title, Text } = Typography
 
 const TeacherClass = () => {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   const navigate = useNavigate()
   const [todayTeacherSessions, setTodayTeacherSessions] = useState([]) // Các buổi học của giáo viên trong ngày hôm nay
   const [allTeacherClasses, setAllTeacherClasses] = useState([]) // Tất cả các lớp của giáo viên

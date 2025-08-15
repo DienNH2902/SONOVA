@@ -7,6 +7,11 @@ import { useNavigate, useParams } from "react-router-dom"
 import "./Sheet.css"
 
 const Sheet = () => {
+
+    useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   const navigate = useNavigate()
   const { id } = useParams()
   const [sheetMusic, setSheetMusic] = useState(null)

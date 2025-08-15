@@ -11,6 +11,11 @@ import { useEffect, useState } from "react";
 const { Title, Paragraph } = Typography;
 
 const CourseGuitarAdvanced = () => {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);

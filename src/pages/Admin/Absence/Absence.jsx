@@ -7,6 +7,11 @@ import "./Absence.css"
 const { Title, Text } = Typography
 
 const Absence = () => {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   const [absentStudents, setAbsentStudents] = useState([])
   const [absentTeachers, setAbsentTeachers] = useState([])
   const [loading, setLoading] = useState(true)

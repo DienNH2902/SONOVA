@@ -363,6 +363,10 @@ const Contact = () => {
   const [loading, setLoading] = useState(false)
   const hasFetchedTopics = useRef(false)
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   // Fetch consultation topics when component mounts
   useEffect(() => {
     if (hasFetchedTopics.current) return

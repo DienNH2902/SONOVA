@@ -10,6 +10,10 @@ const { Title, Text } = Typography
 const { Option } = Select
 
 const TeacherAttendance = () => {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const navigate = useNavigate()
   const [attendanceData, setAttendanceData] = useState([]) // Danh sách học sinh và trạng thái điểm danh
   const [attendanceStatuses, setAttendanceStatuses] = useState([]) // Các trạng thái điểm danh từ API

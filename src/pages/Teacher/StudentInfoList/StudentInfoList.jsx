@@ -9,6 +9,11 @@ import "./StudentInfoList.css"
 const { Title } = Typography
 
 const StudentInfoList = () => {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   const navigate = useNavigate()
   const [studentData, setStudentData] = useState([]) // Dữ liệu học sinh sẽ được fetch từ API
   const [loading, setLoading] = useState(true) // Trạng thái loading

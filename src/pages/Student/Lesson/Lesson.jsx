@@ -240,6 +240,11 @@ const { Title, Text } = Typography
 const { Option } = Select
 
 const Lesson = () => {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   const navigate = useNavigate()
   const [classSessions, setClassSessions] = useState([])
   const [allClassSessions, setAllClassSessions] = useState([]) // Store all sessions

@@ -7,10 +7,15 @@ import gtcl2 from "../../assets/gtcl2.png";
 import gtcl3 from "../../assets/gtcl3.png";
 import snnv from "../../assets/sonynova.png";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 const { Title, Paragraph } = Typography;
 
 const AboutUs = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="about-page">

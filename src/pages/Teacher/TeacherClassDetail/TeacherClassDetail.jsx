@@ -10,6 +10,11 @@ import "./TeacherClassDetail.css"
 const { Title, Text } = Typography
 
 const TeacherClassDetail = () => {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   const navigate = useNavigate()
   const [classSessions, setClassSessions] = useState([]) // Tất cả các buổi học của cùng một lớp
   const [classInfo, setClassInfo] = useState(null) // Thông tin chi tiết của lớp học

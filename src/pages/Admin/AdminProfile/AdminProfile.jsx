@@ -8,6 +8,11 @@ const { Title, Text } = Typography
 const { Option } = Select
 
 const AdminProfile = () => {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   const { message: antdMessage } = App.useApp()
   const [profileData, setProfileData] = useState(null)
   const [loading, setLoading] = useState(true)

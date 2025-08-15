@@ -618,6 +618,11 @@ import "./Statistics.css"
 const { Title, Text } = Typography
 
 const Statistics = () => {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   const [statisticsData, setStatisticsData] = useState([])
   const [monthlyData, setMonthlyData] = useState([])
   const [loading, setLoading] = useState(true)

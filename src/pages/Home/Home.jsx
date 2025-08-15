@@ -4,11 +4,16 @@ import firstHome from "../../assets/firstHome.png";
 import { useNavigate } from "react-router-dom";
 
 import "./Home.css";
+import { useEffect } from "react";
 
 const { Title, Paragraph } = Typography;
 
 const Home = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
 
   return (
     <div className="home-page">

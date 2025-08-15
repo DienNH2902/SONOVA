@@ -20,6 +20,12 @@ import { useNavigate } from "react-router-dom"
 const { Title, Paragraph } = Typography
 
 const CoursePiano = () => {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  
   const navigate = useNavigate()
 
   const [courses, setCourses] = useState([])

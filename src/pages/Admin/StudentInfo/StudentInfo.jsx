@@ -654,6 +654,11 @@ const { Option } = Select;
 // const { confirm } = Modal;
 
 const StudentInfo = () => {
+
+    useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [searchText, setSearchText] = useState("");
     const [tempSearchText, setTempSearchText] = useState("");

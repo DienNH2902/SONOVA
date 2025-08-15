@@ -594,6 +594,11 @@ import "./Consultation.css"
 const { Title } = Typography
 
 const Consultation = () => {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   const [consultationRequests, setConsultationRequests] = useState([])
   const [loading, setLoading] = useState(true)
   const [currentAdmin, setCurrentAdmin] = useState({ username: "Admin", userId: null }) // Cập nhật state để lưu cả userId

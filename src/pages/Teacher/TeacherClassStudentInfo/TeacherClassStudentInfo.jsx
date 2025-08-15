@@ -118,6 +118,11 @@ import { useNavigate } from "react-router-dom"
 const { Title, Text } = Typography
 
 const TeacherClassStudentInfo = () => {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   const navigate = useNavigate()
   // Khởi tạo teacherClasses là một đối tượng rỗng ngay từ đầu
   const [teacherClasses, setTeacherClasses] = useState({ piano: [], guitar: [] })

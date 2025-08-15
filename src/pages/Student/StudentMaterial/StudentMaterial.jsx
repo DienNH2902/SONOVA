@@ -28,6 +28,11 @@ const baseUrl =
   "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api";
 
 const StudentMaterials = () => {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [form] = Form.useForm();

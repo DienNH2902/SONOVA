@@ -57,6 +57,11 @@ const weekdayOptions = [
 ]
 
 const TeacherCourseSchedule = () => {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   const [openingSchedules, setOpeningSchedules] = useState([])
   const [classSessions, setClassSessions] = useState([]) // Dữ liệu từ API ClassSession
   const [loading, setLoading] = useState(true)

@@ -33,6 +33,11 @@ const { Option } = Select
 const { Dragger } = Upload
 
 const SheetMusic = () => {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   const { message, modal } = App.useApp()
   const [searchText, setSearchText] = useState("")
   const [currentPage, setCurrentPage] = useState(1)

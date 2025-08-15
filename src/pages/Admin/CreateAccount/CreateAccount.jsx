@@ -21,6 +21,11 @@ const { Title } = Typography;
 const { Option } = Select;
 
 const CreateAccount = () => {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   const [form] = Form.useForm();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [accountInfo, setAccountInfo] = useState({ username: "", password: "" });

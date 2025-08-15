@@ -10,6 +10,9 @@ const { Title, Text } = Typography
 const { Option } = Select
 
 const AdminTeacherAttendance = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const navigate = useNavigate()
 
   const [attendanceData, setAttendanceData] = useState([]) // Danh sách giáo viên và trạng thái điểm danh
