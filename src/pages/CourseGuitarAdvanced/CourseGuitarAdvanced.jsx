@@ -1,6 +1,6 @@
 import { Typography, Row, Col, Card, Carousel, Space, Button } from "antd";
 import "../Course/Course.css";
-import guitarcb from "../../assets/guitarcb.png";
+import guitarad from "../../assets/guitarad.png";
 import guitarad1 from "../../assets/guitarad1.png";
 import guitarad2 from "../../assets/guitarad2.png";
 import gvhd from "../../assets/gvhd.png";
@@ -15,7 +15,7 @@ const CourseGuitarAdvanced = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  
+
   const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -123,7 +123,7 @@ const CourseGuitarAdvanced = () => {
       <section className="course-hero">
         <div class="half-circle-container">
           <div class="half-circle">
-            <img src={guitarcb} alt="Guitar Player" />
+            <img src={guitarad} alt="Guitar Player" />
             {/* <div class="text-overlay">
               <h2>Sonova</h2>
               <p>Hành trình mang đến giá trị</p>

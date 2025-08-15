@@ -25,7 +25,7 @@ const CoursePiano = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  
+
   const navigate = useNavigate()
 
   const [courses, setCourses] = useState([])
@@ -322,7 +322,7 @@ const CoursePiano = () => {
               <tbody>
                 <tr>
                   <td>Buổi 1</td>
-                  <td>Giới thiệu đàn piano và lý thế nhạc</td>
+                  <td>Giới thiệu đàn piano và tư thế chơi</td>
                   <td>Cảm nghĩ đúng, đặt tay, sử dụng ngón tay, kỹ thuật</td>
                 </tr>
                 <tr className="alternate-row">
@@ -352,7 +352,7 @@ const CoursePiano = () => {
                 </tr>
                 <tr>
                   <td>Buổi 7</td>
-                  <td>Hiệp điệu và tiết tấu</td>
+                  <td>Nhịp điệu và tiết tấu</td>
                   <td>Luyện tập điểm nhấn, giữ nhịp giai điệu với các kỹ thuật</td>
                 </tr>
                 <tr className="alternate-row">
@@ -362,7 +362,7 @@ const CoursePiano = () => {
                 </tr>
                 <tr>
                   <td>Buổi 9</td>
-                  <td>Kỹ hiệu nhạc lý quan trọng</td>
+                  <td>Ký hiệu nhạc lý quan trọng</td>
                   <td>Học về dấu nhấn dài, dấu hóa, dấu lặng</td>
                 </tr>
                 <tr className="alternate-row">
@@ -372,7 +372,7 @@ const CoursePiano = () => {
                 </tr>
                 <tr>
                   <td>Buổi 11</td>
-                  <td>Cách đánh pedal cơ bản</td>
+                  <td>Cách sử dụng pedal cơ bản</td>
                   <td>Giới thiệu và hướng dẫn sử dụng pedal sustain</td>
                 </tr>
                 <tr className="alternate-row">

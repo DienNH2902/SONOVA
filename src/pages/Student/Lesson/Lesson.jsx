@@ -244,7 +244,7 @@ const Lesson = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  
+
   const navigate = useNavigate()
   const [classSessions, setClassSessions] = useState([])
   const [allClassSessions, setAllClassSessions] = useState([]) // Store all sessions
@@ -255,7 +255,7 @@ const Lesson = () => {
   const [classOptions, setClassOptions] = useState([]) // Class options for dropdown
 
   const materialsData = [
-    { id: 1, session: "Buổi 1", title: "Giới thiệu đàn và tư thế chơi" },
+    { id: 1, session: "Buổi 1", title: "Giới thiệu đàn và tư thế chơi đàn" },
     { id: 2, session: "Buổi 2", title: "Học nhạc lý và nốt nhạc" },
     { id: 3, session: "Buổi 3", title: "Kỹ thuật chạy ngón cơ bản" },
     { id: 4, session: "Buổi 4", title: "Chơi giai điệu đơn giản" },
@@ -263,7 +263,7 @@ const Lesson = () => {
     { id: 6, session: "Buổi 6", title: "Phối hợp hai tay" },
     { id: 7, session: "Buổi 7", title: "Nhịp điệu và tiết tấu" },
     { id: 8, session: "Buổi 8", title: "Chơi bài hát đơn giản" },
-    { id: 9, session: "Buổi 9", title: "Kỹ hiệu nhạc lý quan trọng" },
+    { id: 9, session: "Buổi 9", title: "Ký hiệu nhạc lý quan trọng" },
     { id: 10, session: "Buổi 10", title: "Chuyển hợp âm mượt mà" },
     { id: 11, session: "Buổi 11", title: "Cách dùng pedal cơ bản" },
     { id: 12, session: "Buổi 12", title: "Cải thiện kỹ thuật và cảm âm" },

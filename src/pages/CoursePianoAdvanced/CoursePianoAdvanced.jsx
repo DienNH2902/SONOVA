@@ -1,6 +1,6 @@
 import { Typography, Row, Col, Card, Carousel, Space, Button } from "antd";
 import "../Course/Course.css";
-import pianocb from "../../assets/pianocb.png";
+import pianoad from "../../assets/pianoad.png";
 import pianoad1 from "../../assets/pianoad1.png";
 import pianoad2 from "../../assets/pianoad2.png";
 import gvhd from "../../assets/gvhd.png";
@@ -15,7 +15,7 @@ const CoursePianoAdvanced = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  
+
   const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -124,7 +124,7 @@ const CoursePianoAdvanced = () => {
       <section className="course-hero">
         <div class="half-circle-container">
           <div class="half-circle">
-            <img src={pianocb} alt="Piano Player" />
+            <img src={pianoad} alt="Piano Player" />
             {/* <div class="text-overlay">
               <h2>Sonova</h2>
               <p>Hành trình mang đến giá trị</p>
