@@ -264,12 +264,12 @@ const Lesson = () => {
     { id: 12, session: "Buổi 12", title: "Cải thiện kỹ thuật và cảm âm" },
     { id: 13, session: "Buổi 13", title: "Chuẩn bị bài biểu diễn" },
     { id: 14, session: "Buổi 14", title: "Biểu diễn và đánh giá" },
-    { id: 15, session: "Buổi 15", title: "Ôn tập và thực hành tổng hợp" },
-    { id: 16, session: "Buổi 16", title: "Giới thiệu các thể loại nhạc" },
-    { id: 17, session: "Buổi 17", title: "Phân tích cấu trúc bài hát" },
-    { id: 18, session: "Buổi 18", title: "Kỹ thuật nâng cao (arpeggios, scales)" },
-    { id: 19, session: "Buổi 19", title: "Sáng tác và ngẫu hứng cơ bản" },
-    { id: 20, session: "Buổi 20", title: "Tổng kết khóa học và định hướng" },
+    // { id: 15, session: "Buổi 15", title: "Ôn tập và thực hành tổng hợp" },
+    // { id: 16, session: "Buổi 16", title: "Giới thiệu các thể loại nhạc" },
+    // { id: 17, session: "Buổi 17", title: "Phân tích cấu trúc bài hát" },
+    // { id: 18, session: "Buổi 18", title: "Kỹ thuật nâng cao (arpeggios, scales)" },
+    // { id: 19, session: "Buổi 19", title: "Sáng tác và ngẫu hứng cơ bản" },
+    // { id: 20, session: "Buổi 20", title: "Tổng kết khóa học và định hướng" },
   ]
 
   const getSessionColor = (sessionNumber) => {
@@ -430,7 +430,7 @@ const Lesson = () => {
       <div className="lesson-dashboard-container">
         <div className="lesson-materials-section">
           <Title level={2} className="lesson-section-title">
-            Tài liệu
+            Khóa học của tôi
           </Title>
 
           {/* Class Filter Dropdown */}
@@ -450,7 +450,7 @@ const Lesson = () => {
               const material = materialsData[index]
               const title = material
                 ? material.title
-                : session.sessionNumber > 20
+                : session.sessionNumber > 14
                   ? "Ôn tập"
                   : `Buổi ${session.sessionNumber}`
               const sessionStatus = getSessionStatus(session.date, session.classSessionId)
@@ -461,8 +461,8 @@ const Lesson = () => {
                   <Card
                     className="lesson-material-card"
                     // onClick={() => handleMaterialNavigation(session.classSessionId)}
-                    onClick={() => navigate('student-material')}
-                    style={{ cursor: "pointer" }}
+                    // onClick={() => navigate('student-material')}
+                    // style={{ cursor: "pointer" }}
                   >
                     <div className="lesson-material-content">
                       <div className="lesson-material-header">

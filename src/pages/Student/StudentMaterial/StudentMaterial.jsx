@@ -11,6 +11,7 @@ import {
   Select,
   Popconfirm,
   Space,
+  Spin, // Thêm Spin component
 } from "antd";
 import {
   EditOutlined,
@@ -22,7 +23,6 @@ import { useState, useEffect } from "react";
 
 const { Title } = Typography;
 const { Option } = Select;
-const { confirm } = Modal;
 
 const baseUrl =
   "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api";
@@ -35,6 +35,7 @@ const StudentMaterials = () => {
   const [materials, setMaterials] = useState([]);
   const [instruments, setInstruments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [userInstrumentIds, setUserInstrumentIds] = useState([]); // State mới để lưu instrumentId của học sinh
 
   // Fetch data from API
   const fetchInstruments = async () => {
@@ -63,15 +64,48 @@ const StudentMaterials = () => {
   };
 
   useEffect(() => {
-    fetchInstruments();
-    fetchMaterials();
+    const fetchAllData = async () => {
+      // Lấy dữ liệu tài liệu và nhạc cụ như cũ
+      await fetchInstruments();
+      await fetchMaterials();
+
+      // Logic mới: Lấy thông tin lớp học của học sinh để xác định nhạc cụ được xem
+      try {
+        const userString = localStorage.getItem("user");
+        if (userString) {
+          const userData = JSON.parse(userString);
+          const userClassIds = userData?.classIds;
+
+          if (userClassIds && userClassIds.length > 0) {
+            const response = await fetch(`${baseUrl}/Class`);
+            const allClasses = await response.json();
+            
+            // Lọc ra các lớp học của người dùng
+            const userClasses = allClasses.filter((cls) =>
+              userClassIds.includes(cls.classId)
+            );
+
+            // Lấy danh sách instrumentId duy nhất từ các lớp học của người dùng
+            const instrumentIds = [
+              ...new Set(userClasses.map((cls) => cls.instrumentId)),
+            ];
+            setUserInstrumentIds(instrumentIds);
+          }
+        }
+      } catch (error) {
+        message.error("Không thể xác định khoá học của bạn.");
+        console.error("Error fetching user classes:", error);
+      }
+    };
+
+    fetchAllData();
   }, []);
 
   const showModal = (instrumentId) => {
     setIsEditMode(false);
     setEditingRecord(null);
     form.resetFields();
-    form.setFieldsValue({ instrumentId: instrumentId }); // Đặt giá trị mặc định cho nhạc cụ
+    form.setFieldsValue({ instrumentId: instrumentId });
     setIsModalVisible(true);
   };
 
@@ -96,7 +130,6 @@ const StudentMaterials = () => {
     try {
       let response;
       if (isEditMode) {
-        // Thêm documentId vào payload khi ở chế độ chỉnh sửa
         const payload = {
           documentId: editingRecord.documentId,
           ...values,
@@ -120,7 +153,7 @@ const StudentMaterials = () => {
 
       message.success(`Đã ${isEditMode ? "cập nhật" : "thêm"} tài liệu thành công!`);
       handleCancel();
-      fetchMaterials(); // Reload data
+      fetchMaterials();
     } catch (error) {
       message.error(error.message);
     }
@@ -135,7 +168,7 @@ const StudentMaterials = () => {
         throw new Error("Lỗi khi xóa tài liệu.");
       }
       message.success("Đã xóa tài liệu thành công!");
-      fetchMaterials(); // Reload data
+      fetchMaterials();
     } catch (error) {
       message.error(error.message);
     }
@@ -144,7 +177,6 @@ const StudentMaterials = () => {
   const pianoMaterials = materials.filter((m) => m.instrumentId === 2);
   const guitarMaterials = materials.filter((m) => m.instrumentId === 1);
 
-  // Table columns configuration
   const columns = [
     {
       title: "Buổi",
@@ -171,42 +203,6 @@ const StudentMaterials = () => {
         </a>
       ),
     },
-    // {
-    //   title: "Thao tác",
-    //   key: "action",
-    //   width: 120,
-    //   align: "center",
-    //   className: "action-column",
-    //   render: (_, record) => (
-    //     <Space size="middle">
-    //       <Button
-    //         type="default"
-    //         icon={<EditOutlined />}
-    //         size="small"
-    //         className="edit-button-material"
-    //         onClick={() => showEditModal(record)}
-    //       >
-    //         Sửa
-    //       </Button>
-    //       <Popconfirm
-    //         title="Bạn có chắc muốn xóa?"
-    //         onConfirm={() => handleDeleteMaterial(record.documentId)}
-    //         okText="Có"
-    //         cancelText="Không"
-    //       >
-    //         <Button
-    //           type="primary"
-    //           danger
-    //           icon={<DeleteOutlined />}
-    //           size="small"
-    //           className="delete-button-material"
-    //         >
-    //           Xóa
-    //         </Button>
-    //       </Popconfirm>
-    //     </Space>
-    //   ),
-    // },
   ];
 
   return (
@@ -215,67 +211,53 @@ const StudentMaterials = () => {
         <Title level={1} className="page-title">
           Tài liệu
         </Title>
-        {/* Piano Materials Section */}
-        <div className="materials-section">
-          <Title level={2} className="section-title-piano-title-material">
-            PIANO
-          </Title>
-          {/* <div className="add-material-container">
-            <Button
-              type="primary"
-              icon={<PlusOutlined />}
-              onClick={() => showModal(2)} // instrumentId = 2 cho Piano
-              className="add-material-button"
-            >
-              Thêm tài liệu
-            </Button>
-          </div> */}
-          <div className="table-container">
-            <Table
-              columns={columns}
-              dataSource={pianoMaterials}
-              pagination={false}
-              className="materials-table"
-              size="middle"
-              rowClassName={(record, index) =>
-                index % 2 === 0 ? "even-row" : "odd-row"
-              }
-              loading={loading}
-            />
-          </div>
-        </div>
+        <Spin spinning={loading} tip="Đang tải..." style={{ marginTop: '200px'}}>
+          {/* Cập nhật: Chỉ hiển thị mục Piano nếu học sinh có đăng ký lớp Piano (instrumentId = 2) */}
+          {userInstrumentIds.includes(2) && (
+            <div className="materials-section">
+              <Title level={2} className="section-title-piano-title-material">
+                PIANO
+              </Title>
+              <div className="table-container">
+                <Table
+                  columns={columns}
+                  dataSource={pianoMaterials}
+                  pagination={false}
+                  className="materials-table"
+                  size="middle"
+                  rowClassName={(record, index) =>
+                    index % 2 === 0 ? "even-row" : "odd-row"
+                  }
+                  loading={loading}
+                />
+              </div>
+            </div>
+          )}
 
-        {/* Guitar Materials Section */}
-        <div className="materials-section">
-          <Title level={2} className="section-title-guitar-title-material">
-            GUITAR
-          </Title>
-          {/* <div className="add-material-container">
-            <Button
-              type="primary"
-              icon={<PlusOutlined />}
-              onClick={() => showModal(1)} // instrumentId = 1 cho Guitar
-              className="add-material-button"
-            >
-              Thêm tài liệu
-            </Button>
-          </div> */}
-          <div className="table-container">
-            <Table
-              columns={columns}
-              dataSource={guitarMaterials}
-              pagination={false}
-              className="materials-table"
-              size="middle"
-              rowClassName={(record, index) =>
-                index % 2 === 0 ? "even-row" : "odd-row"
-              }
-              loading={loading}
-            />
-          </div>
-        </div>
+          {/* Cập nhật: Chỉ hiển thị mục Guitar nếu học sinh có đăng ký lớp Guitar (instrumentId = 1) */}
+          {userInstrumentIds.includes(1) && (
+            <div className="materials-section">
+              <Title level={2} className="section-title-guitar-title-material">
+                GUITAR
+              </Title>
+              <div className="table-container">
+                <Table
+                  columns={columns}
+                  dataSource={guitarMaterials}
+                  pagination={false}
+                  className="materials-table"
+                  size="middle"
+                  rowClassName={(record, index) =>
+                    index % 2 === 0 ? "even-row" : "odd-row"
+                  }
+                  loading={loading}
+                />
+              </div>
+            </div>
+          )}
+        </Spin>
         
-        {/* Modal for Add/Edit */}
+        {/* Modal for Add/Edit (giữ nguyên) */}
         <Modal
           title={isEditMode ? "Cập nhật tài liệu" : "Thêm tài liệu"}
           open={isModalVisible}
@@ -322,7 +304,6 @@ const StudentMaterials = () => {
                 </Select>
               </Form.Item>
             ) : (
-              // Trường này chỉ dùng để truyền giá trị khi thêm mới
               <Form.Item name="instrumentId" noStyle>
                 <Input type="hidden" />
               </Form.Item>

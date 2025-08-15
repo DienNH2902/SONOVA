@@ -61,12 +61,12 @@ const StudentSidebar = () => {
     //   label: "Thời khóa biểu",
     //   onClick: () => navigate("/student/schedule"),
     // },
-    // {
-    //   key: "materials",
-    //   icon: <FileOutlined />, // Vẫn dùng CalendarOutlined như mày muốn
-    //   label: "Tài liệu",
-    //   onClick: () => navigate("/student/materials"),
-    // },
+    {
+      key: "materials",
+      icon: <FileOutlined />, // Vẫn dùng CalendarOutlined như mày muốn
+      label: "Tài liệu",
+      onClick: () => navigate("/student/materials"),
+    },
     {
       key: "sheet-music",
       icon: <CalendarOutlined />, // Vẫn dùng CalendarOutlined như mày muốn

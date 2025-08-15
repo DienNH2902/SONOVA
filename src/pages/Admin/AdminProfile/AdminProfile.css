@@ -146,6 +146,7 @@
   flex-direction: column;
   gap: 20px;
   font-family: 'SVN-Gilroy' !important;
+  text-align: left;
 }
 
 .admin-profile-info-row {
@@ -161,6 +162,7 @@
   min-width: 140px;
   flex-shrink: 0;
   font-family: 'SVN-Gilroy' !important;
+  margin-right: 200px
 }
 
 .admin-profile-info-value {

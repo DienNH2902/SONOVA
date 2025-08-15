@@ -177,7 +177,7 @@ const Favorite = () => {
                 <div className="card-content">
                   <h3 className="song-title">{sheet.musicName}</h3>
                   <p className="composer">{sheet.composer}</p>
-                  <div className="genre-tags">
+                  {/* <div className="genre-tags">
                     {sheet.genres?.map((genre) => (
                       <span key={genre.genreId} className="genre-tag">
                         {genre.genreName}
@@ -186,7 +186,7 @@ const Favorite = () => {
                   </div>
                   <div className="favorite-info">
                     <span className="favorite-count">❤️ {sheet.favoriteCount} lượt thích</span>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             ))}

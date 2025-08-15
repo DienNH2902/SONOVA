@@ -160,7 +160,7 @@
   flex-direction: column;
   height: 100%; /* Đảm bảo .card-content chiếm toàn bộ chiều cao của card */
   padding: 20px;
-  height: 250px;
+  height: 100px;
 }
 
 .song-title {
