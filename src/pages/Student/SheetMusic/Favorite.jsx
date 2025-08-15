@@ -1,6 +1,6 @@
 "use client"
 import { useState, useEffect } from "react"
-import { Button, Modal, Image, message } from "antd"
+import { Button, message } from "antd"
 import { HeartFilled, ArrowLeftOutlined } from "@ant-design/icons"
 import { useNavigate } from "react-router-dom"
 import "./Favorite.css"
@@ -8,10 +8,8 @@ import "./Favorite.css"
 const Favorite = () => {
   const navigate = useNavigate()
   const [favoriteSheetMusic, setFavoriteSheetMusic] = useState([])
-  const [allSheetMusic, setAllSheetMusic] = useState([]) // State mới để lưu tất cả sheet nhạc
+  const [allSheetMusic, setAllSheetMusic] = useState([])
   const [loading, setLoading] = useState(false)
-  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
-  const [selectedSheet, setSelectedSheet] = useState(null)
 
   // Helper to get headers with Authorization token
   const getAuthHeaders = () => {
@@ -43,7 +41,6 @@ const Favorite = () => {
       }
     } catch (error) {
       console.error("Error fetching all sheet music:", error)
-      // Không hiển thị lỗi cho lần fetch nền này
     }
   }
 
@@ -93,7 +90,7 @@ const Favorite = () => {
       const result = await response.json()
       message.success(result.message)
 
-      // Refresh cả hai danh sách để cập nhật trạng thái và số lượt thích
+      // Refresh both lists to update favorite status and count
       fetchUserFavorites()
       fetchAllSheetMusic()
     } catch (error) {
@@ -106,7 +103,7 @@ const Favorite = () => {
     const token = localStorage.getItem("token")
     if (token) {
       setLoading(true)
-      // Lấy cả hai danh sách cùng lúc
+      // Fetch both lists at the same time
       Promise.all([fetchUserFavorites(), fetchAllSheetMusic()]).finally(() => {
         setLoading(false)
       })
@@ -116,14 +113,13 @@ const Favorite = () => {
     }
   }, [navigate])
   
-  // Tạo danh sách yêu thích có đầy đủ chi tiết bằng cách lọc từ allSheetMusic
+  // Create a detailed list of favorites by filtering from allSheetMusic
   const favoriteSheetMusicIds = new Set(favoriteSheetMusic.map((fav) => fav.sheetMusicId))
   const detailedFavoriteSheetMusic = allSheetMusic.filter((sheet) => favoriteSheetMusicIds.has(sheet.sheetMusicId))
 
-
+  // Navigate to the detail page when a card is clicked
   const handleCardClick = (sheet) => {
-    setSelectedSheet(sheet)
-    setIsDetailModalVisible(true)
+    navigate(`/student/sheet-music/${sheet.sheetMusicId}`)
   }
 
   const handleBack = () => {
@@ -144,7 +140,7 @@ const Favorite = () => {
       <div className="favorite-content">
         {loading ? (
           <p>Đang tải...</p>
-        ) : detailedFavoriteSheetMusic.length === 0 ? ( // Sử dụng danh sách chi tiết để kiểm tra
+        ) : detailedFavoriteSheetMusic.length === 0 ? (
           <div className="empty-state">
             <div className="empty-icon">♪</div>
             <h3>Chưa có bài nhạc yêu thích</h3>
@@ -159,7 +155,6 @@ const Favorite = () => {
           </div>
         ) : (
           <div className="favorite-grid">
-            {/* Sử dụng danh sách chi tiết để hiển thị */}
             {detailedFavoriteSheetMusic.map((sheet) => (
               <div key={sheet.sheetMusicId} className="favorite-card" onClick={() => handleCardClick(sheet)}>
                 <div className="card-image">
@@ -177,108 +172,12 @@ const Favorite = () => {
                 <div className="card-content">
                   <h3 className="song-title">{sheet.musicName}</h3>
                   <p className="composer">{sheet.composer}</p>
-                  {/* <div className="genre-tags">
-                    {sheet.genres?.map((genre) => (
-                      <span key={genre.genreId} className="genre-tag">
-                        {genre.genreName}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="favorite-info">
-                    <span className="favorite-count">❤️ {sheet.favoriteCount} lượt thích</span>
-                  </div> */}
                 </div>
               </div>
             ))}
           </div>
         )}
       </div>
-
-      {/* Detail Modal */}
-      {/* <Modal
-        title={selectedSheet?.musicName}
-        open={isDetailModalVisible}
-        onCancel={() => setIsDetailModalVisible(false)}
-        footer={null}
-        width={800}
-        className="sheet-detail-modal"
-      >
-        {selectedSheet && (
-          <div className="modal-content">
-            <div className="modal-header">
-              <div className="modal-info">
-                <h3>{selectedSheet.musicName}</h3>
-                <p>Tác giả: {selectedSheet.composer}</p>
-                <p>Số lượng sheet: {selectedSheet.sheetQuantity}</p>
-                <p>Lượt yêu thích: {selectedSheet.favoriteCount}</p>
-              </div>
-            </div>
-            <div className="sheets-container">
-              <h4>Danh sách Sheet</h4>
-              <div className="sheets-list">
-                {selectedSheet.sheets?.map((sheet, index) => (
-                  <div key={sheet.sheetId} className="sheet-item">
-                    <div className="sheet-image-container">
-                      <Image
-                        src={sheet.sheetUrl || "/placeholder.svg"}
-                        alt={`Sheet ${index + 1}`}
-                        className="sheet-image"
-                      />
-                    </div>
-                    <div className="sheet-info">
-                      <h5>Sheet {index + 1}</h5>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-      </Modal> */}
-
-      <Modal
-        // title={selectedSheet?.musicName}
-        open={isDetailModalVisible}
-        onCancel={() => setIsDetailModalVisible(false)}
-        footer={null}
-        width={800}
-        className="student-sheet-music-sheet-detail-modal"
-      >
-        {selectedSheet && (
-          <div className="student-sheet-music-modal-content">
-            <div className="student-sheet-music-modal-header">
-              <div className="student-sheet-music-modal-info">
-                <h3>{selectedSheet.musicName}</h3>
-                <p>Tác giả: {selectedSheet.composer}</p>
-                <p>Số lượng sheet: {selectedSheet.sheetQuantity}</p>
-                <p>Lượt yêu thích: {selectedSheet.favoriteCount}</p>
-              </div>
-            </div>
-            <div className="student-sheet-music-sheets-container">
-              <h4>Danh sách Sheet</h4>
-              <div className="student-sheet-music-sheets-list">
-                {selectedSheet.sheets?.map((sheet, index) => (
-                  <div
-                    key={sheet.sheetId}
-                    className="student-sheet-music-sheet-item"
-                  >
-                    <div className="student-sheet-music-sheet-image-container">
-                      <Image
-                        src={sheet.sheetUrl || "/placeholder.svg"}
-                        alt={`Sheet ${index + 1}`}
-                        className="student-sheet-music-sheet-image"
-                      />
-                    </div>
-                    <div className="student-sheet-music-sheet-info">
-                      <h5>Sheet {index + 1}</h5>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-      </Modal>
     </div>
   )
 }
