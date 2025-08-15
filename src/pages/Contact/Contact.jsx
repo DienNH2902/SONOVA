@@ -366,7 +366,7 @@ const Contact = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  
+
   // Fetch consultation topics when component mounts
   useEffect(() => {
     if (hasFetchedTopics.current) return
@@ -538,7 +538,7 @@ const Contact = () => {
                   fontFamily: "Gilroy",
                 }}
               >
-                nentangsonova
+                Sonova - Nền Tảng Hỗ Trợ Học Nhạc Hiệu Quả 
               </p>
             </div>
 
