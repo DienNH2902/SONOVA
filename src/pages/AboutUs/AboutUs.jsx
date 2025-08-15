@@ -73,18 +73,18 @@ const AboutUs = () => {
       </section>
 
       {/* Vision and Mission Section */}
-      <section className="vision-mission">
-        <div className="content-container">
+      <section className="vision-mission-aboutus">
+        <div className="content-container-aboutus">
           <Row gutter={[40, 40]}>
             <Col xs={24} md={12}>
-              <Card className="vision-card">
-                <div className="card-header">
+              <Card className="vision-card-aboutus">
+                <div className="card-header-aboutus">
                   <Title level={2} className="card-title">
                     Tầm nhìn
                   </Title>
                   <div className="quote-icon left-quote">"</div>
                 </div>
-                <Paragraph className="card-content">
+                <Paragraph className="card-content-aboutus">
                   SONOVA hướng tới trở thành trung tâm âm nhạc hàng đầu Việt
                   Nam, nơi mọi người đều có thể tiếp cận và yêu thích âm nhạc.
                   Chúng tôi mong muốn tạo ra một cộng đồng âm nhạc sôi động và
@@ -95,14 +95,14 @@ const AboutUs = () => {
               </Card>
             </Col>
             <Col xs={24} md={12}>
-              <Card className="mission-card">
-                <div className="card-header">
+              <Card className="mission-card-aboutus">
+                <div className="card-header-aboutus">
                   <Title level={2} className="card-title">
                     Sứ mệnh
                   </Title>
                   <div className="quote-icon right-quote">"</div>
                 </div>
-                <Paragraph className="card-content">
+                <Paragraph className="card-content-aboutus">
                   SONOVA hướng tới 10 năm trung tâm âm nhạc hàng đầu Việt Nam,
                   nơi mọi người đều có thể tiếp cận và yêu thích âm nhạc. Chúng
                   tôi cam kết mang đến những khóa học chất lượng cao với phương
