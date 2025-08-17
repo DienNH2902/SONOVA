@@ -1649,7 +1649,7 @@ const SheetMusic = () => {
               className="search-input-sheet"
             />
             <Button className="genre-button-sheet" type="primary" onClick={() => setIsGenreModalVisible(true)}>
-              Thể loại nhạc
+              Chỉnh sửa Thể loại nhạc
             </Button>
           </div>
           <div className="filters-right">
@@ -1659,7 +1659,7 @@ const SheetMusic = () => {
               onClick={() => setIsAddModalVisible(true)}
               className="add-button-sheet"
             >
-              Thêm
+              Thêm bài mới
             </Button>
           </div>
         </div>
