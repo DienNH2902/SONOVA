@@ -4,14 +4,13 @@ import { useState, useEffect } from "react"
 import { Button, Spin, App } from "antd"
 import { ArrowLeftOutlined, DownloadOutlined } from "@ant-design/icons"
 import { useNavigate, useParams } from "react-router-dom"
-import jsPDF from "jspdf"
+// Không cần jsPDF, html2canvas nữa
 import "./Sheet.css"
-// import html2canvas from "html2canvas"
 
 const Sheet = () => {
   const { message } = App.useApp();
 
-    useEffect(() => {
+  useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
   
@@ -65,75 +64,66 @@ const Sheet = () => {
     }
   }, [id, navigate])
 
+  // Tải ZIP thay vì PDF
   const handleDownload = async () => {
-  if (!sheetMusic || !sheetMusic.sheets || sheetMusic.sheets.length === 0) {
-    message.error("Không có sheet nhạc để tải xuống.")
-    return
-  }
-
-  const hide = message.loading("Đang tạo file PDF...", 0)
-
-  try {
-    const doc = new jsPDF({ orientation: "p", unit: "mm", format: "a4" })
-    const pageWidth = doc.internal.pageSize.getWidth()
-    const pageHeight = doc.internal.pageSize.getHeight()
-
-    // Sử dụng Promise.all để tải tất cả ảnh cùng lúc
-    const imagePromises = sheetMusic.sheets.map(async (sheet) => {
-      try {
-        const res = await fetch(sheet.sheetUrl, { headers: getAuthHeaders() })
-        if (!res.ok) {
-          throw new Error(`Tải ảnh thất bại: ${res.status}`)
-        }
-        const blob = await res.blob()
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader()
-          reader.onloadend = () => {
-            const img = new Image()
-            img.onload = () => resolve({ dataUrl: reader.result, width: img.width, height: img.height, type: blob.type })
-            img.onerror = reject
-            img.src = reader.result
-          }
-          reader.onerror = reject
-          reader.readAsDataURL(blob)
-        })
-      } catch (error) {
-        console.error("Lỗi khi tải ảnh:", error)
-        throw error // Re-throw để Promise.all bắt lỗi
-      }
-    })
-
-    const images = await Promise.all(imagePromises)
-
-    for (let i = 0; i < images.length; i++) {
-      const { dataUrl, width, height, type } = images[i]
-
-      const scale = Math.min(pageWidth / width, pageHeight / height)
-      const renderW = width * scale
-      const renderH = height * scale
-      const x = (pageWidth - renderW) / 2
-      const y = (pageHeight - renderH) / 2
-
-      if (i > 0) doc.addPage()
-
-      doc.setFillColor(255, 255, 255)
-      doc.rect(0, 0, pageWidth, pageHeight, "F")
-
-      const fmt = type.includes("png") ? "PNG" : "JPEG"
-      doc.addImage(dataUrl, fmt, x, y, renderW, renderH)
+    if (!id) {
+      message.error("Không tìm thấy ID bài nhạc để tải xuống.")
+      return
     }
 
-    doc.save(`${sheetMusic.musicName.replace(/ /g, "_")}.pdf`)
-    hide()
-    message.success("Tải xuống sheet nhạc thành công!")
-  } catch (error) {
-    console.error("Lỗi khi tạo file PDF:", error)
-    hide()
-    message.error("Lỗi khi tải xuống. Vui lòng thử lại.")
+    const hide = message.loading("Đang tải file ZIP...", 0)
+
+    try {
+      const response = await fetch(
+        `https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/SheetMusic/${id}/download-all-sheets`,
+        {
+          // Chỉ gửi Authorization, KHÔNG gửi Content-Type cho GET
+          headers: {
+            ...getAuthHeaders(),
+          },
+        }
+      )
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      // Lấy tên file từ Content-Disposition nếu có
+      const cd = response.headers.get("content-disposition") || ""
+      let filename = `${sheetMusic?.musicName?.replace(/ /g, "_") || "sheet_music"}.zip`
+      const matchSimple = cd.match(/filename="?([^"]+)"?/i)
+      const matchUtf8 = cd.match(/filename\*=UTF-8''([^;]+)/i)
+      if (matchUtf8 && matchUtf8[1]) {
+        try {
+          filename = decodeURIComponent(matchUtf8[1])
+        } catch {
+          filename = matchUtf8[1]
+        }
+      } else if (matchSimple && matchSimple[1]) {
+        filename = matchSimple[1]
+      }
+      if (!filename.toLowerCase().endsWith(".zip")) {
+        filename += ".zip"
+      }
+
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement("a")
+      link.href = url
+      link.setAttribute("download", filename)
+      document.body.appendChild(link)
+      link.click()
+      link.parentNode.removeChild(link)
+      window.URL.revokeObjectURL(url)
+
+      hide()
+      message.success("Tải xuống sheet nhạc (ZIP) thành công!")
+    } catch (error) {
+      console.error("Lỗi khi tải xuống:", error)
+      hide()
+      message.error("Lỗi khi tải xuống. Vui lòng thử lại.")
+    }
   }
-}
-
-
 
   const handleBack = () => {
     navigate(-1)
@@ -176,7 +166,6 @@ const Sheet = () => {
           <h1 className="sheet-main-title">{sheetMusic.musicName}</h1>
           <div className="sheet-subtitle">
             <p className="sheet-composer">{sheetMusic.composer}</p>
-            
           </div>
         </div>
 
