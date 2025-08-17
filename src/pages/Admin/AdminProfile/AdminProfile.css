@@ -14,7 +14,7 @@
   color: #1e3a5f !important;
   font-size: 48px !important;
   font-weight: 600 !important;
-  margin-bottom: 40px !important;
+  /* margin-bottom: 40px !important; */
   margin-left: 0 !important;
   font-family: 'UTM Americana';
 }
@@ -89,7 +89,7 @@
 .admin-profile-details {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  /* gap: 30px; */
   font-family: 'SVN-Gilroy' !important;
   background-color: #f5f7ed;
 }
@@ -102,9 +102,9 @@
   background-color: #f5f7ed;
 }
 
-.admin-profile-info-card .ant-card-body {
+/* .admin-profile-info-card .ant-card-body {
   padding: 30px;
-}
+} */
 
 .admin-profile-card-header {
   display: flex;
@@ -114,11 +114,20 @@
   font-family: 'SVN-Gilroy' !important;
 }
 
+.h4 {
+  margin-top: none;
+  padding-top: none;
+}
+
 .admin-profile-section-title {
   color: #1e3a5f !important;
   font-size: 30px !important;
   font-weight: 600 !important;
-  margin-bottom: 0 !important;
+  /* margin-bottom: 40px !important; */
+  padding-top: 0px;
+  margin-top: 0px;
+  align-items: center;
+  justify-content: center;
   font-family: 'SVN-Gilroy' !important;
 }
 
@@ -186,7 +195,7 @@
 
 .admin-profile-modal .ant-modal-header {
   border-radius: 16px 16px 0 0;
-  padding: 20px 24px;
+  /* padding: 20px 24px; */
 }
 
 .admin-profile-modal .ant-modal-body {
@@ -234,9 +243,9 @@
     font-size: 24px !important;
   }
 
-  .admin-profile-info-card .ant-card-body {
+  /* .admin-profile-info-card .ant-card-body {
     padding: 20px;
-  }
+  } */
 
   .admin-profile-card-header {
     flex-direction: column;
