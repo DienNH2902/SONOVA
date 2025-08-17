@@ -597,7 +597,7 @@ const CourseSchedule = () => {
       )
 
       if (response.ok) {
-        antdMessage.success("Thêm lịch khai giảng mới thành công!")
+        antdMessage.success("Thêm khóa học mới thành công!")
         setIsAddModalVisible(false)
         addForm.resetFields()
         fetchOpeningSchedules() // Re-fetch all data after successful add
@@ -607,10 +607,10 @@ const CourseSchedule = () => {
         const errorData = await response.json()
         console.error("Error adding new schedule:", errorData)
         if (errorData.errors && errorData.errors.ClassCode && errorData.errors.ClassCode.length > 0) {
-          antdMessage.error(`Thêm lịch khai giảng thất bại: ${errorData.errors.ClassCode[0]}`)
+          antdMessage.error(`Thêm khóa học thất bại: ${errorData.errors.ClassCode[0]}`)
         } else {
           antdMessage.error(
-            `Thêm lịch khai giảng thất bại: ${errorData.message || response.statusText || "Lỗi không xác định"}`,
+            `Thêm khóa học thất bại: ${errorData.message || response.statusText || "Lỗi không xác định"}`,
           )
         }
       }
@@ -843,7 +843,7 @@ const CourseSchedule = () => {
               className="add-button-create"
               onClick={() => handleAddClass("basic")}
             >
-              Thêm lịch khai giảng
+              Thêm khóa học
             </Button>
           </div>
           <div className="table-container">
@@ -872,7 +872,7 @@ const CourseSchedule = () => {
               className="add-button-create"
               onClick={() => handleAddClass("advanced")}
             >
-              Thêm lịch khai giảng
+              Thêm khóa học
             </Button>
           </div>
           <div className="table-container">
@@ -1025,7 +1025,7 @@ const CourseSchedule = () => {
 
       {/* Update Opening Schedule Modal */}
       <Modal
-        title="Cập nhật Lịch Khai Giảng"
+        title="Cập nhật Khóa học"
         open={isUpdateModalVisible}
         onOk={handleUpdateModalOk}
         onCancel={handleUpdateModalCancel}
