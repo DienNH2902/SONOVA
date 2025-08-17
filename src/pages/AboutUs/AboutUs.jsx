@@ -263,7 +263,7 @@ const AboutUs = () => {
                 justifyContent: "center",
                 flexDirection: "column",
                 textAlign: "center",
-                color: "white",
+                color: "#ffffff",
                 padding: "0 20px",
                 position: "relative",
               }}
@@ -279,11 +279,11 @@ const AboutUs = () => {
                 }}
               />
               <div style={{ position: "relative", zIndex: 1 }}>
-                <Title style={{ color: "white", marginBottom: 20 }}>
+                <Title style={{ color: "#ffffff", marginBottom: 20 }}>
                   Hòa Âm Cuộc Sống, Khơi Nguồn Đam Mê.
                 </Title>
                 <Paragraph
-                  style={{ color: "white", fontSize: 18, marginBottom: 30 }}
+                  style={{ color: "#ffffff", fontSize: 18, marginBottom: 30 }}
                 >
                   Gợi cảm hứng, nhấn mạnh âm nhạc là một phần của cuộc sống và
                   khơi dậy đam mê
@@ -314,7 +314,7 @@ const AboutUs = () => {
                 justifyContent: "center",
                 flexDirection: "column",
                 textAlign: "center",
-                color: "white",
+                color: "#ffffff",
                 padding: "0 20px",
                 position: "relative",
               }}
@@ -330,11 +330,11 @@ const AboutUs = () => {
                 }}
               />
               <div style={{ position: "relative", zIndex: 1 }}>
-                <Title style={{ color: "white", marginBottom: 20 }}>
+                <Title style={{ color: "#ffffff", marginBottom: 20 }}>
                   Chất Lượng Thăng Hoa, Tài Năng Tỏa Sáng.
                 </Title>
                 <Paragraph
-                  style={{ color: "white", fontSize: 18, marginBottom: 30 }}
+                  style={{ color: "#ffffff", fontSize: 18, marginBottom: 30 }}
                 >
                   Nhấn mạnh chất lượng đào tạo và kết quả là sự phát triển của
                   tài năng học viên
@@ -361,7 +361,7 @@ const AboutUs = () => {
                 justifyContent: "center",
                 flexDirection: "column",
                 textAlign: "center",
-                color: "white",
+                color: "#ffffff",
                 padding: "0 20px",
                 position: "relative",
               }}
@@ -377,11 +377,11 @@ const AboutUs = () => {
                 }}
               />
               <div style={{ position: "relative", zIndex: 1 }}>
-                <Title style={{ color: "white", marginBottom: 20 }}>
+                <Title style={{ color: "#ffffff", marginBottom: 20 }}>
                   Nơi Giai Điệu Bắt Đầu, Giấc Mơ Cất Cánh.
                 </Title>
                 <Paragraph
-                  style={{ color: "white", fontSize: 18, marginBottom: 30 }}
+                  style={{ color: "#ffffff", fontSize: 18, marginBottom: 30 }}
                 >
                   Mang tính thơ mộng, thể hiện nơi đây là điểm khởi đầu cho hành
                   trình âm nhạc và hiện thực hóa ước mơ

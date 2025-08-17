@@ -186,20 +186,20 @@
   right: 40px;
   background-color: rgba(255, 204, 0, 0.7); /* yellowish overlay */
   padding: 10px 20px;
-  color: white;
+  color: #ffffff;
   font-family: serif;
 }
 
 .text-overlay h2 {
   margin: 0;
   font-size: 24px;
-  color: white;
+  color: #ffffff;
 }
 
 .text-overlay p {
   margin: 0;
   font-size: 14px;
-  color: white;
+  color: #ffffff;
 }
 
 
@@ -251,7 +251,7 @@
 }
 
 .value-card {
-  background: white;
+  background: #ffffff;
   border-radius: 12px;
   overflow: hidden;
   /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -475,7 +475,7 @@
 }
 
 .testimonial-post {
-  background: white;
+  background: #ffffff;
   border-radius: 15px;
   overflow: hidden;
   /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); */
@@ -511,7 +511,7 @@
 
 .view-more-btn:hover {
   background: #1e3a5f;
-  color: white;
+  color: #ffffff;
   transform: translateY(-2px);
 }
 
@@ -607,18 +607,18 @@
   width: 100%;
   height: 100%;
   background: linear-gradient(to right, 
-    white 0%, white 14.28%, 
+    #ffffff 0%, #ffffff 14.28%, 
     black 14.28%, black 21.42%, 
-    white 21.42%, white 28.56%, 
+    #ffffff 21.42%, #ffffff 28.56%, 
     black 28.56%, black 35.7%, 
-    white 35.7%, white 42.84%, 
-    white 42.84%, white 57.12%, 
+    #ffffff 35.7%, #ffffff 42.84%, 
+    #ffffff 42.84%, #ffffff 57.12%, 
     black 57.12%, black 64.26%, 
-    white 64.26%, white 71.4%, 
+    #ffffff 64.26%, #ffffff 71.4%, 
     black 71.4%, black 78.54%, 
-    white 78.54%, white 85.68%, 
+    #ffffff 78.54%, #ffffff 85.68%, 
     black 85.68%, black 92.82%, 
-    white 92.82%, white 100%);
+    #ffffff 92.82%, #ffffff 100%);
 }
 
 .side-images {
@@ -686,7 +686,7 @@
 .register-button {
   background-color: #1e3a5f;
   border: none;
-  color: white;
+  color: #ffffff;
   font-size: 16px;
   padding: 10px 24px;
   border-radius: 4px;

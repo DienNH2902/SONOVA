@@ -789,7 +789,7 @@ const TeacherCourseSchedule = () => {
     <div className="course-schedule-page">
       <div className="course-schedule-container">
         <Title level={1} className="page-title">
-          Quản lý Lịch Khai Giảng
+          Lịch Khai Giảng
         </Title>
 
         {/* Filter Section */}

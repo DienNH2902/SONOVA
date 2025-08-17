@@ -63,7 +63,7 @@
 
 .attendance-table .ant-table-thead > tr > th {
   background: #1e3a5f;
-  color: white;
+  color: #ffffff;
   font-weight: 600;
   font-size: 16px;
   border: none;
@@ -114,7 +114,7 @@
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
   border: none;
-  background: white;
+  background: #ffffff;
 }
 
 .class-info-card .ant-card-body {
@@ -128,7 +128,7 @@
 }
 
 .class-code {
-  color: white !important;
+  color: #ffffff !important;
   font-size: 18px !important;
   font-weight: 700 !important;
   letter-spacing: 1px;
@@ -211,7 +211,7 @@
 }
 
 .success-icon .anticon {
-  color: white;
+  color: #ffffff;
   font-size: 36px;
 }
 

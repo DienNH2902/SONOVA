@@ -12,7 +12,7 @@
 }
 
 .back-button-favorite {
-  color: white !important;
+  color: #ffffff !important;
   border: 1px solid rgba(255, 255, 255, 0.3) !important;
   border-radius: 8px !important;
   padding: 8px 16px !important;
@@ -28,13 +28,13 @@
 .back-button-favorite:hover {
   background: rgba(255, 255, 255, 0.1) !important;
   border-color: rgba(255, 255, 255, 0.5) !important;
-  color: white !important;
+  color: #ffffff !important;
 }
 
 .page-title-favorite {
   font-size: 32px;
   font-weight: 600;
-  color: white;
+  color: #ffffff;
   margin: 0;
   flex: 1;
   padding: 40px 30px;
@@ -48,7 +48,7 @@
 .empty-state {
   text-align: center;
   padding: 80px 20px;
-  background: white;
+  background: #ffffff;
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   max-width: 500px;
@@ -97,7 +97,7 @@
 }
 
 .favorite-card {
-  background: white;
+  background: #ffffff;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -146,7 +146,7 @@
 }
 
 /* .heart-icon:hover {
-  background: white;
+  background: #ffffff;
   transform: scale(1.1);
 } */
 

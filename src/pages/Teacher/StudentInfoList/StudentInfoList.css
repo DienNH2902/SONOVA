@@ -60,7 +60,7 @@
 
 .student-info-table .ant-table-thead > tr > th {
   background: #1e3a5f;
-  color: white;
+  color: #ffffff;
   font-weight: 600;
   font-size: 16px;
   border: none;
@@ -155,7 +155,7 @@
   .student-info-table .ant-table-thead > tr > th {
     font-size: 12px;
     padding: 12px 8px;
-    white-space: nowrap;
+    #ffffff-space: nowrap;
   }
 
   .student-info-table .ant-table-tbody > tr > td {
@@ -209,7 +209,7 @@
 /* Print styles */
 @media print {
   .student-info-list-page {
-    background: white;
+    background: #ffffff;
     padding: 20px;
   }
 

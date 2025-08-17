@@ -17,7 +17,7 @@
 }
 
 .table-container {
-  background: white;
+  background: #ffffff;
   border-radius: 12px;
   overflow: hidden;
   /* box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); */
@@ -31,7 +31,7 @@
 
 .absence-table .ant-table-thead > tr > th {
   background: #1e3a5f;
-  color: white;
+  color: #ffffff;
   font-weight: 600;
   font-size: 14px;
   border: none;
@@ -191,7 +191,7 @@
 /* Print styles */
 @media print {
   .absence-page {
-    background: white;
+    background: #ffffff;
     padding: 20px;
   }
 
@@ -201,7 +201,7 @@
 
   .absence-table .ant-table-thead > tr > th {
     background: #1e3a5f !important;
-    color: white !important;
+    color: #ffffff !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }

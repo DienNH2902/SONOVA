@@ -57,13 +57,13 @@
 
 .consultation-filter-card .ant-card-head {
   background-color: #1e3a5f; /* Header background */
-  color: white; /* Header text color */
+  color: #ffffff; /* Header text color */
   border-bottom: none; /* Remove default border */
   padding: 16px 24px;
 }
 
 .consultation-filter-card .ant-card-head-title {
-  color: white; /* Ensure title text is white */
+  color: #ffffff; /* Ensure title text is #ffffff */
   font-weight: 600;
   font-size: 16px;
 }
@@ -117,7 +117,7 @@
 .clear-filter-button-consultation {
   background: red;
   border-color: #d9d9d9;
-  color: white;
+  color: #ffffff;
   border-radius: 6px;
   /* box-shadow: none; */
   transition: all 0.3s ease;
@@ -156,7 +156,7 @@
 
 /* --- Table Styling --- */
 .table-container {
-  background: white;
+  background: #ffffff;
   border-radius: 12px;
   overflow: hidden;
   /* box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); */
@@ -168,7 +168,7 @@
 
 .consultation-table .ant-table-thead > tr > th {
   background: #1e3a5f;
-  color: white;
+  color: #ffffff;
   font-weight: 600;
   font-size: 14px;
   border: none;
@@ -223,7 +223,7 @@
   border-radius: 6px;
   font-size: 12px;
   font-weight: 500;
-  white-space: nowrap;
+  #ffffff-space: nowrap;
   display: inline-block;
 }
 
@@ -313,7 +313,7 @@
   padding: 20px;
   color: #888;
   font-size: 16px;
-  background: white;
+  background: #ffffff;
   border-radius: 0 0 12px 12px; /* Match table container's bottom border-radius */
   /* box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); Match table container's shadow */
   margin-top: -12px; /* Pull it up to sit right below the table */
@@ -441,13 +441,13 @@
 /* Print styles */
 @media print {
   .consultation-page {
-    background: white;
+    background: #ffffff;
     padding: 20px;
   }
 
   .consultation-table .ant-table-thead > tr > th {
     background: #1e3a5f !important;
-    color: white !important;
+    color: #ffffff !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }

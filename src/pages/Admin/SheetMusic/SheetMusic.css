@@ -94,7 +94,7 @@
 
 .sheet-music-table .ant-table-thead > tr > th {
   background: #1e3a5f;
-  color: white;
+  color: #ffffff;
   font-weight: 600;
   font-size: 14px;
   border: none;
@@ -213,7 +213,7 @@
 }
 
 .custom-pagination .ant-pagination-item-active a {
-  color: white;
+  color: #ffffff;
 }
 
 .custom-pagination .ant-pagination-item:hover {
@@ -427,7 +427,7 @@
 
 .sheet-detail-card .ant-card-body {
   padding: 20px;
-  background: white;
+  background: #ffffff;
 }
 
 .sheet-meta .ant-card-meta-title {

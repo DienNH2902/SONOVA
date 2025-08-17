@@ -13,7 +13,7 @@
 }
 
 .sheet-back-button {
-  color: white !important;
+  color: #ffffff !important;
   border: none;
   font-size: 16px;
   display: flex;
@@ -23,13 +23,13 @@
 
 .sheet-back-button:hover {
   background-color: rgba(255, 255, 255, 0.1) !important;
-  color: white !important;
+  color: #ffffff !important;
 }
 
 .sheet-download-button {
   background-color: #091e45 !important;
   border-color: #091e45 !important;
-  color: white !important;
+  color: #ffffff !important;
   font-size: 14px;
   height: 40px;
   padding: 0 20px;
@@ -78,7 +78,7 @@
 }
 
 .sheet-music-container {
-  background-color: white;
+  background-color: #ffffff;
   border-radius: 8px;
   padding: 32px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
