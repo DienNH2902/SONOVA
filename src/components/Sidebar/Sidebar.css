@@ -11,7 +11,7 @@
   height: 100%; /* Chiếm toàn bộ chiều cao của Sider */
   display: flex;
   flex-direction: column;
-  background: #2a4a73; /* Giữ màu nền */
+  background: #064869; /* Giữ màu nền */
   padding-bottom: 20px; /* Thêm padding dưới cho phần bottom menu */
 }
 
@@ -29,7 +29,7 @@
 }
 
 .sidebar-menu .ant-menu-item {
-  color: #ffffff;
+  color: white;
   margin: 0;
   padding: 15px 20px;
   height: auto;
@@ -56,7 +56,7 @@
 }
 
 .sidebar-menu .ant-menu-submenu-title {
-  color: #ffffff;
+  color: white;
   padding-right: 83px; /* Giữ khoảng trống cho mũi tên */
   font-size: 13px;
   font-family: 'SVN-Gilroy';
@@ -66,7 +66,7 @@
 
 /* Style cho icon mũi tên của submenu, nếu cần tùy chỉnh thêm */
 .sidebar-menu .ant-menu-submenu-arrow {
-  color: #ffffff;
+  color: white;
   width: 0px;
 }
 

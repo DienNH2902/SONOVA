@@ -72,18 +72,18 @@
 
 .floating-phone-btn .anticon {
   font-size: 24px;
-  color: #ffffff;
+  color: white;
 }
 
 .phone-tooltip {
   background: #52c41a;
-  color: #ffffff;
+  color: white;
   padding: 6px 12px;
   border-radius: 20px;
   font-size: 12px;
   font-weight: 500;
   margin-top: 8px;
-  #ffffff-space: nowrap;
+  white-space: nowrap;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   animation: tooltipPulse 3s infinite;
   position: relative;

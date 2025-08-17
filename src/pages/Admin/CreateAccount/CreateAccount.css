@@ -98,7 +98,7 @@
   height: 24px;
   border-radius: 50%;
   background: #ff4d4f;
-  color: #ffffff;
+  color: white;
   border: none;
   display: flex;
   align-items: center;
@@ -109,7 +109,7 @@
 
 .clear-button:hover {
   background: #ff7875;
-  color: #ffffff;
+  color: white;
 }
 
 .clear-button .anticon {
@@ -123,7 +123,7 @@
 .add-course-btn {
   background: #ffa940;
   border-color: #ffa940;
-  color: #ffffff;
+  color: white;
   border-radius: 8px;
   height: 40px;
   font-weight: 500;
@@ -137,7 +137,7 @@
 .add-course-btn:hover {
   background: #ff8c00;
   border-color: #ff8c00;
-  color: #ffffff;
+  color: white;
 }
 
 .submit-section {

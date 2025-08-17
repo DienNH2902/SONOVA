@@ -34,7 +34,7 @@
 
 .contact-card {
   background: #1e3a5f;
-  color: #ffffff;
+  color: white;
   padding: 30px 20px;
   border-radius: 15px;
   text-align: center;
@@ -49,7 +49,7 @@
 
 .contact-card-face {
   background: #1e3a5f;
-  color: #ffffff;
+  color: white;
   padding: 30px 20px;
   border-radius: 15px;
   text-align: center;
@@ -85,7 +85,7 @@
   font-weight: bold;
   margin-bottom: 15px;
   letter-spacing: 1px;
-  color: #ffffff;
+  color: white;
 }
 
 .contact-details {
@@ -202,7 +202,7 @@
 .consultation-form-wrapper {
   flex: 0 0 50%;
   max-width: 50%;
-  background: #ffffff;
+  background: white;
   padding: 40px;
   border-radius: 20px;
   /* box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06); */
@@ -263,7 +263,7 @@
 
 .submit-btn {
   background: #1e3a5f;
-  color: #ffffff;
+  color: white;
   border: none;
   padding: 15px 30px;
   font-size: 16px;

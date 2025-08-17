@@ -73,7 +73,7 @@
 
 .attendance-table .ant-table-thead > tr > th {
   background: #1e3a5f;
-  color: #ffffff;
+  color: white;
   font-weight: 600;
   font-size: 16px;
   border: none;
@@ -134,7 +134,7 @@
   overflow: hidden;
   /* box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12); */
   border: none;
-  background: #ffffff;
+  background: white;
 }
 
 .class-info-card .ant-card-body {
@@ -148,7 +148,7 @@
 }
 
 .class-code-attendance {
-  color: #ffffff !important;
+  color: white !important;
   font-size: 18px !important;
   font-weight: 700 !important;
   font-family: 'SVN-Gilroy' !important;
@@ -234,7 +234,7 @@
 }
 
 .success-icon .anticon {
-  color: #ffffff;
+  color: white;
   font-size: 36px;
 }
 

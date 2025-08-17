@@ -42,7 +42,7 @@
 .clear-filter-btn {
   background: #fa262a;
   border-color: #d9d9d9;
-  color: #ffffff;
+  color: white;
 }
 
 .clear-filter-btn:hover {
@@ -111,7 +111,7 @@
 
 .schedule-table .ant-table-thead > tr > th {
   background: #1e3a5f;
-  color: #ffffff;
+  color: white;
   font-weight: 600;
   font-size: 14px;
   border: none;

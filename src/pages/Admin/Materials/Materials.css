@@ -48,7 +48,7 @@
 
 .materials-table .ant-table-thead > tr > th {
   background: #1e3a5f;
-  color: #ffffff;
+  color: white;
   font-weight: 700;
   font-size: 14px;
   border: none;
@@ -97,7 +97,7 @@
   color: #1890ff;
   text-decoration: none;
   transition: color 0.3s;
-  #ffffff-space: nowrap;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   display: block;

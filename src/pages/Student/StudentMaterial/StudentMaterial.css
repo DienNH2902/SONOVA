@@ -93,7 +93,7 @@
 }
 
 .piano-materials-collapse .ant-collapse-content {
-  background: #ffffff;
+  background: white;
   border-top: none;
 }
 
@@ -217,7 +217,7 @@
 /* Print styles */
 @media print {
   .piano-materials-page {
-    background: #ffffff;
+    background: white;
     padding: 20px;
   }
 

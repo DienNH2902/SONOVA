@@ -72,7 +72,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ffffff;
+  color: white;
   font-weight: 600;
   font-size: 16px;
   flex-shrink: 0;
@@ -271,7 +271,7 @@
 /* Print styles */
 @media print {
   .lesson-dashboard-page {
-    background: #ffffff;
+    background: white;
     padding: 20px;
   }
 
