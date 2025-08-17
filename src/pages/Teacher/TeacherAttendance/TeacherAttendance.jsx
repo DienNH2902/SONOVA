@@ -100,7 +100,7 @@ const TeacherAttendance = () => {
             stt: index + 1,
             userId: student.userId, // Lưu userId để gửi lên API
             name: student.accountName || student.username,
-            status: existingRecord ? existingRecord.statusId : 0, // Mặc định là Unmarked hoặc trạng thái đã có
+            status: existingRecord ? existingRecord.statusId : "Chưa điểm danh", // Mặc định là Unmarked hoặc trạng thái đã có
             note: existingRecord ? existingRecord.note : "none", // Mặc định là 'none' hoặc note đã có
           }
         })
