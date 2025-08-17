@@ -82,6 +82,7 @@ display: flex;
 align-items: center;
 gap: 12px; /* Khoảng cách giữa icon và label */
 margin-bottom: 8px; /* Khoảng cách giữa header và phần số liệu */
+margin-top: 0px !important;
 }
 
 .stat-content {
