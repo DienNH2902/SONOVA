@@ -88,7 +88,7 @@ const AdminSidebar = () => {
       children: [
         {
           key: "course-schedule",
-          label: "Lịch khai giảng",
+          label: "Quản lý Khóa học",
           onClick: () => navigate("/admin/course-schedule"),
         },
         {

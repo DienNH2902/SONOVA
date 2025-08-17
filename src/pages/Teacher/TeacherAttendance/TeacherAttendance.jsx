@@ -10,7 +10,6 @@ const { Title, Text } = Typography
 const { Option } = Select
 
 const TeacherAttendance = () => {
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -188,7 +187,10 @@ const TeacherAttendance = () => {
         return "#d9d9d9" // Gray
     }
   }
-
+// Lọc bỏ trạng thái "Unmarked" khỏi danh sách lựa chọn
+  const selectableStatuses = attendanceStatuses.filter(
+    (status) => status.statusName !== "Unmarked"
+  );
   const columns = [
     {
       title: "STT",
@@ -220,12 +222,11 @@ const TeacherAttendance = () => {
             borderColor: getStatusColor(record.status),
           }}
         >
-          {attendanceStatuses.map((status) => (
+          {selectableStatuses.map((status) => (
             <Option key={status.statusId} value={status.statusId}>
               <span style={{ color: getStatusColor(status.statusId), fontWeight: "500" }}>
                 {status.statusName === "Present" && "Hiện diện"}
                 {status.statusName === "Absent" && "Vắng"}
-                {status.statusName === "Unmarked" && "Chưa điểm danh"}
               </span>
             </Option>
           ))}

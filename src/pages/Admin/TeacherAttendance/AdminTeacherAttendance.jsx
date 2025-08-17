@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { Typography, Table, Button, Select, Card, Modal, Spin, message } from "antd"
 import { LeftOutlined, CheckOutlined } from "@ant-design/icons"
 import { useNavigate } from "react-router-dom"
-import "./AdminTeacherAttendance.css" // Đảm bảo CSS file này tồn tại và được cấu hình đúng
+import "./AdminTeacherAttendance.css"
 
 const { Title, Text } = Typography
 const { Option } = Select
@@ -13,20 +13,20 @@ const AdminTeacherAttendance = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
   const navigate = useNavigate()
 
-  const [attendanceData, setAttendanceData] = useState([]) // Danh sách giáo viên và trạng thái điểm danh
-  const [attendanceStatuses, setAttendanceStatuses] = useState([]) // Các trạng thái điểm danh từ API
-  const [todayClassSessions, setTodayClassSessions] = useState([]) // Các classSession trong ngày hiện tại
-  const [selectedClassSessionId, setSelectedClassSessionId] = useState(null) // classSessionId được chọn để điểm danh
-  const [selectedClassSession, setSelectedClassSession] = useState(null) // Thông tin chi tiết của classSession được chọn
+  const [attendanceData, setAttendanceData] = useState([]) 
+  const [attendanceStatuses, setAttendanceStatuses] = useState([]) 
+  const [todayClassSessions, setTodayClassSessions] = useState([]) 
+  const [selectedClassSessionId, setSelectedClassSessionId] = useState(null) 
+  const [selectedClassSession, setSelectedClassSession] = useState(null) 
 
   const [loading, setLoading] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [error, setError] = useState(null)
 
-  // Helper để lấy ngày hôm nay ở định dạng YYYY-MM-DD
   const getTodayDate = () => {
     const today = new Date()
     const year = today.getFullYear()
@@ -35,19 +35,16 @@ const AdminTeacherAttendance = () => {
     return `${year}-${month}-${day}`
   }
 
-  // Helper để format thời gian (HH:MM:SS -> HH:MM)
   const formatTime = (timeString) => {
     if (!timeString) return ""
-    return timeString.substring(0, 5) // Get HH:MM
+    return timeString.substring(0, 5) 
   }
 
-  // --- Fetch Data ---
   useEffect(() => {
     const fetchInitialData = async () => {
       setLoading(true)
       setError(null)
       try {
-        // 1. Fetch Attendance Statuses
         const statusRes = await fetch(
           "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/AttendanceStatus",
         )
@@ -55,7 +52,6 @@ const AdminTeacherAttendance = () => {
         const statuses = await statusRes.json()
         setAttendanceStatuses(statuses)
 
-        // 2. Fetch Class Sessions
         const classSessionRes = await fetch(
           "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/ClassSession",
         )
@@ -63,20 +59,18 @@ const AdminTeacherAttendance = () => {
         const allClassSessions = await classSessionRes.json()
 
         const today = getTodayDate()
-        // Lọc các classSession diễn ra trong ngày hôm nay
         const filteredSessions = allClassSessions.filter(
           (session) => session.dateOfDay === today,
         )
         setTodayClassSessions(filteredSessions)
 
-        // Nếu có classSession trong ngày, chọn cái đầu tiên và fetch giáo viên
         if (filteredSessions.length > 0) {
           const firstSession = filteredSessions[0]
           setSelectedClassSessionId(firstSession.classSessionId)
           setSelectedClassSession(firstSession)
           await fetchTeachersAndSetAttendance(firstSession.classSessionId, statuses)
         } else {
-          setAttendanceData([]) // Không có buổi học nào hôm nay, set rỗng
+          setAttendanceData([]) 
         }
       } catch (err) {
         console.error("Error fetching initial data:", err)
@@ -88,11 +82,10 @@ const AdminTeacherAttendance = () => {
     }
 
     fetchInitialData()
-  }, []) // Chạy 1 lần khi component mount
+  }, []) 
 
-  // Hàm fetch danh sách giáo viên và set trạng thái điểm danh
   const fetchTeachersAndSetAttendance = async (classSessionId, statuses) => {
-    setLoading(true) // Bắt đầu tải dữ liệu giáo viên và điểm danh
+    setLoading(true) 
     setError(null)
     try {
       const usersRes = await fetch(
@@ -101,36 +94,32 @@ const AdminTeacherAttendance = () => {
       if (!usersRes.ok) throw new Error("Failed to fetch users for class session.")
       const users = await usersRes.json()
 
-      // Lọc ra chỉ giáo viên
       const teachers = users.filter((user) => user.role?.roleName === "Teacher")
 
-      // Fetch existing attendance records for this class session
       const existingAttendanceRes = await fetch(
         "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Attendance"
       )
       if (!existingAttendanceRes.ok) throw new Error("Failed to fetch existing attendance records.")
       const allExistingAttendances = await existingAttendanceRes.json()
 
-      // Filter attendance records for the current classSessionId and for teachers
       const sessionExistingTeacherAttendances = allExistingAttendances.filter(
         (attendance) => 
           attendance.classSessionId === parseInt(classSessionId) &&
-          teachers.some(teacher => teacher.userId === attendance.userId) // Chỉ lấy điểm danh của giáo viên trong buổi này
+          teachers.some(teacher => teacher.userId === attendance.userId) 
       )
 
-      // Gán trạng thái mặc định "Unmarked" hoặc trạng thái đã có cho giáo viên
       const unmarkedStatus = statuses.find((s) => s.statusName === "Unmarked")?.statusId || 0
       const initialAttendance = teachers.map((teacher, index) => {
         const existingRecord = sessionExistingTeacherAttendances.find(
           (record) => record.userId === teacher.userId
         )
         return {
-          key: teacher.userId, // Dùng userId làm key
+          key: teacher.userId, 
           stt: index + 1,
-          name: teacher.accountName || teacher.username || "N/A", // Ưu tiên accountName
+          name: teacher.accountName || teacher.username || "N/A", 
           userId: teacher.userId,
-          status: existingRecord ? existingRecord.statusId : unmarkedStatus, // Mặc định là Unmarked hoặc trạng thái đã có
-          note: existingRecord ? existingRecord.note : "none", // Mặc định note hoặc note đã có
+          status: existingRecord ? existingRecord.statusId : unmarkedStatus, 
+          note: existingRecord ? existingRecord.note : "none", 
         }
       })
       setAttendanceData(initialAttendance)
@@ -139,17 +128,15 @@ const AdminTeacherAttendance = () => {
       setError("Không thể tải danh sách giáo viên: " + err.message)
       message.error("Lỗi: " + err.message)
     } finally {
-      setLoading(false) // Kết thúc tải dữ liệu
+      setLoading(false) 
     }
   }
 
-  // --- Handlers ---
   const handleClassSessionChange = async (value) => {
     const session = todayClassSessions.find((s) => s.classSessionId === value)
     setSelectedClassSessionId(value)
     setSelectedClassSession(session)
     if (session) {
-      // Khi thay đổi buổi học, gọi lại hàm để fetch giáo viên và trạng thái điểm danh
       await fetchTeachersAndSetAttendance(value, attendanceStatuses)
     } else {
       setAttendanceData([])
@@ -177,7 +164,7 @@ const AdminTeacherAttendance = () => {
       attendances: attendanceData.map((teacher) => ({
         userId: teacher.userId,
         status: teacher.status,
-        note: teacher.note || "none", // Đảm bảo có note, mặc định là "none"
+        note: teacher.note || "none",
       })),
     }
 
@@ -210,32 +197,33 @@ const AdminTeacherAttendance = () => {
 
   const handleSuccessModalOk = () => {
     setShowSuccessModal(false)
-    // Sau khi điểm danh thành công, reload lại dữ liệu cho buổi học hiện tại
-    // để đảm bảo hiển thị trạng thái mới nhất
     if (selectedClassSessionId && attendanceStatuses.length > 0) {
       fetchTeachersAndSetAttendance(selectedClassSessionId, attendanceStatuses);
     }
   }
 
   const handleBack = () => {
-    // Hiện tại nút back đang bị comment, nếu cần thì sẽ enable và điều hướng
-    // navigate("/admin/dashboard") // Ví dụ: điều hướng về trang dashboard của admin
+    navigate(-1)
   }
 
   const getStatusColor = (statusId) => {
     const statusName = attendanceStatuses.find((s) => s.statusId === statusId)?.statusName
     switch (statusName) {
       case "Present":
-        return "#52c41a" // Green
+        return "#52c41a" 
       case "Absent":
-        return "#ff4d4f" // Red
+        return "#ff4d4f" 
       case "Unmarked":
       default:
-        return "#d9d9d9" // Gray
+        return "#d9d9d9"
     }
   }
 
-  // Định nghĩa cột cho Table
+  // Lọc bỏ trạng thái "Unmarked" khỏi danh sách lựa chọn
+  const selectableStatuses = attendanceStatuses.filter(
+    (status) => status.statusName !== "Unmarked"
+  );
+
   const columns = [
     {
       title: "STT",
@@ -266,14 +254,13 @@ const AdminTeacherAttendance = () => {
             width: "100%",
             borderColor: getStatusColor(record.status),
           }}
-          disabled={loading || isSubmitting} // Disable khi đang tải hoặc gửi
+          disabled={loading || isSubmitting}
         >
-          {attendanceStatuses.map((status) => (
+          {selectableStatuses.map((status) => (
             <Option key={status.statusId} value={status.statusId}>
               <span style={{ color: getStatusColor(status.statusId), fontWeight: "500" }}>
                 {status.statusName === "Present" && "Hiện diện"}
                 {status.statusName === "Absent" && "Vắng"}
-                {status.statusName === "Unmarked" && "Chưa điểm danh"}
               </span>
             </Option>
           ))}
@@ -283,7 +270,6 @@ const AdminTeacherAttendance = () => {
     },
   ]
 
-  // Hiển thị loading spinner toàn màn hình nếu đang tải
   if (loading && !selectedClassSessionId) {
     return (
       <div className="student-attendance-page">
@@ -303,16 +289,11 @@ const AdminTeacherAttendance = () => {
     )
   }
 
-  // Nếu không có buổi học nào trong ngày hôm nay
   if (todayClassSessions.length === 0) {
     return (
       <div className="student-attendance-page">
         <div className="student-attendance-container">
           <div className="page-header">
-            {/* Nếu cần nút back thì bỏ comment ở đây */}
-            {/* <Button type="text" icon={<LeftOutlined />} onClick={handleBack} className="back-button">
-              Trở về
-            </Button> */}
             <Title level={1} className="page-title-attendance">
               ĐIỂM DANH
             </Title>
@@ -328,18 +309,13 @@ const AdminTeacherAttendance = () => {
   return (
     <div className="student-attendance-page">
       <div className="student-attendance-container">
-        {/* Header */}
         <div className="page-header">
-          {/* <Button type="text" icon={<LeftOutlined />} onClick={handleBack} className="back-button">
-            Trở về
-          </Button> */}
           <Title level={1} className="page-title-attendance">
             ĐIỂM DANH
           </Title>
         </div>
 
         <div className="content-layout">
-          {/* Main Table */}
           <div className="table-section-attendance">
             <div className="class-session-selector">
               <Text className="choose-class" strong>Chọn buổi học hôm nay để điểm danh:</Text>
@@ -375,7 +351,6 @@ const AdminTeacherAttendance = () => {
             )}
           </div>
 
-          {/* Class Info and Confirm Section */}
           <div className="sidebar-section">
             <Card className="class-info-card">
               <div className="class-header">
@@ -419,7 +394,6 @@ const AdminTeacherAttendance = () => {
           </div>
         </div>
 
-        {/* Success Modal */}
         <Modal
           open={showSuccessModal}
           onOk={handleSuccessModalOk}

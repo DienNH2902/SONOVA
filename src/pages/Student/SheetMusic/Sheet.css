@@ -4,7 +4,7 @@
 }
 
 .sheet-header {
-  background-color: #192f59;
+  background-color: #FFF3CD;
   padding: 16px 24px;
   display: flex;
   justify-content: space-between;
@@ -19,11 +19,13 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  background-color: #032f45 !important;
 }
 
 .sheet-back-button:hover {
   background-color: rgba(255, 255, 255, 0.1) !important;
   color: white !important;
+  background-color: #5a8c8c !important;
 }
 
 .sheet-download-button {
