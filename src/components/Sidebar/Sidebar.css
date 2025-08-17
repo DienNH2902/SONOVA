@@ -11,7 +11,7 @@
   height: 100%; /* Chiếm toàn bộ chiều cao của Sider */
   display: flex;
   flex-direction: column;
-  background: #064869; /* Giữ màu nền */
+  background: #033955; /* Giữ màu nền */
   padding-bottom: 20px; /* Thêm padding dưới cho phần bottom menu */
 }
 

@@ -69,22 +69,27 @@
   margin-top: 16px;
 }
 
-.stat-card {
-  height: 100%;
-  border-radius: 12px;
-  border: 0px solid #1e3a5f;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  display: flex;
-  align-items: flex-start;
+.stat-card .ant-card-body {
+padding: 20px;
+width: 100%;
+display: flex;
+flex-direction: column; /* Chuyển hướng các item con theo chiều dọc */
+justify-content: space-between; /* Đẩy các div con ra hai đầu */
 }
 
-.stat-card .ant-card-body {
-  padding: 20px;
-  width: 100%;
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
+.stat-header {
+display: flex;
+align-items: center;
+gap: 12px; /* Khoảng cách giữa icon và label */
+margin-bottom: 8px; /* Khoảng cách giữa header và phần số liệu */
 }
+
+.stat-content {
+/* Các styles cho phần số liệu */
+}
+
+
+
 
 .stat-icon {
   width: 48px;
@@ -129,10 +134,12 @@
   display: block;
   color: #666 !important;
   font-size: 18px !important;
-  margin-bottom: 8px;
+  padding-top: 25px;
   font-family: 'SVN-Gilroy';
   font-weight: 400 !important;
   height: 85px;
+  align-items: center;
+  justify-content: center;
 }
 
 .stat-value {
@@ -148,14 +155,23 @@
   align-items: center;
   gap: 4px;
   font-size: 12px;
+  text-align: center;
+}
+
+.text-statistic-card {
+  text-align: center;
+  align-items: center;
+  justify-content: center;
 }
 
 .stat-change.positive {
   color: #67c23a;
+  text-align: center;
 }
 
 .stat-change.negative {
   color: #f56c6c;
+  text-align: center;
 }
 
 .chart-section {

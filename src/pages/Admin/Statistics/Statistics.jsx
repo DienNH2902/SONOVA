@@ -607,34 +607,40 @@
 // }
 
 // export default Statistics
-"use client"
+"use client";
 
-import { Typography, Row, Col, Card, Button, Statistic } from "antd"
-import { ArrowUpOutlined, ArrowLeftOutlined, ArrowRightOutlined, ArrowDownOutlined } from "@ant-design/icons"
-import { Line } from "@ant-design/charts"
-import { useState, useEffect } from "react"
-import "./Statistics.css"
+import { Typography, Row, Col, Card, Button, Statistic } from "antd";
+import {
+  ArrowUpOutlined,
+  ArrowLeftOutlined,
+  ArrowRightOutlined,
+  ArrowDownOutlined,
+} from "@ant-design/icons";
+import { Line } from "@ant-design/charts";
+import { useState, useEffect } from "react";
+import "./Statistics.css";
 
-const { Title, Text } = Typography
+const { Title, Text } = Typography;
 
 const Statistics = () => {
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  
-  const [statisticsData, setStatisticsData] = useState([])
-  const [monthlyData, setMonthlyData] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [currentMonthIndex, setCurrentMonthIndex] = useState(0)
+
+  const [statisticsData, setStatisticsData] = useState([]);
+  const [monthlyData, setMonthlyData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [currentMonthIndex, setCurrentMonthIndex] = useState(0);
 
   // Helper function to group data by month
   const groupDataByMonth = (data) => {
-    const monthlyGroups = {}
+    const monthlyGroups = {};
 
     data.forEach((item) => {
-      const date = new Date(item.date)
-      const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`
+      const date = new Date(item.date);
+      const monthKey = `${date.getFullYear()}-${String(
+        date.getMonth() + 1
+      ).padStart(2, "0")}`;
 
       if (!monthlyGroups[monthKey]) {
         monthlyGroups[monthKey] = {
@@ -648,115 +654,129 @@ const Statistics = () => {
           totalGuitarClass: 0,
           monthlyRevenue: 0,
           dataPoints: [],
-        }
+        };
       }
 
       // For totalStudents, totalPianoClass, totalGuitarClass, use the value of the last day of the month
-      monthlyGroups[monthKey].totalStudents = item.totalStudents || 0
-      monthlyGroups[monthKey].newStudents += item.newStudents || 0
-      monthlyGroups[monthKey].consultationRequestCount += item.consultationRequestCount || 0
-      monthlyGroups[monthKey].totalPianoClass = item.totalPianoClass || 0
-      monthlyGroups[monthKey].totalGuitarClass = item.totalGuitarClass || 0
-      monthlyGroups[monthKey].monthlyRevenue += item.monthlyRevenue || 0
-      monthlyGroups[monthKey].dataPoints.push(item)
-    })
+      monthlyGroups[monthKey].totalStudents = item.totalStudents || 0;
+      monthlyGroups[monthKey].newStudents += item.newStudents || 0;
+      monthlyGroups[monthKey].consultationRequestCount +=
+        item.consultationRequestCount || 0;
+      monthlyGroups[monthKey].totalPianoClass = item.totalPianoClass || 0;
+      monthlyGroups[monthKey].totalGuitarClass = item.totalGuitarClass || 0;
+      monthlyGroups[monthKey].monthlyRevenue += item.monthlyRevenue || 0;
+      monthlyGroups[monthKey].dataPoints.push(item);
+    });
 
     return Object.values(monthlyGroups).sort((a, b) => {
-      if (a.year !== b.year) return a.year - b.year
-      return a.month - b.month
-    })
-  }
+      if (a.year !== b.year) return a.year - b.year;
+      return a.month - b.month;
+    });
+  };
 
   // Fetch data from API
   useEffect(() => {
     const fetchStatistics = async () => {
       try {
-        setLoading(true)
-        const response = await fetch("https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Statistic")
-        const data = await response.json()
+        setLoading(true);
+        const response = await fetch(
+          "https://innovus-api-f8ajdzdzhda0hxge.japanwest-01.azurewebsites.net/api/Statistic"
+        );
+        const data = await response.json();
 
         // Sort data by date
-        const sortedData = data.sort((a, b) => new Date(a.date) - new Date(b.date))
-        setStatisticsData(sortedData)
+        const sortedData = data.sort(
+          (a, b) => new Date(a.date) - new Date(b.date)
+        );
+        setStatisticsData(sortedData);
 
         // Group data by month
-        const grouped = groupDataByMonth(sortedData)
-        setMonthlyData(grouped)
-        setCurrentMonthIndex(grouped.length - 1) // Set to latest month
+        const grouped = groupDataByMonth(sortedData);
+        setMonthlyData(grouped);
+        setCurrentMonthIndex(grouped.length - 1); // Set to latest month
       } catch (error) {
-        console.error("Error fetching statistics:", error)
+        console.error("Error fetching statistics:", error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchStatistics()
-  }, [])
+    fetchStatistics();
+  }, []);
 
   // Helper function to format month display
   const formatMonthDisplay = (monthData) => {
-    if (!monthData) return "Không có dữ liệu"
-    return `Tháng ${monthData.month}/${monthData.year}`
-  }
+    if (!monthData) return "Không có dữ liệu";
+    return `Tháng ${monthData.month}/${monthData.year}`;
+  };
 
   // HÀM ĐÃ SỬA
-const calculatePercentageChange = (current, previous) => {
-  // Kiểm tra nếu không có dữ liệu tháng trước (undefined) hoặc là giá trị không hợp lệ
-  if (previous === undefined || previous === null) {
-    return { value: 0, isPositive: true }; // Hoặc bạn có thể trả về 'N/A'
-  }
-
-  // Xử lý trường hợp tháng trước có giá trị là 0
-  if (previous === 0) {
-    if (current > 0) {
-      // Nếu tháng trước là 0 và tháng này lớn hơn 0, coi như tăng 100%
-      return { value: 100, isPositive: true };
+  const calculatePercentageChange = (current, previous) => {
+    // Kiểm tra nếu không có dữ liệu tháng trước (undefined) hoặc là giá trị không hợp lệ
+    if (previous === undefined || previous === null) {
+      return { value: 0, isPositive: true }; // Hoặc bạn có thể trả về 'N/A'
     }
-    // Nếu cả hai tháng đều là 0, không có sự thay đổi
-    return { value: 0, isPositive: true };
-  }
 
-  // Tính toán bình thường
-  const change = ((current - previous) / previous) * 100;
-  return { value: Math.abs(change).toFixed(1), isPositive: change >= 0 };
-};
+    // Xử lý trường hợp tháng trước có giá trị là 0
+    if (previous === 0) {
+      if (current > 0) {
+        // Nếu tháng trước là 0 và tháng này lớn hơn 0, coi như tăng 100%
+        return { value: 100, isPositive: true };
+      }
+      // Nếu cả hai tháng đều là 0, không có sự thay đổi
+      return { value: 0, isPositive: true };
+    }
+
+    // Tính toán bình thường
+    const change = ((current - previous) / previous) * 100;
+    return { value: Math.abs(change).toFixed(1), isPositive: change >= 0 };
+  };
 
   // Get current and previous month data
-  const currentMonthData = monthlyData[currentMonthIndex] || {}
-  const previousMonthData = monthlyData[currentMonthIndex - 1] || {}
+  const currentMonthData = monthlyData[currentMonthIndex] || {};
+  const previousMonthData = monthlyData[currentMonthIndex - 1] || {};
 
   // Calculate changes
-  const studentsChange = calculatePercentageChange(currentMonthData.totalStudents, previousMonthData.totalStudents)
-  const newStudentsChange = calculatePercentageChange(currentMonthData.newStudents, previousMonthData.newStudents)
+  const studentsChange = calculatePercentageChange(
+    currentMonthData.totalStudents,
+    previousMonthData.totalStudents
+  );
+  const newStudentsChange = calculatePercentageChange(
+    currentMonthData.newStudents,
+    previousMonthData.newStudents
+  );
   const consultationChange = calculatePercentageChange(
     currentMonthData.consultationRequestCount,
-    previousMonthData.consultationRequestCount,
-  )
+    previousMonthData.consultationRequestCount
+  );
   // Calculate revenue and its change
-  const currentMonthRevenue = (currentMonthData.totalStudents || 0) * 125000
-  const previousMonthRevenue = (previousMonthData.totalStudents || 0) * 125000
-  const revenueChange = calculatePercentageChange(currentMonthRevenue, previousMonthRevenue)
+  const currentMonthRevenue = (currentMonthData.totalStudents || 0) * 125000;
+  const previousMonthRevenue = (previousMonthData.totalStudents || 0) * 125000;
+  const revenueChange = calculatePercentageChange(
+    currentMonthRevenue,
+    previousMonthRevenue
+  );
 
   // Prepare chart data for student trend
   const studentTrendData = monthlyData.map((item) => ({
     month: `T${item.month}`,
     value: item.totalStudents || 0,
     monthData: item,
-  }))
+  }));
 
   // Prepare chart data for Piano classes
   const pianoClassData = monthlyData.map((item) => ({
     month: `T${item.month}`,
     value: item.totalPianoClass || 0,
     monthData: item,
-  }))
+  }));
 
   // Prepare chart data for Guitar classes
   const guitarClassData = monthlyData.map((item) => ({
     month: `T${item.month}`,
     value: item.totalGuitarClass || 0,
     monthData: item,
-  }))
+  }));
 
   // Configuration for the student trend chart
   const studentConfig = {
@@ -816,7 +836,7 @@ const calculatePercentageChange = (current, previous) => {
         type: "marker-active",
       },
     ],
-  }
+  };
 
   // Configuration for Piano classes chart
   const pianoClassConfig = {
@@ -881,7 +901,7 @@ const calculatePercentageChange = (current, previous) => {
         fill: "l(270) 0:#1890ff33 1:#1890ff11",
       },
     },
-  }
+  };
 
   // Configuration for Guitar classes chart
   const guitarClassConfig = {
@@ -946,23 +966,23 @@ const calculatePercentageChange = (current, previous) => {
         fill: "l(270) 0:#52c41a33 1:#52c41a11",
       },
     },
-  }
+  };
 
   // Navigation functions
   const goToPreviousMonth = () => {
     if (currentMonthIndex > 0) {
-      setCurrentMonthIndex(currentMonthIndex - 1)
+      setCurrentMonthIndex(currentMonthIndex - 1);
     }
-  }
+  };
 
   const goToNextMonth = () => {
     if (currentMonthIndex < monthlyData.length - 1) {
-      setCurrentMonthIndex(currentMonthIndex + 1)
+      setCurrentMonthIndex(currentMonthIndex + 1);
     }
-  }
+  };
 
   if (loading) {
-    return <div className="statistics-page">Đang tải dữ liệu...</div>
+    return <div className="statistics-page">Đang tải dữ liệu...</div>;
   }
 
   return (
@@ -984,7 +1004,9 @@ const calculatePercentageChange = (current, previous) => {
                 onClick={goToPreviousMonth}
                 disabled={currentMonthIndex === 0}
               />
-              <Text className="current-month">{formatMonthDisplay(currentMonthData)}</Text>
+              <Text className="current-month">
+                {formatMonthDisplay(currentMonthData)}
+              </Text>
               <Button
                 type="primary"
                 icon={<ArrowRightOutlined />}
@@ -998,32 +1020,46 @@ const calculatePercentageChange = (current, previous) => {
             {/* UPDATED: Changed lg from 8 to 6 */}
             <Col xs={24} sm={12} lg={6}>
               <Card className="stat-card">
-                <div className="stat-icon student-icon">
-                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M12 15C15.3137 15 18 12.3137 18 9C18 5.68629 15.3137 3 12 3C8.68629 3 6 5.68629 6 9C6 12.3137 8.68629 15 12 15Z"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M2.90625 20.2491C3.82775 18.6531 5.1537 17.3278 6.75 16.4064C8.3463 15.485 10.1547 15 12 15C13.8453 15 15.6537 15.4851 17.25 16.4065C18.8463 17.3279 20.1722 18.6533 21.0938 20.2493"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                <div className="stat-header">
+                  <div className="stat-icon student-icon">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M12 15C15.3137 15 18 12.3137 18 9C18 5.68629 15.3137 3 12 3C8.68629 3 6 5.68629 6 9C6 12.3137 8.68629 15 12 15Z"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M2.90625 20.2491C3.82775 18.6531 5.1537 17.3278 6.75 16.4064C8.3463 15.485 10.1547 15 12 15C13.8453 15 15.6537 15.4851 17.25 16.4065C18.8463 17.3279 20.1722 18.6533 21.0938 20.2493"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </div>
+                  <Text className="stat-label">Tổng số học sinh</Text>
                 </div>
                 <div className="stat-content">
-                  <Text className="stat-label">Tổng số học sinh</Text>
                   <Title level={3} className="stat-value">
                     {currentMonthData.totalStudents || 0}
                   </Title>
-                  <div className={`stat-change ${studentsChange.isPositive ? "positive" : "negative"}`}>
-                    {studentsChange.isPositive ? <ArrowUpOutlined /> : <ArrowDownOutlined />}
-                    <Text>{studentsChange.value}% so với tháng trước</Text>
+                  <div
+                    className={`stat-change ${
+                      studentsChange.isPositive ? "positive" : "negative"
+                    }`}
+                  >
+                    {studentsChange.isPositive ? (
+                      <ArrowUpOutlined />
+                    ) : (
+                      <ArrowDownOutlined />
+                    )}
+                    <Text className="text-statistic-card">{studentsChange.value}% so với tháng trước</Text>
                   </div>
                 </div>
               </Card>
@@ -1032,45 +1068,59 @@ const calculatePercentageChange = (current, previous) => {
             {/* UPDATED: Changed lg from 8 to 6 */}
             <Col xs={24} sm={12} lg={6}>
               <Card className="stat-card">
-                <div className="stat-icon new-student-icon">
-                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M16 21V19C16 17.9391 15.5786 16.9217 14.8284 16.1716C14.0783 15.4214 13.0609 15 12 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M8.5 11C10.7091 11 12.5 9.20914 12.5 7C12.5 4.79086 10.7091 3 8.5 3C6.29086 3 4.5 4.79086 4.5 7C4.5 9.20914 6.29086 11 8.5 11Z"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M20 8V14"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M23 11H17"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                <div className="stat-header">
+                  <div className="stat-icon new-student-icon">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M16 21V19C16 17.9391 15.5786 16.9217 14.8284 16.1716C14.0783 15.4214 13.0609 15 12 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M8.5 11C10.7091 11 12.5 9.20914 12.5 7C12.5 4.79086 10.7091 3 8.5 3C6.29086 3 4.5 4.79086 4.5 7C4.5 9.20914 6.29086 11 8.5 11Z"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M20 8V14"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M23 11H17"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </div>
+                  <Text className="stat-label">Học viên mới</Text>
                 </div>
                 <div className="stat-content">
-                  <Text className="stat-label">Học viên mới</Text>
                   <Title level={3} className="stat-value">
                     {currentMonthData.newStudents || 0}
                   </Title>
-                  <div className={`stat-change ${newStudentsChange.isPositive ? "positive" : "negative"}`}>
-                    {newStudentsChange.isPositive ? <ArrowUpOutlined /> : <ArrowDownOutlined />}
+                  <div
+                    className={`stat-change ${
+                      newStudentsChange.isPositive ? "positive" : "negative"
+                    }`}
+                  >
+                    {newStudentsChange.isPositive ? (
+                      <ArrowUpOutlined />
+                    ) : (
+                      <ArrowDownOutlined />
+                    )}
                     <Text>{newStudentsChange.value}% so với tháng trước</Text>
                   </div>
                 </div>
@@ -1080,31 +1130,46 @@ const calculatePercentageChange = (current, previous) => {
             {/* UPDATED: Changed lg from 8 to 6 */}
             <Col xs={24} sm={12} lg={6}>
               <Card className="stat-card">
-                <div className="stat-icon registration-icon">
-                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M18.5 2.50001C18.8978 2.10219 19.4374 1.87869 20 1.87869C20.5626 1.87869 21.1022 2.10219 21.5 2.50001C21.8978 2.89784 22.1213 3.4374 22.1213 4.00001C22.1213 4.56262 21.8978 5.10219 21.5 5.50001L12 15L8 16L9 12L18.5 2.50001Z"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </div>
-                <div className="stat-content">
+                <div className="stat-header">
+                  <div className="stat-icon registration-icon">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M18.5 2.50001C18.8978 2.10219 19.4374 1.87869 20 1.87869C20.5626 1.87869 21.1022 2.10219 21.5 2.50001C21.8978 2.89784 22.1213 3.4374 22.1213 4.00001C22.1213 4.56262 21.8978 5.10219 21.5 5.50001L12 15L8 16L9 12L18.5 2.50001Z"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </div>
                   <Text className="stat-label">Số lượng đăng ký tư vấn</Text>
+                </div>
+
+                <div className="stat-content">
                   <Title level={3} className="stat-value">
                     {currentMonthData.consultationRequestCount || 0}
                   </Title>
-                  <div className={`stat-change ${consultationChange.isPositive ? "positive" : "negative"}`}>
-                    {consultationChange.isPositive ? <ArrowUpOutlined /> : <ArrowDownOutlined />}
+                  <div
+                    className={`stat-change ${
+                      consultationChange.isPositive ? "positive" : "negative"
+                    }`}
+                  >
+                    {consultationChange.isPositive ? (
+                      <ArrowUpOutlined />
+                    ) : (
+                      <ArrowDownOutlined />
+                    )}
                     <Text>{consultationChange.value}% so với tháng trước</Text>
                   </div>
                 </div>
@@ -1114,45 +1179,63 @@ const calculatePercentageChange = (current, previous) => {
             {/* NEW CARD: Total Revenue */}
             <Col xs={24} sm={12} lg={6}>
               <Card className="stat-card">
-                <div className="stat-icon revenue-icon">
-                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M9 12C9 13.3807 10.1193 14.5 11.5 14.5C12.8807 14.5 14 13.3807 14 12C14 10.6193 12.8807 9.5 11.5 9.5C10.1193 9.5 9 10.6193 9 12Z"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M12 17C15.866 17 19 15.2091 19 12C19 8.79086 15.866 7 12 7C8.13401 7 5 8.79086 5 12C5 15.2091 8.13401 17 12 17Z"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M5 12V16C5 19.2091 8.13401 21 12 21C15.866 21 19 19.2091 19 16V12"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M5 12V8C5 4.79086 8.13401 3 12 3C15.866 3 19 4.79086 19 8V12"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </div>
-                <div className="stat-content">
+                <div className="stat-header">
+                  <div className="stat-icon revenue-icon">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M9 12C9 13.3807 10.1193 14.5 11.5 14.5C12.8807 14.5 14 13.3807 14 12C14 10.6193 12.8807 9.5 11.5 9.5C10.1193 9.5 9 10.6193 9 12Z"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M12 17C15.866 17 19 15.2091 19 12C19 8.79086 15.866 7 12 7C8.13401 7 5 8.79086 5 12C5 15.2091 8.13401 17 12 17Z"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M5 12V16C5 19.2091 8.13401 21 12 21C15.866 21 19 19.2091 19 16V12"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M5 12V8C5 4.79086 8.13401 3 12 3C15.866 3 19 4.79086 19 8V12"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </div>
                   <Text className="stat-label">Tổng doanh thu (Ước tính)</Text>
+                </div>
+
+                <div className="stat-content">
                   <Title level={3} className="stat-value">
-                    {currentMonthRevenue.toLocaleString("vi-VN", { style: "currency", currency: "VND" })}
+                    {currentMonthRevenue.toLocaleString("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    })}
                   </Title>
-                  <div className={`stat-change ${revenueChange.isPositive ? "positive" : "negative"}`}>
-                    {revenueChange.isPositive ? <ArrowUpOutlined /> : <ArrowDownOutlined />}
+                  <div
+                    className={`stat-change ${
+                      revenueChange.isPositive ? "positive" : "negative"
+                    }`}
+                  >
+                    {revenueChange.isPositive ? (
+                      <ArrowUpOutlined />
+                    ) : (
+                      <ArrowDownOutlined />
+                    )}
                     <Text>{revenueChange.value}% so với tháng trước</Text>
                   </div>
                 </div>
@@ -1173,7 +1256,9 @@ const calculatePercentageChange = (current, previous) => {
                 onClick={goToPreviousMonth}
                 disabled={currentMonthIndex === 0}
               />
-              <Text className="current-month">{formatMonthDisplay(currentMonthData)}</Text>
+              <Text className="current-month">
+                {formatMonthDisplay(currentMonthData)}
+              </Text>
               <Button
                 type="primary"
                 icon={<ArrowRightOutlined />}
@@ -1189,14 +1274,20 @@ const calculatePercentageChange = (current, previous) => {
           <Row gutter={[24, 24]} className="chart-summary">
             <Col xs={24} sm={12}>
               <Card className="summary-card">
-                <Statistic title="Học viên mới" value={currentMonthData.newStudents || 0} />
+                <Statistic
+                  title="Học viên mới"
+                  value={currentMonthData.newStudents || 0}
+                />
               </Card>
             </Col>
             <Col xs={24} sm={12}>
               <Card className="summary-card">
                 <Statistic
                   title="Tổng lớp học"
-                  value={(currentMonthData.totalPianoClass || 0) + (currentMonthData.totalGuitarClass || 0)}
+                  value={
+                    (currentMonthData.totalPianoClass || 0) +
+                    (currentMonthData.totalGuitarClass || 0)
+                  }
                 />
               </Card>
             </Col>
@@ -1215,7 +1306,9 @@ const calculatePercentageChange = (current, previous) => {
                 onClick={goToPreviousMonth}
                 disabled={currentMonthIndex === 0}
               />
-              <Text className="current-month">{formatMonthDisplay(currentMonthData)}</Text>
+              <Text className="current-month">
+                {formatMonthDisplay(currentMonthData)}
+              </Text>
               <Button
                 type="primary"
                 icon={<ArrowRightOutlined />}
@@ -1231,25 +1324,35 @@ const calculatePercentageChange = (current, previous) => {
           <Row gutter={[24, 24]} className="chart-summary">
             <Col xs={24} sm={12}>
               <Card className="summary-card">
-                <Statistic title="Lớp học Piano" value={currentMonthData.totalPianoClass || 0} />
+                <Statistic
+                  title="Lớp học Piano"
+                  value={currentMonthData.totalPianoClass || 0}
+                />
               </Card>
             </Col>
             <Col xs={24} sm={12}>
               <Card className="summary-card">
                 <Statistic
                   title="Thống kê"
-                  value={`${calculatePercentageChange(currentMonthData.totalPianoClass, previousMonthData.totalPianoClass).value}%`}
+                  value={`${
+                    calculatePercentageChange(
+                      currentMonthData.totalPianoClass,
+                      previousMonthData.totalPianoClass
+                    ).value
+                  }%`}
                   valueStyle={{
                     color: calculatePercentageChange(
                       currentMonthData.totalPianoClass,
-                      previousMonthData.totalPianoClass,
+                      previousMonthData.totalPianoClass
                     ).isPositive
                       ? "#3f8600"
                       : "#cf1322",
                   }}
                   prefix={
-                    calculatePercentageChange(currentMonthData.totalPianoClass, previousMonthData.totalPianoClass)
-                      .isPositive ? (
+                    calculatePercentageChange(
+                      currentMonthData.totalPianoClass,
+                      previousMonthData.totalPianoClass
+                    ).isPositive ? (
                       <ArrowUpOutlined />
                     ) : (
                       <ArrowDownOutlined />
@@ -1274,7 +1377,9 @@ const calculatePercentageChange = (current, previous) => {
                 onClick={goToPreviousMonth}
                 disabled={currentMonthIndex === 0}
               />
-              <Text className="current-month">{formatMonthDisplay(currentMonthData)}</Text>
+              <Text className="current-month">
+                {formatMonthDisplay(currentMonthData)}
+              </Text>
               <Button
                 type="primary"
                 icon={<ArrowRightOutlined />}
@@ -1290,25 +1395,35 @@ const calculatePercentageChange = (current, previous) => {
           <Row gutter={[24, 24]} className="chart-summary">
             <Col xs={24} sm={12}>
               <Card className="summary-card">
-                <Statistic title="Lớp học Guitar" value={currentMonthData.totalGuitarClass || 0} />
+                <Statistic
+                  title="Lớp học Guitar"
+                  value={currentMonthData.totalGuitarClass || 0}
+                />
               </Card>
             </Col>
             <Col xs={24} sm={12}>
               <Card className="summary-card">
                 <Statistic
                   title="Thống kê"
-                  value={`${calculatePercentageChange(currentMonthData.totalGuitarClass, previousMonthData.totalGuitarClass).value}%`}
+                  value={`${
+                    calculatePercentageChange(
+                      currentMonthData.totalGuitarClass,
+                      previousMonthData.totalGuitarClass
+                    ).value
+                  }%`}
                   valueStyle={{
                     color: calculatePercentageChange(
                       currentMonthData.totalGuitarClass,
-                      previousMonthData.totalGuitarClass,
+                      previousMonthData.totalGuitarClass
                     ).isPositive
                       ? "#3f8600"
                       : "#cf1322",
                   }}
                   prefix={
-                    calculatePercentageChange(currentMonthData.totalGuitarClass, previousMonthData.totalGuitarClass)
-                      .isPositive ? (
+                    calculatePercentageChange(
+                      currentMonthData.totalGuitarClass,
+                      previousMonthData.totalGuitarClass
+                    ).isPositive ? (
                       <ArrowUpOutlined />
                     ) : (
                       <ArrowDownOutlined />
@@ -1322,7 +1437,7 @@ const calculatePercentageChange = (current, previous) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Statistics
+export default Statistics;
