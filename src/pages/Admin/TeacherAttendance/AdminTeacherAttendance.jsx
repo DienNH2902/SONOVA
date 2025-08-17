@@ -108,7 +108,7 @@ const AdminTeacherAttendance = () => {
           teachers.some(teacher => teacher.userId === attendance.userId) 
       )
 
-      const unmarkedStatus = statuses.find((s) => s.statusName === "Unmarked")?.statusId || 0
+      const unmarkedStatus = statuses.find((s) => s.statusName === "Unmarked")?.statusId || "Chưa điểm danh"
       const initialAttendance = teachers.map((teacher, index) => {
         const existingRecord = sessionExistingTeacherAttendances.find(
           (record) => record.userId === teacher.userId

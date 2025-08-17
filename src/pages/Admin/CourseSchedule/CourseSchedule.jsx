@@ -122,7 +122,7 @@ const CourseSchedule = () => {
       }
     } catch (error) {
       console.error("Error fetching opening schedules:", error)
-      antdMessage.error("Không thể tải dữ liệu lịch học.")
+      antdMessage.error("Không thể tải dữ liệu khóa học.")
     } finally {
       setLoading(false)
     }
@@ -424,7 +424,7 @@ const CourseSchedule = () => {
 
       const scheduleIdToUpdate = currentRecord.openingScheduleId
       if (!scheduleIdToUpdate) {
-        throw new Error("Không tìm thấy ID lịch học để cập nhật.")
+        throw new Error("Không tìm thấy ID khóa học để cập nhật.")
       }
 
       const selectedTeacher = availableTeachers.find((teacher) => teacher.accountName === values.teacherName)
@@ -463,7 +463,7 @@ const CourseSchedule = () => {
       )
 
       if (response.ok) {
-        antdMessage.success("Cập nhật lịch học thành công!")
+        antdMessage.success("Cập nhật khóa học thành công!")
         setIsUpdateModalVisible(false)
         setCurrentRecord(null)
         updateForm.resetFields()
@@ -474,10 +474,10 @@ const CourseSchedule = () => {
         const errorData = await response.json()
         console.error("Error updating schedule:", errorData)
         if (errorData.errors && errorData.errors.ClassCode && errorData.errors.ClassCode.length > 0) {
-          antdMessage.error(`Cập nhật lịch học thất bại: ${errorData.errors.ClassCode[0]}`)
+          antdMessage.error(`Cập nhật khóa học thất bại: ${errorData.errors.ClassCode[0]}`)
         } else {
           antdMessage.error(
-            `Cập nhật lịch học thất bại: ${errorData.message || response.statusText || "Lỗi không xác định"}`,
+            `Cập nhật khóa học thất bại: ${errorData.message || response.statusText || "Lỗi không xác định"}`,
           )
         }
       }
@@ -495,14 +495,14 @@ const CourseSchedule = () => {
   const handleDelete = (record) => {
     if (record.actualStudentCount > 0) {
       antdMessage.error(
-        `Không thể xóa lịch học này vì lớp "${record.classCode}" đang có ${record.actualStudentCount} học viên. Vui lòng chuyển học viên sang lớp khác trước khi xóa.`,
+        `Không thể xóa khóa học này vì lớp "${record.classCode}" đang có ${record.actualStudentCount} học viên. Vui lòng chuyển học viên sang lớp khác trước khi xóa.`,
       )
       return
     }
 
     antdModal.confirm({
-      title: "Xác nhận xóa lịch học",
-      content: `Bạn có chắc chắn muốn xóa lịch học mã lớp "${record.classCode}" của môn "${record.subject}"?`,
+      title: "Xác nhận xóa khóa học",
+      content: `Bạn có chắc chắn muốn xóa khóa học mã lớp "${record.classCode}" của môn "${record.subject}"?`,
       okText: "Xóa",
       okType: "danger",
       cancelText: "Hủy",
@@ -518,7 +518,7 @@ const CourseSchedule = () => {
             },
           )
           if (response.ok) {
-            antdMessage.success("Xóa lịch học thành công!")
+            antdMessage.success("Xóa khóa học thành công!")
             fetchOpeningSchedules()
             fetchClassSessions()
             fetchAllUsers()
@@ -526,7 +526,7 @@ const CourseSchedule = () => {
             const errorData = await response.json()
             console.error("Error deleting schedule:", errorData)
             antdMessage.error(
-              `Xóa lịch học thất bại: ${errorData.message || response.statusText || "Lỗi không xác định"}`,
+              `Xóa khóa học thất bại: ${errorData.message || response.statusText || "Lỗi không xác định"}`,
             )
           }
         } catch (error) {
@@ -743,23 +743,23 @@ const CourseSchedule = () => {
       align: "center",
       render: (_, record) => (
         <Space size="small">
-          <Tooltip title="Sửa lịch học">
+          <Tooltip title="Sửa Khóa học">
             <Button
               type="primary"
               icon={<EditOutlined />}
               onClick={() => handleEdit(record)}
               className="edit-button"
-              aria-label="Sửa lịch học"
+              aria-label="Sửa Khóa học"
             />
           </Tooltip>
-          <Tooltip title={record.actualStudentCount > 0 ? "Không thể xóa lớp có học viên" : "Xóa lịch học"}>
+          <Tooltip title={record.actualStudentCount > 0 ? "Không thể xóa lớp có học viên" : "Xóa khóa học"}>
             <Button
               type="primary"
               danger
               icon={<DeleteOutlined />}
               onClick={() => handleDelete(record)}
               className="delete-button"
-              aria-label="Xóa lịch học"
+              aria-label="Xóa khóa học"
               disabled={record.actualStudentCount > 0}
             />
           </Tooltip>
@@ -778,7 +778,7 @@ const CourseSchedule = () => {
           minHeight: "80vh",
         }}
       >
-        <Spin size="large" tip="Đang tải dữ liệu lịch học..." />
+        <Spin size="large" tip="Đang tải dữ liệu khóa học..." />
       </div>
     )
   }
@@ -835,7 +835,7 @@ const CourseSchedule = () => {
         <div className="schedule-section">
           <div className="section-header">
             <Title level={3} className="section-title-basic-title">
-              Lịch học cơ bản
+              Khóa học cơ bản
             </Title>
             <Button
               type="primary"
@@ -855,7 +855,7 @@ const CourseSchedule = () => {
               size="middle"
             />
             {basicSchedules.length === 0 && !loading && (
-              <div className="no-data-message">Không có lịch học cơ bản nào để hiển thị.</div>
+              <div className="no-data-message">Không có khóa học cơ bản nào để hiển thị.</div>
             )}
           </div>
         </div>
@@ -864,7 +864,7 @@ const CourseSchedule = () => {
         <div className="schedule-section">
           <div className="section-header">
             <Title level={3} className="section-title-advanced-title">
-              Lịch học nâng cao
+              Khóa học nâng cao
             </Title>
             <Button
               type="primary"
@@ -884,7 +884,7 @@ const CourseSchedule = () => {
               size="middle"
             />
             {advancedSchedules.length === 0 && !loading && (
-              <div className="no-data-message">Không có lịch học nâng cao nào để hiển thị.</div>
+              <div className="no-data-message">Không có khóa học nâng cao nào để hiển thị.</div>
             )}
           </div>
         </div>
