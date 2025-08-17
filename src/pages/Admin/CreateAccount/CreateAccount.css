@@ -117,7 +117,7 @@
 }
 
 .add-course-section {
-  margin: 24px 0;
+  margin: 0px 0;
 }
 
 .add-course-btn {
@@ -129,7 +129,8 @@
   font-weight: 500;
   display: flex;
   align-items: center;
-  gap: 8px;
+  /* gap: 8px; */
+  margin: 0px;
   font-family: 'SVN-Gilroy';
 }
 
@@ -317,4 +318,5 @@
 
 .form-input-create {
   font-family: 'SVN-Gilroy' !important;
+  margin: 0px
 }

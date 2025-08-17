@@ -106,7 +106,7 @@ const AdminSidebar = () => {
     {
       key: "students",
       icon: <TeamOutlined />,
-      label: "Người dùng",
+      label: "Ng.dùng",
       children: [
         {
           key: "student-info",
