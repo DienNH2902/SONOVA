@@ -1,5 +1,5 @@
 .header {
-  background: #1e3a5f;
+  background: #032f45;
   padding: 0;
   height: 64px;
   line-height: 64px;
@@ -72,7 +72,7 @@
 
 /* Submenu Styles */
 .header-menu .ant-menu-submenu .ant-menu {
-  background-color: #1e3a5f !important;
+  background-color: #032f45 !important;
   padding: 0;
   border: none;
   box-shadow: none;
@@ -89,13 +89,13 @@
 
 .header-menu .ant-menu-submenu .ant-menu-item:hover {
   background-color: #ffa940;
-  color: #1e3a5f;
+  color: #032f45;
 }
 
 .header-menu .ant-menu-submenu-popup {
   margin-top: 0px;
   font-family: 'SVN-Gilroy' !important;
-  background: #1e3a5f;
+  background: #032f45;
 }
 
 /* Responsive Styles */
@@ -193,7 +193,7 @@
 
 /* Style cho Drawer */
 .mobile-drawer .ant-drawer-header {
-  background-color: #1e3a5f;
+  background-color: #032f45;
   margin-top: 10px;
 }
 
@@ -219,7 +219,7 @@
 
 .mobile-drawer .ant-menu-item-selected {
   background-color: #ffa940 !important;
-  color: #1e3a5f !important;
+  color: #032f45 !important;
 }
 
 /* .mobile-drawer .ant-menu-submenu .ant-menu-item {
