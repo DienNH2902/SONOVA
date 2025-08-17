@@ -1,6 +1,6 @@
 .favorite-page {
   min-height: 100vh;
-  background: #f7f5ed;
+  background: #fffbea;
 }
 
 .favorite-header {
@@ -264,7 +264,7 @@
   align-items: center;
   gap: 20px;
   padding: 16px;
-  background: #f7f5ed;
+  background: #fffbea;
   border-radius: 12px;
   transition: all 0.3s ease;
 }

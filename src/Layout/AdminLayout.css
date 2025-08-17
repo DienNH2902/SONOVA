@@ -29,7 +29,7 @@
 /* Main content Shifts Right (or rather, is pushed by the Sider) */
 .main-admin-content {
   flex: 1; /* Chiếm hết không gian còn lại */
-  background: #f7f5ed;
+  background: #fffbea;
   /* transition: margin-left 0.3s ease;  Không cần margin-left nữa vì Sider đẩy nó ra */
   margin-left: 0; /* Đảm bảo không có margin nào khác */
   padding: 24px; /* Thêm padding cho nội dung chính */

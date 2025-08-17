@@ -1,6 +1,6 @@
 .course-schedule-page {
   min-height: 100vh;
-  background: #f7f5ed;
+  background: #fffbea;
   padding: 40px 20px;
 }
 
@@ -17,7 +17,7 @@
 }
 
 .filter-section-op {
-  background: #f7f5ed;
+  background: #fffbea;
   padding: 20px;
   margin-top: 0px;
   border-radius: 12px;
@@ -53,7 +53,7 @@
 
 .schedule-section {
   margin-bottom: 50px;
-  background-color: #f7f5ed;
+  background-color: #fffbea;
 }
 
 .section-header {
@@ -96,7 +96,7 @@
 }
 
 .table-container {
-  background: #f7f5ed;
+  background: #fffbea;
   border-radius: 12px;
   overflow: hidden;
   /* box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); */
@@ -104,7 +104,7 @@
 
 .schedule-table {
   border-radius: 12px;
-    background: #f7f5ed;
+    background: #fffbea;
     border: none;
   box-shadow: none;
 }
@@ -130,7 +130,7 @@
 
 .schedule-table .ant-table-tbody > tr > td {
   padding: 14px 12px;
-  border-bottom: 0px solid #f7f5ed;
+  border-bottom: 0px solid #fffbea;
   font-size: 14px;
   color: #333;
   text-align: center;
@@ -138,19 +138,19 @@
 }
 
 .schedule-table .ant-table-tbody > tr:nth-child(even) {
-  background: #f7f5ed;
+  background: #fffbea;
 }
 
 .schedule-table .ant-table-tbody > tr:nth-child(odd) {
-  background: #f7f5ed;
+  background: #fffbea;
 }
 
 .schedule-table .ant-table-tbody > tr:hover {
-  background: #f7f5ed !important;
+  background: #fffbea !important;
 }
 
 .schedule-table .ant-table-cell > td:hover {
-  background: #f7f5ed !important;
+  background: #fffbea !important;
 }
 
 .stt-column {

@@ -1,6 +1,6 @@
 .materials-page {
   min-height: 100vh;
-  background: #f5f7ed;
+  background: #fffbea;
   padding: 40px 20px;
 }
 
@@ -34,7 +34,7 @@
 }
 
 .table-container {
-  background: #f5f7ed;
+  background: #fffbea;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
@@ -43,7 +43,7 @@
 
 .materials-table {
   border-radius: 12px;
-  background-color: #f5f7ed;
+  background-color: #fffbea;
 }
 
 .materials-table .ant-table-thead > tr > th {
@@ -66,22 +66,22 @@
 
 .materials-table .ant-table-tbody > tr > td {
   padding: 14px 12px;
-  border-bottom: 0px solid #f5f7ed;
+  border-bottom: 0px solid #fffbea;
   font-size: 14px;
   color: #333;
   font-family: 'SVN-Gilroy';
 }
 
 .materials-table .ant-table-tbody > tr.even-row {
-  background: #f5f7ed;
+  background: #fffbea;
 }
 
 .materials-table .ant-table-tbody > tr.odd-row {
-  background: #f5f7ed;
+  background: #fffbea;
 }
 
 .materials-table .ant-table-tbody > tr:hover {
-  background: #f5f7ed !important;
+  background: #fffbea !important;
 }
 
 .session-column {

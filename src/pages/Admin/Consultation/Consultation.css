@@ -1,7 +1,7 @@
 /* consultation-page base styles */
 .consultation-page {
   min-height: 100vh;
-  background: #f5f7ed;
+  background: #fffbea;
   padding: 40px 20px;
 }
 
@@ -20,7 +20,7 @@
 
 /* Admin Info */
 .admin-info {
-  background: #f5f7ed;
+  background: #fffbea;
   padding: 12px 20px;
   border-radius: 8px;
   margin-bottom: 20px;
@@ -51,7 +51,7 @@
   border-radius: 12px; /* Match other cards/tables */
   /* box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); Consistent shadow */
   overflow: hidden; /* Ensure content respects border-radius */
-  background-color: #f5f7ed;
+  background-color: #fffbea;
   border: none;
 }
 
@@ -81,7 +81,7 @@
 /* Ant Design Radio.Button customization for your theme */
 /* Note: The Radio.Group is now inside the Card, so its parent selector changes */
 .consultation-filter-radio-group .ant-radio-button-wrapper {
-  background: #f5f7ed;
+  background: #fffbea;
   border-color: #d9d9d9;
   color: #555;
   border-radius: 6px !important;
@@ -209,11 +209,11 @@
 }
 
 .consultation-table .ant-table-tbody > tr:nth-child(odd) {
-  background: #f7f5ed;
+  background: #fffbea;
 }
 
 .consultation-table .ant-table-tbody > tr:nth-child(even) {
-  background: #f7f5ed;
+  background: #fffbea;
 }
 
 

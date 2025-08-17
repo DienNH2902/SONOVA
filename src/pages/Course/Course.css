@@ -1,6 +1,6 @@
 .course-page {
   min-height: 100vh;
-  background: #f7f5ed; /* light background color */
+  background: #fffbea; /* light background color */
 }
 
 .course-hero {
@@ -10,7 +10,7 @@
 
   .course-schedule-section {
   padding: 80px 0;
-  background-color: #f7f5ed; /* light background color */
+  background-color: #fffbea; /* light background color */
 }
 
 .course-schedule-container {
@@ -198,7 +198,7 @@
 
 .curriculum-section {
   padding: 80px 0;
-  background-color: #f7f5ed; /* light background color */
+  background-color: #fffbea; /* light background color */
 }
 
 .curriculum-container {
@@ -225,7 +225,7 @@
 .curriculum-table {
   width: 100%;
   border-collapse: collapse;
-  background-color: #f7f5ed;
+  background-color: #fffbea;
   font-size: 14px;
   text-align: left;
 }
@@ -318,7 +318,7 @@
 
 .instructor-section {
   padding: 80px 0;
-  background: #f7f5ed; /* light background color */
+  background: #fffbea; /* light background color */
 }
 
 .instructor-container {
@@ -405,7 +405,7 @@
 
 .target-audience-section {
   padding: 80px 0;
-  background: #f7f5ed; /* light background color */
+  background: #fffbea; /* light background color */
 }
 
 .target-container {
@@ -499,7 +499,7 @@
 
 .faq-section {
   padding: 80px 0;
-  background: #f7f5ed; /* light background color */
+  background: #fffbea; /* light background color */
 }
 
 .faq-container {
@@ -583,7 +583,7 @@
 
 .contact-consultation-section {
   padding: 80px 0;
-  background: #f7f5ed; /* light background color */
+  background: #fffbea; /* light background color */
 }
 
 .contact-container {

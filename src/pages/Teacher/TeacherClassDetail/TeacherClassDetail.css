@@ -1,6 +1,6 @@
 .attendance-detail-page {
   min-height: 100vh;
-  background: #f5f7ed;
+  background: #fffbea;
   padding: 40px 20px;
 }
 
@@ -52,7 +52,7 @@
 }
 
 .table-section-class-detail {
-  background: #f5f7ed !important;
+  background: #fffbea !important;
   border-radius: 12px;
   padding: 24px;
   /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); */

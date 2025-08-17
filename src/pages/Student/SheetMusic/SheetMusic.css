@@ -1,7 +1,7 @@
 /* Thêm tiền tố student-sheet-music- vào tất cả các class */
 .student-sheet-music-page {
   min-height: 100vh;
-  background-color: #f7f5ed;
+  background-color: #fffbea;
   padding: 0;
 }
 
@@ -87,7 +87,7 @@
 }
 
 .student-sheet-music-section-sheet {
-  background: #f7f5ed;
+  background: #fffbea;
   padding: 40px;
 }
 
@@ -325,7 +325,7 @@
 
 /* Filtered View Styles */
 .student-sheet-music-filtered-view {
-  background: #f7f5ed;
+  background: #fffbea;
   display: flex;
   min-height: calc(100vh - 200px);
 }
@@ -382,7 +382,7 @@
 
 .student-sheet-music-sidebar {
   width: 300px;
-  background: #f7f5ed;
+  background: #fffbea;
   padding: 40px 30px;
 }
 

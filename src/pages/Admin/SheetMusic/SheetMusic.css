@@ -1,13 +1,13 @@
 .sheet-music-page {
   min-height: 100vh;
-  background: #f5f7ed;
+  background: #fffbea;
   padding: 40px 20px;
 }
 
 .sheet-music-container-admin {
   max-width: 1400px;
   margin: 0 auto;
-  background-color: #f5f7ed;
+  background-color: #fffbea;
 }
 
 .page-title {
@@ -23,7 +23,7 @@
   align-items: center;
   margin-bottom: 20px;
   padding: 20px;
-  background: #f5f7ed;
+  background: #fffbea;
   border-radius: 12px;
   /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); */
 }
@@ -81,7 +81,7 @@
 }
 
 .table-container {
-  background: f5f7ed;
+  background: fffbea;
   border-radius: 12px;
   overflow: hidden;
   /* box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); */
@@ -513,11 +513,11 @@
 }
 
 .sheet-music-table .ant-table-tbody > tr:nth-child(odd) {
-  background: #f7f5ed;
+  background: #fffbea;
 }
 
 .sheet-music-table .ant-table-tbody > tr:nth-child(even) {
-  background: #f7f5ed;
+  background: #fffbea;
 }
 
 

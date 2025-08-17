@@ -4,11 +4,11 @@
   align-items: center;
   justify-content: center;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #f5f7ed;
+  background: #fffbea;
 }
 
 .login-card {
-  background: #f5f7ed;
+  background: #fffbea;
   padding: 2.5rem;
   border-radius: 16px;
   /* box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); */

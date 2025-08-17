@@ -1,6 +1,6 @@
 .student-info-list-page {
   min-height: 100vh;
-  background: #f5f7ed;
+  background: #fffbea;
   padding: 40px 20px;
 }
 
@@ -46,7 +46,7 @@
 }
 
 .student-info-table-section {
-  background: #f5f7ed !important;
+  background: #fffbea !important;
   border-radius: 12px;
   padding: 0;
   /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); */
@@ -80,15 +80,15 @@
 }
 
 .student-info-table .ant-table-tbody > tr:nth-child(even) {
-  background: #f5f7ed;
+  background: #fffbea;
 }
 
 .student-info-table .ant-table-tbody > tr:nth-child(odd) {
-  background: #f5f7ed;
+  background: #fffbea;
 }
 
 /* .student-info-table .ant-table-tbody > tr:hover > td {
-  background: #f5f7ed !important;
+  background: #fffbea !important;
 } */
 
 .student-info-table .ant-table-tbody > tr:last-child > td {

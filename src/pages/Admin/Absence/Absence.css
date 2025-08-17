@@ -1,6 +1,6 @@
 .absence-page {
   min-height: 100vh;
-  background: #f5f7ed;
+  background: #fffbea;
   padding: 40px 20px;
 }
 
@@ -58,15 +58,15 @@
 }
 
 .absence-table .ant-table-tbody > tr:nth-child(even) {
-  background: #f5f7ed;
+  background: #fffbea;
 }
 
 .absence-table .ant-table-tbody > tr:nth-child(odd) {
-  background: #f5f7ed;
+  background: #fffbea;
 }
 
 /* .absence-table .ant-table-tbody > tr:hover {
-  background: #f5f7ed !important;
+  background: #fffbea !important;
 } */
 
 .absence-table .ant-table-tbody > tr > td:nth-child(2),
@@ -214,5 +214,5 @@
 }
 
 .table-section-absent {
-  background-color: #f5f7ed;
+  background-color: #fffbea;
 }

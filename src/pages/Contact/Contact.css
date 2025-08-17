@@ -2,7 +2,7 @@
 
 .contact-page {
   min-height: 100vh;
-  background: #f7f5ed; /* light background color */
+  background: #fffbea; /* light background color */
 }
 
 .contact-hero {
@@ -16,7 +16,7 @@
 
 .contact-info-section {
   padding: 80px 0;
-  background: #f7f5ed; /* light background color */
+  background: #fffbea; /* light background color */
 }
 
 .contact-info-container {
@@ -96,7 +96,7 @@
 }
 
 .map-container {
-  background: #f7f5ed;
+  background: #fffbea;
   border-radius: 15px;
   overflow: hidden;
   /* box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); */
@@ -180,7 +180,7 @@
 
 .consultation-section {
   padding: 80px 0;
-  background: #f7f5ed;
+  background: #fffbea;
 }
 
 .consultation-container {

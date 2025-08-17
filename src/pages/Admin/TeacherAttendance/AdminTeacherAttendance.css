@@ -1,6 +1,6 @@
 .student-attendance-page {
   min-height: 100vh;
-  background: #f5f7ed;
+  background: #fffbea;
   padding: 40px 20px;
   font-family: 'SVN-Gilroy';
 }
@@ -53,7 +53,7 @@
 }
 
 .table-section-attendance {
-  background: #f5f7ed;
+  background: #fffbea;
   border-radius: 12px;
   padding: 24px;
   /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); */
@@ -94,11 +94,11 @@
 } */
 
 .attendance-table .ant-table-tbody > tr:nth-child(odd) {
-  background: #f5f7ed;
+  background: #fffbea;
 }
 
 .attendance-table .ant-table-tbody > tr:nth-child(even) {
-  background: #f5f7ed;
+  background: #fffbea;
 }
 
 .stt-column {
