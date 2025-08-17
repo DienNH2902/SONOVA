@@ -17,7 +17,7 @@
 
 /* Sider của Ant Design */
 .admin-sider {
-  background: #2a4a73; /* Đặt màu nền cho Sider, giống màu sidebar-content */
+  background: #033955; /* Đặt màu nền cho Sider, giống màu sidebar-content */
   overflow: auto; /* Cho phép scroll nếu nội dung sidebar dài */
   height: 100vh; /* Sider chiếm toàn bộ chiều cao viewport */
   position: sticky; /* Cố định Sider khi scroll */

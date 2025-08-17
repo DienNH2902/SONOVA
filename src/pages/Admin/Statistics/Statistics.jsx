@@ -1053,6 +1053,7 @@ const Statistics = () => {
                     className={`stat-change ${
                       studentsChange.isPositive ? "positive" : "negative"
                     }`}
+                    style={{textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", width: "100%"}}
                   >
                     {studentsChange.isPositive ? (
                       <ArrowUpOutlined />
@@ -1115,6 +1116,7 @@ const Statistics = () => {
                     className={`stat-change ${
                       newStudentsChange.isPositive ? "positive" : "negative"
                     }`}
+                    style={{textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", width: "100%"}}
                   >
                     {newStudentsChange.isPositive ? (
                       <ArrowUpOutlined />
@@ -1164,6 +1166,7 @@ const Statistics = () => {
                     className={`stat-change ${
                       consultationChange.isPositive ? "positive" : "negative"
                     }`}
+                    style={{textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", width: "100%"}}
                   >
                     {consultationChange.isPositive ? (
                       <ArrowUpOutlined />
@@ -1230,6 +1233,7 @@ const Statistics = () => {
                     className={`stat-change ${
                       revenueChange.isPositive ? "positive" : "negative"
                     }`}
+                    style={{textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", width: "100%"}}
                   >
                     {revenueChange.isPositive ? (
                       <ArrowUpOutlined />
