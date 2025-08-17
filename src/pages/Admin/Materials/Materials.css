@@ -257,3 +257,7 @@
   font-style: italic !important;
   color: #ffa940 !important
 }
+
+.material-modal {
+  padding-top: 70px
+}

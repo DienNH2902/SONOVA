@@ -281,6 +281,7 @@ const Materials = () => {
           open={isModalVisible}
           onCancel={handleCancel}
           footer={null}
+          className="material-modal"
         >
           <Form form={form} layout="vertical" onFinish={handleFinish}>
             <Form.Item
